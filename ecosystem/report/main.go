@@ -30,7 +30,7 @@ var names = map[string]string{
 	"speedata": "speedata", "andee": "andee", "dotwave": "dotwave", "goblde": "gobl.de",
 	"angelo": "angelo", "papierleicht": "papierleicht", "dcnws": "DCNWS", "pdf0": "pdf0",
 	"litho": "litho", "kanjo": "kanjo", "taha": "taha", "fx": "fX", "gopdfattach": "gopdfattach",
-	"pdfcpu": "pdfcpu", "floor": "plancher",
+	"pdfcpu": "pdfcpu", "floor": "plancher", "facturx": "**factur-x (ce dépôt)**",
 }
 
 type group struct {

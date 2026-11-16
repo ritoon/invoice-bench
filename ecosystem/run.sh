@@ -15,7 +15,7 @@ CORPUS_COMMIT=84f8d8f68f6c3698aa3019d701a8b82db9ba0aac
 FX_URL=https://github.com/solarpush/fX.git
 FX_COMMIT=1314f3d94a8092ab94a2db8909f07f00e0eab875
 
-MODULES=(floor pdfcpu speedata andee dotwave goblde angelo papierleicht kanjo dcnws pdf0 litho taha fx gopdfattach)
+MODULES=(floor facturx pdfcpu speedata andee dotwave goblde angelo papierleicht kanjo dcnws pdf0 litho taha fx gopdfattach)
 OUT=${OUT:-results/$(date +%F)}
 COUNT=${COUNT:-3}
 BENCHTIME=${BENCHTIME:-1s}

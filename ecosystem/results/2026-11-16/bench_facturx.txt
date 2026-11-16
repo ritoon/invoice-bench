@@ -1,0 +1,55 @@
+go version go1.26.4 darwin/arm64
+goos: darwin
+goarch: arm64
+pkg: github.com/ritoon/factur-x/bench/ecosystem/facturx
+cpu: Apple M4 Pro
+BenchmarkExtract_Small-14          	   38890	     29027 ns/op	5136.05 MB/s	   39171 B/op	     212 allocs/op
+BenchmarkExtract_Small-14          	   42927	     28179 ns/op	5290.67 MB/s	   39171 B/op	     212 allocs/op
+BenchmarkExtract_Small-14          	   42618	     29022 ns/op	5136.97 MB/s	   39181 B/op	     212 allocs/op
+BenchmarkExtract_Large-14          	   34818	     34335 ns/op	32179.36 MB/s	   44219 B/op	     268 allocs/op
+BenchmarkExtract_Large-14          	   35773	     33416 ns/op	33063.50 MB/s	   44217 B/op	     268 allocs/op
+BenchmarkExtract_Large-14          	   36295	     33920 ns/op	32572.69 MB/s	   44215 B/op	     268 allocs/op
+BenchmarkExtract_Minimum-14        	  123328	      9649 ns/op	9249.46 MB/s	   24104 B/op	     216 allocs/op
+BenchmarkExtract_Minimum-14        	  127358	      9539 ns/op	9356.17 MB/s	   24104 B/op	     216 allocs/op
+BenchmarkExtract_Minimum-14        	  127455	      9411 ns/op	9483.41 MB/s	   24104 B/op	     216 allocs/op
+BenchmarkExtract_Extended-14       	   35738	     33467 ns/op	4704.49 MB/s	   82494 B/op	     205 allocs/op
+BenchmarkExtract_Extended-14       	   36255	     32787 ns/op	4802.06 MB/s	   82490 B/op	     205 allocs/op
+BenchmarkExtract_Extended-14       	   36916	     32450 ns/op	4851.91 MB/s	   82491 B/op	     205 allocs/op
+BenchmarkParse_Small-14            	   10000	    119566 ns/op	 110.01 MB/s	   57200 B/op	    1250 allocs/op
+BenchmarkParse_Small-14            	   10000	    119535 ns/op	 110.03 MB/s	   57200 B/op	    1250 allocs/op
+BenchmarkParse_Small-14            	   10000	    117919 ns/op	 111.54 MB/s	   57200 B/op	    1250 allocs/op
+BenchmarkParse_Lines-14            	    6355	    185650 ns/op	 101.28 MB/s	   94776 B/op	    2204 allocs/op
+BenchmarkParse_Lines-14            	    6535	    185437 ns/op	 101.39 MB/s	   94776 B/op	    2204 allocs/op
+BenchmarkParse_Lines-14            	    6487	    186425 ns/op	 100.86 MB/s	   94776 B/op	    2204 allocs/op
+BenchmarkParse_Large-14            	     134	   8997337 ns/op	 145.08 MB/s	 6536562 B/op	    1564 allocs/op
+BenchmarkParse_Large-14            	     135	   8866938 ns/op	 147.21 MB/s	 6536562 B/op	    1564 allocs/op
+BenchmarkParse_Large-14            	     134	   8895595 ns/op	 146.74 MB/s	 6536564 B/op	    1564 allocs/op
+BenchmarkParseValidate_Small-14    	    9694	    126970 ns/op	 103.59 MB/s	   53952 B/op	    1245 allocs/op
+BenchmarkParseValidate_Small-14    	    9435	    125969 ns/op	 104.41 MB/s	   53952 B/op	    1245 allocs/op
+BenchmarkParseValidate_Small-14    	    8667	    127160 ns/op	 103.44 MB/s	   53952 B/op	    1245 allocs/op
+BenchmarkParseValidate_Lines-14    	    5817	    204033 ns/op	  92.15 MB/s	   89160 B/op	    2196 allocs/op
+BenchmarkParseValidate_Lines-14    	    5977	    201448 ns/op	  93.33 MB/s	   89160 B/op	    2196 allocs/op
+BenchmarkParseValidate_Lines-14    	    6079	    204579 ns/op	  91.91 MB/s	   89160 B/op	    2196 allocs/op
+BenchmarkParseValidate_Large-14    	      98	  12271787 ns/op	 106.37 MB/s	 5561911 B/op	    1582 allocs/op
+BenchmarkParseValidate_Large-14    	      94	  12132750 ns/op	 107.59 MB/s	 5561881 B/op	    1581 allocs/op
+BenchmarkParseValidate_Large-14    	      91	  14138047 ns/op	  92.33 MB/s	 5561953 B/op	    1582 allocs/op
+BenchmarkWrite_Small-14            	  395823	      2933 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkWrite_Small-14            	  408700	      2833 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkWrite_Small-14            	  449806	      2723 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkWrite_Lines-14            	  235478	      4538 ns/op	   12288 B/op	       1 allocs/op
+BenchmarkWrite_Lines-14            	  272931	      4466 ns/op	   12288 B/op	       1 allocs/op
+BenchmarkWrite_Lines-14            	  267138	      4488 ns/op	   12288 B/op	       1 allocs/op
+BenchmarkEmbed_Small-14            	   14730	     81523 ns/op	1764.42 MB/s	  229876 B/op	     309 allocs/op
+BenchmarkEmbed_Small-14            	   14499	     82651 ns/op	1740.34 MB/s	  230000 B/op	     309 allocs/op
+BenchmarkEmbed_Small-14            	   14404	     83516 ns/op	1722.32 MB/s	  229999 B/op	     309 allocs/op
+BenchmarkEmbedClassic_Small-14     	   14967	     79822 ns/op	1845.93 MB/s	  234513 B/op	     289 allocs/op
+BenchmarkEmbedClassic_Small-14     	   14968	     81887 ns/op	1799.38 MB/s	  234526 B/op	     289 allocs/op
+BenchmarkEmbedClassic_Small-14     	   15091	     79700 ns/op	1848.74 MB/s	  234526 B/op	     289 allocs/op
+BenchmarkCheckPDF_Small-14         	    7293	    164626 ns/op	 905.59 MB/s	  100566 B/op	    1470 allocs/op
+BenchmarkCheckPDF_Small-14         	    7375	    159237 ns/op	 936.24 MB/s	  100604 B/op	    1470 allocs/op
+BenchmarkCheckPDF_Small-14         	    7632	    183799 ns/op	 811.12 MB/s	  100570 B/op	    1470 allocs/op
+BenchmarkCheckPDF_Large-14         	    6014	    192168 ns/op	5749.49 MB/s	  114907 B/op	    1638 allocs/op
+BenchmarkCheckPDF_Large-14         	    6591	    214879 ns/op	5141.80 MB/s	  114971 B/op	    1638 allocs/op
+BenchmarkCheckPDF_Large-14         	    5241	    204061 ns/op	5414.40 MB/s	  114852 B/op	    1638 allocs/op
+PASS
+ok  	github.com/ritoon/factur-x/bench/ecosystem/facturx	57.965s

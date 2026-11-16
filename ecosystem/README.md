@@ -71,6 +71,7 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 | `fx` | solarpush/fX v1.4.0 + 6 commits (`1314f3d`) | `pdf.ExtractXML`, `cii.Parse`, `invoice.ValidateReport`, `cii.Generate` |
 | `gopdfattach` | MarlinKuhn/gopdfattach v0.0.3 | `gopdfattach.Extract`, `gopdfattach.AttachFacturX` |
 | `pdfcpu` | pdfcpu v0.16.4 | `api.ExtractAttachmentsRaw` ; injection par une recette bas niveau écrite pour ce banc (FileSpec, `/AF`, XMP) |
+| `facturx` | ce dépôt (par `replace` vers la racine) | `facturx.Extract`, `cii.Parse`, `validate.XML`, `cii.Marshal`, `facturx.Embed`, `facturx.Check` |
 
 ## Particularités connues
 
@@ -85,6 +86,8 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 ## Résultats du 16/11/2026
 
 Les fichiers `bench_*.txt` de `results/2026-11-16/` ont été produits avant le déplacement du harnais dans ce dépôt : le chemin de module qu'ils affichent est `example.local/fxbench/…`, le code mesuré est le même. Les fichiers `survey_*.txt` ont été régénérés depuis ce dossier et donnent les mêmes chiffres. Pour angelo, kanjo, fX et gopdfattach, les mesures datent d'avant la désactivation du `config.yml` de pdfcpu ; une nouvelle mesure de `Extract_Small` après correction diffère de moins de 7 %, sans changer le classement.
+
+Les fichiers `bench_facturx.txt` et `survey_facturx.txt` mesurent la première version du package de ce dépôt, sur la même machine (Apple M4 Pro) et le même jour. Son validateur applique par défaut le schéma, les règles EN 16931 et les règles de profil Factur-X, sans les règles françaises ; les 6 XML qu'il rejette sont ceux que rejette aussi papierleicht, qui exécute les schematrons officiels (CEN et KoSIT) : BR-CL-25 deux fois, CII-SR-465 quatre fois (sur les exemples XRECHNUNG).
 
 ## Ajouter une librairie
 
