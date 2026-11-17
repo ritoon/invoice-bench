@@ -1,3 +1,3 @@
-module github.com/ritoon/factur-x/bench/ecosystem/report
+module github.com/ritoon/zerechnung/bench/ecosystem/report
 
 go 1.26

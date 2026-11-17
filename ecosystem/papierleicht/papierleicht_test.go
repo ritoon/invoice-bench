@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	validator "github.com/papierleicht/go-e-rechnung-validator"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 var (

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	xinvoice "github.com/invopop/gobl.de.xinvoice"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func parse(x []byte) (*xinvoice.Parsed, error) { return xinvoice.Parse(x) }

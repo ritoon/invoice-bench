@@ -2,10 +2,10 @@
 
 Ce dossier mesure les librairies Go existantes sur le corpus officiel ZUGFeRD : temps de réponse, mémoire, et exactitude (extraction, parsing, validation, injection). Les résultats et leur analyse sont publiés sur le wiki :
 
-- [Benchmarks](https://github.com/ritoon/factur-x/wiki/Benchmarks)
-- [Grille de la norme](https://github.com/ritoon/factur-x/wiki/Grille-de-la-norme)
+- [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks)
+- [Grille de la norme](https://github.com/ritoon/zerechnung/wiki/Grille-de-la-norme)
 
-Le code de ce dossier ne fait pas partie du package `factur-x` : chaque sous-dossier est un module Go indépendant.
+Le code de ce dossier ne fait pas partie du package `zerechnung` : chaque sous-dossier est un module Go indépendant.
 
 ## Prérequis
 
@@ -91,10 +91,10 @@ Les fichiers `bench_facturx.txt` et `survey_facturx.txt` mesurent la première v
 
 ## Ajouter une librairie
 
-1. Créer un dossier avec un `go.mod` qui dépend de `github.com/ritoon/factur-x/bench/ecosystem/common` par `replace … => ../common`.
+1. Créer un dossier avec un `go.mod` qui dépend de `github.com/ritoon/zerechnung/bench/ecosystem/common` par `replace … => ../common`.
 2. Écrire des fonctions `extract`, `parse`, `validate`, `write` ou `embed` selon ce que la librairie sait faire, et les passer aux fonctions de `common`.
 3. Ajouter un `TestSurvey`, puis le nom du dossier dans `MODULES` de `run.sh`.
 
 ## Licences
 
-Le code de ce dossier est sous licence MIT, comme le dépôt. Les modules téléchargent des librairies tierces sous leur propre licence, dont AGPL-3.0 (dotwave, litho, fX), BSL 1.1 (kanjo) et MPL-2.0 (papierleicht) ; elles ne sont utilisées que par ces benchmarks et ne sont pas importées par le package `factur-x`. Le corpus ZUGFeRD (Apache-2.0) est téléchargé, pas versionné ici.
+Le code de ce dossier est sous licence MIT, comme le dépôt. Les modules téléchargent des librairies tierces sous leur propre licence, dont AGPL-3.0 (dotwave, litho, fX), BSL 1.1 (kanjo) et MPL-2.0 (papierleicht) ; elles ne sont utilisées que par ces benchmarks et ne sont pas importées par le package `zerechnung`. Le corpus ZUGFeRD (Apache-2.0) est téléchargé, pas versionné ici.

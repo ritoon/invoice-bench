@@ -9,7 +9,7 @@ import (
 	"github.com/dotwavehq/go-einvoice/cii"
 	"github.com/dotwavehq/go-einvoice/zugferd"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func init() { model.ConfigPath = "disable" } // pdfcpu would otherwise write in $HOME

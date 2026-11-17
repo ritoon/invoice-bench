@@ -12,7 +12,7 @@ import (
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/types"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func conf() *model.Configuration {

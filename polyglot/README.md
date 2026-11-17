@@ -2,7 +2,7 @@
 
 Ce dossier compare le package Go de ce dépôt aux librairies Factur-X / ZUGFeRD / EN 16931 des écosystèmes TypeScript, Python et Rust : temps de réponse, exactitude sur le corpus officiel ZUGFeRD, et normes réellement appliquées. Il complète [`bench/ecosystem`](../ecosystem), qui fait la même chose pour les librairies Go.
 
-Le code de ce dossier ne fait pas partie du package `factur-x`. Chaque langage a son propre dossier, autonome :
+Le code de ce dossier ne fait pas partie du package `zerechnung`. Chaque langage a son propre dossier, autonome :
 
 | Dossier | Contenu |
 |---|---|
@@ -45,7 +45,7 @@ Le Mac s'est mis en veille pendant la campagne (capot fermé, de 10 h 27 à 12 h
 
 Le plus rapide des autres langages pour chaque opération, et en particulier parmi les validateurs qui appliquent tout le schematron EN 16931 :
 
-| Opération | factur-x (Go) | Plus rapide ailleurs | Écart |
+| Opération | ZeRechnung (Go) | Plus rapide ailleurs | Écart |
 |---|---|---|---|
 | Extraction du XML (PDF de 149 Ko) | 28,9 µs | einvoice-validator (Rust) : 32,4 µs | ×1,1 |
 | Lecture XML → modèle (13 Ko) | 16,0 µs | zugferd-rs (Rust) : 23,9 µs | ×1,5 |
@@ -72,7 +72,7 @@ Sur les 26 XML CII valides du corpus, les schematrons officiels (CEN EN 16931 1.
 
 | Signalés | Librairies |
 |---|---|
-| 6, comme la référence | **factur-x (Go)**, @conformo/toolkit, @sweberdev/summand, en16931 (TS, sans distinguer avertissements et erreurs), saxonche + XSLT officiels, erechnung-validator ; getafix aussi, mais par 6 exceptions de lecture et non par des règles |
+| 6, comme la référence | **ZeRechnung (Go)**, @conformo/toolkit, @sweberdev/summand, en16931 (TS, sans distinguer avertissements et erreurs), saxonche + XSLT officiels, erechnung-validator ; getafix aussi, mais par 6 exceptions de lecture et non par des règles |
 | 2, comme le CEN seul | @attestwire/en16931, @kontor-mcp/core, mcp-einvoicing-de, einvoice-validator, en16931 (Rust) |
 | 3 à 20, faux positifs | @ekwo-ai/factur-x (3, des clés IBAN), core-invoice (7), zugferd-rs (7), @lucaapp/zugferd-ts (8), @stafyniaksacha/facturx (12), factur-x Rust (17), factur-x-kit (18), pdf-invoice (20) |
 | 0 | @stackforge-eu/factur-x, @fin.cx/einvoice, factur-x (Python), drafthorse : schéma XSD seul ou règles trop partielles |
@@ -85,7 +85,7 @@ Relevé dans le code des librairies, pas dans leur README (fichiers et lignes da
 
 | Librairie | Langage | XSD | EN 16931 (CII) | Profils Factur-X | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 en CII | Conteneur PDF/A-3 | UBL |
 |---|---|---|---|---|---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | Factur-X 1.09.2 | 793 assertions, CEN 1.3.17 | 229 règles (1.09, 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2 | 3.0.21 (90 assertions) | 40 contrôles | non au commit mesuré ; oui depuis #34, #38 et #39 (lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol) |
+| **ZeRechnung (ce dépôt)** | Go | Factur-X 1.09.2 | 793 assertions, CEN 1.3.17 | 229 règles (1.09, 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2 | 3.0.21 (90 assertions) | 40 contrôles | non au commit mesuré ; oui depuis #34, #38 et #39 (lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol) |
 | @stackforge-eu/factur-x (94 000/sem.) | TS | Factur-X 1.09 | non | XSD seul | non | non | non | non | non |
 | @e-invoice-eu/core (63 000/sem.) | TS | non | non (génération) | génération | non | génération | non | non | écriture |
 | @conformo/toolkit | TS | oui | CEN 1.3.17 (SaxonJS) | XSD seul | Flux 2, si `country: "FR"` | KoSIT 3.0.2 | UBL seulement | partiel | oui |
@@ -120,4 +120,4 @@ Ce que d'autres font et que le package Go ne fait pas : la **conversion en PDF/A
 
 ## Licences
 
-Le code de ce dossier est sous licence MIT, comme le dépôt. Les dépendances sont installées par `run.sh setup` et ne sont pas importées par le package `factur-x`. Certaines ont des licences restrictives : AGPL-3.0 (pdf-invoice), EUPL-1.2 (@stackforge-eu/factur-x, artefacts CEN), licence Saxonica (SaxonJS, utilisé par @conformo, @kontor-mcp et @stafyniaksacha), MPL-2.0 (saxonche). Les artefacts officiels téléchargés par le banc Python (CEN 1.3.17, KoSIT 2.6.0) sont vérifiés par SHA-256 et ne sont pas versionnés.
+Le code de ce dossier est sous licence MIT, comme le dépôt. Les dépendances sont installées par `run.sh setup` et ne sont pas importées par le package `zerechnung`. Certaines ont des licences restrictives : AGPL-3.0 (pdf-invoice), EUPL-1.2 (@stackforge-eu/factur-x, artefacts CEN), licence Saxonica (SaxonJS, utilisé par @conformo, @kontor-mcp et @stafyniaksacha), MPL-2.0 (saxonche). Les artefacts officiels téléchargés par le banc Python (CEN 1.3.17, KoSIT 2.6.0) sont vérifiés par SHA-256 et ne sont pas versionnés.

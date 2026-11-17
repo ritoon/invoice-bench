@@ -8,7 +8,7 @@ import (
 
 	"github.com/mgilbir/formalis"
 	"github.com/mgilbir/pdf0"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 // pdf0 exposes the invoice XML only through ValidateFacturX, which also runs

@@ -7,7 +7,7 @@ import (
 	"github.com/cyprienbrisset/kanjo/pkg/read"
 	"github.com/cyprienbrisset/kanjo/pkg/rules"
 	"github.com/cyprienbrisset/kanjo/pkg/write"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 
 	_ "github.com/cyprienbrisset/kanjo/pkg/formats"
 	_ "github.com/cyprienbrisset/kanjo/pkg/rules/all"

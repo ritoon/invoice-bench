@@ -1,9 +1,9 @@
-module github.com/ritoon/factur-x/bench/ecosystem/speedata
+module github.com/ritoon/zerechnung/bench/ecosystem/speedata
 
 go 1.26.0
 
 require (
-	github.com/ritoon/factur-x/bench/ecosystem/common v0.0.0
+	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
 	github.com/speedata/einvoice v0.0.23
 	github.com/speedata/pdfdisassembler v0.0.9
 )
@@ -19,4 +19,4 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 )
 
-replace github.com/ritoon/factur-x/bench/ecosystem/common => ../common
+replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common

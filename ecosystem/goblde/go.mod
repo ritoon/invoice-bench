@@ -1,9 +1,9 @@
-module github.com/ritoon/factur-x/bench/ecosystem/goblde
+module github.com/ritoon/zerechnung/bench/ecosystem/goblde
 
 go 1.26
 
 require (
-	github.com/ritoon/factur-x/bench/ecosystem/common v0.0.0
+	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
 	github.com/invopop/gobl.de.xinvoice v0.0.10
 )
 
@@ -36,4 +36,4 @@ require (
 	software.sslmate.com/src/go-pkcs12 v0.7.2 // indirect
 )
 
-replace github.com/ritoon/factur-x/bench/ecosystem/common => ../common
+replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common

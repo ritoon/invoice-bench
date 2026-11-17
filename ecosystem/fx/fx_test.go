@@ -3,7 +3,7 @@ package fxbench
 import (
 	"testing"
 
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 	"github.com/solarpush/fx/pkg/cii"
 	"github.com/solarpush/fx/pkg/invoice"
 	"github.com/solarpush/fx/pkg/pdf"

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	einvoice "github.com/dcnws/invoicekit.go"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func TestDetail(t *testing.T) {

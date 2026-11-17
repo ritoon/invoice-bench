@@ -1,4 +1,4 @@
-// Benchmarks of this repository's own package, github.com/ritoon/factur-x,
+// Benchmarks of this repository's own package, github.com/ritoon/zerechnung,
 // measured with the same harness as the other libraries.
 package facturxbench
 
@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	facturx "github.com/ritoon/factur-x"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
-	"github.com/ritoon/factur-x/cii"
-	"github.com/ritoon/factur-x/invoice"
-	"github.com/ritoon/factur-x/validate"
+	"github.com/ritoon/zerechnung"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/cii"
+	"github.com/ritoon/zerechnung/invoice"
+	"github.com/ritoon/zerechnung/validate"
 )
 
 func extract(p []byte) ([]byte, error) {
-	att, err := facturx.Extract(p)
+	att, err := zerechnung.Extract(p)
 	if err != nil {
 		return nil, err
 	}
@@ -37,11 +37,11 @@ func validateXML(x []byte) (int, error) {
 var modDate = time.Date(2026, 11, 16, 12, 0, 0, 0, time.UTC)
 
 func embed(p, x []byte) ([]byte, error) {
-	return facturx.Embed(p, x, &facturx.EmbedOptions{ModDate: modDate})
+	return zerechnung.Embed(p, x, &zerechnung.EmbedOptions{ModDate: modDate})
 }
 
 func check(p []byte) (int, error) {
-	r, att, err := facturx.Check(p, nil)
+	r, att, err := zerechnung.Check(p, nil)
 	if err != nil {
 		return 0, err
 	}

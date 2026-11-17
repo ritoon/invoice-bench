@@ -6,7 +6,7 @@ import (
 	einvoice "github.com/dcnws/invoicekit.go"
 	"github.com/dcnws/invoicekit.go/facturx"
 	"github.com/dcnws/invoicekit.go/hybrid"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func extract(p []byte) ([]byte, error)              { x, _, err := facturx.Extract(p); return x, err }

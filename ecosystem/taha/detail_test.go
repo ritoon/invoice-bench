@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 	"github.com/tahayassine/facturx-go/pkg/cii"
 	"github.com/tahayassine/facturx-go/pkg/en16931"
 )

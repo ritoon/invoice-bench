@@ -98,7 +98,7 @@ func main() {
 }
 
 func loadGo(dir string, res map[string]map[key]result, surveys map[key]map[string]string) error {
-	k := key{"factur-x (ce dépôt)", "go"}
+	k := key{"ZeRechnung (ce dépôt)", "go"}
 	raw := map[string][]float64{}
 	version := ""
 	err := eachLine(filepath.Join(dir, "bench_facturx.txt"), func(line string) {
@@ -196,7 +196,7 @@ func printSurveys(s map[key]map[string]string) {
 func printGroup(g group, res map[string]map[key]result, surveys map[key]map[string]string) {
 	libs := map[key]bool{}
 	best := map[string]float64{}
-	goKey := key{"factur-x (ce dépôt)", "go"}
+	goKey := key{"ZeRechnung (ce dépôt)", "go"}
 	for _, b := range g.benches {
 		for k, r := range res[b] {
 			if r.status == "unsupported" {

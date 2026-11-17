@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 	"github.com/speedata/einvoice"
 	pdf "github.com/speedata/pdfdisassembler"
 )

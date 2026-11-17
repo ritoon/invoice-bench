@@ -3,7 +3,7 @@ package lithobench
 import (
 	"testing"
 
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func BenchmarkEmbedClassic_Small(b *testing.B) {

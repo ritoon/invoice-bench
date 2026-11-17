@@ -1,9 +1,9 @@
-module github.com/ritoon/factur-x/bench/ecosystem/papierleicht
+module github.com/ritoon/zerechnung/bench/ecosystem/papierleicht
 
 go 1.26
 
 require (
-	github.com/ritoon/factur-x/bench/ecosystem/common v0.0.0
+	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
 	github.com/papierleicht/go-e-rechnung-validator v0.1.0
 )
 
@@ -14,4 +14,4 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 )
 
-replace github.com/ritoon/factur-x/bench/ecosystem/common => ../common
+replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common

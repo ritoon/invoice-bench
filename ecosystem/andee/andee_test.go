@@ -5,7 +5,7 @@ import (
 
 	xinvoice "github.com/andeedotnet/go-xinvoice"
 	xinvoicepdf "github.com/andeedotnet/go-xinvoice-pdf"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func extract(p []byte) ([]byte, error)          { x, _, err := xinvoicepdf.ExtractXML(p); return x, err }

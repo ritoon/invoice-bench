@@ -1,9 +1,9 @@
-module github.com/ritoon/factur-x/bench/ecosystem/pdf0
+module github.com/ritoon/zerechnung/bench/ecosystem/pdf0
 
 go 1.27
 
 require (
-	github.com/ritoon/factur-x/bench/ecosystem/common v0.0.0
+	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
 	github.com/mgilbir/formalis v0.3.1
 	github.com/mgilbir/pdf0 v0.9.1
 )
@@ -15,4 +15,4 @@ require (
 	golang.org/x/text v0.40.0 // indirect
 )
 
-replace github.com/ritoon/factur-x/bench/ecosystem/common => ../common
+replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/angelodlfrtr/go-invoice-generator/facturx"
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 func extract(p []byte) ([]byte, error)        { return facturx.Extract(p) }

@@ -1,11 +1,11 @@
-module github.com/ritoon/factur-x/bench/ecosystem/dotwave
+module github.com/ritoon/zerechnung/bench/ecosystem/dotwave
 
 go 1.26
 
 require (
 	github.com/dotwavehq/go-einvoice v0.7.1
 	github.com/pdfcpu/pdfcpu v0.11.1
-	github.com/ritoon/factur-x/bench/ecosystem/common v0.0.0
+	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
 )
 
 require (
@@ -22,4 +22,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/ritoon/factur-x/bench/ecosystem/common => ../common
+replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common

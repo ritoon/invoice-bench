@@ -1,7 +1,7 @@
 # Banc Python : librairies retenues, écartées et couverture de la norme
 
 Banc Python du protocole commun (`../PROTOCOL.md`), comparé au paquet Go
-`github.com/ritoon/factur-x`. Relevés du 2026-11-17.
+`github.com/ritoon/zerechnung`. Relevés du 2026-11-17.
 
 - **Interpréteur** : CPython 3.13.18 (Homebrew), venv `.venv/`, sans uv.
   Dépendances figées dans `requirements.txt` (sortie de `pip freeze`),

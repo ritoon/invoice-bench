@@ -6,7 +6,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/ritoon/factur-x/bench/ecosystem/common"
+	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 )
 
 // Floor: cost of merely tokenizing the XML with encoding/xml. Any parser built
