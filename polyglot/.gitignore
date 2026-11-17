@@ -1,0 +1,8 @@
+node_modules/
+.venv/
+target/
+.artefacts/
+__pycache__/
+# Per-library parts, merged into bench_<lang>.jsonl and survey_<lang>.jsonl
+results/*/rust-parts/
+results/*/typescript-parts/
