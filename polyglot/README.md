@@ -85,7 +85,7 @@ Relevé dans le code des librairies, pas dans leur README (fichiers et lignes da
 
 | Librairie | Langage | XSD | EN 16931 (CII) | Profils Factur-X | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 en CII | Conteneur PDF/A-3 | UBL |
 |---|---|---|---|---|---|---|---|---|---|
-| **ZeRechnung (ce dépôt)** | Go | Factur-X 1.09.2, CII D16B (XRECHNUNG), UBL 2.1 | 793 assertions, CEN 1.3.17 | 544 règles (schematrons 1.09 et 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2, Leitweg-ID et GEBA | 3.0.21 (90 assertions) | 40 contrôles | lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol |
+| **ZeRechnung (ce dépôt)** | Go | Factur-X 1.09.2, CII D16B (XRECHNUNG), UBL 2.1 | 793 assertions, CEN 1.3.17 | 544 règles (schematrons 1.09 et 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2, Leitweg-ID et GEBA | 3.0.21 (90 assertions) | 69 contrôles | lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol |
 | @stackforge-eu/factur-x (94 000/sem.) | TS | Factur-X 1.09 | non | XSD seul | non | non | non | non | non |
 | @e-invoice-eu/core (63 000/sem.) | TS | non | non (génération) | génération | non | génération | non | non | écriture |
 | @conformo/toolkit | TS | oui | CEN 1.3.17 (SaxonJS) | XSD seul | Flux 2, si `country: "FR"` | KoSIT 3.0.2 | UBL seulement | partiel | oui |
