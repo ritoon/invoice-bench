@@ -6,7 +6,7 @@ Référence : les schematrons officiels (CEN EN 16931 et KoSIT) signalent 6 des 
 
 | Librairie | Langage | XML valides signalés | XML lus | PDF extraits |
 |---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | 6/26 | 26/26 | 104/104 |
+| **ZeRechnung (ce dépôt)** | Go | 6/26 | 26/26 | 104/104 |
 | @attestwire/en16931 | TypeScript | 2/26 | 26/26 | 104/104 |
 | @conformo/toolkit | TypeScript | 6/26 | 26/26 | 104/104 |
 | @ekwo-ai/factur-x | TypeScript | 3/26 | 26/26 | 104/104 |
@@ -40,27 +40,27 @@ Référence : les schematrons officiels (CEN EN 16931 et KoSIT) signalent 6 des 
 
 | Librairie | Langage | EN 16931, 149 Ko | EN 16931, 1,1 Mo | MINIMUM FNFE, 89 Ko | EXTENDED ZF 2.0, 157 Ko | Premier appel |
 |---|---|---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | **28,9 µs** | **34,5 µs** | 10,0 µs | **33,4 µs** | — |
-| einvoice-validator | Rust | 32,4 µs (×1,1) | 41,9 µs (×1,2) | 23,8 µs (×2,4) | 38,2 µs (×1,1) | 1,62 ms |
-| lopdf | Rust | 71,6 µs (×2,5) | 94,5 µs (×2,7) | 42,9 µs (×4,3) | 65,0 µs (×1,9) | 678 µs |
-| pdfa | Rust | 77,3 µs (×2,7) | échec | **499 ns** (×0,1) | échec | 154 µs |
-| pdf-invoice | Rust | 79,5 µs (×2,7) | 105 µs (×3,0) | 48,5 µs (×4,9) | 74,6 µs (×2,2) | 682 µs |
-| mcp-einvoicing-de | Python | 81,9 µs (×2,8) | 117 µs (×3,4) | 53,5 µs (×5,4) | 237 µs (×7,1) | 432 µs |
-| zugferd-pdf | Python | 82,0 µs (×2,8) | 120 µs (×3,5) | 53,2 µs (×5,3) | 96,0 µs (×2,9) | 1,76 ms |
-| zugferd-rs | Rust | 91,6 µs (×3,2) | 116 µs (×3,4) | 54,1 µs (×5,4) | 84,4 µs (×2,5) | 1,36 ms |
-| @attestwire/en16931 | TypeScript | 182 µs (×6,3) | 205 µs (×6,0) | 111 µs (×11) | 215 µs (×6,5) | 4,43 ms |
-| pycheval | Python | 205 µs (×7,1) | échec | 182 µs (×18) | échec | 1,02 ms |
-| getafix | Python | 230 µs (×8,0) | 388 µs (×11) | 212 µs (×21) | 215 µs (×6,4) | 1,01 ms |
-| @lucaapp/zugferd-ts | TypeScript | 251 µs (×8,7) | 305 µs (×8,8) | 124 µs (×12) | 235 µs (×7,1) | 4,64 ms |
-| factur-x | Python | 252 µs (×8,7) | 390 µs (×11) | 202 µs (×20) | 280 µs (×8,4) | 2,47 ms |
-| @ekwo-ai/factur-x | TypeScript | 276 µs (×9,5) | 317 µs (×9,2) | 141 µs (×14) | 255 µs (×7,6) | 4,98 ms |
-| @stackforge-eu/factur-x | TypeScript | 288 µs (×10,0) | 335 µs (×9,7) | 145 µs (×15) | 251 µs (×7,5) | 4,72 ms |
-| @conformo/toolkit | TypeScript | 288 µs (×10,0) | 10,45 ms (×303) | 139 µs (×14) | 261 µs (×7,8) | 4,58 ms |
-| @stafyniaksacha/facturx | TypeScript | 375 µs (×13) | 3,12 ms (×90) | 173 µs (×17) | 437 µs (×13) | 7,50 ms |
-| en16931 | Rust | 392 µs (×14) | 718 µs (×21) | 254 µs (×26) | 291 µs (×8,7) | 1,48 ms |
-| @fin.cx/einvoice | TypeScript | 412 µs (×14) | 511 µs (×15) | 142 µs (×14) | 469 µs (×14) | 47,56 ms |
-| @kontor-mcp/core | TypeScript | 743 µs (×26) | 1,53 ms (×44) | 704 µs (×71) | 820 µs (×25) | 9,18 ms |
-| @sweberdev/summand | TypeScript | 946 µs (×33) | 20,93 ms (×607) | 456 µs (×46) | 1,13 ms (×34) | 3,23 ms |
+| **ZeRechnung (ce dépôt)** | Go | **29,3 µs** | **33,3 µs** | 10,7 µs | **34,7 µs** | — |
+| einvoice-validator | Rust | 32,5 µs (×1,1) | 41,7 µs (×1,3) | 22,9 µs (×2,1) | 37,1 µs (×1,1) | 1,44 ms |
+| lopdf | Rust | 72,6 µs (×2,5) | 95,7 µs (×2,9) | 43,2 µs (×4,0) | 66,0 µs (×1,9) | 391 µs |
+| pdfa | Rust | 78,1 µs (×2,7) | échec | **496 ns** (×0,0) | échec | 140 µs |
+| zugferd-pdf | Python | 78,5 µs (×2,7) | 116 µs (×3,5) | 52,2 µs (×4,9) | 93,5 µs (×2,7) | 1,72 ms |
+| mcp-einvoicing-de | Python | 78,7 µs (×2,7) | 115 µs (×3,5) | 51,9 µs (×4,9) | 228 µs (×6,6) | 421 µs |
+| pdf-invoice | Rust | 79,4 µs (×2,7) | 102 µs (×3,1) | 47,9 µs (×4,5) | 74,5 µs (×2,1) | 768 µs |
+| zugferd-rs | Rust | 91,4 µs (×3,1) | 116 µs (×3,5) | 54,0 µs (×5,1) | 84,1 µs (×2,4) | 898 µs |
+| @attestwire/en16931 | TypeScript | 184 µs (×6,3) | 199 µs (×6,0) | 106 µs (×9,9) | 206 µs (×5,9) | 4,62 ms |
+| pycheval | Python | 199 µs (×6,8) | échec | 176 µs (×17) | échec | 929 µs |
+| getafix | Python | 225 µs (×7,7) | 376 µs (×11) | 210 µs (×20) | 207 µs (×6,0) | 1,07 ms |
+| factur-x | Python | 241 µs (×8,2) | 375 µs (×11) | 193 µs (×18) | 266 µs (×7,7) | 2,46 ms |
+| @lucaapp/zugferd-ts | TypeScript | 253 µs (×8,6) | 293 µs (×8,8) | 122 µs (×11) | 227 µs (×6,5) | 4,70 ms |
+| @ekwo-ai/factur-x | TypeScript | 269 µs (×9,2) | 315 µs (×9,5) | 134 µs (×13) | 242 µs (×7,0) | 4,52 ms |
+| @conformo/toolkit | TypeScript | 281 µs (×9,6) | 10,13 ms (×305) | 134 µs (×13) | 244 µs (×7,0) | 4,59 ms |
+| @stackforge-eu/factur-x | TypeScript | 285 µs (×9,7) | 331 µs (×10,0) | 143 µs (×13) | 248 µs (×7,2) | 5,02 ms |
+| @stafyniaksacha/facturx | TypeScript | 373 µs (×13) | 3,15 ms (×95) | 169 µs (×16) | 436 µs (×13) | 7,39 ms |
+| en16931 | Rust | 388 µs (×13) | 703 µs (×21) | 248 µs (×23) | 281 µs (×8,1) | 1,56 ms |
+| @fin.cx/einvoice | TypeScript | 402 µs (×14) | 492 µs (×15) | 135 µs (×13) | 431 µs (×12) | 50,70 ms |
+| @kontor-mcp/core | TypeScript | 683 µs (×23) | 1,46 ms (×44) | 659 µs (×62) | 737 µs (×21) | 8,61 ms |
+| @sweberdev/summand | TypeScript | 892 µs (×30) | 20,19 ms (×607) | 437 µs (×41) | 1,04 ms (×30) | 3,36 ms |
 
 En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go de ce dépôt. Tri sur la colonne « EN 16931, 149 Ko » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).
 
@@ -68,26 +68,26 @@ En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du pack
 
 | Librairie | Langage | 13 Ko | 19 Ko | 1,3 Mo | Premier appel |
 |---|---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | **16,0 µs** | **28,2 µs** | 1,14 ms | — |
-| zugferd-rs | Rust | 23,9 µs (×1,5) | 37,0 µs (×1,3) | échec | 1,11 ms |
-| pdf-invoice | Rust | 25,5 µs (×1,6) | 38,8 µs (×1,4) | 1,63 ms (×1,4) | 1,06 ms |
-| core-invoice | Rust | 45,1 µs (×2,8) | 69,3 µs (×2,5) | 3,65 ms (×3,2) | 283 µs |
-| @ekwo-ai/factur-x | TypeScript | 73,6 µs (×4,6) | 116 µs (×4,1) | 26,84 ms (×24) | 1,79 ms |
-| en16931 | Rust | 76,5 µs (×4,8) | 131 µs (×4,6) | 7,28 ms (×6,4) | 2,34 ms |
-| @conformo/toolkit | TypeScript | 93,4 µs (×5,8) | 169 µs (×6,0) | 1,81 ms (×1,6) | 1,57 ms |
-| @attestwire/en16931 | TypeScript | 137 µs (×8,5) | 245 µs (×8,7) | 3,46 ms (×3,0) | 2,18 ms |
-| @lucaapp/zugferd-ts | TypeScript | 162 µs (×10) | 294 µs (×10) | échec | 2,48 ms |
-| pycheval | Python | 229 µs (×14) | échec | échec | 1,06 ms |
-| factur-x-kit | TypeScript | 272 µs (×17) | échec | échec | 8,72 ms |
-| einvoice | Rust | 321 µs (×20) | 547 µs (×19) | 11,89 ms (×10) | 2,00 ms |
-| mcp-einvoicing-de | Python | 341 µs (×21) | 491 µs (×17) | **713 µs** (×0,6) | 1,68 ms |
-| drafthorse | Python | 597 µs (×37) | 1,00 ms (×35) | 1,10 ms (×1,0) | 3,24 ms |
-| @stafyniaksacha/facturx | TypeScript | 968 µs (×60) | 1,69 ms (×60) | 5,56 ms (×4,9) | 7,99 ms |
-| @kontor-mcp/core | TypeScript | 1,18 ms (×74) | 1,96 ms (×69) | 4,69 ms (×4,1) | 13,91 ms |
-| getafix | Python | 1,24 ms (×77) | 2,14 ms (×76) | échec | 2,87 ms |
-| factur-x | Python | 1,47 ms (×92) | 2,07 ms (×73) | 12,08 ms (×11) | 7,48 ms |
-| @fin.cx/einvoice | TypeScript | 2,19 ms (×137) | 4,01 ms (×142) | 7,34 ms (×6,5) | 13,06 ms |
-| factur-x | Rust | échec | échec | 1,63 ms (×1,4) | — |
+| **ZeRechnung (ce dépôt)** | Go | **16,3 µs** | **28,8 µs** | 1,11 ms | — |
+| zugferd-rs | Rust | 24,0 µs (×1,5) | 36,9 µs (×1,3) | échec | 2,07 ms |
+| pdf-invoice | Rust | 25,6 µs (×1,6) | 38,6 µs (×1,3) | 1,63 ms (×1,5) | 760 µs |
+| core-invoice | Rust | 44,4 µs (×2,7) | 66,5 µs (×2,3) | 3,65 ms (×3,3) | 312 µs |
+| @ekwo-ai/factur-x | TypeScript | 69,6 µs (×4,3) | 114 µs (×4,0) | 23,70 ms (×21) | 1,73 ms |
+| en16931 | Rust | 73,5 µs (×4,5) | 126 µs (×4,4) | 6,75 ms (×6,1) | 1,49 ms |
+| @conformo/toolkit | TypeScript | 92,1 µs (×5,7) | 157 µs (×5,4) | 1,74 ms (×1,6) | 1,56 ms |
+| @attestwire/en16931 | TypeScript | 135 µs (×8,3) | 242 µs (×8,4) | 3,27 ms (×3,0) | 2,30 ms |
+| @lucaapp/zugferd-ts | TypeScript | 162 µs (×10,0) | 287 µs (×10,0) | échec | 2,44 ms |
+| pycheval | Python | 221 µs (×14) | échec | échec | 888 µs |
+| factur-x-kit | TypeScript | 268 µs (×16) | échec | échec | 8,39 ms |
+| einvoice | Rust | 323 µs (×20) | 544 µs (×19) | 11,96 ms (×11) | 1,56 ms |
+| mcp-einvoicing-de | Python | 335 µs (×21) | 477 µs (×17) | **702 µs** (×0,6) | 1,06 ms |
+| drafthorse | Python | 586 µs (×36) | 982 µs (×34) | 1,07 ms (×1,0) | 3,21 ms |
+| @stafyniaksacha/facturx | TypeScript | 947 µs (×58) | 1,69 ms (×59) | 5,55 ms (×5,0) | 8,09 ms |
+| @kontor-mcp/core | TypeScript | 1,08 ms (×66) | 1,67 ms (×58) | 4,35 ms (×3,9) | 12,34 ms |
+| getafix | Python | 1,22 ms (×75) | 2,08 ms (×72) | échec | 2,72 ms |
+| factur-x | Python | 1,40 ms (×86) | 1,98 ms (×69) | 11,79 ms (×11) | 4,99 ms |
+| @fin.cx/einvoice | TypeScript | 2,09 ms (×128) | 3,72 ms (×129) | 7,11 ms (×6,4) | 13,51 ms |
+| factur-x | Rust | échec | échec | 1,61 ms (×1,5) | — |
 
 En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go de ce dépôt. Tri sur la colonne « 13 Ko » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).
 
@@ -95,30 +95,30 @@ En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du pack
 
 | Librairie | Langage | Valides signalés /26 | 13 Ko | 19 Ko | 1,3 Mo | Premier appel |
 |---|---|---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | 6/26 | **23,3 µs** | 40,8 µs | **755 µs** | — |
-| pdf-invoice | Rust | 20/26 | 25,7 µs (×1,1) | **39,3 µs** (×1,0) | 1,68 ms (×2,2) | 53,4 µs |
-| @ekwo-ai/factur-x | TypeScript | 3/26 | 71,1 µs (×3,1) | 116 µs (×2,9) | 21,20 ms (×28) | 1,67 ms |
-| core-invoice | Rust | 7/26 | 77,4 µs (×3,3) | 120 µs (×2,9) | 5,42 ms (×7,2) | 739 µs |
-| en16931 | Rust | 2/26 | 80,0 µs (×3,4) | 130 µs (×3,2) | 6,93 ms (×9,2) | 1,40 ms |
-| @attestwire/en16931 | TypeScript | 2/26 | 203 µs (×8,7) | 349 µs (×8,6) | 7,04 ms (×9,3) | 8,72 ms |
-| factur-x-kit | TypeScript | 18/26 | 284 µs (×12) | échec | échec | 10,67 ms |
-| drafthorse | Python | 0/26 | 510 µs (×22) | 548 µs (×13) | 8,38 ms (×11) | 3,27 ms |
-| einvoice-validator | Rust | 2/26 | 510 µs (×22) | 839 µs (×21) | 4,34 ms (×5,7) | 25,89 ms |
-| factur-x | Python | 0/26 | 518 µs (×22) | 548 µs (×13) | 5,41 ms (×7,2) | 824 µs |
-| @stackforge-eu/factur-x | TypeScript | 0/26 | 819 µs (×35) | 891 µs (×22) | 10,18 ms (×13) | 34,15 ms |
-| @sweberdev/summand | TypeScript | 6/26 | 866 µs (×37) | 1,45 ms (×36) | 7,83 ms (×10) | 16,74 ms |
-| saxonche-schematron | Python | 6/26 | 903 µs (×39) | 1,48 ms (×36) | 13,34 ms (×18) | 257,28 ms |
-| getafix | Python | 6/26 | 1,59 ms (×68) | 2,66 ms (×65) | échec | 3,13 ms |
-| zugferd-rs | Rust | 7/26 | 2,02 ms (×86) | 2,79 ms (×69) | 5,21 ms (×6,9) | 5,07 ms |
-| @fin.cx/einvoice | TypeScript | 0/26 | 3,08 ms (×132) | 5,52 ms (×135) | 10,99 ms (×15) | 17,67 ms |
-| en16931 | TypeScript | 6/26 | 15,06 ms (×646) | 27,64 ms (×678) | 41,81 ms (×55) | 170,62 ms |
-| erechnung-validator | Rust | 6/26 | 34,05 ms (×1 461) | 56,30 ms (×1 380) | 84,82 ms (×112) | 170,79 ms |
-| @kontor-mcp/core | TypeScript | 2/26 | 47,74 ms (×2 048) | 54,14 ms (×1 328) | 74,70 ms (×99) | 144,50 ms |
-| @stafyniaksacha/facturx | TypeScript | 12/26 | 60,07 ms (×2 577) | 77,06 ms (×1 890) | 78,74 ms (×104) | 133,37 ms |
-| @conformo/toolkit | TypeScript | 6/26 | 72,53 ms (×3 111) | 80,08 ms (×1 964) | 126,70 ms (×168) | 116,81 ms |
-| mcp-einvoicing-de | Python | 2/26 | 104,01 ms (×4 462) | 106,26 ms (×2 606) | 168,66 ms (×223) | 288,17 ms |
-| @lucaapp/zugferd-ts | TypeScript | 8/26 | 2,85 s (×122 445) | 9,34 s (×229 106) | 4,35 s (×5 764) | 3,00 s |
-| factur-x | Rust | 17/26 | échec | échec | 1,64 ms (×2,2) | — |
+| **ZeRechnung (ce dépôt)** | Go | 6/26 | **23,1 µs** | 40,9 µs | **800 µs** | — |
+| pdf-invoice | Rust | 20/26 | 27,1 µs (×1,2) | **40,2 µs** (×1,0) | 1,65 ms (×2,1) | 46,2 µs |
+| @ekwo-ai/factur-x | TypeScript | 3/26 | 69,8 µs (×3,0) | 114 µs (×2,8) | 21,66 ms (×27) | 1,71 ms |
+| core-invoice | Rust | 7/26 | 75,1 µs (×3,2) | 117 µs (×2,9) | 5,45 ms (×6,8) | 585 µs |
+| en16931 | Rust | 2/26 | 75,4 µs (×3,3) | 128 µs (×3,1) | 6,70 ms (×8,4) | 1,66 ms |
+| @attestwire/en16931 | TypeScript | 2/26 | 202 µs (×8,7) | 331 µs (×8,1) | 6,84 ms (×8,6) | 9,27 ms |
+| factur-x-kit | TypeScript | 18/26 | 289 µs (×13) | échec | échec | 10,26 ms |
+| einvoice-validator | Rust | 2/26 | 473 µs (×20) | 776 µs (×19) | 4,10 ms (×5,1) | 22,09 ms |
+| factur-x | Python | 0/26 | 486 µs (×21) | 513 µs (×13) | 5,14 ms (×6,4) | 781 µs |
+| drafthorse | Python | 0/26 | 492 µs (×21) | 529 µs (×13) | 7,98 ms (×10,0) | 1,82 ms |
+| @sweberdev/summand | TypeScript | 6/26 | 802 µs (×35) | 1,36 ms (×33) | 7,49 ms (×9,4) | 16,68 ms |
+| @stackforge-eu/factur-x | TypeScript | 0/26 | 828 µs (×36) | 878 µs (×21) | 10,06 ms (×13) | 32,98 ms |
+| saxonche-schematron | Python | 6/26 | 903 µs (×39) | 1,46 ms (×36) | 12,61 ms (×16) | 133,18 ms |
+| getafix | Python | 6/26 | 1,55 ms (×67) | 2,57 ms (×63) | échec | 3,01 ms |
+| zugferd-rs | Rust | 7/26 | 1,96 ms (×85) | 2,73 ms (×67) | 5,15 ms (×6,4) | 5,79 ms |
+| @fin.cx/einvoice | TypeScript | 0/26 | 3,09 ms (×134) | 5,28 ms (×129) | 10,57 ms (×13) | 17,20 ms |
+| en16931 | TypeScript | 6/26 | 14,19 ms (×614) | 25,91 ms (×633) | 39,72 ms (×50) | 159,55 ms |
+| erechnung-validator | Rust | 6/26 | 31,16 ms (×1 347) | 54,77 ms (×1 339) | 82,99 ms (×104) | 150,36 ms |
+| @kontor-mcp/core | TypeScript | 2/26 | 44,31 ms (×1 916) | 51,53 ms (×1 260) | 71,43 ms (×89) | 142,98 ms |
+| @stafyniaksacha/facturx | TypeScript | 12/26 | 60,76 ms (×2 627) | 76,86 ms (×1 879) | 78,84 ms (×99) | 131,89 ms |
+| @conformo/toolkit | TypeScript | 6/26 | 71,49 ms (×3 091) | 78,08 ms (×1 909) | 121,80 ms (×152) | 117,26 ms |
+| mcp-einvoicing-de | Python | 2/26 | 102,14 ms (×4 416) | 105,90 ms (×2 589) | 155,68 ms (×195) | 318,56 ms |
+| @lucaapp/zugferd-ts | TypeScript | 8/26 | 2,67 s (×115 305) | 8,84 s (×216 176) | 4,15 s (×5 195) | 2,89 s |
+| factur-x | Rust | 17/26 | échec | échec | 1,61 ms (×2,0) | — |
 
 En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go de ce dépôt. Tri sur la colonne « 13 Ko » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).
 
@@ -126,29 +126,29 @@ En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du pack
 
 | Librairie | Langage | 13 Ko | 19 Ko | Premier appel |
 |---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | **3,0 µs** | **4,8 µs** | — |
-| zugferd-rs | Rust | 6,7 µs (×2,3) | 11,6 µs (×2,4) | 401 µs |
-| core-invoice | Rust | 10,8 µs (×3,7) | 17,1 µs (×3,6) | 1,58 ms |
-| @ekwo-ai/factur-x | TypeScript | 11,0 µs (×3,7) | — | 450 µs |
-| @stackforge-eu/factur-x | TypeScript | 14,5 µs (×4,9) | — | 536 µs |
-| @conformo/toolkit | TypeScript | 22,4 µs (×7,6) | 38,5 µs (×8,0) | 1,66 ms |
-| zugferd | Rust | 28,4 µs (×9,6) | — | 240 µs |
-| einvoice | Rust | 36,1 µs (×12) | 62,8 µs (×13) | 1,06 ms |
-| @attestwire/en16931 | TypeScript | 43,2 µs (×15) | 82,5 µs (×17) | 1,02 ms |
-| en16931 | Rust | 47,0 µs (×16) | 81,3 µs (×17) | 1,06 ms |
-| @stafyniaksacha/facturx | TypeScript | 74,9 µs (×25) | 122 µs (×25) | 1,55 ms |
-| pycheval | Python | 78,7 µs (×27) | échec | 151 µs |
-| @lucaapp/zugferd-ts | TypeScript | 111 µs (×37) | 200 µs (×42) | 9,40 ms |
-| mcp-einvoicing-de | Python | 111 µs (×37) | 189 µs (×39) | 178 µs |
-| zugferd-pdf | Python | 124 µs (×42) | — | 297 µs |
-| erechnung | Python | 130 µs (×44) | — | 513 µs |
-| factur-x-kit | TypeScript | 172 µs (×58) | échec | 5,79 ms |
-| @fin.cx/einvoice | TypeScript | 352 µs (×119) | 490 µs (×102) | 3,47 ms |
-| getafix | Python | 407 µs (×138) | 711 µs (×148) | 895 µs |
-| factur-x | Python | 718 µs (×243) | 861 µs (×180) | 1,57 ms |
-| node-zugferd | TypeScript | 921 µs (×312) | — | 5,90 ms |
-| drafthorse | Python | 1,00 ms (×340) | 1,34 ms (×279) | 1,50 ms |
-| @e-invoice-eu/core | TypeScript | 39,37 ms (×13 324) | — | 81,43 ms |
+| **ZeRechnung (ce dépôt)** | Go | **3,1 µs** | **5,0 µs** | — |
+| zugferd-rs | Rust | 6,7 µs (×2,2) | 11,6 µs (×2,3) | 59,3 µs |
+| core-invoice | Rust | 10,6 µs (×3,4) | 16,9 µs (×3,4) | 52,3 µs |
+| @ekwo-ai/factur-x | TypeScript | 10,9 µs (×3,5) | — | 431 µs |
+| @stackforge-eu/factur-x | TypeScript | 14,3 µs (×4,6) | — | 488 µs |
+| @conformo/toolkit | TypeScript | 21,5 µs (×6,9) | 37,3 µs (×7,5) | 1,65 ms |
+| zugferd | Rust | 28,3 µs (×9,2) | — | 293 µs |
+| einvoice | Rust | 36,2 µs (×12) | 70,7 µs (×14) | 1,03 ms |
+| @attestwire/en16931 | TypeScript | 41,5 µs (×13) | 80,2 µs (×16) | 964 µs |
+| en16931 | Rust | 45,8 µs (×15) | 79,3 µs (×16) | 1,55 ms |
+| @stafyniaksacha/facturx | TypeScript | 72,5 µs (×23) | 120 µs (×24) | 1,18 ms |
+| pycheval | Python | 76,6 µs (×25) | échec | 130 µs |
+| @lucaapp/zugferd-ts | TypeScript | 106 µs (×34) | 190 µs (×38) | 5,03 ms |
+| mcp-einvoicing-de | Python | 109 µs (×35) | 183 µs (×37) | 180 µs |
+| zugferd-pdf | Python | 120 µs (×39) | — | 260 µs |
+| erechnung | Python | 124 µs (×40) | — | 528 µs |
+| factur-x-kit | TypeScript | 171 µs (×55) | échec | 4,97 ms |
+| @fin.cx/einvoice | TypeScript | 336 µs (×109) | 454 µs (×91) | 3,47 ms |
+| getafix | Python | 399 µs (×129) | 693 µs (×139) | 853 µs |
+| factur-x | Python | 665 µs (×215) | 820 µs (×165) | 1,44 ms |
+| node-zugferd | TypeScript | 928 µs (×301) | — | 4,84 ms |
+| drafthorse | Python | 961 µs (×311) | 1,31 ms (×263) | 1,31 ms |
+| @e-invoice-eu/core | TypeScript | 39,44 ms (×12 772) | — | 82,44 ms |
 | factur-x | Rust | échec | échec | — |
 | pdf-invoice | Rust | échec | échec | — |
 
@@ -158,21 +158,21 @@ En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du pack
 
 | Librairie | Langage | hôte à xref classique | hôte à flux xref | Premier appel |
 |---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | **79,4 µs** | **81,9 µs** | — |
-| pdfa | Rust | 87,6 µs (×1,1) | échec | 137 µs |
-| pdf-invoice | Rust | 155 µs (×2,0) | 167 µs (×2,0) | 180 µs |
-| zugferd-rs | Rust | 200 µs (×2,5) | 216 µs (×2,6) | 205 µs |
-| mcp-einvoicing-de | Python | 780 µs (×9,8) | 679 µs (×8,3) | 1,53 ms |
-| zugferd-pdf | Python | 890 µs (×11) | 797 µs (×9,7) | 5,29 ms |
-| @stackforge-eu/factur-x | TypeScript | 1,14 ms (×14) | 1,15 ms (×14) | 15,20 ms |
-| @fin.cx/einvoice | TypeScript | 1,93 ms (×24) | 1,94 ms (×24) | 52,51 ms |
-| drafthorse | Python | 2,12 ms (×27) | 2,12 ms (×26) | 3,32 ms |
-| getafix | Python | 2,16 ms (×27) | 2,31 ms (×28) | 2,96 ms |
-| @lucaapp/zugferd-ts | TypeScript | 2,21 ms (×28) | 2,29 ms (×28) | 12,84 ms |
-| @ekwo-ai/factur-x | TypeScript | 2,22 ms (×28) | 2,22 ms (×27) | 13,56 ms |
-| @conformo/toolkit | TypeScript | 2,26 ms (×28) | 2,56 ms (×31) | 16,86 ms |
-| pycheval | Python | 2,57 ms (×32) | 2,65 ms (×32) | 3,52 ms |
-| factur-x | Python | 4,29 ms (×54) | 4,01 ms (×49) | 6,38 ms |
+| **ZeRechnung (ce dépôt)** | Go | **84,6 µs** | **87,8 µs** | — |
+| pdfa | Rust | 88,4 µs (×1,0) | échec | 104 µs |
+| pdf-invoice | Rust | 156 µs (×1,8) | 178 µs (×2,0) | 172 µs |
+| zugferd-rs | Rust | 200 µs (×2,4) | 214 µs (×2,4) | 220 µs |
+| mcp-einvoicing-de | Python | 765 µs (×9,0) | 662 µs (×7,5) | 1,47 ms |
+| zugferd-pdf | Python | 855 µs (×10) | 747 µs (×8,5) | 5,20 ms |
+| @stackforge-eu/factur-x | TypeScript | 1,14 ms (×13) | 1,14 ms (×13) | 15,74 ms |
+| @fin.cx/einvoice | TypeScript | 2,01 ms (×24) | 1,95 ms (×22) | 49,30 ms |
+| drafthorse | Python | 2,07 ms (×24) | 2,09 ms (×24) | 3,20 ms |
+| getafix | Python | 2,09 ms (×25) | 2,12 ms (×24) | 2,91 ms |
+| pycheval | Python | 2,51 ms (×30) | 2,56 ms (×29) | 3,39 ms |
+| @ekwo-ai/factur-x | TypeScript | 2,64 ms (×31) | 2,64 ms (×30) | 12,75 ms |
+| @lucaapp/zugferd-ts | TypeScript | 2,72 ms (×32) | 2,64 ms (×30) | 12,94 ms |
+| @conformo/toolkit | TypeScript | 2,87 ms (×34) | 2,98 ms (×34) | 16,23 ms |
+| factur-x | Python | 4,05 ms (×48) | 3,85 ms (×44) | 6,72 ms |
 | @stafyniaksacha/facturx | TypeScript | échec | échec | — |
 | en16931 | Rust | échec | échec | — |
 
@@ -182,13 +182,13 @@ En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du pack
 
 | Librairie | Langage | 149 Ko | 1,1 Mo | Premier appel |
 |---|---|---|---|---|
-| **factur-x (ce dépôt)** | Go | **85,6 µs** | **106 µs** | — |
-| zugferd-pdf | Python | 218 µs (×2,6) | 280 µs (×2,6) | 517 µs |
-| @attestwire/en16931 | TypeScript | 376 µs (×4,4) | 421 µs (×4,0) | 11,79 ms |
-| en16931 | Rust | 482 µs (×5,6) | 818 µs (×7,7) | 497 µs |
-| @sweberdev/summand | TypeScript | 1,95 ms (×23) | 22,49 ms (×211) | 19,29 ms |
-| erechnung-validator | Rust | 32,10 ms (×375) | 36,28 ms (×341) | 32,94 ms |
-| @conformo/toolkit | TypeScript | 76,88 ms (×898) | 102,65 ms (×965) | 128,97 ms |
+| **ZeRechnung (ce dépôt)** | Go | **75,0 µs** | **85,4 µs** | — |
+| zugferd-pdf | Python | 212 µs (×2,8) | 269 µs (×3,2) | 464 µs |
+| @attestwire/en16931 | TypeScript | 359 µs (×4,8) | 408 µs (×4,8) | 11,45 ms |
+| en16931 | Rust | 479 µs (×6,4) | 812 µs (×9,5) | 509 µs |
+| @sweberdev/summand | TypeScript | 1,84 ms (×25) | 21,50 ms (×252) | 17,88 ms |
+| erechnung-validator | Rust | 31,74 ms (×423) | 35,68 ms (×418) | 32,48 ms |
+| @conformo/toolkit | TypeScript | 73,69 ms (×983) | 96,17 ms (×1 126) | 118,80 ms |
 
 En gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go de ce dépôt. Tri sur la colonne « 149 Ko » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).
 

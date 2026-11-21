@@ -65,7 +65,7 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 | `papierleicht` | papierleicht/go-e-rechnung-validator v0.1.0 | `validator.ExtractXML`, `Validator.Validate`, `Validator.ValidatePDF` |
 | `dcnws` | DCNWS/invoicekit.go v0.2.13 | `facturx.Extract`, `einvoice.Parse`, `einvoice.Validate`, `einvoice.GenerateCII`, `facturx.Embed`, `hybrid.Check` |
 | `pdf0` | mgilbir/pdf0 v0.9.1 + formalis v0.3.1 | `pdf0.Read` + `pdf0.ValidateFacturX`, `formalis.Validate`, `pdf0.EmbedFacturX` + `Document.Write` |
-| `litho` | gotenberg/litho v0.0.12 | `pdf.Open` + `EmbeddedFiles`, `ValidateFacturXReport`, `Writer.RemediateFacturX` |
+| `litho` | gotenberg/litho v0.0.13 | `pdf.Open` + `EmbeddedFiles`, `ValidateFacturXReport`, `Writer.RemediateFacturX` |
 | `kanjo` | cyprienbrisset/kanjo v0.3.2 | `pdfa.ExtractInvoiceXML`, `read.ReadBytes`, `rules.Validate(doc, "en16931")`, `write.WriteBytes`, `pdfa.EmbedXML` |
 | `taha` | tahayassine/facturx-go v0.1.0 | `facturx.ExtractXML`, `cii.Decode`, `en16931.Validate`, `cii.Encode` |
 | `fx` | solarpush/fX v1.4.0 + 6 commits (`1314f3d`) | `pdf.ExtractXML`, `cii.Parse`, `invoice.ValidateReport`, `cii.Generate` |
