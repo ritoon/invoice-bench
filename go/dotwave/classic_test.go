@@ -1,0 +1,11 @@
+package dotwavebench
+
+import (
+	"testing"
+
+	"github.com/ritoon/invoice-bench/go/common"
+)
+
+func BenchmarkEmbedClassic_Small(b *testing.B) {
+	common.Embed(b, common.HostPDFClassic(b), common.XMLSmall(b), embed, extract)
+}

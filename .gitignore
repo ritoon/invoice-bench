@@ -1,0 +1,17 @@
+# Dependencies and builds of the language folders
+node_modules/
+.venv/
+target/
+.artefacts/
+__pycache__/
+vendor/
+csharp/artifacts/
+# Per-library parts of the cross-language campaign, merged into
+# bench_<lang>.jsonl and survey_<lang>.jsonl
+results/*/rust-parts/
+results/*/typescript-parts/
+results/*/c-parts/
+results/*/cpp-parts/
+results/*/csharp-parts/
+results/*/java-parts/
+results/*/*-res-parts/

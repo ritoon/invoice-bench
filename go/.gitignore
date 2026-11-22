@@ -1,0 +1,5 @@
+# Fetched by ./run.sh setup, and the copies of facturx/go.mod that
+# ZERECHNUNG_DIR makes (zerechnung.sh)
+/.deps/
+/facturx/local.mod
+/facturx/local.sum
