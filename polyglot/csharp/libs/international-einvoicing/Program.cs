@@ -76,17 +76,17 @@ byte[] Embed(byte[] host, byte[] xml)
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "PdfSharpAttachmentReader.FindAttachment (PDFsharp 6.2.4) : noms factur-x.xml, zugferd-invoice.xml, ZUGFeRD-invoice.xml, xrechnung.xml, octets bruts",
+        "PdfSharpAttachmentReader.FindAttachment (PDFsharp 6.2.4): names factur-x.xml, zugferd-invoice.xml, ZUGFeRD-invoice.xml, xrechnung.xml, raw bytes",
         Extract);
-    h.Parse("EInvoicing.Read(byte[]) → EInvoice (détection de syntaxe et de profil, lecteur CII)", Parse);
+    h.Parse("EInvoicing.Read(byte[]) → EInvoice (syntax and profile detection, CII reader)", Parse);
     h.Validate(
-        "EInvoicing.Validate(string) : XSD CII D16B + règles EN 16931 CII 1.3.16 + XRechnung CII (KoSIT, embarquées) si BT-24 XRechnung, moteur Schematron maison (sous-ensemble XPath) ; règles Factur-X et françaises non embarquées (à télécharger), donc absentes",
+        "EInvoicing.Validate(string): CII D16B XSD + EN 16931 CII 1.3.16 rules + XRechnung CII (KoSIT, embedded) if BT-24 is XRechnung, in-house Schematron engine (XPath subset); Factur-X and French rules not embedded (to be downloaded), hence absent",
         x => einvoicing.Validate(Text(x)),
         Summarize);
-    h.Write("EInvoicing.Write(EInvoice, DocumentFormat.Cii), modèle lu par Read", Parse, m => einvoicing.Write(m, DocumentFormat.Cii));
+    h.Write("EInvoicing.Write(EInvoice, DocumentFormat.Cii), model read by Read", Parse, m => einvoicing.Write(m, DocumentFormat.Cii));
     h.Embed(
-        "PdfSharpAttachmentWriter.Attach(profil EN 16931) : fichier associé factur-x.xml (/AF, arbre des noms), XMP Factur-X ajouté ou complété, XML embarqué tel quel ; ModDate = DateTimeOffset.UtcNow",
+        "PdfSharpAttachmentWriter.Attach(EN 16931 profile): factur-x.xml associated file (/AF, name tree), Factur-X XMP added or completed, XML embedded as is; ModDate = DateTimeOffset.UtcNow",
         Embed,
         Extract);
-    h.Unsupported(Op.CheckPdf, "pas de contrôle de PDF hybride : la lecture d'un PDF compare seulement le XMP au XML (avertissements), sans PDF/A");
+    h.Unsupported(Op.CheckPdf, "no hybrid PDF check: parsing a PDF only compares the XMP with the XML (warnings), no PDF/A");
 });

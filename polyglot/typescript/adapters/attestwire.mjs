@@ -12,12 +12,12 @@ export default {
 		extract: 'extractFacturX',
 		parse: 'parseCiiInvoice',
 		validate:
-			'validate(octets) : règles EN 16931 + CIUS XRechnung (profil lu dans BT-24) + codes BR-CL, réécrites en TypeScript (pas de schematron, pas de XSD) ; erreurs de sévérité fatal',
-		write: 'parseCiiInvoice hors mesure, puis generateCii(invoice)',
-		check: 'validate(octets du PDF) : extraction + règles sur le XML + constats du conteneur (AW-PDF-*, avertissements seulement) ; erreurs de sévérité fatal',
+			'validate(bytes): EN 16931 rules + XRechnung CIUS (profile read from BT-24) + BR-CL codes, rewritten in TypeScript (no schematron, no XSD); fatal-severity errors',
+		write: 'parseCiiInvoice outside the measurement, then generateCii(invoice)',
+		check: 'validate(PDF bytes): extraction + rules on the XML + container findings (AW-PDF-*, warnings only); fatal-severity errors',
 	},
 	unsupported: {
-		embed: 'pas d’injection dans un PDF (la librairie lit les PDF, ne les écrit pas)',
+		embed: 'no embedding into a PDF (the library reads PDFs, does not write them)',
 	},
 	extract(s) {
 		return extractFacturX(s.bytes).xml;

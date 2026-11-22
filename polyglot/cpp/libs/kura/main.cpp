@@ -97,20 +97,20 @@ int main(int argc, char **argv) {
 		auto em = [](fx::Bytes host, fx::Bytes xml) { return embed(host, xml); };
 		auto ch = [](fx::Bytes p) { return check(p); };
 		fx::extract(h,
-			    "pdfa::readInvoice : premier fichier de /Names/EmbeddedFiles sous un nom Factur-X, "
-			    "ZUGFeRD, XRechnung ou Order-X",
+			    "pdfa::readInvoice: first file of /Names/EmbeddedFiles under a Factur-X, "
+			    "ZUGFeRD, XRechnung or Order-X name",
 			    ex);
-		fx_unsupported(h, FX_PARSE, "Kura ne lit pas le CII (détection du profil par motifs seulement)");
-		fx_unsupported(h, FX_VALIDATE, "pas de validation XSD ni EN 16931 du CII");
-		fx_unsupported(h, FX_WRITE, "Kura n'écrit pas de CII");
+		fx_unsupported(h, FX_PARSE, "Kura does not parse the CII (profile detection by patterns only)");
+		fx_unsupported(h, FX_VALIDATE, "no XSD or EN 16931 validation of the CII");
+		fx_unsupported(h, FX_WRITE, "Kura does not write CII");
 		fx::embed(h,
-			  "kura_convert niveau 3b avec invoice_xml : conversion complète de l'hôte en PDF/A-3b, pièce "
-			  "jointe /AF /AFRelationship et schéma d'extension XMP fx: ; relu par readInvoice ; le "
-			  "factur-x.xml que l'hôte garde dans /AF reste à côté du nouveau (deux pièces jointes)",
+			  "kura_convert level 3b with invoice_xml: full conversion of the host to PDF/A-3b, /AF "
+			  "/AFRelationship attachment and fx: XMP extension schema; read back by readInvoice; the "
+			  "factur-x.xml that the host keeps in /AF stays next to the new one (two attachments)",
 			  em, ex);
 		fx::check_pdf(h,
-			      "kura_read_invoice (checkInvoice) : cohérence charge utile, nom de la pièce jointe, "
-			      "/AFRelationship, /AF et XMP ; pas une validation PDF/A",
+			      "kura_read_invoice (checkInvoice): consistency of payload, attachment name, "
+			      "/AFRelationship, /AF and XMP; not a PDF/A validation",
 			      ch);
 	});
 }

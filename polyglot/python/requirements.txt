@@ -1,8 +1,8 @@
-# Banc Python (CPython 3.13). Versions figées le 2026-11-17 avec `pip freeze`, factur-x et mcp-einvoicing-core mis à jour le 2026-11-22.
-# Installation : ./run.sh setup  (pip install --only-binary=:all: --no-binary=tagic -r requirements.txt)
-# Librairies mesurées : factur-x, drafthorse, pycheval, getafix[pdf,lxml], zugferd-pdf, erechnung,
-# mcp-einvoicing-de[xslt2], saxonche. tagic (dépendance de getafix) n'existe qu'en sdist :
-# pur Python, backend poetry-core, pas de setup.py ni de code de build (relu avant installation).
+# Python bench (CPython 3.13). Versions pinned on 2026-11-17 with `pip freeze`, factur-x and mcp-einvoicing-core updated on 2026-11-22.
+# Installation: ./run.sh setup  (pip install --only-binary=:all: --no-binary=tagic -r requirements.txt)
+# Measured libraries: factur-x, drafthorse, pycheval, getafix[pdf,lxml], zugferd-pdf, erechnung,
+# mcp-einvoicing-de[xslt2], saxonche. tagic (a getafix dependency) only exists as an sdist:
+# pure Python, poetry-core backend, no setup.py nor build code (reviewed before installation).
 aiofile==3.12.3
 annotated-types==0.8.0
 anyio==4.16.0

@@ -432,7 +432,7 @@ function measure(callable $fn, float $benchtime, int $count): array
 function children_note(array $children, int $calls): string
 {
     return sprintf(
-        'la librairie lance des processus enfants : leur CPU (≈ %.0f ns/op) et leur mémoire (pic %.1f Mio) ne sont comptés ni dans cpu_ns_per_op ni dans max_rss_bytes',
+        'the library spawns child processes: their CPU (≈ %.0f ns/op) and their memory (peak %.1f MiB) are counted neither in cpu_ns_per_op nor in max_rss_bytes',
         $children[0] / $calls,
         $children[1] / 1048576,
     );
@@ -484,7 +484,7 @@ function run_one(string $lib, string $bench, float $benchtime, int $count): arra
         if ($msg !== null && $msg !== '') {
             $notes[] = $msg;
         }
-        $rec['note'] = implode(' ; ', array_filter($notes, static fn ($n) => $n !== ''));
+        $rec['note'] = implode('; ', array_filter($notes, static fn ($n) => $n !== ''));
 
         return $rec;
     };
@@ -493,7 +493,7 @@ function run_one(string $lib, string $bench, float $benchtime, int $count): arra
         return $finish('unsupported', $ad['skip'][$bench]);
     }
     if (!has_op($ad, $op)) {
-        return $finish('unsupported', $ad['unsupported'][$op] ?? 'opération non proposée par la librairie');
+        return $finish('unsupported', $ad['unsupported'][$op] ?? 'operation not offered by the library');
     }
     $impl = $ad[$op];
 
@@ -506,9 +506,9 @@ function run_one(string $lib, string $bench, float $benchtime, int $count): arra
                 $model = guarded(static fn () => ($ad['parse'])($data, $path));
             } elseif (has_op($ad, 'hand_model') && $sampleName === 'XMLSmall') {
                 $model = guarded(static fn () => ($ad['hand_model'])());
-                $notes[] = 'modèle construit à la main';
+                $notes[] = 'hand-built model';
             } else {
-                return $finish('unsupported', 'pas de parseur ; modèle à la main seulement pour EN16931_Einfach (protocole)');
+                return $finish('unsupported', 'no parser; hand-built model only for EN16931_Einfach (protocol)');
             }
             $fn = static fn () => $impl($model);
         } elseif ($op === 'embed') {
@@ -532,28 +532,28 @@ function run_one(string $lib, string $bench, float $benchtime, int $count): arra
 
         if ($op === 'extract' || $op === 'write') {
             if (!looks_like_cii($out)) {
-                return $finish('fail', 'le résultat ne contient pas CrossIndustryInvoice');
+                return $finish('fail', 'the result does not contain CrossIndustryInvoice');
             }
         } elseif ($op === 'embed') {
             if (!\is_string($out) || !str_starts_with($out, '%PDF')) {
-                return $finish('fail', "le résultat n'est pas un PDF");
+                return $finish('fail', "the result is not a PDF");
             }
             // read back with the library itself, else with horstoeko/zugferd
             $own = has_op($ad, 'extract');
             try {
                 $back = guarded(static fn () => $own ? ($ad['extract'])($out, null) : reference_extract($out));
             } catch (\Throwable $e) {
-                return $finish('fail', 'le PDF produit ne se relit pas : ' . err_text($e));
+                return $finish('fail', 'the produced PDF cannot be read back: ' . err_text($e));
             }
             if (!looks_like_cii($back)) {
-                return $finish('fail', 'le PDF produit ne se relit pas (pas de facture extraite)');
+                return $finish('fail', 'the produced PDF cannot be read back (no invoice extracted)');
             }
             if (!$own) {
-                $notes[] = 'relu avec horstoeko/zugferd';
+                $notes[] = 'read back with horstoeko/zugferd';
             }
         } elseif ($op === 'validate' || $op === 'check_pdf') {
             if (!(\is_array($out) && \is_int($out[0] ?? null) && \is_array($out[1] ?? null))) {
-                return $finish('fail', 'résultat inattendu : ' . mb_substr(var_export($out, true), 0, 200));
+                return $finish('fail', 'unexpected result: ' . mb_substr(var_export($out, true), 0, 200));
             }
         }
 
@@ -605,7 +605,7 @@ function survey_file(array $ad, string $op, string $f): array
         }
         $x = guarded(static fn () => ($ad['extract'])($data, $f), survey_timeout());
 
-        return looks_like_cii($x) ? ['file' => $name, 'ok' => true] : ['file' => $name, 'ok' => false, 'error' => 'pas de XML CII extrait'];
+        return looks_like_cii($x) ? ['file' => $name, 'ok' => true] : ['file' => $name, 'ok' => false, 'error' => 'no CII XML extracted'];
     } catch (\Throwable $e) {
         return $op === 'validate'
             ? ['file' => $name, 'flagged' => true, 'error' => err_text($e)]
@@ -781,10 +781,10 @@ function marked(array $lines, string $mark): array
 function diag(array $r): string
 {
     if ($r['timedout']) {
-        return sprintf('processus fils interrompu après %g s', child_timeout());
+        return sprintf('subprocess interrupted after %g s', child_timeout());
     }
 
-    return sprintf('code %d : %s', $r['code'], $r['stderr'] !== '' ? $r['stderr'] : '(pas de message)');
+    return sprintf('code %d: %s', $r['code'], $r['stderr'] !== '' ? $r['stderr'] : '(no message)');
 }
 
 // ---------------------------------------------------------------- orchestration
@@ -831,7 +831,7 @@ function survey_lib(string $lib): array
     $info = spawn(['info', $lib]);
     $meta = marked($info['lines'], RESULT_MARK)[0] ?? null;
     if ($meta === null) {
-        echo '   (aucun résultat : ' . diag($info) . ")\n";
+        echo '   (no result: ' . diag($info) . ")\n";
 
         return [];
     }
@@ -858,7 +858,7 @@ function survey_lib(string $lib): array
             }
             // the child died on file $next: record it and go on after it
             $f = $files[$next];
-            $msg = 'le processus du relevé est mort sur ce fichier : ' . diag($r);
+            $msg = 'the survey process died on this file: ' . diag($r);
             $name = $op === 'extract' ? rel_path($f) : basename($f);
             $per[$next] = $op === 'validate'
                 ? ['idx' => $next, 'file' => $name, 'flagged' => true, 'error' => $msg]
@@ -870,15 +870,15 @@ function survey_lib(string $lib): array
         [$ok, $failures] = survey_tally($op, array_values($per));
         $note = (string) ($meta['survey_notes'][$op] ?? '');
         if ($extra !== '') {
-            $note = ($note !== '' ? "$note ; " : '') . $extra;
+            $note = ($note !== '' ? "$note; " : '') . $extra;
         }
         if ($crashes !== []) {
-            $note = ($note !== '' ? "$note ; " : '') . \count($crashes) . ' processus morts (erreur fatale), relancés au fichier suivant';
+            $note = ($note !== '' ? "$note; " : '') . \count($crashes) . ' processes died (fatal error), restarted at the next file';
         }
         $lines[] = $base + ['op' => $op, 'ok' => $ok, 'total' => \count($files), 'failures' => $failures, 'note' => $note];
     }
     if ($lines === []) {
-        echo "   (aucune opération relevée : ni validate, ni parse, ni extract)\n";
+        echo "   (no operation surveyed: neither validate, parse nor extract)\n";
     }
 
     return $lines;
@@ -940,7 +940,7 @@ function main(array $argv): int
                 $res = [[
                     'lang' => 'php', 'lib' => $lib, 'pkg' => $lib, 'version' => '?', 'bench' => $bench,
                     'status' => 'fail', 'ns_per_op' => [], 'cpu_ns_per_op' => [], 'iters' => 0, 'first_call_ns' => null,
-                    'note' => 'le processus de mesure a échoué : ' . diag($r), 'runtime' => runtime(),
+                    'note' => 'the measuring process failed: ' . diag($r), 'runtime' => runtime(),
                 ]];
             }
             $x = $res[0];

@@ -76,14 +76,14 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.extract("plancher : Loader.loadPDF + arbre /EmbeddedFiles avec /Kids (premier fichier sous un nom "
-                    + "standard, casse ignorée : factur-x.xml, zugferd-invoice.xml, xrechnung.xml, order-x.xml, cii.xml) "
-                    + "+ PDEmbeddedFile.toByteArray (/UF, sinon /F), écrit à la main", Main::extract);
-            h.unsupported(Op.PARSE, "plancher d'extraction seulement");
-            h.unsupported(Op.VALIDATE, "plancher d'extraction seulement");
-            h.unsupported(Op.WRITE, "plancher d'extraction seulement");
-            h.unsupported(Op.EMBED, "plancher d'extraction seulement");
-            h.unsupported(Op.CHECK_PDF, "plancher d'extraction seulement");
+            h.extract("floor: Loader.loadPDF + /EmbeddedFiles tree with /Kids (first file under a standard "
+                    + "name, case ignored: factur-x.xml, zugferd-invoice.xml, xrechnung.xml, order-x.xml, cii.xml) "
+                    + "+ PDEmbeddedFile.toByteArray (/UF, otherwise /F), hand-written", Main::extract);
+            h.unsupported(Op.PARSE, "extraction floor only");
+            h.unsupported(Op.VALIDATE, "extraction floor only");
+            h.unsupported(Op.WRITE, "extraction floor only");
+            h.unsupported(Op.EMBED, "extraction floor only");
+            h.unsupported(Op.CHECK_PDF, "extraction floor only");
         });
     }
 }

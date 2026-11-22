@@ -112,18 +112,18 @@ int main(int argc, char **argv) {
 		auto ex = [](fx::Bytes p) { return extract(p); };
 		auto em = [](fx::Bytes host, fx::Bytes xml) { return embed(host, xml); };
 		fx::extract(h,
-			    "plancher : PdfMemDocument::LoadFromBuffer, arbre PdfEmbeddedFiles (ToDictionary), premier "
-			    "fichier sous un nom de facture standard, GetEmbeddedData ; pas une librairie Factur-X",
+			    "floor: PdfMemDocument::LoadFromBuffer, PdfEmbeddedFiles tree (ToDictionary), first "
+			    "file under a standard invoice name, GetEmbeddedData; not a Factur-X library",
 			    ex);
-		fx_unsupported(h, FX_PARSE, "librairie PDF seulement");
-		fx_unsupported(h, FX_VALIDATE, "librairie PDF seulement");
-		fx_unsupported(h, FX_WRITE, "librairie PDF seulement");
+		fx_unsupported(h, FX_PARSE, "PDF library only");
+		fx_unsupported(h, FX_VALIDATE, "PDF library only");
+		fx_unsupported(h, FX_WRITE, "PDF library only");
 		fx::embed(h,
-			  "plancher : CreateFileSpec + SetEmbeddedData dans l'arbre PdfEmbeddedFiles ; /AF (la "
-			  "facture remplace celle de l'hôte), /AFRelationship Alternative ou Data selon le profil et "
-			  "XMP Factur-X écrits à la main (XMP de l'hôte remplacé) ; PdfMemDocument::Save (réécriture "
-			  "complète, NoMetadataUpdate), sans conversion PDF/A",
+			  "floor: CreateFileSpec + SetEmbeddedData in the PdfEmbeddedFiles tree; /AF (the "
+			  "invoice replaces the host's), /AFRelationship Alternative or Data depending on the profile and "
+			  "Factur-X XMP written by hand (host's XMP replaced); PdfMemDocument::Save (full "
+			  "rewrite, NoMetadataUpdate), no PDF/A conversion",
 			  em, ex);
-		fx_unsupported(h, FX_CHECK_PDF, "librairie PDF seulement");
+		fx_unsupported(h, FX_CHECK_PDF, "PDF library only");
 	});
 }

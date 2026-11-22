@@ -26,10 +26,10 @@ byte[] Extract(byte[] pdf)
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "plancher : extraction écrite à la main sur PdfPig (PdfDocument.Open, Advanced.TryGetEmbeddedFiles : arbre /Names/EmbeddedFiles avec /Kids, flux décodé) ; pas une librairie Factur-X",
+        "floor: extraction written by hand on PdfPig (PdfDocument.Open, Advanced.TryGetEmbeddedFiles: /Names/EmbeddedFiles tree with /Kids, decoded stream); not a Factur-X library",
         Extract);
     foreach (var op in new[] { Op.Parse, Op.Validate, Op.Write, Op.Embed, Op.CheckPdf })
     {
-        h.Unsupported(op, "plancher d'extraction seulement");
+        h.Unsupported(op, "extraction floor only");
     }
 });

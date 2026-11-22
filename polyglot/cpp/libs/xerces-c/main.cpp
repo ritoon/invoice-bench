@@ -188,19 +188,19 @@ int main(int argc, char **argv) {
 		auto pa = [](fx::Bytes x) { return parse(x); };
 		auto va = [](fx::Bytes x) { return validate(x); };
 		auto su = [](const Report &r) { return fx::Findings{r.errors, r.messages}; };
-		fx_unsupported(h, FX_EXTRACT, "librairie XML seulement");
-		fx::parse(h, "plancher : DOM Xerces (XercesDOMParser réutilisé, sans validation), pas un modèle de facture",
+		fx_unsupported(h, FX_EXTRACT, "XML library only");
+		fx::parse(h, "floor: Xerces DOM (XercesDOMParser reused, no validation), not an invoice model",
 			  pa);
 		fx::validate(h,
-			     "plancher : XercesDOMParser avec validation XML Schema, XSD UN/CEFACT CII D16B (configuration "
-			     "KoSIT XRechnung 3.0.2 du 2026-08-31) chargé une fois (loadGrammar, mis en cache) ; schéma "
-			     "seulement, aucune règle métier EN 16931",
+			     "floor: XercesDOMParser with XML Schema validation, UN/CEFACT CII D16B XSD (KoSIT "
+			     "XRechnung 3.0.2 configuration of 2026-08-31) loaded once (loadGrammar, cached); schema "
+			     "only, no EN 16931 business rules",
 			     va, su);
 		auto wr = [](const Doc &d) { return write(d); };
-		fx::write(h, "plancher : sérialisation du DOM Xerces (DOMLSSerializer, UTF-8), pas un modèle de facture", pa,
+		fx::write(h, "floor: serialization of the Xerces DOM (DOMLSSerializer, UTF-8), not an invoice model", pa,
 			  wr);
-		fx_unsupported(h, FX_EMBED, "librairie XML seulement");
-		fx_unsupported(h, FX_CHECK_PDF, "librairie XML seulement");
+		fx_unsupported(h, FX_EMBED, "XML library only");
+		fx_unsupported(h, FX_CHECK_PDF, "XML library only");
 	});
 	plain.reset();
 	validating.reset();

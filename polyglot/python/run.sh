@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Banc Python des librairies Factur-X / ZUGFeRD / EN 16931. Voir ../PROTOCOL.md et COVERAGE.md.
+# Python bench of the Factur-X / ZUGFeRD / EN 16931 libraries. See ../PROTOCOL.md and COVERAGE.md.
 #
-#   ./run.sh setup               venv (CPython 3.13), dépendances figées, artefacts XSLT officiels
-#   ./run.sh survey    [lib…]    relevés d'exactitude  -> $OUT/survey_python.jsonl
+#   ./run.sh setup               venv (CPython 3.13), pinned dependencies, official XSLT artifacts
+#   ./run.sh survey    [lib…]    accuracy surveys      -> $OUT/survey_python.jsonl
 #   ./run.sh bench     [lib…]    benchmarks            -> $OUT/bench_python.jsonl
-#   ./run.sh resources [lib…]    CPU et pic mémoire    -> $OUT/resources_python.jsonl
-#   ./run.sh alloc     [lib…]    allocations par appel -> $OUT/alloc_python.jsonl
+#   ./run.sh resources [lib…]    CPU and peak memory   -> $OUT/resources_python.jsonl
+#   ./run.sh alloc     [lib…]    allocations per call  -> $OUT/alloc_python.jsonl
 #
-# Variables : OUT (../results/<date>), COUNT (3), BENCHTIME (1, secondes), PYTHON (python3.13).
+# Variables: OUT (../results/<date>), COUNT (3), BENCHTIME (1, seconds), PYTHON (python3.13).
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -16,7 +16,7 @@ VENV=.venv
 ART=.artefacts
 ALLOC=.alloc/alloccount.so
 
-# Artefacts de validation officiels (releases GitHub), vérifiés par SHA-256.
+# Official validation artifacts (GitHub releases), checked by SHA-256.
 CEN_VERSION=1.3.17
 CEN_URL=https://github.com/ConnectingEurope/eInvoicing-EN16931/releases/download/validation-$CEN_VERSION/en16931-cii-$CEN_VERSION.zip
 CEN_SHA256=e5f3235824b6b38454b1d54cf3f14e01efb5b33971fbefc4e64997d0ef619e89
@@ -34,7 +34,7 @@ fetch() { # url sha256 zip-name dest-dir
 	if [ ! -f "$zip" ] || ! echo "$sum  $zip" | shasum -a 256 -c --status; then
 		echo "== $url"
 		curl -sSfL -o "$zip.part" "$url"
-		echo "$sum  $zip.part" | shasum -a 256 -c --status || { echo "SHA-256 inattendu pour $url" >&2; rm -f "$zip.part"; exit 1; }
+		echo "$sum  $zip.part" | shasum -a 256 -c --status || { echo "unexpected SHA-256 for $url" >&2; rm -f "$zip.part"; exit 1; }
 		mv "$zip.part" "$zip"
 	fi
 	rm -rf "$dest" && mkdir -p "$dest" && unzip -q -o "$zip" -d "$dest"
@@ -50,12 +50,12 @@ setup() {
 	"$VENV/bin/python" -m pip check
 	fetch "$CEN_URL" "$CEN_SHA256" "en16931-cii-$CEN_VERSION.zip" "cen-$CEN_VERSION"
 	fetch "$XR_URL" "$XR_SHA256" "xrechnung-3.0.2-schematron-$XR_VERSION.zip" "xrechnung-$XR_VERSION"
-	# Compteur d'allocations, inséré dans les processus de « alloc ».
+	# Allocation counter, inserted into the "alloc" processes.
 	mkdir -p "$(dirname "$ALLOC")"
 	${CC:-cc} -O2 -Wall -shared -fPIC -o "$ALLOC" alloccount.c
-	[ -d ../../ecosystem/corpus/XML-Rechnung ] || echo "corpus absent : lancer ../../ecosystem/run.sh setup" >&2
-	[ -f ../../ecosystem/host.pdf ] || echo "host.pdf absent : lancer ../../ecosystem/run.sh setup" >&2
-	echo "== $("$VENV/bin/python" --version), artefacts CEN $CEN_VERSION et KoSIT XRechnung $XR_VERSION prêts"
+	[ -d ../../ecosystem/corpus/XML-Rechnung ] || echo "corpus missing: run ../../ecosystem/run.sh setup" >&2
+	[ -f ../../ecosystem/host.pdf ] || echo "host.pdf missing: run ../../ecosystem/run.sh setup" >&2
+	echo "== $("$VENV/bin/python" --version), CEN $CEN_VERSION and KoSIT XRechnung $XR_VERSION artifacts ready"
 }
 
 need() {

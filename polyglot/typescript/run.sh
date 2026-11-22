@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Banc TypeScript / JavaScript des librairies Factur-X / ZUGFeRD / EN 16931.
-# Voir ../PROTOCOL.md et COVERAGE.md.
+# TypeScript / JavaScript bench of the Factur-X / ZUGFeRD / EN 16931 libraries.
+# See ../PROTOCOL.md and COVERAGE.md.
 #
-#   ./run.sh setup               dépendances figées (npm ci --ignore-scripts)
-#   ./run.sh survey    [lib…]    relevés d'exactitude  -> $OUT/survey_typescript.jsonl
+#   ./run.sh setup               frozen dependencies (npm ci --ignore-scripts)
+#   ./run.sh survey    [lib…]    correctness surveys   -> $OUT/survey_typescript.jsonl
 #   ./run.sh bench     [lib…]    benchmarks            -> $OUT/bench_typescript.jsonl
-#   ./run.sh resources [lib…]    CPU et pic mémoire    -> $OUT/resources_typescript.jsonl
-#   ./run.sh alloc     [lib…]    octets alloués par appel -> $OUT/alloc_typescript.jsonl
+#   ./run.sh resources [lib…]    CPU and peak memory   -> $OUT/resources_typescript.jsonl
+#   ./run.sh alloc     [lib…]    bytes allocated per call -> $OUT/alloc_typescript.jsonl
 #
-# Variables : OUT (../results/<date>), COUNT (3), BENCHTIME (1, secondes).
-# Librairies (toutes par défaut) : node adapters/index.mjs
+# Variables: OUT (../results/<date>), COUNT (3), BENCHTIME (1, seconds).
+# Libraries (all by default): node adapters/index.mjs
 set -euo pipefail
 cd "$(dirname "$0")"
 here=$(pwd)
@@ -30,9 +30,9 @@ setup() {
 	# packages needs one, and @fin.cx/einvoice's postinstall downloads
 	# unpinned Schematron files from GitHub.
 	npm ci --ignore-scripts --no-audit --no-fund
-	[ -d ../../ecosystem/corpus/XML-Rechnung ] || echo "corpus absent : lancer ../../ecosystem/run.sh setup" >&2
-	[ -f ../../ecosystem/host.pdf ] || echo "host.pdf absent : lancer ../../ecosystem/run.sh setup" >&2
-	echo "== node $(node --version), $(node -p "Object.keys(require('./package.json').dependencies).length") paquets figés"
+	[ -d ../../ecosystem/corpus/XML-Rechnung ] || echo "corpus missing: run ../../ecosystem/run.sh setup" >&2
+	[ -f ../../ecosystem/host.pdf ] || echo "host.pdf missing: run ../../ecosystem/run.sh setup" >&2
+	echo "== node $(node --version), $(node -p "Object.keys(require('./package.json').dependencies).length") frozen packages"
 }
 
 need() {
@@ -52,7 +52,7 @@ merge() {
 		[ -f "$parts/${kind}_$id.jsonl" ] && cat "$parts/${kind}_$id.jsonl" >>"$out.tmp"
 	done
 	mv "$out.tmp" "$out"
-	echo "== $out ($(wc -l <"$out" | tr -d ' ') lignes)"
+	echo "== $out ($(wc -l <"$out" | tr -d ' ') lines)"
 }
 
 survey() {
@@ -76,7 +76,7 @@ bench() {
 			# One process per benchmark: first_call_ns is a cold first call. A
 			# process that dies without its line still leaves a "fail" line.
 			line=$(node bench.mjs "$id" "$b") || true
-			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "processus node terminé sans résultat")
+			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "node process ended without a result")
 			echo "$line" >>"$PARTS/bench_$id.jsonl.tmp"
 			echo "$line" | node -e "$SHOW"
 		done
@@ -98,7 +98,7 @@ resources() {
 		: >"$RES_PARTS/resources_$id.jsonl.tmp"
 		for b in $benches; do
 			line=$(node bench.mjs --resources "$id" "$b") || true
-			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "processus node terminé sans résultat")
+			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "node process ended without a result")
 			echo "$line" >>"$RES_PARTS/resources_$id.jsonl.tmp"
 			echo "$line" | node -e "$SHOW_RES"
 		done
@@ -107,9 +107,9 @@ resources() {
 	merge resources "$RES_PARTS"
 }
 
-# Octets alloués par appel : un processus par benchmark, avec gc() exposé et
-# une jeune génération de 64 Mo, pour que la série comptée tienne sans
-# ramasse-miettes (voir lib/harness.mjs).
+# Bytes allocated per call: one process per benchmark, with gc() exposed and
+# a young generation of 64 MB, so that the counted series fits without the
+# garbage collector running (see lib/harness.mjs).
 ALLOC_FLAGS=(--expose-gc --min-semi-space-size=64 --max-semi-space-size=64)
 SHOWALLOC='let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const r=JSON.parse(s);console.log(`   ${r.bench.padEnd(20)} ${r.status.padEnd(11)} ${r.bytes==null?"":r.bytes+" B/op (N="+r.calls+(r.gcs?", GC "+r.gcs:"")+")"}`)})'
 
@@ -122,7 +122,7 @@ alloc() {
 		: >"$PARTS/alloc_$id.jsonl.tmp"
 		for b in $benches; do
 			line=$(node "${ALLOC_FLAGS[@]}" bench.mjs --alloc "$id" "$b") || true
-			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "processus node terminé sans résultat")
+			[ -n "$line" ] || line=$(node bench.mjs --failed "$id" "$b" "node process ended without a result")
 			echo "$line" >>"$PARTS/alloc_$id.jsonl.tmp"
 			echo "$line" | node -e "$SHOWALLOC"
 		done

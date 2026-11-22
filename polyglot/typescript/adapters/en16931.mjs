@@ -12,14 +12,14 @@ export default {
 	pkg: 'en16931',
 	notes: {
 		validate:
-			'new SchematronRunner(loadCiiSchematron()) une fois (au premier appel), puis runner.validate(xml) : schematron CEN EN 16931 CII 1.3.16 seul (pas de XSD, pas de XRechnung) ; le résultat ne distingue pas les sévérités, toute assertion déclenchée compte',
+			'new SchematronRunner(loadCiiSchematron()) once (on the first call), then runner.validate(xml): CEN EN 16931 CII 1.3.16 schematron alone (no XSD, no XRechnung); the result does not distinguish severities, every fired assertion counts',
 	},
 	unsupported: {
-		extract: 'pas de lecture de PDF',
-		parse: 'pas de modèle de facture',
-		write: 'pas d’écriture',
-		embed: 'pas d’injection dans un PDF',
-		check: 'pas de lecture de PDF',
+		extract: 'no PDF reading',
+		parse: 'no invoice model',
+		write: 'no writing',
+		embed: 'no embedding into a PDF',
+		check: 'no PDF reading',
 	},
 	validate(s) {
 		runner ??= new SchematronRunner(loadCiiSchematron());

@@ -11,13 +11,13 @@ export default {
 	notes: {
 		extract: 'extractInvoiceXml',
 		validate:
-			'validateInvoice(octets) (défauts) : XSD CII D16B (validateur XSD maison) + schematron CEN EN 16931 CII 1.3.16, et KoSIT XRechnung 2.6.0 si BT-24 le déclare, avec les sévérités de la configuration KoSIT ; moteur XPath 2.0 maison, sans Java',
-		check: 'validateInvoice(octets du PDF) : extraction, comparaison du profil XMP, XSD et schematrons sur le XML',
+			'validateInvoice(bytes) (defaults): CII D16B XSD (in-house XSD validator) + CEN EN 16931 CII 1.3.16 schematron, and KoSIT XRechnung 2.6.0 if BT-24 declares it, with the severities of the KoSIT configuration; in-house XPath 2.0 engine, no Java',
+		check: 'validateInvoice(PDF bytes): extraction, XMP profile comparison, XSD and schematrons on the XML',
 	},
 	unsupported: {
-		parse: 'pas de modèle de facture (lecture réservée à « Summand Pro »)',
-		write: 'pas d’écriture (réservée à « Summand Pro »)',
-		embed: 'pas d’injection dans un PDF',
+		parse: 'no invoice model (parsing reserved for "Summand Pro")',
+		write: 'no writing (reserved for "Summand Pro")',
+		embed: 'no embedding into a PDF',
 	},
 	extract(s) {
 		const r = extractInvoiceXml(s.bytes);

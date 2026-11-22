@@ -16,17 +16,17 @@ use Atgp\FacturX\XsdValidator;
 return [
     'pkg' => 'atgp/factur-x',
     'notes' => [
-        'extract' => 'Reader::extractXML($pdf, validateXsd: false) (par défaut l\'extraction valide aussi le XSD)',
-        'validate' => 'XsdValidator::validate : XSD Factur-X 1.09.2 du profil détecté, rien d\'autre',
-        'embed' => 'Writer::generate, options par défaut (XSD incluse, FPDI : la PDF est réécrite, XMP PDF/A-3)',
+        'extract' => 'Reader::extractXML($pdf, validateXsd: false) (by default, extraction also validates against the XSD)',
+        'validate' => 'XsdValidator::validate: Factur-X 1.09.2 XSD of the detected profile, nothing else',
+        'embed' => 'Writer::generate, default options (XSD included, FPDI: the PDF is rewritten, PDF/A-3 XMP)',
     ],
     'unsupported' => [
-        'parse' => 'pas de modèle : la librairie ne manipule que les octets du XML',
-        'write' => 'pas de modèle',
-        'check_pdf' => 'pas de contrôle natif d\'un PDF hybride',
+        'parse' => 'no model: the library only handles the bytes of the XML',
+        'write' => 'no model',
+        'check_pdf' => 'no native check of a hybrid PDF',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.09.2 seulement (XsdValidator)',
+        'validate' => 'Factur-X 1.09.2 XSD only (XsdValidator)',
         'extract' => 'Reader::extractXML(validateXsd: false)',
     ],
 
@@ -54,6 +54,6 @@ return [
             }
         }
 
-        return sprintf('avec validateXsd: true (défaut) : %d/%d', $ok, \count($files));
+        return sprintf('with validateXsd: true (default): %d/%d', $ok, \count($files));
     },
 ];

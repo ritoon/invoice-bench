@@ -42,7 +42,7 @@ setup() {
 		git clone --quiet "$FX_URL" .deps/solarpush-fx
 		git -C .deps/solarpush-fx checkout --quiet "$FX_COMMIT"
 	fi
-	echo "== PDF hôtes (host.pdf, host_classic.pdf)"
+	echo "== host PDFs (host.pdf, host_classic.pdf)"
 	(cd pdfcpu && go test -count 1 -run '^(TestMakeHost|TestMakeHostClassic|TestHostsStrict)$' . >/dev/null)
 }
 
@@ -59,7 +59,7 @@ survey() {
 		echo "== survey $m"
 		(export GOFLAGS=$(goflags "$m") && cd "$m" && go test -count 1 -run '^TestSurvey$' -v . 2>&1 || true) |
 			grep -E 'SURVEY|FLAG|MISS|PARSEFAIL' | sed -E 's/^ +[a-z_]+\.go:[0-9]+: //' >"$OUT/survey_$m.txt" || true
-		grep SURVEY "$OUT/survey_$m.txt" || echo "   (aucun résultat)"
+		grep SURVEY "$OUT/survey_$m.txt" || echo "   (no result)"
 	done
 }
 

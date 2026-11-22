@@ -13,14 +13,14 @@ use easybill\eInvoicing\Transformer;
 return [
     'pkg' => 'easybill/e-invoicing',
     'notes' => [
-        'parse' => 'Reader::read (JMS Serializer ; commentaires retirés par regex, DOM rechargé) ; erreur si ReaderResult::isError()',
-        'write' => 'Transformer::transformToXml du modèle lu par Reader',
+        'parse' => 'Reader::read (JMS Serializer; comments removed by regex, DOM reloaded); error if ReaderResult::isError()',
+        'write' => 'Transformer::transformToXml of the model read by Reader',
     ],
     'unsupported' => [
-        'extract' => 'pas de PDF',
-        'validate' => 'pas de validation',
-        'embed' => 'pas de PDF',
-        'check_pdf' => 'pas de PDF',
+        'extract' => 'no PDF',
+        'validate' => 'no validation',
+        'embed' => 'no PDF',
+        'check_pdf' => 'no PDF',
     ],
     'survey_notes' => [
         'parse' => 'Reader::read',

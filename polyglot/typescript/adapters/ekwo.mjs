@@ -12,12 +12,12 @@ export default {
 		extract: '@ekwo-ai/factur-x/pdf extractFacturX',
 		parse: 'readCii(xml)',
 		validate:
-			'readCii(xml).violations : anomalies de lecture (dates, IBAN…) + 8 contrôles arithmétiques BR-CO-10..17 (checkReceived) ; pas de XSD ni de schematron',
-		write: 'generateCiiXml(invoice, { profile: "en16931" }) ; le modèle lu par readCii n’est pas celui de l’écriture, d’où un modèle Invoice à la main (une seule note, pas de GTIN d’article)',
-		embed: '@ekwo-ai/factur-x/pdf embedFacturX(pdf, xml, { profile: "en16931" }) : pdf-lib, pièce jointe + XMP',
+			'readCii(xml).violations: parsing anomalies (dates, IBAN…) + 8 arithmetic checks BR-CO-10..17 (checkReceived); no XSD or schematron',
+		write: 'generateCiiXml(invoice, { profile: "en16931" }); the model read by readCii is not the one writing takes, hence a hand-built Invoice model (one note only, no item GTIN)',
+		embed: '@ekwo-ai/factur-x/pdf embedFacturX(pdf, xml, { profile: "en16931" }): pdf-lib, attachment + XMP',
 	},
 	unsupported: {
-		check: 'pas de contrôle natif d’un PDF hybride',
+		check: 'no native check of a hybrid PDF',
 	},
 	async extract(s) {
 		const r = await extractFacturX(s.bytes);
@@ -33,7 +33,7 @@ export default {
 	},
 	write: {
 		model(s, bench) {
-			smallOnly(bench, 'le modèle de readCii ne s’écrit pas');
+			smallOnly(bench, 'the readCii model cannot be written');
 			return ekwoInvoice();
 		},
 		write: (inv) => generateCiiXml(inv, { profile: 'en16931' }),

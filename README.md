@@ -30,7 +30,7 @@ Each README gives the results of its latest run, and `results/<date>/` holds the
 
 ## History
 
-These benches lived in the ZeRechnung repository, under `bench/`, until 2026-11-22 (ritoon/zerechnung#114). Their git history was kept, and the pull request numbers in the old commit messages refer to ritoon/zerechnung. The raw outputs produced before the move show the module paths `github.com/ritoon/zerechnung/bench/…` and, for the multi-language bench, the library name "ZeRechnung (ce dépôt)"; the report tools still read these outputs. The tables were regenerated in English from the same raw outputs.
+These benches lived in the ZeRechnung repository, under `bench/`, until 2026-11-22 (ritoon/zerechnung#114). Their git history was kept, and the pull request numbers in the old commit messages refer to ritoon/zerechnung. The raw outputs produced before the move show the module paths `github.com/ritoon/zerechnung/bench/…`; the report tools still read these outputs. The harness notes in the committed multi-language records were written in French and were translated into English afterwards, without touching the measurements; all the tables were regenerated from these records.
 
 ## License
 

@@ -37,16 +37,16 @@ return [
     'pkg' => 'quittio/core',
     'notes' => [
         'extract' => 'PdfEmbeddedFileExtractor::extractFile()->xml',
-        'parse' => 'Quittio::read (lecteur CII + paquet Allemagne ; recalcule les totaux)',
-        'validate' => 'Quittio::validateFile, niveaux par défaut hors ligne : L1-L3 règles PHP (EN 16931, BR-DE du paquet country-de), L4 XSD CII D16B, L7 plausibilité ; L5 schematron (KoSIT, Java) et L6 veraPDF non configurés ; erreurs = ValidationResult::errors()',
-        'write' => 'CiiWriter::serialize des données lues par Quittio::read, profil reconnu à la lecture',
-        'embed' => 'MpdfPostProcessor::process (pages réimportées par FPDI via mPDF, XML en fichier associé PDF/A-3)',
+        'parse' => 'Quittio::read (CII reader + Germany pack; recomputes the totals)',
+        'validate' => 'Quittio::validateFile, default offline levels: L1-L3 PHP rules (EN 16931, BR-DE of the country-de pack), L4 CII D16B XSD, L7 plausibility; L5 schematron (KoSIT, Java) and L6 veraPDF not configured; errors = ValidationResult::errors()',
+        'write' => 'CiiWriter::serialize of the data read by Quittio::read, profile recognised while parsing',
+        'embed' => 'MpdfPostProcessor::process (pages re-imported by FPDI through mPDF, XML as a PDF/A-3 associated file)',
     ],
     'unsupported' => [
-        'check_pdf' => 'L6 veraPDF seulement (Docker ou binaire externe)',
+        'check_pdf' => 'L6 veraPDF only (Docker or external binary)',
     ],
     'survey_notes' => [
-        'validate' => 'niveaux L1-L4 et L7 (règles EN 16931 en PHP, BR-DE, XSD) ; pas de schematron (KoSIT exige Java)',
+        'validate' => 'levels L1-L4 and L7 (EN 16931 rules in PHP, BR-DE, XSD); no schematron (KoSIT requires Java)',
         'parse' => 'Quittio::read',
         'extract' => 'PdfEmbeddedFileExtractor::extractFile',
     ],
@@ -54,7 +54,7 @@ return [
     'extract' => static function (string $pdf, ?string $path): string {
         $f = (new PdfEmbeddedFileExtractor())->extractFile($pdf);
         if ($f === null) {
-            throw new \RuntimeException('aucune pièce jointe de facture');
+            throw new \RuntimeException('no invoice attachment');
         }
 
         return $f->xml;

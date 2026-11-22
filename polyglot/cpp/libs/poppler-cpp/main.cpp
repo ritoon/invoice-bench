@@ -46,13 +46,13 @@ int main(int argc, char **argv) {
 	return fx::run(lib, argc, argv, [](fx_harness *h) {
 		auto ex = [](fx::Bytes p) { return extract(p); };
 		fx::extract(h,
-			    "plancher : document::load_from_raw_data, embedded_files(), premier fichier sous un nom de "
-			    "facture standard, embedded_file::data() ; pas une librairie Factur-X",
+			    "floor: document::load_from_raw_data, embedded_files(), first file under a standard "
+			    "invoice name, embedded_file::data(); not a Factur-X library",
 			    ex);
-		fx_unsupported(h, FX_PARSE, "librairie PDF seulement");
-		fx_unsupported(h, FX_VALIDATE, "librairie PDF seulement");
-		fx_unsupported(h, FX_WRITE, "librairie PDF seulement");
-		fx_unsupported(h, FX_EMBED, "poppler-cpp n'a pas d'API d'écriture");
-		fx_unsupported(h, FX_CHECK_PDF, "librairie PDF seulement");
+		fx_unsupported(h, FX_PARSE, "PDF library only");
+		fx_unsupported(h, FX_VALIDATE, "PDF library only");
+		fx_unsupported(h, FX_WRITE, "PDF library only");
+		fx_unsupported(h, FX_EMBED, "poppler-cpp has no writing API");
+		fx_unsupported(h, FX_CHECK_PDF, "PDF library only");
 	});
 }

@@ -51,15 +51,6 @@ const (
 	goOneCore = "ZeRechnung, GOMAXPROCS=1"
 )
 
-// libName maps "ZeRechnung (ce dépôt)", the name of ZeRechnung in the records
-// written while this harness lived in the repository of ZeRechnung, to goLib.
-func libName(lib string) string {
-	if lib == "ZeRechnung (ce dépôt)" {
-		return goLib
-	}
-	return lib
-}
-
 type group struct {
 	title   string
 	benches []string
@@ -211,7 +202,7 @@ func loadAllocs(dir string) map[key]map[string]alloc {
 			if r.Allocs != nil {
 				a.allocs = *r.Allocs
 			}
-			put(key{libName(r.Lib), r.Lang}, r.Bench, a)
+			put(key{r.Lib, r.Lang}, r.Bench, a)
 		})
 	}
 	return out
@@ -327,8 +318,8 @@ func loadJSONBench(path string, res map[string]map[key]result, notes map[key]map
 		if strings.TrimSpace(line) == "" || json.Unmarshal([]byte(line), &r) != nil {
 			return
 		}
-		k := key{libName(r.Lib), r.Lang}
-		out := result{lib: libName(r.Lib), lang: r.Lang, version: r.Version, status: r.Status, first: r.FirstCallNs, note: r.Note}
+		k := key{r.Lib, r.Lang}
+		out := result{lib: r.Lib, lang: r.Lang, version: r.Version, status: r.Status, first: r.FirstCallNs, note: r.Note}
 		if r.Status == "ok" && len(r.NsPerOp) > 0 {
 			out.ns = median(r.NsPerOp)
 		}
@@ -352,7 +343,7 @@ func loadJSONSurvey(path string, surveys map[key]map[string]string) error {
 		if strings.TrimSpace(line) == "" || json.Unmarshal([]byte(line), &r) != nil {
 			return
 		}
-		k := key{libName(r.Lib), r.Lang}
+		k := key{r.Lib, r.Lang}
 		if surveys[k] == nil {
 			surveys[k] = map[string]string{}
 		}
@@ -371,13 +362,13 @@ func loadResources(path string, rs map[string]map[key]resource) error {
 		if strings.TrimSpace(line) == "" || json.Unmarshal([]byte(line), &r) != nil {
 			return
 		}
-		out := resource{status: r.Status, rss: r.MaxRSSBytes, child: strings.Contains(r.Note, "processus enfants")}
+		out := resource{status: r.Status, rss: r.MaxRSSBytes, child: strings.Contains(r.Note, "child process")}
 		if r.Status == "ok" && len(r.NsPerOp) > 0 && len(r.CPUNsPerOp) > 0 {
 			out.ns, out.cpu = median(r.NsPerOp), median(r.CPUNsPerOp)
 		} else if r.Status == "ok" {
 			out.status = "fail"
 		}
-		k := key{libName(r.Lib), r.Lang}
+		k := key{r.Lib, r.Lang}
 		if rs[r.Bench] == nil {
 			rs[r.Bench] = map[key]resource{}
 		}

@@ -1,10 +1,10 @@
-"""erechnung : génération seule (PDF DIN 5008 dessiné par reportlab + XML CII).
+"""erechnung: generation only (DIN 5008 PDF drawn by reportlab + CII XML).
 
-L'API publique (Invoice.zugferd_file) produit le PDF complet et l'écrit sur
-disque. On mesure la partie XML du même chemin (erechnung/generator.py
-_zugferd_file) : calculation.calculate puis xml.xml_bytes. Pas de lecture,
-pas d'extraction, pas d'injection dans un PDF hôte (le PDF est toujours
-dessiné par la librairie, puis attaché avec factur-x).
+The public API (Invoice.zugferd_file) produces the full PDF and writes it to
+disk. We measure the XML part of the same path (erechnung/generator.py
+_zugferd_file): calculation.calculate then xml.xml_bytes. No parsing,
+no extraction, no embedding into a host PDF (the PDF is always
+drawn by the library, then attached with factur-x).
 """
 
 from datetime import date
@@ -17,24 +17,24 @@ from erechnung.xml import xml_bytes
 PKG = "erechnung"
 
 NOTES = {
-    "write": "erechnung.calculation.calculate + erechnung.xml.xml_bytes (l'API publique ne produit que le PDF complet)",
+    "write": "erechnung.calculation.calculate + erechnung.xml.xml_bytes (the public API only produces the full PDF)",
 }
 
 UNSUPPORTED = {
-    "extract": "génération seule",
-    "parse": "génération seule (pas de lecture XML)",
-    "validate": "génération seule (validation des données d'entrée Python seulement)",
-    "embed": "pas d'hôte PDF en entrée : le PDF est dessiné par la librairie (reportlab) puis attaché avec factur-x",
-    "check_pdf": "génération seule",
+    "extract": "generation only",
+    "parse": "generation only (no XML parsing)",
+    "validate": "generation only (validation of the Python input data only)",
+    "embed": "no host PDF as input: the PDF is drawn by the library (reportlab) then attached with factur-x",
+    "check_pdf": "generation only",
 }
 
 
 def hand_model():
-    """EN16931_Einfach.cii.xml recopié à la main dans le modèle d'erechnung.
+    """EN16931_Einfach.cii.xml copied by hand into the erechnung model.
 
-    Le modèle impose rue et numéro séparés ; il n'a pas d'identifiants globaux
-    (GTIN, GLN) ni de note REG ; le moyen de paiement (absent du XML) est fixé
-    à « espèces » pour ne pas inventer d'IBAN.
+    The model requires separate street and house number; it has no global
+    identifiers (GTIN, GLN) nor REG note; the payment means (missing from the
+    XML) is set to "cash" so as not to invent an IBAN.
     """
     seller = Seller(
         name="Lieferant GmbH", street="Lieferantenstraße", house_number="20", postal_code="80333",

@@ -11,14 +11,14 @@ export default {
 	lib: '@e-invoice-eu/core',
 	pkg: '@e-invoice-eu/core',
 	notes: {
-		write: 'new InvoiceService(logger).generate(json façon UBL de la librairie, { format: "CII", lang: "de-de" }), contrôle ajv du JSON inclus',
+		write: 'new InvoiceService(logger).generate(UBL-style JSON of the library, { format: "CII", lang: "de-de" }), ajv check of the JSON included',
 	},
 	unsupported: {
-		extract: 'pas de lecture de PDF',
-		parse: 'pas de lecteur XML (entrée JSON ou tableur seulement)',
-		validate: 'pas de validation XML (seul le JSON d’entrée est contrôlé par un schéma ajv)',
-		embed: 'pas d’injection d’un XML existant : les formats Factur-X-* génèrent le XML depuis le JSON puis l’attachent à un PDF fourni (ou rendu par LibreOffice)',
-		check: 'pas de lecture de PDF',
+		extract: 'no PDF reading',
+		parse: 'no XML reader (JSON or spreadsheet input only)',
+		validate: 'no XML validation (only the input JSON is checked, by an ajv schema)',
+		embed: 'no embedding of an existing XML: the Factur-X-* formats generate the XML from the JSON, then attach it to a supplied PDF (or one rendered by LibreOffice)',
+		check: 'no PDF reading',
 	},
 	write: {
 		model(s, bench) {

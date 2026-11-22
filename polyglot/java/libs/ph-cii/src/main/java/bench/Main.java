@@ -60,14 +60,14 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "pas de lecture de PDF");
-            h.parse("CIID16BCrossIndustryInvoiceTypeMarshaller.read(byte[]) sans schéma (setUseSchema(false)) "
+            h.unsupported(Op.EXTRACT, "no PDF parsing");
+            h.parse("CIID16BCrossIndustryInvoiceTypeMarshaller.read(byte[]) without schema (setUseSchema(false)) "
                     + "→ CrossIndustryInvoiceType (JAXB)", Main::parse);
-            h.validate("CIID16BCrossIndustryInvoiceTypeMarshaller.read avec le XSD CII D16B (réglage par défaut) et "
-                    + "setCollectErrors : XSD seulement, aucune règle métier EN 16931", Main::validate, Main::summarize);
-            h.write("getAsBytes(CrossIndustryInvoiceType) sans schéma, modèle lu par read", Main::parse, Main::write);
-            h.unsupported(Op.EMBED, "pas d'écriture de PDF");
-            h.unsupported(Op.CHECK_PDF, "pas de lecture de PDF");
+            h.validate("CIID16BCrossIndustryInvoiceTypeMarshaller.read with the CII D16B XSD (default setting) and "
+                    + "setCollectErrors: XSD only, no EN 16931 business rules", Main::validate, Main::summarize);
+            h.write("getAsBytes(CrossIndustryInvoiceType) without schema, model read by read", Main::parse, Main::write);
+            h.unsupported(Op.EMBED, "no PDF writing");
+            h.unsupported(Op.CHECK_PDF, "no PDF parsing");
         });
     }
 }

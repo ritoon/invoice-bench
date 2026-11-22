@@ -84,24 +84,24 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.extract("new ZUGFeRDImporter(InputStream).getRawXML() ; l'import analyse aussi le XML "
-                    + "en modèle Invoice (setRawXML avec analyse automatique), inclus dans la mesure", Main::extract);
+            h.extract("new ZUGFeRDImporter(InputStream).getRawXML(); the import also parses the XML "
+                    + "into an Invoice model (setRawXML with automatic parsing), included in the measurement", Main::extract);
             h.parse("ZUGFeRDInvoiceImporter.setRawXML(xml, false) + extractInvoice → Invoice "
-                    + "(refuse une facture dont il ne retrouve pas les totaux)", Main::parse);
-            h.validate("ZUGFeRDValidator.validate(byte[], nom) : XSD + schematron Factur-X 1.09.2 / ZUGFeRD 2.5.2 du profil "
-                    + "(EN 16931 pour les exemples EN16931), XRechnung 3.0.2 (schematron KoSIT 2.4.0 + CEN CII 1.3.16) si BT-24 "
-                    + "XRechnung, contrôle arithmétique ; règles BR-FR seulement si vendeur et acheteur sont français ; "
-                    + "erreurs = items error/fatal/exception ; XSLT compilés au premier appel",
+                    + "(rejects an invoice whose totals it cannot reproduce)", Main::parse);
+            h.validate("ZUGFeRDValidator.validate(byte[], name): XSD + the profile's Factur-X 1.09.2 / ZUGFeRD 2.5.2 schematron "
+                    + "(EN 16931 for the EN16931 samples), XRechnung 3.0.2 (KoSIT schematron 2.4.0 + CEN CII 1.3.16) if BT-24 "
+                    + "is XRechnung, arithmetic check; BR-FR rules only if seller and buyer are French; "
+                    + "errors = error/fatal/exception items; XSLT compiled on the first call",
                     x -> validate(x, "invoice.xml"), Main::summarize);
-            h.write("ZUGFeRD2PullProvider.generateXML (profil EN16931), modèle lu par setRawXML + extractInvoice",
+            h.write("ZUGFeRD2PullProvider.generateXML (EN16931 profile), model read by setRawXML + extractInvoice",
                     Main::parse, Main::write);
-            h.embed("ZUGFeRDExporterFromPDFA.load + setXML + export (profil EN16931 par défaut) ; hôtes PDF/A-3B, "
-                    + "donc ZUGFeRDExporterFromA3 ; un hôte non PDF/A est refusé (PDF/A-1 converti en A-3 au niveau des "
-                    + "métadonnées) ; enregistré sans compression ; le PDF produit (PDF/A-3U) garde dans /AF la "
-                    + "spécification factur-x.xml résiduelle de l'hôte à côté de la nouvelle : le validateur Mustang "
-                    + "l'accepte, Paniolo le refuse (FX-MULTIPLE-INVOICES)", Main::embed, Main::extract);
-            h.checkPdf("ZUGFeRDValidator.validate sur le PDF : PDF/A-3 par veraPDF, XMP et pièce jointe Factur-X, "
-                    + "puis validation complète du XML extrait (comme ParseValidate)", x -> validate(x, "invoice.pdf"));
+            h.embed("ZUGFeRDExporterFromPDFA.load + setXML + export (default EN16931 profile); PDF/A-3B hosts, "
+                    + "hence ZUGFeRDExporterFromA3; a non-PDF/A host is rejected (PDF/A-1 converted to A-3 at the "
+                    + "metadata level); saved without compression; the resulting PDF (PDF/A-3U) keeps the host's "
+                    + "leftover factur-x.xml file specification in /AF next to the new one: the Mustang validator "
+                    + "accepts it, Paniolo rejects it (FX-MULTIPLE-INVOICES)", Main::embed, Main::extract);
+            h.checkPdf("ZUGFeRDValidator.validate on the PDF: PDF/A-3 by veraPDF, Factur-X XMP and attachment, "
+                    + "then full validation of the extracted XML (as ParseValidate)", x -> validate(x, "invoice.pdf"));
         });
     }
 }

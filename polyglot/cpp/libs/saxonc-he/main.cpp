@@ -193,16 +193,16 @@ int main(int argc, char **argv) {
 	return fx::run(lib, argc, argv, [](fx_harness *h) {
 		auto va = [](fx::Bytes x) { return validate(x); };
 		auto su = [](const Report &r) { return fx::Findings{r.rules.size(), r.rules}; };
-		fx_unsupported(h, FX_EXTRACT, "validateur seul");
-		fx_unsupported(h, FX_PARSE, "validateur seul");
+		fx_unsupported(h, FX_EXTRACT, "validator only");
+		fx_unsupported(h, FX_PARSE, "validator only");
 		fx::validate(h,
-			     "XSLT officiels CEN EN 16931 CII 1.3.17 (+ KoSIT XRechnung 3.0.2 schematron 2.6.0 si BT-24 "
-			     "XRechnung) via SaxonC-HE 13.1.1, compilés au premier appel ; erreurs fatal/error avec les "
-			     "niveaux KoSIT",
+			     "official CEN EN 16931 CII 1.3.17 XSLT (+ KoSIT XRechnung 3.0.2 schematron 2.6.0 if BT-24 "
+			     "is XRechnung) via SaxonC-HE 13.1.1, compiled on the first call; fatal/error errors with the "
+			     "KoSIT levels",
 			     va, su);
-		fx_unsupported(h, FX_WRITE, "validateur seul");
-		fx_unsupported(h, FX_EMBED, "validateur seul");
-		fx_unsupported(h, FX_CHECK_PDF, "validateur seul");
+		fx_unsupported(h, FX_WRITE, "validator only");
+		fx_unsupported(h, FX_EMBED, "validator only");
+		fx_unsupported(h, FX_CHECK_PDF, "validator only");
 		// Same thread as the GraalVM isolate that SaxonProcessor created.
 		delete S.cen;
 		delete S.xr;

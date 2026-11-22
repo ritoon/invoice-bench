@@ -46,23 +46,23 @@ public final class Main {
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
             h.extract("Paniolo.extractXml(pdf) (paniolo-facturx)", P::extractXml);
-            h.parse("Paniolo.read(byte[]) en mode STRICT → Invoice (modèle EN 16931 ; refuse les écarts de montants)",
+            h.parse("Paniolo.read(byte[]) in STRICT mode → Invoice (EN 16931 model; rejects amount discrepancies)",
                     P::read);
-            h.validate("Paniolo.validate(byte[]) : XSD + schematrons officiels embarqués choisis par BT-24 "
-                    + "(XRechnung 3.0 : configuration KoSIT validator-configuration-xrechnung v2026-08-31, soit CEN CII "
-                    + "1.3.16 + KoSIT 2.6.0 et ses niveaux ; EN 16931 simple : les mêmes règles, constats de la CIUS XRechnung "
-                    + "(BR-DE, BR-TMP, PEPPOL) ramenés à l'information ; profils Factur-X : schematrons Factur-X 1.09.2) "
-                    + "+ contrôle des montants ; "
-                    + "erreurs = ERROR/FATAL ; règles compilées au premier appel", P::validate, Main::summarize);
-            h.write("Paniolo.toBytes(Invoice, InvoiceSyntax.CII), modèle lu par read", P::read,
+            h.validate("Paniolo.validate(byte[]): XSD + bundled official schematrons chosen by BT-24 "
+                    + "(XRechnung 3.0: KoSIT configuration validator-configuration-xrechnung v2026-08-31, i.e. CEN CII "
+                    + "1.3.16 + KoSIT 2.6.0 and its levels; plain EN 16931: the same rules, findings of the XRechnung CIUS "
+                    + "(BR-DE, BR-TMP, PEPPOL) downgraded to information; Factur-X profiles: Factur-X 1.09.2 schematrons) "
+                    + "+ amount check; "
+                    + "errors = ERROR/FATAL; rules compiled on the first call", P::validate, Main::summarize);
+            h.write("Paniolo.toBytes(Invoice, InvoiceSyntax.CII), model read by read", P::read,
                     (Invoice inv) -> P.toBytes(inv, InvoiceSyntax.CII));
-            h.embed("Paniolo.embedXml(pdf, xml, FacturXProfile.EN16931).pdf() ; vérifie BT-24, intègre puis revalide le "
-                    + "PDF produit (conteneur, PDF/A par veraPDF, XML), revalidation comprise dans la mesure ; ne convertit "
-                    + "pas en PDF/A ; refuse un hôte qui contient déjà une facture : host.pdf et host_classic.pdf gardent "
-                    + "dans /AF une spécification factur-x.xml avec son flux /UF (seul l'arbre EmbeddedFiles a été retiré), "
-                    + "que Paniolo lit (PdfBoxFacturXSupport.allFiles)", Main::embed, P::extractXml);
-            h.checkPdf("Paniolo.validate sur le PDF : conteneur Factur-X (pièce jointe, relation, XMP), PDF/A par "
-                    + "veraPDF (paniolo-pdfa), puis validation complète du XML embarqué pour le profil déclaré",
+            h.embed("Paniolo.embedXml(pdf, xml, FacturXProfile.EN16931).pdf(); checks BT-24, embeds then revalidates the "
+                    + "resulting PDF (container, PDF/A by veraPDF, XML), revalidation included in the measurement; does not "
+                    + "convert to PDF/A; rejects a host that already contains an invoice: host.pdf and host_classic.pdf keep "
+                    + "in /AF a factur-x.xml file specification with its /UF stream (only the EmbeddedFiles tree was removed), "
+                    + "which Paniolo reads (PdfBoxFacturXSupport.allFiles)", Main::embed, P::extractXml);
+            h.checkPdf("Paniolo.validate on the PDF: Factur-X container (attachment, relationship, XMP), PDF/A by "
+                    + "veraPDF (paniolo-pdfa), then full validation of the embedded XML for the declared profile",
                     P::validate);
         });
     }

@@ -37,17 +37,17 @@ $schemaFor = static function (string $xml): Schema {
 return [
     'pkg' => 'stann/factur-x',
     'notes' => [
-        'validate' => 'FacturX::validate : XSD Factur-X 1.0.06 du profil choisi par l\'adaptateur d\'après BT-24 (EN16931 pour XRechnung) ; tampon d\'erreurs libxml vidé avant chaque appel',
-        'embed' => 'FacturX::createFile($hôte, $xml) : pages réimportées par FPDI dans mPDF (PDFA 3-B)',
+        'validate' => 'FacturX::validate: Factur-X 1.0.06 XSD of the profile chosen by the adapter from BT-24 (EN16931 for XRechnung); libxml error buffer cleared before each call',
+        'embed' => 'FacturX::createFile($host, $xml): pages re-imported by FPDI into mPDF (PDFA 3-B)',
     ],
     'unsupported' => [
-        'extract' => 'pas de lecture (README : « coming soon »)',
-        'parse' => 'pas de lecture (README : « coming soon »)',
-        'write' => 'modèle d\'en-tête seulement (ni lignes ni ventilation TVA) : EN16931_Einfach n\'est pas représentable',
-        'check_pdf' => 'pas de contrôle PDF',
+        'extract' => 'no reading (README: "coming soon")',
+        'parse' => 'no reading (README: "coming soon")',
+        'write' => 'header-only model (neither lines nor VAT breakdown): EN16931_Einfach cannot be represented',
+        'check_pdf' => 'no PDF check',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.0.06 seulement',
+        'validate' => 'Factur-X 1.0.06 XSD only',
     ],
 
     'validate' => static function (string $xml, ?string $path) use ($schemaFor): array {

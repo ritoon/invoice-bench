@@ -67,11 +67,11 @@ fn extract(pdf: &[u8]) -> Result<Vec<u8>, String> {
 fn main() {
     harness::run(LIB, |h| {
         h.extract(
-            "plancher : extraction écrite à la main sur lopdf (load_mem complet, arbre /Names/EmbeddedFiles avec /Kids, inflate) ; pas une librairie Factur-X",
+            "floor: extraction written by hand on lopdf (full load_mem, /Names/EmbeddedFiles tree with /Kids, inflate); not a Factur-X library",
             extract,
         );
         for op in [Op::Parse, Op::Validate, Op::Write, Op::Embed, Op::CheckPdf] {
-            h.unsupported(op, "plancher d'extraction seulement");
+            h.unsupported(op, "extraction floor only");
         }
     });
 }

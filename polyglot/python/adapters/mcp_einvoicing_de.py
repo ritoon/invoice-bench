@@ -1,42 +1,42 @@
-"""mcp-einvoicing-de : couche bibliothèque du serveur MCP, en mode local uniquement.
+"""mcp-einvoicing-de: library layer of the MCP server, in local mode only.
 
-Validation : tools/invoice_validate.invoice_validate (async), qui exécute les
-XSLT embarqués avec saxonche (extra [xslt2]) : FeRD Factur-X 1.09.2 pour le
-profil EN 16931, CEN EN 16931 CII + KoSIT XRechnung pour XRECHNUNG.
-La validation distante KoSIT est désactivée par défaut depuis la 0.11
-(cloud_validate=False, EINVOICING_DE_KOSIT_ENABLE absent) ; on la force à
-« 0 » ci-dessous par sécurité. _run_one_stylesheet recrée un PySaxonProcessor
-et recompile la feuille XSLT à chaque appel : c'est le coût réel de l'API.
+Validation: tools/invoice_validate.invoice_validate (async), which runs the
+bundled XSLT with saxonche (extra [xslt2]): FeRD Factur-X 1.09.2 for the
+EN 16931 profile, CEN EN 16931 CII + KoSIT XRechnung for XRECHNUNG.
+Remote KoSIT validation has been disabled by default since 0.11
+(cloud_validate=False, EINVOICING_DE_KOSIT_ENABLE unset); we force it to
+"0" below to be safe. _run_one_stylesheet recreates a PySaxonProcessor
+and recompiles the XSLT stylesheet on every call: that is the real cost of the API.
 """
 
 import asyncio
 import os
 
-os.environ["EINVOICING_DE_KOSIT_ENABLE"] = "0"  # jamais d'envoi au validateur KoSIT distant
+os.environ["EINVOICING_DE_KOSIT_ENABLE"] = "0"  # never send anything to the remote KoSIT validator
 
 from mcp_einvoicing_de.serializers import ZUGFeRDCIIParser, ZUGFeRDCIISerializer  # noqa: E402
 from mcp_einvoicing_de.tools import invoice_validate as _iv  # noqa: E402
 from mcp_einvoicing_de.tools.invoice_parse import _extract_xml_from_pdf  # noqa: E402
 from mcp_einvoicing_de.utils.pdf import embed_xml_in_pdf  # noqa: E402
 
-assert not _iv._KOSIT_ENABLE_ENV, "validation KoSIT distante activée"
+assert not _iv._KOSIT_ENABLE_ENV, "remote KoSIT validation enabled"
 
 PKG = "mcp-einvoicing-de"
 
 NOTES = {
-    "extract": "_extract_xml_from_pdf du module invoice_parse (pikepdf, un passage par nom de fichier connu)",
-    "parse": "ZUGFeRDCIIParser (modèle pydantic EN 16931)",
-    "validate": "invoice_validate local : XSLT FeRD Factur-X 1.09.2 (EN 16931) ou CEN + KoSIT XRechnung 3.0.2 via saxonche, recompilé à chaque appel ; avertissements non comptés",
-    "write": "ZUGFeRDCIISerializer depuis le modèle lu (modèle avec pertes : pièces jointes non reprises)",
+    "extract": "_extract_xml_from_pdf of the invoice_parse module (pikepdf, one pass per known file name)",
+    "parse": "ZUGFeRDCIIParser (EN 16931 pydantic model)",
+    "validate": "local invoice_validate: FeRD Factur-X 1.09.2 XSLT (EN 16931) or CEN + KoSIT XRechnung 3.0.2 via saxonche, recompiled on every call; warnings not counted",
+    "write": "ZUGFeRDCIISerializer from the parsed model (lossy model: attachments not carried over)",
     "embed": "utils.pdf.embed_xml_in_pdf (pikepdf, AFRelationship Alternative, XMP Factur-X)",
 }
 
 UNSUPPORTED = {
-    "check_pdf": "pas de contrôle natif d'un PDF hybride (PDFEmbedder.identify ne lit que le XMP)",
+    "check_pdf": "no native check of a hybrid PDF (PDFEmbedder.identify only reads the XMP)",
 }
 
 SURVEY_NOTES = {
-    "validate": "XSLT embarqués via saxonche, verdict de la librairie (erreurs fatal/error ; avertissements non comptés)",
+    "validate": "bundled XSLT via saxonche, the library's verdict (fatal/error errors; warnings not counted)",
 }
 
 _loop = asyncio.new_event_loop()
@@ -53,7 +53,7 @@ def parse(xml, _path=None):
 def validate(xml, _path=None):
     r = _loop.run_until_complete(_iv.invoice_validate(xml_content=xml.decode("utf-8"), cloud_validate=False))
     if r.get("validator_used") != "local_schematron":
-        raise RuntimeError(f"validateur inattendu : {r.get('validator_used')!r} ({r})"[:200])
+        raise RuntimeError(f"unexpected validator: {r.get('validator_used')!r} ({r})"[:200])
     rules = [f"{e['rule_id']}" for e in r["errors"]]
     return r["error_count"], rules
 

@@ -13,12 +13,12 @@ export default {
 		extract: 'extract({ pdf })',
 		parse: 'xmlToInvoice',
 		validate:
-			'check({ xml, level: "en16931", schematron: true }) : XSD Factur-X 1.09 EN16931 (libxml2-wasm) + schematron officiel Factur-X 1.09 EN16931 compilé en SEF, exécuté par SaxonJS ; le résultat ne porte pas de sévérité, toute assertion en échec compte ; niveau forcé à en16931 car la détection automatique lève « Unknown level: kosit » sur les XRECHNUNG',
-		write: 'xmlToInvoice hors mesure, puis invoiceToXml + toString (le XmlDocument libxml2-wasm est libéré après chaque appel)',
-		embed: 'generate({ pdf, xml }) (options par défaut)',
+			'check({ xml, level: "en16931", schematron: true }): Factur-X 1.09 EN16931 XSD (libxml2-wasm) + official Factur-X 1.09 EN16931 schematron compiled to SEF, run by SaxonJS; the result carries no severity, every failed assertion counts; level forced to en16931 because automatic detection throws "Unknown level: kosit" on the XRECHNUNG files',
+		write: 'xmlToInvoice outside the measurement, then invoiceToXml + toString (the libxml2-wasm XmlDocument is freed after each call)',
+		embed: 'generate({ pdf, xml }) (default options)',
 	},
 	unsupported: {
-		check: 'pas de contrôle natif d’un PDF hybride (check ne prend que du XML)',
+		check: 'no native check of a hybrid PDF (check only takes XML)',
 	},
 	async extract(s) {
 		return (await extract({ pdf: s.bytes })).xml;

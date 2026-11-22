@@ -185,20 +185,20 @@ static int embed(void *ctx, const unsigned char *host, size_t host_len, const un
 static void body(fx_harness *h, void *ctx) {
 	(void)ctx;
 	fx_extract(h,
-		   "pdf_zugferd_xml (fonction ZUGFeRD de MuPDF) : nom du fichier lu dans le XMP fx:/zf:, pièce jointe "
-		   "cherchée parmi les fichiers associés /AF",
+		   "pdf_zugferd_xml (ZUGFeRD function of MuPDF): file name read from the fx:/zf: XMP, attachment "
+		   "looked up among the associated files /AF",
 		   extract, NULL);
-	fx_unsupported(h, FX_PARSE, "pas de lecture du XML de la facture (MuPDF lit seulement le XMP du PDF)");
-	fx_unsupported(h, FX_VALIDATE, "pas de validation");
-	fx_unsupported(h, FX_WRITE, "pas de génération de XML");
+	fx_unsupported(h, FX_PARSE, "no parsing of the invoice XML (MuPDF only reads the XMP of the PDF)");
+	fx_unsupported(h, FX_VALIDATE, "no validation");
+	fx_unsupported(h, FX_WRITE, "no XML generation");
 	fx_embed(h,
-		 "plancher : injection écrite à la main avec les primitives de MuPDF (pdf_add_embedded_file, "
-		 "/Names/EmbeddedFiles, /AF où la facture remplace celle de l'hôte, /AFRelationship Alternative "
-		 "ou Data selon le profil, XMP Factur-X remplacé), réécriture complète par pdf_write_document "
-		 "(options par défaut), sans conversion PDF/A ; relu par pdf_zugferd_xml",
+		 "floor: embedding written by hand with the MuPDF primitives (pdf_add_embedded_file, "
+		 "/Names/EmbeddedFiles, /AF where the invoice replaces the host's, /AFRelationship Alternative "
+		 "or Data by profile, Factur-X XMP replaced), full rewrite by pdf_write_document "
+		 "(default options), without PDF/A conversion; read back by pdf_zugferd_xml",
 		 embed, NULL, extract, NULL);
 	fx_unsupported(h, FX_CHECK_PDF,
-		       "pas de contrôle : pdf_zugferd_profile ne fait que lire le profil déclaré dans le XMP");
+		       "no check: pdf_zugferd_profile only reads the profile declared in the XMP");
 }
 
 int main(int argc, char **argv) {

@@ -55,18 +55,18 @@ $asFile = static function (string $bytes, string $ext): string {
 return [
     'pkg' => 'mahdiabderraouf/facturx-php',
     'notes' => [
-        'extract' => 'Parser::getXml($chemin) : deux appels à pdfdetach de poppler (-list puis -save vers un fichier temporaire)',
-        'validate' => 'Validator::validate : XSD Factur-X 1.09.2 du profil lu dans BT-24 (pas d\'identifiant XRechnung dans l\'énumération Profile)',
-        'write' => 'Builder::build, profil BASIC (le générateur ne propose pas EN16931 ; pas de lecteur XML)',
-        'embed' => 'Generator::generate($cheminHôte, $xml) : validation XSD puis PDF/A-3b par FPDI/tFPDF',
+        'extract' => 'Parser::getXml($path): two calls to poppler\'s pdfdetach (-list then -save to a temporary file)',
+        'validate' => 'Validator::validate: Factur-X 1.09.2 XSD of the profile read from BT-24 (no XRechnung identifier in the Profile enum)',
+        'write' => 'Builder::build, BASIC profile (the generator does not offer EN16931; no XML reader)',
+        'embed' => 'Generator::generate($hostPath, $xml): XSD validation then PDF/A-3b by FPDI/tFPDF',
     ],
     'unsupported' => [
-        'parse' => 'pas de lecteur XML (Parser::extractBaseData ne lit que la date, le vendeur et le numéro)',
-        'check_pdf' => 'pas de contrôle PDF',
+        'parse' => 'no XML reader (Parser::extractBaseData only reads the date, the seller and the number)',
+        'check_pdf' => 'no PDF check',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.09.2 seulement ; profil lu dans BT-24, XRechnung refusé',
-        'extract' => 'Parser::getXml (pdfdetach de poppler)',
+        'validate' => 'Factur-X 1.09.2 XSD only; profile read from BT-24, XRechnung refused',
+        'extract' => 'Parser::getXml (poppler\'s pdfdetach)',
     ],
 
     'extract' => static fn (string $pdf, ?string $path): string => Parser::getXml($path ?? $asFile($pdf, '.pdf')),

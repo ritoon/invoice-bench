@@ -55,19 +55,19 @@ var pdfValidator = new FacturXValidator(options);
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "FacturXDocument.LoadFromBuffer + GetCrossIndustryInvoiceAttachmentAsync + ReadAsync : nom factur-x.xml seulement (paramètre par défaut), octets bruts",
+        "FacturXDocument.LoadFromBuffer + GetCrossIndustryInvoiceAttachmentAsync + ReadAsync: name factur-x.xml only (default parameter), raw bytes",
         Extract);
-    h.Parse("CrossIndustryInvoiceReader.Read (TurboXml) : modèle limité à l'en-tête du profil MINIMUM", Parse);
+    h.Parse("CrossIndustryInvoiceReader.Read (TurboXml): model limited to the header of the MINIMUM profile", Parse);
     h.Validate(
-        "CrossIndustryInvoiceReader.Read + CrossIndustryInvoiceValidator.GetValidationResult : 19 règles CII codées en C# (profil MINIMUM : BR-01 à BR-09, BR-13 à BR-15, BR-CO-09, BR-CO-26, BR-DEC-12, 13, 14 et 18, BR-S-01) ; pas de XSD ni de schematron",
+        "CrossIndustryInvoiceReader.Read + CrossIndustryInvoiceValidator.GetValidationResult: 19 CII rules coded in C# (MINIMUM profile: BR-01 to BR-09, BR-13 to BR-15, BR-CO-09, BR-CO-26, BR-DEC-12, 13, 14 and 18, BR-S-01); no XSD or schematron",
         x => ciiValidator.GetValidationResult(Parse(x)),
         r => Findings.Of(r.Rules.Where(x => x.HasFailed).Select(x => x.Rule.Name)));
-    h.Write("CrossIndustryInvoiceWriter.WriteAsync : réécrit le modèle MINIMUM seulement (lignes, TVA et la plupart des termes perdus), modèle lu par CrossIndustryInvoiceReader", Parse, Write);
+    h.Write("CrossIndustryInvoiceWriter.WriteAsync: rewrites the MINIMUM model only (lines, VAT and most terms lost), model read by CrossIndustryInvoiceReader", Parse, Write);
     h.Embed(
-        "FacturXDocument.Create().WithBasePdf(PDF).WithCrossIndustryInvoice(XML).BuildAsync() : factur-x.xml en fichier associé, XMP Factur-X généré depuis le XML, fork PDFsharp",
+        "FacturXDocument.Create().WithBasePdf(PDF).WithCrossIndustryInvoice(XML).BuildAsync(): factur-x.xml as associated file, Factur-X XMP generated from the XML, PDFsharp fork",
         Embed,
         Extract);
     h.CheckPdf(
-        "FacturXValidator.GetValidationResultAsync : 15 règles hybrides (XMP, nom et relation du fichier, profil) + 19 règles CII MINIMUM ; BR-HYBRID-FR-01 écartée ; pas de contrôle PDF/A",
+        "FacturXValidator.GetValidationResultAsync: 15 hybrid rules (XMP, file name and relationship, profile) + 19 MINIMUM CII rules; BR-HYBRID-FR-01 left out; no PDF/A check",
         pdf => pdfValidator.GetValidationResultAsync(FacturXDocument.LoadFromBuffer(pdf)).GetAwaiter().GetResult());
 });

@@ -15,14 +15,14 @@ use Tiime\CrossIndustryInvoice\EN16931\CrossIndustryInvoice;
 return [
     'pkg' => 'tiime/cross-industry-invoice',
     'notes' => [
-        'parse' => 'DOMDocument::loadXML + EN16931\\CrossIndustryInvoice::fromXML (XPath sur les préfixes rsm/ram)',
-        'write' => 'EN16931\\CrossIndustryInvoice::toXML()->saveXML() du modèle lu par fromXML',
+        'parse' => 'DOMDocument::loadXML + EN16931\\CrossIndustryInvoice::fromXML (XPath on the rsm/ram prefixes)',
+        'write' => 'EN16931\\CrossIndustryInvoice::toXML()->saveXML() of the model read by fromXML',
     ],
     'unsupported' => [
-        'extract' => 'pas de PDF (voir tiime/factur-x)',
-        'validate' => 'pas d\'API de validation (XSD et schematron livrés pour les tests seulement)',
-        'embed' => 'pas de PDF (voir tiime/factur-x)',
-        'check_pdf' => 'pas de PDF',
+        'extract' => 'no PDF (see tiime/factur-x)',
+        'validate' => 'no validation API (XSD and schematron shipped for the tests only)',
+        'embed' => 'no PDF (see tiime/factur-x)',
+        'check_pdf' => 'no PDF',
     ],
     'survey_notes' => [
         'parse' => 'EN16931\\CrossIndustryInvoice::fromXML',
@@ -31,7 +31,7 @@ return [
     'parse' => static function (string $xml, ?string $path): CrossIndustryInvoice {
         $doc = new \DOMDocument();
         if (!$doc->loadXML($xml)) {
-            throw new \RuntimeException('XML illisible');
+            throw new \RuntimeException('unreadable XML');
         }
 
         return CrossIndustryInvoice::fromXML($doc);

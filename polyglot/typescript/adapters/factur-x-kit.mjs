@@ -9,16 +9,16 @@ export default {
 	lib: 'factur-x-kit',
 	pkg: 'factur-x-kit',
 	notes: {
-		parse: 'FacturX.fromXML(octets)',
+		parse: 'FacturX.fromXML(bytes)',
 		validate:
-			'FacturX.fromXML(octets) puis validate() : schéma zod du profil détecté et règles BR-* réécrites en TypeScript (MINIMUM à EN16931) ; pas de XSD ni de schematron',
-		write: 'FacturX.fromXML hors mesure, puis getXML()',
+			'FacturX.fromXML(bytes) then validate(): zod schema of the detected profile and BR-* rules rewritten in TypeScript (MINIMUM to EN16931); no XSD or schematron',
+		write: 'FacturX.fromXML outside the measurement, then getXML()',
 	},
 	unsupported: {
 		extract:
-			'pas d’extraction seule : FacturXPdf n’est pas exporté et FacturX.fromPDF enchaîne extraction et lecture du XML (factur-x.xml uniquement)',
-		embed: 'pas d’injection d’un XML existant : getPDF({ existingNonConformantPdf }) réécrit le XML depuis le modèle',
-		check: 'pas de contrôle natif d’un PDF hybride',
+			'no extraction alone: FacturXPdf is not exported and FacturX.fromPDF chains extraction and parsing of the XML (factur-x.xml only)',
+		embed: 'no embedding of an existing XML: getPDF({ existingNonConformantPdf }) rewrites the XML from the model',
+		check: 'no native check of a hybrid PDF',
 	},
 	parse(s) {
 		return FacturX.fromXML(s.bytes);

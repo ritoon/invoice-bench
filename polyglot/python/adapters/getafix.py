@@ -1,9 +1,9 @@
-"""getafix : modèle typé BT/BG, lecture/écriture CII, sous-ensemble de règles BR, PDF via pypdf.
+"""getafix: typed BT/BG model, CII parsing/writing, subset of the BR rules, PDF via pypdf.
 
-La validation (Document.validate / validate_internal) applique les règles BR
-codées à la main dans getafix/rules/*.py ; ValidationWarning (plausibilité)
-ne compte pas comme erreur (README). Le profil XRECHNUNG n'existe pas dans
-getafix.schema.types.Profile : ces factures sont refusées à la lecture.
+The validation (Document.validate / validate_internal) applies the BR rules
+hand-coded in getafix/rules/*.py; ValidationWarning (plausibility)
+does not count as an error (README). The XRECHNUNG profile does not exist in
+getafix.schema.types.Profile: these invoices are rejected at parse time.
 """
 
 import os
@@ -18,25 +18,25 @@ from getafix.schema.document import Document
 PKG = "getafix"
 
 NOTES = {
-    "extract": "extract_xml(Path) : l'API ne prend qu'un chemin, la lecture du fichier (cache OS) est dans la mesure",
+    "extract": "extract_xml(Path): the API only takes a path, reading the file (OS cache) is inside the measurement",
     "parse": "Document.from_xml(xml.etree.ElementTree.fromstring)",
-    "validate": "lecture + règles de getafix (89 des 223 règles BR du CEN, sans BR-CL, + 16 BR-FXEXT) ; avertissements non comptés",
-    "write": "Document.to_xml().render() depuis le modèle lu",
-    "embed": "attach_xml(bytes, bytes) : pièce jointe générique, pas de XMP Factur-X ni de PDF/A-3 (documenté)",
+    "validate": "parsing + getafix rules (89 of the 223 CEN BR rules, no BR-CL, + 16 BR-FXEXT); warnings not counted",
+    "write": "Document.to_xml().render() from the parsed model",
+    "embed": "attach_xml(bytes, bytes): generic attachment, no Factur-X XMP nor PDF/A-3 (documented)",
 }
 
 UNSUPPORTED = {
-    "check_pdf": "pas de contrôle natif d'un PDF (la CLI compose extraction + validation)",
+    "check_pdf": "no native check of a PDF (the CLI combines extraction + validation)",
 }
 
 SURVEY_NOTES = {
-    "validate": "règles BR de getafix (Document.validate), avertissements non comptés",
+    "validate": "getafix BR rules (Document.validate), warnings not counted",
     "extract": "extract_xml(Path)",
 }
 
 
 def extract(pdf, path=None):
-    if path is None:  # relecture d'un PDF produit par embed : passer par un fichier
+    if path is None:  # reading back a PDF produced by embed: go through a file
         fd, tmp = tempfile.mkstemp(suffix=".pdf")
         try:
             with os.fdopen(fd, "wb") as fh:
@@ -50,7 +50,7 @@ def extract(pdf, path=None):
 def _extract_path(path):
     x = extract_xml(Path(path))
     if x is None:
-        raise ValueError("aucune pièce jointe aux noms standard")
+        raise ValueError("no attachment with a standard name")
     return x
 
 

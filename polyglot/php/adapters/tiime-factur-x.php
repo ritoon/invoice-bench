@@ -18,18 +18,18 @@ use Tiime\FacturX\XsdValidationException;
 return [
     'pkg' => 'tiime/factur-x',
     'notes' => [
-        'extract' => 'Reader::extractXML($pdf, validateXsd: false) ; seule une pièce jointe nommée factur-x.xml est cherchée',
-        'validate' => 'ProfileExtractor + XsdProcessor : XSD Factur-X 1.07.3 du profil (schematron livré mais jamais appelé)',
-        'embed' => 'Writer::generate, options par défaut (XSD incluse, FPDI : la PDF est réécrite, XMP PDF/A-3)',
+        'extract' => 'Reader::extractXML($pdf, validateXsd: false); only an attachment named factur-x.xml is looked for',
+        'validate' => 'ProfileExtractor + XsdProcessor: Factur-X 1.07.3 XSD of the profile (schematron shipped but never called)',
+        'embed' => 'Writer::generate, default options (XSD included, FPDI: the PDF is rewritten, PDF/A-3 XMP)',
     ],
     'unsupported' => [
-        'parse' => 'pas de modèle (le modèle est tiime/cross-industry-invoice, mesuré à part)',
-        'write' => 'pas de modèle',
-        'check_pdf' => 'pas de contrôle natif d\'un PDF hybride',
+        'parse' => 'no model (the model is tiime/cross-industry-invoice, measured separately)',
+        'write' => 'no model',
+        'check_pdf' => 'no native check of a hybrid PDF',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.07.3 seulement',
-        'extract' => 'Reader::extractXML(validateXsd: false), pièce jointe factur-x.xml seulement',
+        'validate' => 'Factur-X 1.07.3 XSD only',
+        'extract' => 'Reader::extractXML(validateXsd: false), factur-x.xml attachment only',
     ],
 
     'extract' => static fn (string $pdf, ?string $path): string => (new Reader())->extractXML($pdf, false),

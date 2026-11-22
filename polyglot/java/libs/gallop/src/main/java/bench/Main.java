@@ -89,17 +89,17 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "pas de lecture de PDF");
-            h.unsupported(Op.PARSE, "pas de lecteur XML (génération seulement)");
-            h.unsupported(Op.VALIDATE, "pas de validation");
-            h.skip("Write_Lines", "modèle construit à la main seulement pour EN16931_Einfach (pas de lecteur XML)");
-            h.write("modèle construit à la main (contenu de EN16931_Einfach, sans les GTIN ni le code REG de la "
-                    + "note : pas de champ ; moyen de paiement code 1 et adresse de livraison = adresse de l'acheteur "
-                    + "ajoutés, gallop écrivant toujours les groupes BG-16 et BG-13 ; sortie conforme aux règles CEN "
-                    + "1.3.17) ; EInvoiceWriter.generateFacturXXML (Factur-X EN 16931, DOM du JDK)",
+            h.unsupported(Op.EXTRACT, "no PDF parsing");
+            h.unsupported(Op.PARSE, "no XML reader (generation only)");
+            h.unsupported(Op.VALIDATE, "no validation");
+            h.skip("Write_Lines", "hand-built model only for EN16931_Einfach (no XML reader)");
+            h.write("hand-built model (content of EN16931_Einfach, without the GTINs or the REG code of the "
+                    + "note: no field; payment means code 1 and delivery address = buyer's address "
+                    + "added, since gallop always writes the BG-16 and BG-13 groups; output conforms to the CEN "
+                    + "1.3.17 rules); EInvoiceWriter.generateFacturXXML (Factur-X EN 16931, JDK DOM)",
                     x -> einfach(), EInvoiceWriter::generateFacturXXML);
-            h.unsupported(Op.EMBED, "pas de PDF (XML seulement)");
-            h.unsupported(Op.CHECK_PDF, "pas de PDF");
+            h.unsupported(Op.EMBED, "no PDF (XML only)");
+            h.unsupported(Op.CHECK_PDF, "no PDF");
         });
     }
 }

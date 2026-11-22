@@ -111,16 +111,16 @@ fn einfach() -> Result<Invoice<'static>, String> {
 
 fn main() {
     harness::run(LIB, |h| {
-        h.unsupported(Op::Extract, "pas de lecture de PDF");
-        h.unsupported(Op::Parse, "pas de lecteur XML (génération seulement)");
-        h.unsupported(Op::Validate, "pas de lecteur XML ; validate_business_rules ne s'applique qu'au modèle construit");
-        h.skip("Write_Lines", "modèle construit à la main seulement pour EN16931_Einfach (pas de lecteur XML)");
+        h.unsupported(Op::Extract, "no PDF parsing");
+        h.unsupported(Op::Parse, "no XML reader (generation only)");
+        h.unsupported(Op::Validate, "no XML reader; validate_business_rules only applies to the built model");
+        h.skip("Write_Lines", "hand-built model only for EN16931_Einfach (no XML reader)");
         h.write(
-            "modèle construit à la main (contenu de EN16931_Einfach, niveau BASIC : le crate ne génère pas EN 16931) ; Invoice::to_xml_string (serde + quick-xml)",
+            "hand-built model (content of EN16931_Einfach, BASIC level: the crate does not generate EN 16931); Invoice::to_xml_string (serde + quick-xml)",
             |_x| einfach(),
             |inv: &Invoice<'static>| inv.to_xml_string(),
         );
-        h.unsupported(Op::Embed, "pas de PDF");
-        h.unsupported(Op::CheckPdf, "pas de PDF");
+        h.unsupported(Op::Embed, "no PDF");
+        h.unsupported(Op::CheckPdf, "no PDF");
     });
 }

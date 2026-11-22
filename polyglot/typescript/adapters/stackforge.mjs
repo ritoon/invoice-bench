@@ -10,13 +10,13 @@ export default {
 	notes: {
 		extract: 'extractXml',
 		validate:
-			'validateXsd(xml, Profile.EN16931) : XSD Factur-X EN16931 seul (libxml2-wasm ; schéma relu et compilé à chaque appel par la librairie) ; pas de schematron EN 16931',
-		write: 'buildXml(saisie FacturXInvoiceInput, Profile.EN16931), sans lecteur CII',
-		embed: 'embedFacturX({ pdf, xml, profile: EN16931 }) : pdf-lib, pièce jointe AFRelationship + XMP PDF/A-3b',
+			'validateXsd(xml, Profile.EN16931): Factur-X EN16931 XSD alone (libxml2-wasm; schema re-read and compiled on every call by the library); no EN 16931 schematron',
+		write: 'buildXml(FacturXInvoiceInput input, Profile.EN16931), without a CII reader',
+		embed: 'embedFacturX({ pdf, xml, profile: EN16931 }): pdf-lib, AFRelationship attachment + PDF/A-3b XMP',
 	},
 	unsupported: {
-		parse: 'pas de lecteur CII (extractXml rend le texte, sans modèle)',
-		check: 'pas de contrôle natif d’un PDF hybride',
+		parse: 'no CII reader (extractXml returns the text, without a model)',
+		check: 'no native check of a hybrid PDF',
 	},
 	async extract(s) {
 		return (await extractXml(s.bytes)).xml;

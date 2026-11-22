@@ -93,16 +93,16 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "validateur seul");
-            h.unsupported(Op.PARSE, "validateur seul");
-            h.validate("DefaultCheck.checkInput avec la configuration officielle validator-configuration-xrechnung v2026-08-31 "
-                    + "(scénario choisi par BT-24 : « EN16931 (CII) » = XSD CII D16B + CEN EN 16931 CII 1.3.16 ; "
-                    + "XRechnung 3.0 = idem + KoSIT XRechnung schematron 2.6.0, niveaux personnalisés du scénario) ; "
-                    + "erreurs = violations XSD + assertions de niveau effectif error/fatal ; configuration chargée au premier appel",
+            h.unsupported(Op.EXTRACT, "validator only");
+            h.unsupported(Op.PARSE, "validator only");
+            h.validate("DefaultCheck.checkInput with the official configuration validator-configuration-xrechnung v2026-08-31 "
+                    + "(scenario chosen by BT-24: \"EN16931 (CII)\" = CII D16B XSD + CEN EN 16931 CII 1.3.16; "
+                    + "XRechnung 3.0 = same + KoSIT XRechnung schematron 2.6.0, custom levels of the scenario); "
+                    + "errors = XSD violations + assertions of effective level error/fatal; configuration loaded on the first call",
                     Main::validate, Main::summarize);
-            h.unsupported(Op.WRITE, "validateur seul");
-            h.unsupported(Op.EMBED, "validateur seul");
-            h.unsupported(Op.CHECK_PDF, "validateur seul (XML uniquement, pas de lecture de PDF)");
+            h.unsupported(Op.WRITE, "validator only");
+            h.unsupported(Op.EMBED, "validator only");
+            h.unsupported(Op.CHECK_PDF, "validator only (XML only, no PDF parsing)");
         });
     }
 }

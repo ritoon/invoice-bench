@@ -152,8 +152,8 @@ unsigned char *fx_read_file(const char *path, size_t *len);
  * Helpers shared by the embedding floors (qpdf, PoDoFo, MuPDF): the values
  * a Factur-X container declares, written once here. */
 
-/* Fixed modification date of the embedded file (PROTOCOL: "date de
- * modification fixe"). */
+/* Fixed modification date of the embedded file (PROTOCOL: "fixed
+ * modification date"). */
 #define FX_MOD_DATE "D:20260101000000Z"
 #define FX_MOD_TIME 1767225600 /* the same, in seconds since 1970 */
 #define FX_ATTACHMENT "factur-x.xml"

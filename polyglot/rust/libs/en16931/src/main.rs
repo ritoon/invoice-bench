@@ -72,21 +72,21 @@ fn check(pdf: &[u8]) -> Result<usize, String> {
 
 fn main() {
     harness::run(LIB, |h| {
-        h.extract("zugferd::extract (Limits par défaut)", extract);
-        h.parse("read → Invoice (modèle sémantique EN 16931)", parse);
+        h.extract("zugferd::extract (default Limits)", extract);
+        h.parse("read → Invoice (EN 16931 semantic model)", parse);
         h.validate(
-            "receive(Policy::default()) : couches syntaxe et schéma (règles CII-SR/CII-DT générées des artefacts CEN) + règles métier EN 16931 réimplémentées en Rust, profil déclaré par BT-24 (XRechnung 3.0 : BR-DE ; ZUGFeRD EXTENDED/BASIC : règles CEN cœur) ; CEN validation-1.3.17, KoSIT xrechnung-schematron v2.6.0",
+            "receive(Policy::default()): syntax and schema layers (CII-SR/CII-DT rules generated from the CEN artifacts) + EN 16931 business rules reimplemented in Rust, profile declared by BT-24 (XRechnung 3.0: BR-DE; ZUGFeRD EXTENDED/BASIC: CEN core rules); CEN validation-1.3.17, KoSIT xrechnung-schematron v2.6.0",
             receive,
             summarize,
         );
-        h.write("write_unchecked(Syntax::Cii), modèle lu par read", parse, write);
+        h.write("write_unchecked(Syntax::Cii), model read by read", parse, write);
         h.embed(
-            "adaptateur : read + Validated::<En16931>::new + zugferd::embed (la librairie réécrit le XML depuis son modèle ; exige un hôte PDF/A-3 sans métadonnées Factur-X, ne convertit pas en PDF/A)",
+            "adapter: read + Validated::<En16931>::new + zugferd::embed (the library rewrites the XML from its model; requires a PDF/A-3 host without Factur-X metadata, does not convert to PDF/A)",
             embed,
             extract,
         );
         h.check_pdf(
-            "receive sur le PDF : couche conteneur (XMP, /AF, arbre EmbeddedFiles, accord avec BT-24) + validation complète du XML ; pas de contrôle PDF/A-3 au sens ISO 19005",
+            "receive on the PDF: container layer (XMP, /AF, EmbeddedFiles tree, agreement with BT-24) + full validation of the XML; no PDF/A-3 check in the ISO 19005 sense",
             check,
         );
     });

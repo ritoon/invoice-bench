@@ -68,20 +68,20 @@ static Findings Summarize(ValidationResult r)
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "FacturXExtractor.ExtractBytes : noms factur-x.xml, zugferd-invoice.xml, ZUGFeRD-invoice.xml, xrechnung.xml, order-x.xml (puis sans casse), PDFsharp 6.2.4, octets bruts",
+        "FacturXExtractor.ExtractBytes: names factur-x.xml, zugferd-invoice.xml, ZUGFeRD-invoice.xml, xrechnung.xml, order-x.xml (then case-insensitive), PDFsharp 6.2.4, raw bytes",
         Extract);
-    h.Parse("CiiInvoiceParser.Parse(XDocument) → Invoice + éléments non repris (contenu COMFORT)", Parse);
+    h.Parse("CiiInvoiceParser.Parse(XDocument) → Invoice + elements not carried over (COMFORT content)", Parse);
     h.Validate(
-        $"LayeredValidator.Validate : XSD CII D16B (Antiphon.Xsd.Cii) puis règles choisies par FormatDetector, Schematron CEN EN 16931 CII ({CenCii.Version}, {CenCii.AssertCount} assertions) et KoSIT XRechnung CII ({XrCii.Version}, {XrCii.AssertCount} assertions) précompilés, évaluateur XPath maison ; erreurs = OfficialFatalViolations ; pas de règles Factur-X ni françaises",
+        $"LayeredValidator.Validate: CII D16B XSD (Antiphon.Xsd.Cii) then rules chosen by FormatDetector, CEN EN 16931 CII Schematron ({CenCii.Version}, {CenCii.AssertCount} assertions) and KoSIT XRechnung CII ({XrCii.Version}, {XrCii.AssertCount} assertions), precompiled, in-house XPath evaluator; errors = OfficialFatalViolations; no Factur-X or French rules",
         x => LayeredValidator.Validate(Text(x), RuleSets()),
         Summarize);
     h.Write(
-        "CiiInvoiceGenerator.GenerateXml(Invoice, Comfort), modèle lu par CiiInvoiceParser.Parse",
+        "CiiInvoiceGenerator.GenerateXml(Invoice, Comfort), model read by CiiInvoiceParser.Parse",
         Parse,
         r => Encoding.UTF8.GetBytes(CiiInvoiceGenerator.GenerateXml(r.Invoice, CiiProfile.Comfort)));
     h.Embed(
-        "FacturXEmbedder.Embed(PDF, XML, EN 16931) : fichier associé factur-x.xml (/AF, /Names/EmbeddedFiles), XMP PDF/A-3 + Factur-X ; l'hôte doit déjà être PDF/A (contrat documenté, non vérifié par la librairie)",
+        "FacturXEmbedder.Embed(PDF, XML, EN 16931): factur-x.xml associated file (/AF, /Names/EmbeddedFiles), PDF/A-3 + Factur-X XMP; the host must already be PDF/A (documented contract, not checked by the library)",
         (host, xml) => FacturXEmbedder.Embed(host, xml),
         Extract);
-    h.Unsupported(Op.CheckPdf, "pas de contrôle de PDF hybride (extraction et injection seulement)");
+    h.Unsupported(Op.CheckPdf, "no hybrid PDF check (extraction and embedding only)");
 });

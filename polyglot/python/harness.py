@@ -1,27 +1,27 @@
-"""Harnais Python du banc polyglotte (voir ../PROTOCOL.md).
+"""Python harness of the multi-language bench (see ../PROTOCOL.md).
 
-Calqué sur ecosystem/common/{common,harness}.go : mêmes fichiers
-d'entrée, contrôle du résultat avant la mesure, « unsupported » si la
-librairie ne sait pas faire l'opération, « fail » si elle renvoie un résultat
-faux ou lève une exception.
+Modeled on ecosystem/common/{common,harness}.go: same input files,
+check of the result before the measurement, "unsupported" if the
+library cannot do the operation, "fail" if it returns a wrong result
+or raises an exception.
 
-    python harness.py survey    [lib…]   relevés d'exactitude  -> $OUT/survey_python.jsonl
+    python harness.py survey    [lib…]   accuracy surveys      -> $OUT/survey_python.jsonl
     python harness.py bench     [lib…]   benchmarks            -> $OUT/bench_python.jsonl
-    python harness.py resources [lib…]   CPU et pic mémoire    -> $OUT/resources_python.jsonl
-    python harness.py alloc     [lib…]   allocations par appel -> $OUT/alloc_python.jsonl
+    python harness.py resources [lib…]   CPU and peak memory   -> $OUT/resources_python.jsonl
+    python harness.py alloc     [lib…]   allocations per call  -> $OUT/alloc_python.jsonl
 
-Chaque benchmark tourne dans un processus neuf (first_call_ns = vrai premier
-appel), chaque relevé dans un processus par librairie. Chaque série mesurée
-relève aussi le temps CPU du processus (cpu_ns_per_op) ; « resources » relance
-les mêmes processus et ajoute leur pic de mémoire résidente (max_rss_bytes),
-lu par le processus fils lui-même à la fin. Variables : OUT, COUNT (3),
-BENCHTIME (1, en secondes), FX_CORPUS (racine du corpus).
+Each benchmark runs in a fresh process (first_call_ns = true first
+call), each survey in one process per library. Each measured series
+also reads the CPU time of the process (cpu_ns_per_op); "resources" reruns
+the same processes and adds their peak resident memory (max_rss_bytes),
+read by the child process itself at the end. Variables: OUT, COUNT (3),
+BENCHTIME (1, in seconds), FX_CORPUS (root of the corpus).
 
-« alloc » compte les allocations d'un appel : le processus de mesure tourne
-avec PYTHONMALLOC=malloc et la bibliothèque alloccount (alloccount.c,
-compilée par run.sh setup) insérée par le chargeur, qui compte chaque appel à
-malloc, calloc, realloc… : objets Python, extensions C (libxml2 de lxml, qpdf
-de pikepdf) et Rust comprises.
+"alloc" counts the allocations of one call: the measuring process runs
+with PYTHONMALLOC=malloc and the alloccount library (alloccount.c,
+built by run.sh setup) inserted by the loader, which counts every call to
+malloc, calloc, realloc…: Python objects, C extensions (libxml2 of lxml, qpdf
+of pikepdf) and Rust included.
 """
 
 from __future__ import annotations
@@ -66,12 +66,12 @@ BENCHES = [
     "CheckPDF_Small", "CheckPDF_Large",
 ]
 
-CHECK_TIMEOUT = float(os.environ.get("CHECK_TIMEOUT", "30"))  # s, appel de contrôle d'un benchmark
-SURVEY_TIMEOUT = float(os.environ.get("SURVEY_TIMEOUT", "10"))  # s, un fichier du relevé
-CHILD_TIMEOUT = float(os.environ.get("CHILD_TIMEOUT", "1800"))  # s, un processus fils
+CHECK_TIMEOUT = float(os.environ.get("CHECK_TIMEOUT", "30"))  # s, check call of a benchmark
+SURVEY_TIMEOUT = float(os.environ.get("SURVEY_TIMEOUT", "10"))  # s, one survey file
+CHILD_TIMEOUT = float(os.environ.get("CHILD_TIMEOUT", "1800"))  # s, one child process
 RESULT_MARK = "@@RESULT "
 ALLOC_LIB = HERE / ".alloc" / "alloccount.so"
-ALLOC_WINDOW_NS = 200_000_000  # durée visée de la série d'appels comptée
+ALLOC_WINDOW_NS = 200_000_000  # target duration of the counted series of calls
 
 
 # ---------------------------------------------------------------- corpus
@@ -135,10 +135,10 @@ def pdf_files() -> list[str]:
     return out
 
 
-# ---------------------------------------------------------------- outils
+# ---------------------------------------------------------------- helpers
 
 class Unsupported(Exception):
-    """L'adaptateur ne sait pas faire l'opération (status: unsupported)."""
+    """The adapter cannot do the operation (status: unsupported)."""
 
 
 class Timeout(BaseException):
@@ -146,11 +146,11 @@ class Timeout(BaseException):
 
 
 def guarded(fn, *args, timeout=None):
-    """Appelle fn(*args) avec un garde-fou SIGALRM (le code pur Python est interruptible)."""
+    """Calls fn(*args) with a SIGALRM safeguard (pure Python code can be interrupted)."""
     t = CHECK_TIMEOUT if timeout is None else timeout
 
     def _on_alarm(*_):
-        raise Timeout(f"timeout ({t:g} s) : appel interrompu (boucle infinie ?)")
+        raise Timeout(f"timeout ({t:g} s): call interrupted (infinite loop?)")
 
     old = signal.signal(signal.SIGALRM, _on_alarm)
     signal.setitimer(signal.ITIMER_REAL, t)
@@ -181,7 +181,7 @@ def lib_version(ad) -> str:
         return "?"
 
 
-# ---------------------------------------------------------------- chronométrage
+# ---------------------------------------------------------------- timing
 
 def ramp_steps():
     n = 1
@@ -192,25 +192,25 @@ def ramp_steps():
 
 
 def children_usage() -> tuple[int, int]:
-    """CPU (ns, utilisateur + système) et pic RSS (octets) des processus enfants terminés."""
+    """CPU (ns, user + system) and peak RSS (bytes) of the terminated child processes."""
     u = resource.getrusage(resource.RUSAGE_CHILDREN)
     return int((u.ru_utime + u.ru_stime) * 1e9), rss_bytes(u.ru_maxrss)
 
 
 def rss_bytes(ru_maxrss: int) -> int:
-    """ru_maxrss est en octets sous macOS, en kilo-octets sous Linux."""
+    """ru_maxrss is in bytes on macOS, in kilobytes on Linux."""
     return ru_maxrss if sys.platform == "darwin" else ru_maxrss * 1024
 
 
 def measure(fn, benchtime_s: float, count: int):
-    """Montée en charge 1, 2, 5, 10, 20, 50… jusqu'à une série >= benchtime, puis count séries.
+    """Ramp-up 1, 2, 5, 10, 20, 50… until a series >= benchtime, then count series.
 
-    Chaque série mesurée lit aussi le temps CPU du processus (utilisateur +
-    système, tous les fils), une fois avant et une fois après, autour des
-    lectures de l'horloge monotone. Renvoie aussi (CPU en ns, pic RSS en
-    octets) des processus enfants terminés pendant les séries, None si la
-    librairie n'en lance pas : ils ne sont comptés ni dans le CPU ni dans le
-    pic RSS du processus mesuré.
+    Each measured series also reads the CPU time of the process (user +
+    system, all threads), once before and once after, around the
+    readings of the monotonic clock. Also returns (CPU in ns, peak RSS in
+    bytes) of the child processes terminated during the series, None if the
+    library spawns none: they are counted neither in the CPU nor in the
+    peak RSS of the measured process.
     """
     target = int(benchtime_s * 1e9)
     clock = time.perf_counter_ns
@@ -239,8 +239,8 @@ def measure(fn, benchtime_s: float, count: int):
 
 
 def measure_alloc(fn):
-    """Allocations d'un appel : échauffement d'au moins 3 appels (jusqu'à 100 appels ou
-    0,2 s), puis une série d'environ 0,2 s (1 à 1000 appels), comptée par alloccount."""
+    """Allocations of one call: warm-up of at least 3 calls (up to 100 calls or
+    0.2 s), then a series of about 0.2 s (1 to 1000 calls), counted by alloccount."""
     lib = ctypes.CDLL(os.environ["ALLOCCOUNT_LIB"])
     n, b = ctypes.c_ulonglong(), ctypes.c_ulonglong()
     lib.alloccount_start()
@@ -248,7 +248,7 @@ def measure_alloc(fn):
     lib.alloccount_stop(ctypes.byref(n), ctypes.byref(b))
     del probe
     if n.value == 0:
-        raise RuntimeError("alloccount ne compte rien : bibliothèque non insérée par le chargeur")
+        raise RuntimeError("alloccount counts nothing: library not inserted by the loader")
     clock = time.perf_counter_ns
     t0, warm = clock(), 0
     while warm < 3 or (warm < 100 and clock() - t0 < ALLOC_WINDOW_NS):
@@ -263,7 +263,7 @@ def measure_alloc(fn):
     return calls, n.value / calls, b.value / calls
 
 
-# ---------------------------------------------------------------- un benchmark
+# ---------------------------------------------------------------- one benchmark
 
 BENCH_SPEC = {
     "Extract_Small": ("extract", "PDFSmall"),
@@ -296,16 +296,16 @@ def notes_for(ad, op: str, bench: str) -> list[str]:
 
 def children_note(children: tuple[int, int], calls: int) -> str:
     cpu_ns, rss = children
-    return (f"la librairie lance des processus enfants : leur CPU (≈ {cpu_ns / calls:.0f} ns/op) "
-            f"et leur mémoire (pic {rss / 2**20:.1f} Mio) ne sont comptés ni dans cpu_ns_per_op ni dans max_rss_bytes")
+    return (f"the library spawns child processes: their CPU (≈ {cpu_ns / calls:.0f} ns/op) "
+            f"and their memory (peak {rss / 2**20:.1f} MiB) are counted neither in cpu_ns_per_op nor in max_rss_bytes")
 
 
 def reference_extract(pdf: bytes):
-    """Relecture d'un PDF produit par Embed quand la librairie ne sait pas extraire."""
-    import facturx  # autre librairie du même langage
+    """Reads back a PDF produced by Embed when the library cannot extract."""
+    import facturx  # another library of the same language
     name, xml = facturx.get_xml_from_pdf(pdf, check_xsd=False)
     if not xml:
-        raise ValueError("aucune pièce jointe XML Factur-X relue par factur-x")
+        raise ValueError("no Factur-X XML attachment read back by factur-x")
     return xml
 
 
@@ -323,12 +323,12 @@ def run_one(lib: str, bench: str, benchtime: float, count: int, alloc: bool = Fa
         rec["status"] = status
         if msg:
             notes.append(msg)
-        rec["note"] = " ; ".join(n for n in notes if n)
+        rec["note"] = "; ".join(n for n in notes if n)
         return rec
 
     impl = getattr(ad, op, None)
     if impl is None:
-        return finish("unsupported", getattr(ad, "UNSUPPORTED", {}).get(op, "opération non proposée par la librairie"))
+        return finish("unsupported", getattr(ad, "UNSUPPORTED", {}).get(op, "operation not offered by the library"))
 
     s = SAMPLES[sample_name]()
     clock = time.perf_counter_ns
@@ -339,9 +339,9 @@ def run_one(lib: str, bench: str, benchtime: float, count: int, alloc: bool = Fa
                 model = guarded(ad.parse, x, s.path)
             elif getattr(ad, "hand_model", None) is not None and sample_name == "XMLSmall":
                 model = ad.hand_model()
-                notes.append("modèle construit à la main")
+                notes.append("hand-built model")
             else:
-                return finish("unsupported", "pas de parseur ; modèle à la main seulement pour EN16931_Einfach (protocole)")
+                return finish("unsupported", "no parser; hand-built model only for EN16931_Einfach (protocol)")
 
             def fn():
                 return impl(model)
@@ -357,7 +357,7 @@ def run_one(lib: str, bench: str, benchtime: float, count: int, alloc: bool = Fa
             def fn():
                 return impl(data, path)
 
-        # 1. vérifier avant de mesurer (premier appel du processus)
+        # 1. check before measuring (first call of the process)
         t0 = clock()
         try:
             out = guarded(fn)
@@ -367,25 +367,25 @@ def run_one(lib: str, bench: str, benchtime: float, count: int, alloc: bool = Fa
 
         if op == "extract" or op == "write":
             if not looks_like_cii(out):
-                return finish("fail", "le résultat ne contient pas CrossIndustryInvoice")
+                return finish("fail", "the result does not contain CrossIndustryInvoice")
         elif op == "embed":
             if not isinstance(out, (bytes, bytearray)) or not out.startswith(b"%PDF"):
-                return finish("fail", "le résultat n'est pas un PDF")
-            # relecture avec la librairie elle-même, à défaut avec factur-x
+                return finish("fail", "the result is not a PDF")
+            # read back with the library itself, failing that with factur-x
             back_fn = getattr(ad, "extract", None)
             try:
                 back = guarded(back_fn, bytes(out), None) if back_fn else reference_extract(bytes(out))
             except BaseException as e:  # noqa: BLE001
-                return finish("fail", "le PDF produit ne se relit pas : " + err_text(e))
+                return finish("fail", "the produced PDF cannot be read back: " + err_text(e))
             if not looks_like_cii(back):
-                return finish("fail", "le PDF produit ne se relit pas (pas de facture extraite)")
+                return finish("fail", "the produced PDF cannot be read back (no invoice extracted)")
             if not back_fn:
-                notes.append("relu avec factur-x")
+                notes.append("read back with factur-x")
         elif op in ("validate", "check_pdf"):
             if not (isinstance(out, tuple) and isinstance(out[0], int)):
-                return finish("fail", f"résultat inattendu : {out!r}"[:200])
+                return finish("fail", f"unexpected result: {out!r}"[:200])
 
-        # 2. mesurer
+        # 2. measure
         if alloc:
             calls, allocs, nbytes = measure_alloc(fn)
             del rec["ns_per_op"], rec["cpu_ns_per_op"], rec["iters"]
@@ -404,7 +404,7 @@ def run_one(lib: str, bench: str, benchtime: float, count: int, alloc: bool = Fa
         return finish("fail", err_text(e))
 
 
-# ---------------------------------------------------------------- relevés
+# ---------------------------------------------------------------- surveys
 
 def survey_lib(lib: str) -> list[dict]:
     ad = adapter(lib)
@@ -452,13 +452,13 @@ def survey_lib(lib: str) -> list[dict]:
                 if looks_like_cii(x):
                     ok += 1
                 else:
-                    failures.append({"file": rel, "error": "pas de XML CII extrait"})
+                    failures.append({"file": rel, "error": "no CII XML extracted"})
             except BaseException as e:  # noqa: BLE001
                 failures.append({"file": rel, "error": err_text(e)})
         note = survey_notes.get("extract", "")
         extra = getattr(ad, "survey_extract_extra", None)
         if extra is not None:
-            note = (note + " ; " if note else "") + extra(pdf_files())
+            note = (note + "; " if note else "") + extra(pdf_files())
         lines.append({**base, "op": "extract", "ok": ok, "total": total, "failures": failures, "note": note})
     return lines
 
@@ -472,7 +472,7 @@ def child(argv: list[str]) -> None:
         _, lib, bench, benchtime, count = argv
         out = run_one(lib, bench, float(benchtime), int(count))
         if kind == "resources" and out["status"] == "ok":
-            # pic de mémoire résidente de ce processus, celui qui a exécuté le benchmark
+            # peak resident memory of this process, the one that ran the benchmark
             out["max_rss_bytes"] = rss_bytes(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
         print(RESULT_MARK + json.dumps(out, ensure_ascii=False), flush=True)
     elif kind == "alloc":
@@ -488,8 +488,8 @@ def spawn(args: list[str]) -> tuple[list[dict], str]:
     cmd = [sys.executable, "-I", str(Path(__file__).resolve()), "_child", *args]
     env = None
     if args[0] == "alloc":
-        # -I ignorerait PYTHONMALLOC : -s -P isolent sans lui, et l'environnement
-        # est reconstruit sans les autres variables PYTHON*.
+        # -I would ignore PYTHONMALLOC: -s -P isolate without it, and the environment
+        # is rebuilt without the other PYTHON* variables.
         cmd[1:2] = ["-s", "-P"]
         env = {k: v for k, v in os.environ.items() if not k.startswith("PYTHON")}
         env.update(PYTHONMALLOC="malloc", ALLOCCOUNT_LIB=str(ALLOC_LIB))
@@ -497,12 +497,12 @@ def spawn(args: list[str]) -> tuple[list[dict], str]:
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=CHILD_TIMEOUT, cwd=str(HERE), env=env)
     except subprocess.TimeoutExpired:
-        return [], f"processus fils interrompu après {CHILD_TIMEOUT:g} s"
+        return [], f"child process interrupted after {CHILD_TIMEOUT:g} s"
     res = [json.loads(l[len(RESULT_MARK):]) for l in p.stdout.splitlines() if l.startswith(RESULT_MARK)]
     if p.returncode == 0:
-        return res, "aucune opération relevée (ni validate, ni parse, ni extract)"
+        return res, "no operation surveyed (neither validate, nor parse, nor extract)"
     tail = (p.stderr or "").strip().splitlines()[-3:]
-    return res, f"code {p.returncode} : " + " | ".join(tail)
+    return res, f"code {p.returncode}: " + " | ".join(tail)
 
 
 def out_dir() -> Path:
@@ -512,7 +512,7 @@ def out_dir() -> Path:
 
 
 def merge_jsonl(path: Path, libs: list[str], new: list[dict]) -> None:
-    """Remplace dans le fichier les lignes des librairies relancées, garde les autres."""
+    """Replaces in the file the lines of the rerun libraries, keeps the others."""
     keep = []
     if path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -536,7 +536,7 @@ def main(argv: list[str]) -> int:
     cmd, libs = argv[0], argv[1:] or LIBS
     for lib in libs:
         if lib not in LIBS:
-            print(f"librairie inconnue : {lib} (connues : {', '.join(LIBS)})", file=sys.stderr)
+            print(f"unknown library: {lib} (known: {', '.join(LIBS)})", file=sys.stderr)
             return 2
     out = out_dir()
     print(f"== {runtime()} ({sys.executable})")
@@ -546,7 +546,7 @@ def main(argv: list[str]) -> int:
             print(f"== survey {lib}", flush=True)
             res, diag = spawn(["survey", lib])
             if not res:
-                print(f"   (aucun résultat : {diag})")
+                print(f"   (no result: {diag})")
             for r in res:
                 print(f"   {r['op']}: {r['ok']}/{r['total']}" + (f"  ({r['note']})" if r.get("note") else ""))
             merge_jsonl(path, [lib], res)
@@ -561,7 +561,7 @@ def main(argv: list[str]) -> int:
                 if not res:
                     res = [{"lang": "python", "lib": lib, "pkg": lib, "version": "?", "bench": bench,
                             "status": "fail", "first_call_ns": None,
-                            "note": "le processus de mesure a échoué : " + diag, "runtime": runtime()}]
+                            "note": "the measuring process failed: " + diag, "runtime": runtime()}]
                 r = res[0]
                 if r["status"] == "ok":
                     print(f"   {bench:<20} {r['bytes']:>12.0f} B/op {r['allocs']:>10.1f} allocs/op  (N={r['calls']})")
@@ -571,8 +571,8 @@ def main(argv: list[str]) -> int:
             merge_jsonl(path, [lib], res_lib)
         print(f"== {path}")
     else:
-        # bench et resources : un processus fils par benchmark ; pour resources,
-        # le fils ajoute son propre pic RSS (python -I harness.py _child resources …).
+        # bench and resources: one child process per benchmark; for resources,
+        # the child adds its own peak RSS (python -I harness.py _child resources …).
         count = int(os.environ.get("COUNT", "3"))
         benchtime = float(os.environ.get("BENCHTIME", "1").rstrip("s"))
         path = out / f"{cmd}_python.jsonl"
@@ -585,7 +585,7 @@ def main(argv: list[str]) -> int:
                     ad_pkg = lib
                     res = [{"lang": "python", "lib": lib, "pkg": ad_pkg, "version": "?", "bench": bench,
                             "status": "fail", "ns_per_op": [], "cpu_ns_per_op": [], "iters": 0, "first_call_ns": None,
-                            "note": "le processus de mesure a échoué : " + diag, "runtime": runtime()}]
+                            "note": "the measuring process failed: " + diag, "runtime": runtime()}]
                 r = res[0]
                 if r["status"] == "ok":
                     med = sorted(r["ns_per_op"])[len(r["ns_per_op"]) // 2]

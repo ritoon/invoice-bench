@@ -42,17 +42,17 @@ $pick = static function (string $xml) use (&$validators): XRechnungValidator|Fac
 return [
     'pkg' => 'intragile/php-einvoicing',
     'notes' => [
-        'extract' => 'FacturXPdfReader::read()->xml (lecteur PDF écrit dans la librairie)',
-        'parse' => 'CiiReader::read()->invoice (modèle EN 16931)',
-        'validate' => 'XRechnungValidator (scénarios KoSIT : XSD CII D16B + schematron CEN 1.3.16 précompilé en PHP, + XRechnung 2.6.0 et niveaux KoSIT si BT-24 XRechnung) ; FacturXValidator pour les autres profils Factur-X ; erreurs = fatal + XSD + erreurs dynamiques',
-        'write' => 'CiiWriter::write du modèle lu par CiiReader',
-        'embed' => 'FacturXPdfWriter::embed (mise à jour incrémentale, sans FPDI ; ne convertit pas en PDF/A)',
+        'extract' => 'FacturXPdfReader::read()->xml (PDF reader written in the library)',
+        'parse' => 'CiiReader::read()->invoice (EN 16931 model)',
+        'validate' => 'XRechnungValidator (KoSIT scenarios: CII D16B XSD + CEN 1.3.16 schematron precompiled to PHP, + XRechnung 2.6.0 and KoSIT levels if BT-24 is XRechnung); FacturXValidator for the other Factur-X profiles; errors = fatal + XSD + dynamic errors',
+        'write' => 'CiiWriter::write of the model read by CiiReader',
+        'embed' => 'FacturXPdfWriter::embed (incremental update, without FPDI; does not convert to PDF/A)',
     ],
     'unsupported' => [
-        'check_pdf' => 'pas de contrôle PDF/A (seulement des avertissements à l\'intégration)',
+        'check_pdf' => 'no PDF/A check (only warnings when embedding)',
     ],
     'survey_notes' => [
-        'validate' => 'scénarios KoSIT : XSD + CEN 1.3.16 (+ XRechnung 2.6.0 et niveaux KoSIT), règles précompilées en PHP',
+        'validate' => 'KoSIT scenarios: XSD + CEN 1.3.16 (+ XRechnung 2.6.0 and KoSIT levels), rules precompiled to PHP',
         'parse' => 'CiiReader::read',
         'extract' => 'FacturXPdfReader::read',
     ],

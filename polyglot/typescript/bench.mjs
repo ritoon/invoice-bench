@@ -33,17 +33,17 @@ export const BENCHMARKS = {
 };
 
 function joinNotes(...parts) {
-	return parts.filter((p) => p != null && p !== '').join(' ; ');
+	return parts.filter((p) => p != null && p !== '').join('; ');
 }
 
 function countNote(r) {
 	if (!r || typeof r.errors !== 'number') return '';
 	const rules = [...new Set(r.rules ?? [])].slice(0, 6).join(', ');
-	return `résultat : ${r.errors} erreur(s)${rules ? ' (' + rules + ')' : ''}`;
+	return `result: ${r.errors} error(s)${rules ? ' (' + rules + ')' : ''}`;
 }
 
 const checkCount = (r) => {
-	if (!r || typeof r.errors !== 'number' || Number.isNaN(r.errors)) throw new Wrong(`résultat de validation illisible : ${JSON.stringify(r)?.slice(0, 200)}`);
+	if (!r || typeof r.errors !== 'number' || Number.isNaN(r.errors)) throw new Wrong(`unreadable validation result: ${JSON.stringify(r)?.slice(0, 200)}`);
 };
 
 export async function runBenchmark(adapter, bench, alloc = false) {
@@ -61,13 +61,13 @@ export async function runBenchmark(adapter, bench, alloc = false) {
 			case 'extract':
 				fn = () => adapter.extract(sample);
 				check = (x) => {
-					if (!corpus.looksLikeCII(x)) throw new Wrong('le XML extrait ne contient pas CrossIndustryInvoice');
+					if (!corpus.looksLikeCII(x)) throw new Wrong('the extracted XML does not contain CrossIndustryInvoice');
 				};
 				break;
 			case 'parse':
 				fn = () => adapter.parse(sample);
 				check = (m) => {
-					if (m == null) throw new Wrong('le parseur ne renvoie rien');
+					if (m == null) throw new Wrong('the parser returns nothing');
 				};
 				break;
 			case 'validate':
@@ -90,8 +90,8 @@ export async function runBenchmark(adapter, bench, alloc = false) {
 				if (w.handBuilt) extraNote = HAND_NOTE;
 				fn = () => w.write(model);
 				check = (x) => {
-					if (!x || x.length === 0) throw new Wrong('sortie vide');
-					if (!corpus.looksLikeCII(x)) throw new Wrong('la sortie n’est pas un XML CII');
+					if (!x || x.length === 0) throw new Wrong('empty output');
+					if (!corpus.looksLikeCII(x)) throw new Wrong('the output is not a CII XML');
 				};
 				break;
 			}
@@ -100,15 +100,15 @@ export async function runBenchmark(adapter, bench, alloc = false) {
 				fn = () => adapter.embed(host, sample);
 				const reread = adapter.reextract ?? adapter.extract;
 				check = async (pdf) => {
-					if (!pdf || pdf.length === 0) throw new Wrong('PDF vide');
+					if (!pdf || pdf.length === 0) throw new Wrong('empty PDF');
 					let back;
 					try {
 						back = reread ? await reread({ name: 'out.pdf', bytes: Buffer.from(pdf) }) : await fallbackExtract(Buffer.from(pdf));
 					} catch (e) {
-						throw new Wrong(`le PDF produit ne se relit pas : ${errMessage(e)}`);
+						throw new Wrong(`the PDF produced does not read back: ${errMessage(e)}`);
 					}
-					if (!corpus.looksLikeCII(back)) throw new Wrong('le PDF produit ne contient pas la facture');
-					if (!reread) extraNote = 'relecture par @attestwire/en16931 (extractFacturX)';
+					if (!corpus.looksLikeCII(back)) throw new Wrong('the PDF produced does not contain the invoice');
+					if (!reread) extraNote = 'read back by @attestwire/en16931 (extractFacturX)';
 				};
 				break;
 			}
@@ -153,14 +153,14 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 		emit(record(adapter, bench, { status: 'fail', note: joinNotes(adapter.notes?.[BENCHMARKS[bench]?.op], why) }));
 	};
 	process.on('uncaughtException', (e) => {
-		crash(`exception non rattrapée : ${errMessage(e)}`);
+		crash(`uncaught exception: ${errMessage(e)}`);
 		process.exit(0);
 	});
 	process.on('unhandledRejection', (e) => {
-		crash(`promesse rejetée hors de l’appel : ${errMessage(e)}`);
+		crash(`promise rejected outside the call: ${errMessage(e)}`);
 		process.exit(0);
 	});
-	process.on('exit', (code) => crash(`processus terminé (code ${code}) sans résultat`));
+	process.on('exit', (code) => crash(`process exited (code ${code}) without a result`));
 	const r = await runBenchmark(adapter, bench, alloc);
 	done = true;
 	if (resources && r.status === 'ok') r.max_rss_bytes = maxRSSBytes();

@@ -25,14 +25,14 @@ static Findings Summarize(InvoiceValidationResult r)
 
 return Harness.Run(lib, args, h =>
 {
-    h.Unsupported(Op.Extract, "pas de PDF");
-    h.Unsupported(Op.Parse, "pas de lecteur CII (modèle XRechnung UBL seulement)");
-    h.Skip("ParseValidate_Large", "ZugferdXmlValidator n'accepte que BT-24 = urn:cen.eu:en16931:2017 ; XRechnung CII refusé");
+    h.Unsupported(Op.Extract, "no PDF");
+    h.Unsupported(Op.Parse, "no CII reader (XRechnung UBL model only)");
+    h.Skip("ParseValidate_Large", "ZugferdXmlValidator only accepts BT-24 = urn:cen.eu:en16931:2017; XRechnung CII refused");
     h.Validate(
-        "ZugferdXmlValidator.Validate(string) : XSD Factur-X 1.07.3 EN16931 puis XSLT FeRD EN16931 (ZUGFeRD 2.3.3) via SaxonCS-HE 13.0.0, compilés au premier appel ; BT-24 = urn:cen.eu:en16931:2017 exigé (XRechnung refusé)",
+        "ZugferdXmlValidator.Validate(string): Factur-X 1.07.3 EN16931 XSD then FeRD EN16931 XSLT (ZUGFeRD 2.3.3) via SaxonCS-HE 13.0.0, compiled on the first call; BT-24 = urn:cen.eu:en16931:2017 required (XRechnung refused)",
         x => ZugferdXmlValidator.Validate(Encoding.UTF8.GetString(x)),
         Summarize);
-    h.Unsupported(Op.Write, "pas d'écriture CII (XmlInvoiceWriter écrit de l'UBL)");
-    h.Unsupported(Op.Embed, "pas de PDF");
-    h.Unsupported(Op.CheckPdf, "pas de PDF");
+    h.Unsupported(Op.Write, "no CII writing (XmlInvoiceWriter writes UBL)");
+    h.Unsupported(Op.Embed, "no PDF");
+    h.Unsupported(Op.CheckPdf, "no PDF");
 });

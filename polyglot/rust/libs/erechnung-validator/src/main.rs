@@ -40,17 +40,17 @@ fn main() {
         // One validator per thread; the artefacts are compiled on first use,
         // so that cost lands in first_call_ns of ParseValidate_Small.
         let v = Validator::new();
-        h.unsupported(Op::Extract, "extraction interne (module `pdf` privé) : seulement au travers de kosit_pdf / beide_pdf");
-        h.unsupported(Op::Parse, "pas de modèle de facture : la librairie valide le XML sans le lire dans un modèle");
+        h.unsupported(Op::Extract, "internal extraction (private `pdf` module): only through kosit_pdf / beide_pdf");
+        h.unsupported(Op::Parse, "no invoice model: the library validates the XML without reading it into a model");
         h.validate(
-            "Validator::beide(Szenarien::Automatisch) : KoSIT (XSD CII D16B, CEN EN 16931 1.3.16 en Schematron, XRechnung 3.0.2 / schematron 2.6.0 pour les XRECHNUNG, configuration KoSIT, CHANGELOG au 2026-01-31) + Mustang 2.26.0 (XSD et Schematron Factur-X du profil déclaré, XR 3.0 pour les XRECHNUNG) ; erreurs des deux outils additionnées",
+            "Validator::beide(Szenarien::Automatisch): KoSIT (CII D16B XSD, CEN EN 16931 1.3.16 as Schematron, XRechnung 3.0.2 / schematron 2.6.0 for the XRECHNUNG files, KoSIT configuration, CHANGELOG as of 2026-01-31) + Mustang 2.26.0 (Factur-X XSD and Schematron of the declared profile, XR 3.0 for the XRECHNUNG files); errors of both tools added up",
             |x| both(v.beide(text(x)?, Szenarien::Automatisch).map_err(|e| e.to_string())?),
             summarize,
         );
-        h.unsupported(Op::Write, "pas de génération de XML");
-        h.unsupported(Op::Embed, "pas d'injection dans un PDF");
+        h.unsupported(Op::Write, "no XML generation");
+        h.unsupported(Op::Embed, "no embedding in a PDF");
         h.check_pdf(
-            "Validator::beide_pdf : extraction du XML puis KoSIT + Mustang ; aucun contrôle du conteneur PDF/A-3 (partie PDF de Mustang/veraPDF non reprise)",
+            "Validator::beide_pdf: extraction of the XML then KoSIT + Mustang; no check of the PDF/A-3 container (PDF part of Mustang/veraPDF not carried over)",
             |p| v.beide_pdf(p, Szenarien::Automatisch).map_err(|e| e.to_string()).and_then(|(_, r)| both(r)),
         );
     });

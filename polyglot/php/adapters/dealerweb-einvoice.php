@@ -44,17 +44,17 @@ $validator = null;
 return [
     'pkg' => 'dealerweb/einvoice',
     'notes' => [
-        'extract' => 'Invoice::xmlFromPdf (couche PDF propre à la librairie ; XML renvoyé octet pour octet)',
-        'parse' => 'Invoice::fromXml (transformation KoSIT syntaxe → modèle, XSLT compilé en PHP)',
-        'validate' => 'Validator::validate (frenchRules: false) : scénarios KoSIT, XSD CII D16B + schematron CEN 1.3.16 (+ XRechnung 3.0.2 et niveaux KoSIT si BT-24 XRechnung), XSLT officiels compilés en PHP ; erreurs = Report::errors()',
-        'write' => 'new Generator(profil de BT-24, validate: false)->xml du modèle lu par Invoice::fromXml (toXml() validerait aussi la sortie)',
-        'embed' => 'new Generator(Profile::En16931, validate: false)->pdf($xml, $hôte) : document réécrit en une révision par la couche PDF de la librairie',
+        'extract' => 'Invoice::xmlFromPdf (the library\'s own PDF layer; XML returned byte for byte)',
+        'parse' => 'Invoice::fromXml (KoSIT syntax → model transformation, XSLT compiled to PHP)',
+        'validate' => 'Validator::validate (frenchRules: false): KoSIT scenarios, CII D16B XSD + CEN 1.3.16 schematron (+ XRechnung 3.0.2 and KoSIT levels if BT-24 is XRechnung), official XSLT compiled to PHP; errors = Report::errors()',
+        'write' => 'new Generator(profile from BT-24, validate: false)->xml of the model read by Invoice::fromXml (toXml() would also validate the output)',
+        'embed' => 'new Generator(Profile::En16931, validate: false)->pdf($xml, $host): document rewritten in one revision by the library\'s PDF layer',
     ],
     'unsupported' => [
-        'check_pdf' => 'pas de contrôle du PDF lui-même (README : « No check of the PDF itself »)',
+        'check_pdf' => 'no check of the PDF itself (README: "No check of the PDF itself")',
     ],
     'survey_notes' => [
-        'validate' => 'scénarios KoSIT : XSD + CEN 1.3.16 (+ XRechnung 3.0.2 et niveaux KoSIT), XSLT officiels compilés en PHP, sans règles françaises',
+        'validate' => 'KoSIT scenarios: XSD + CEN 1.3.16 (+ XRechnung 3.0.2 and KoSIT levels), official XSLT compiled to PHP, without French rules',
         'parse' => 'Invoice::fromXml',
         'extract' => 'Invoice::xmlFromPdf',
     ],

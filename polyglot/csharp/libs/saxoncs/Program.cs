@@ -24,15 +24,15 @@ var lib = new Lib("saxoncs", "SaxonCS-HE", "13.1.0");
 
 return Harness.Run(lib, args, h =>
 {
-    h.Unsupported(Op.Extract, "validateur seul");
-    h.Unsupported(Op.Parse, "validateur seul");
+    h.Unsupported(Op.Extract, "validator only");
+    h.Unsupported(Op.Parse, "validator only");
     h.Validate(
-        $"XSLT officiels CEN EN 16931 CII {Reference.CenVersion} (+ KoSIT XRechnung 3.0.2 schematron {Reference.XrVersion} si BT-24 XRechnung) via SaxonCS-HE, compilés au premier appel ; erreurs fatal/error avec les niveaux KoSIT v2026-08-31",
+        $"official CEN EN 16931 CII {Reference.CenVersion} XSLT (+ KoSIT XRechnung 3.0.2 schematron {Reference.XrVersion} if BT-24 is XRechnung) via SaxonCS-HE, compiled on the first call; fatal/error errors with the KoSIT v2026-08-31 levels",
         Reference.Validate,
         rules => Findings.Of(rules));
-    h.Unsupported(Op.Write, "validateur seul");
-    h.Unsupported(Op.Embed, "validateur seul");
-    h.Unsupported(Op.CheckPdf, "validateur seul");
+    h.Unsupported(Op.Write, "validator only");
+    h.Unsupported(Op.Embed, "validator only");
+    h.Unsupported(Op.CheckPdf, "validator only");
 });
 
 static partial class Reference

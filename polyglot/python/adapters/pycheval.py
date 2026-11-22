@@ -1,13 +1,13 @@
-"""PyCheval : lecture/écriture Factur-X MINIMUM à EN 16931, extraction et injection PDF.
+"""PyCheval: Factur-X MINIMUM to EN 16931 parsing/writing, PDF extraction and embedding.
 
-Pas de validateur autonome : le parseur contrôle la structure du modèle
-(ModelError, pycheval/model.py) mais n'applique aucune règle BR.
-EXTENDED et XRECHNUNG sont refusés (UnsupportedProfileError, pycheval/parse.py).
+No standalone validator: the parser checks the structure of the model
+(ModelError, pycheval/model.py) but applies no BR rule.
+EXTENDED and XRECHNUNG are rejected (UnsupportedProfileError, pycheval/parse.py).
 
-Attention : extract_facturx_from_pdf boucle indéfiniment quand la première
-entrée de /EmbeddedFiles n'est pas « factur-x.xml » (pycheval/pdf_extract.py,
-`while doc: if doc[0] == FACTURX_FILENAME: break`) ; le harnais coupe l'appel
-après CHECK_TIMEOUT secondes.
+Warning: extract_facturx_from_pdf loops forever when the first
+entry of /EmbeddedFiles is not "factur-x.xml" (pycheval/pdf_extract.py,
+`while doc: if doc[0] == FACTURX_FILENAME: break`); the harness cuts the call
+off after CHECK_TIMEOUT seconds.
 """
 
 from io import BytesIO
@@ -19,19 +19,19 @@ from pycheval.pdf_extract import extract_facturx_from_pdf
 PKG = "pycheval"
 
 NOTES = {
-    "extract": "extract_facturx_from_pdf(BytesIO), renvoie une str",
+    "extract": "extract_facturx_from_pdf(BytesIO), returns a str",
     "parse": "parse_xml(BytesIO)",
-    "write": "generate_xml depuis le modèle de parse_xml",
-    "embed": "fonction interne _embed (l'API publique embed_facturx_file_in_pdf lit le XML depuis un fichier), relation Data (défaut)",
+    "write": "generate_xml from the model of parse_xml",
+    "embed": "internal function _embed (the public API embed_facturx_file_in_pdf reads the XML from a file), Data relationship (default)",
 }
 
 UNSUPPORTED = {
-    "validate": "pas de validateur (seulement des contrôles de structure du modèle à la lecture)",
-    "check_pdf": "pas de contrôle de PDF (parse_pdf lit sans rapport d'erreurs)",
+    "validate": "no validator (only structural checks of the model at parse time)",
+    "check_pdf": "no PDF check (parse_pdf reads without an error report)",
 }
 
 SURVEY_NOTES = {
-    "extract": "boucle infinie si factur-x.xml n'est pas la première pièce jointe (coupée par le harnais)",
+    "extract": "infinite loop if factur-x.xml is not the first attachment (cut off by the harness)",
 }
 
 

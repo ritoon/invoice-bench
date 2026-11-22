@@ -31,15 +31,15 @@ fn write(inv: &Invoice) -> Result<String, String> {
 
 fn main() {
     harness::run(LIB, |h| {
-        h.unsupported(Op::Extract, "pas de lecture de PDF");
-        h.parse("read → Invoice (modèle sémantique)", parse);
+        h.unsupported(Op::Extract, "no PDF parsing");
+        h.parse("read → Invoice (semantic model)", parse);
         h.validate(
-            "validate_xml(profil d'après BT-24) : règles EN 16931 réimplémentées en Rust (alignées sur CEN validation-1.3.16), listes de devises, syntaxe Peppol si profil Peppol ; BR-DE (feature `xrechnung`) sur les XRECHNUNG ; pas de XSD ni de règles CII-SR",
+            "validate_xml(profile from BT-24): EN 16931 rules reimplemented in Rust (aligned with CEN validation-1.3.16), currency lists, Peppol syntax if Peppol profile; BR-DE (feature `xrechnung`) on the XRECHNUNG files; no XSD or CII-SR rules",
             validate,
             summarize,
         );
-        h.write("cii::write_unchecked, modèle lu par read", parse, write);
-        h.unsupported(Op::Embed, "pas d'injection dans un PDF");
-        h.unsupported(Op::CheckPdf, "pas de lecture de PDF");
+        h.write("cii::write_unchecked, model read by read", parse, write);
+        h.unsupported(Op::Embed, "no embedding in a PDF");
+        h.unsupported(Op::CheckPdf, "no PDF parsing");
     });
 }

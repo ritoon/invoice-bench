@@ -112,17 +112,17 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "validateur seul");
-            h.unsupported(Op.PARSE, "validateur seul (le modèle JAXB est celui de ph-cii, mesuré à part)");
-            h.validate("ValidationExecutionManager.executeValidation, jeu choisi par BT-24 : XRechnung CII 3.0.2 "
-                    + "(XSD D16B + CEN CII 1.3.16 + KoSIT XRechnung 2.6.0, niveaux propres à phive) pour XRechnung, "
-                    + "ZUGFeRD 2.5.2 du profil (XSD + schematron Factur-X 1.09.2) pour MINIMUM/BASIC WL/BASIC/EXTENDED, "
-                    + "EN 16931 CII 1.3.17 (XSD D16B + schematron CEN) sinon ; analyse DOM comprise ; "
-                    + "erreurs = niveau ERROR et au-delà ; registre initialisé et XSLT chargés au premier appel",
+            h.unsupported(Op.EXTRACT, "validator only");
+            h.unsupported(Op.PARSE, "validator only (the JAXB model is ph-cii's, measured separately)");
+            h.validate("ValidationExecutionManager.executeValidation, set chosen by BT-24: XRechnung CII 3.0.2 "
+                    + "(D16B XSD + CEN CII 1.3.16 + KoSIT XRechnung 2.6.0, phive's own levels) for XRechnung, "
+                    + "the profile's ZUGFeRD 2.5.2 (XSD + Factur-X 1.09.2 schematron) for MINIMUM/BASIC WL/BASIC/EXTENDED, "
+                    + "EN 16931 CII 1.3.17 (D16B XSD + CEN schematron) otherwise; DOM parsing included; "
+                    + "errors = level ERROR and above; registry initialized and XSLT loaded on the first call",
                     Main::validate, Main::summarize);
-            h.unsupported(Op.WRITE, "validateur seul");
-            h.unsupported(Op.EMBED, "validateur seul");
-            h.unsupported(Op.CHECK_PDF, "validateur seul (XML uniquement)");
+            h.unsupported(Op.WRITE, "validator only");
+            h.unsupported(Op.EMBED, "validator only");
+            h.unsupported(Op.CHECK_PDF, "validator only (XML only)");
         });
     }
 }

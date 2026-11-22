@@ -42,11 +42,11 @@ int main(int argc, char **argv) {
 	return fx::run(lib, argc, argv, [](fx_harness *h) {
 		auto pa = [](fx::Bytes x) { return parse(x); };
 		auto wr = [](const Doc &d) { return write(d); };
-		fx_unsupported(h, FX_EXTRACT, "librairie XML seulement");
-		fx::parse(h, "plancher : DOM pugixml (load_buffer, parse_default), pas un modèle de facture", pa);
-		fx_unsupported(h, FX_VALIDATE, "pas de validation (ni XSD ni règles)");
-		fx::write(h, "plancher : sérialisation du DOM pugixml (save, format_default), pas un modèle de facture", pa, wr);
-		fx_unsupported(h, FX_EMBED, "librairie XML seulement");
-		fx_unsupported(h, FX_CHECK_PDF, "librairie XML seulement");
+		fx_unsupported(h, FX_EXTRACT, "XML library only");
+		fx::parse(h, "floor: pugixml DOM (load_buffer, parse_default), not an invoice model", pa);
+		fx_unsupported(h, FX_VALIDATE, "no validation (neither XSD nor rules)");
+		fx::write(h, "floor: serialization of the pugixml DOM (save, format_default), not an invoice model", pa, wr);
+		fx_unsupported(h, FX_EMBED, "XML library only");
+		fx_unsupported(h, FX_CHECK_PDF, "XML library only");
 	});
 }

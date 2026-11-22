@@ -30,17 +30,17 @@ use ERechnungToolkit\Validators\ValidationMessage;
 return [
     'pkg' => 'daniel-jorg-schuppelius/php-erechnung-toolkit',
     'notes' => [
-        'extract' => 'ZugferdPdfParser::extractXml($chemin) via php-pdf-toolkit (pdfdetach de poppler : -list puis -savefile)',
+        'extract' => 'ZugferdPdfParser::extractXml($path) via php-pdf-toolkit (poppler\'s pdfdetach: -list then -savefile)',
         'parse' => 'ERechnungParser::parse',
-        'validate' => 'CiiSchemaValidator (XSD CII D16B) puis DocumentRulesValidator sur le document lu (profil, pièces jointes, périodes, Leitweg-ID : 7 règles BR et contrôles TK-*) ; schematron EN 16931/XRechnung par KositValidator (Java) non mesuré',
-        'write' => 'ERechnungGenerator::generateCii du document lu par ERechnungParser',
+        'validate' => 'CiiSchemaValidator (CII D16B XSD) then DocumentRulesValidator on the parsed document (profile, attachments, periods, Leitweg-ID: 7 BR rules and TK-* checks); EN 16931/XRechnung schematron through KositValidator (Java) not measured',
+        'write' => 'ERechnungGenerator::generateCii of the document read by ERechnungParser',
     ],
     'unsupported' => [
-        'embed' => 'pas d\'intégration dans un PDF hôte (ZugferdPdfGenerator rend son propre PDF ; ZugferdPdfAugmenter n\'ajoute que des pièces justificatives)',
-        'check_pdf' => 'pas de contrôle PDF',
+        'embed' => 'no embedding into a host PDF (ZugferdPdfGenerator renders its own PDF; ZugferdPdfAugmenter only adds supporting documents)',
+        'check_pdf' => 'no PDF check',
     ],
     'survey_notes' => [
-        'validate' => 'XSD CII D16B + quelques règles du toolkit (BR-29, BR-30, BR-52, BR-CL-24, BR-CO-19/20, BR-DE-22) ; KoSIT exige Java',
+        'validate' => 'CII D16B XSD + a few rules of the toolkit (BR-29, BR-30, BR-52, BR-CL-24, BR-CO-19/20, BR-DE-22); KoSIT requires Java',
         'parse' => 'ERechnungParser::parse',
         'extract' => 'ZugferdPdfParser::extractXml (pdfdetach)',
     ],
@@ -49,7 +49,7 @@ return [
         $p = new ZugferdPdfParser();
         $xml = $path !== null ? $p->extractXml($path) : $p->extractXmlFromString($pdf);
         if ($xml === null) {
-            throw new \RuntimeException('aucune facture XML extraite (pdfdetach indisponible ou pas de pièce jointe)');
+            throw new \RuntimeException('no XML invoice extracted (pdfdetach unavailable or no attachment)');
         }
 
         return $xml;

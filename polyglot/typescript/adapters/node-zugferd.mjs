@@ -11,14 +11,14 @@ export default {
 	lib: 'node-zugferd',
 	pkg: 'node-zugferd',
 	notes: {
-		write: 'zugferd({ profile: EN16931, strict: false }).create(saisie) hors mesure, puis toXML() ; strict: false car la validation XSD de la librairie appelle Java',
+		write: 'zugferd({ profile: EN16931, strict: false }).create(input) outside the measurement, then toXML(); strict: false because the XSD validation of the library calls Java',
 	},
 	unsupported: {
-		extract: 'pas de lecture de PDF',
-		parse: 'pas de lecteur CII',
-		validate: 'seule validation : XSD Factur-X en mode strict, par xsd-schema-validator qui exige Java (absent) ; pas de schematron',
-		embed: 'pas d’injection d’un XML existant : embedInPdf attache le XML que la librairie génère depuis sa saisie',
-		check: 'pas de lecture de PDF',
+		extract: 'no PDF reading',
+		parse: 'no CII reader',
+		validate: 'only validation: Factur-X XSD in strict mode, by xsd-schema-validator, which requires Java (not installed); no schematron',
+		embed: 'no embedding of an existing XML: embedInPdf attaches the XML that the library generates from its input',
+		check: 'no PDF reading',
 	},
 	write: {
 		model(s, bench) {

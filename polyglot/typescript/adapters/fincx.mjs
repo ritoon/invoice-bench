@@ -15,15 +15,15 @@ export default {
 	lib: '@fin.cx/einvoice',
 	pkg: '@fin.cx/einvoice',
 	notes: {
-		extract: 'new PDFExtractor().extractXml (une instance réutilisée ; ses console.log sont neutralisés)',
+		extract: 'new PDFExtractor().extractXml (one reused instance; its console.log calls are silenced)',
 		parse: 'EInvoice.fromXml',
 		validate:
-			'EInvoice.fromXml puis validate(BUSINESS, { featureFlags: [EN16931_BUSINESS_RULES, CODE_LIST_VALIDATION] }) : règles EN 16931 / XRechnung / Factur-X réécrites en TypeScript (pas de XSD ; la couche schematron dépend de fichiers téléchargés au postinstall et n’est pas utilisée par validate)',
-		write: 'EInvoice.fromXml hors mesure, puis exportXml("facturx")',
-		embed: 'new PDFEmbedder().embedXml(pdf, xml, "factur-x.xml", …) : pdf-lib attach + save, sans XMP ni métadonnées PDF/A',
+			'EInvoice.fromXml then validate(BUSINESS, { featureFlags: [EN16931_BUSINESS_RULES, CODE_LIST_VALIDATION] }): EN 16931 / XRechnung / Factur-X rules rewritten in TypeScript (no XSD; the schematron layer depends on files downloaded at postinstall and is not used by validate)',
+		write: 'EInvoice.fromXml outside the measurement, then exportXml("facturx")',
+		embed: 'new PDFEmbedder().embedXml(pdf, xml, "factur-x.xml", …): pdf-lib attach + save, without XMP or PDF/A metadata',
 	},
 	unsupported: {
-		check: 'pas de contrôle natif d’un PDF hybride (EInvoice.fromPdf extrait et lit, la validation reste à appeler à part)',
+		check: 'no native check of a hybrid PDF (EInvoice.fromPdf extracts and parses; validation must be called separately)',
 	},
 	async extract(s) {
 		const r = await extractor.extractXml(s.bytes);

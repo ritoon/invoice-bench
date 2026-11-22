@@ -34,7 +34,7 @@ Same names as the Go bench:
 | `Extract_Small`, `Extract_Large`, `Extract_Minimum`, `Extract_Extended` | PDF | PDF → bytes of the invoice XML |
 | `Parse_Small`, `Parse_Lines`, `Parse_Large` | XML | XML → the library's model |
 | `ParseValidate_Small`, `ParseValidate_Lines`, `ParseValidate_Large` | XML | XML → full validation, number of errors |
-| `Write_Small`, `Write_Lines` | XML | model → CII XML; the model is built **once, outside the measurement** (by the library's parser; failing that, by hand from the content of `EN16931_Einfach`, with `note: "modèle construit à la main"`, the harness literal for "hand-built model") |
+| `Write_Small`, `Write_Lines` | XML | model → CII XML; the model is built **once, outside the measurement** (by the library's parser; failing that, by hand from the content of `EN16931_Einfach`, with `note: "hand-built model"`) |
 | `Embed_Small` | `host.pdf` + XML Small | host PDF + XML → Factur-X PDF |
 | `EmbedClassic_Small` | `host_classic.pdf` + XML Small | same, host with classic xref table |
 | `CheckPDF_Small`, `CheckPDF_Large` | PDF | full check of a hybrid PDF by a **native** function of the library (container + XML); not a composition of extraction + validation |
