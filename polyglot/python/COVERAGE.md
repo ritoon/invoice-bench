@@ -1,313 +1,314 @@
-# Banc Python : librairies retenues, écartées et couverture de la norme
+# Python bench: selected libraries, excluded libraries and coverage of the standard
 
-Banc Python du protocole commun (`../PROTOCOL.md`), comparé au paquet Go
-`github.com/ritoon/zerechnung`. Relevés du 2026-11-17.
+Python bench of the common protocol (`../PROTOCOL.md`), compared with the Go
+package `github.com/ritoon/zerechnung`. Surveys as of 2026-11-17.
 
-- **Interpréteur** : CPython 3.13.18 (Homebrew), venv `.venv/`, sans uv.
-  Dépendances figées dans `requirements.txt` (sortie de `pip freeze`),
-  installées en roues seulement (`--only-binary=:all:`) sauf `tagic`
-  (dépendance pure Python de getafix, publiée en sdist seulement ; pyproject
-  relu : backend poetry-core, pas de `setup.py`, aucun code exécuté à
-  l'installation).
-- **Artefacts officiels** téléchargés par `./run.sh setup` dans `.artefacts/`
-  (ignoré par git), SHA-256 vérifiés dans `run.sh` :
+- **Interpreter**: CPython 3.13.18 (Homebrew), venv `.venv/`, no uv.
+  Dependencies frozen in `requirements.txt` (output of `pip freeze`),
+  installed as wheels only (`--only-binary=:all:`) except `tagic`
+  (a pure-Python dependency of getafix, published as an sdist only; pyproject
+  reviewed: poetry-core backend, no `setup.py`, no code executed at
+  install time).
+- **Official artifacts** downloaded by `./run.sh setup` into `.artefacts/`
+  (ignored by git), SHA-256 checked in `run.sh`:
   CEN EN 16931 CII **1.3.17** (`en16931-cii-1.3.17.zip`, release
-  `validation-1.3.17` de ConnectingEurope/eInvoicing-EN16931) et KoSIT
+  `validation-1.3.17` of ConnectingEurope/eInvoicing-EN16931) and KoSIT
   **XRechnung 3.0.2 / schematron 2.6.0** (`xrechnung-3.0.2-schematron-2.6.0.zip`,
   itplr-kosit/xrechnung-schematron).
-- **Pas de Java** : aucun adaptateur ne lance de JVM. Le seul moteur XSLT 2.0
-  est `saxonche` (SaxonC-HE compilé en bibliothèque native GraalVM :
-  `saxonche.dylibs/libsaxonc-core-he.13.1.1.dylib`, 97 Mo).
-- **Pas de réseau** pendant `survey` et `bench` : les seuls appels réseau
-  trouvés dans le code des librairies mesurées (factur-x : schematron par un
-  serveur Saxon HTTP ; mcp-einvoicing-de : validateur KoSIT distant) ne sont
-  pas empruntés (voir leurs fiches).
+- **No Java**: no adapter starts a JVM. The only XSLT 2.0 engine
+  is `saxonche` (SaxonC-HE compiled as a GraalVM native library:
+  `saxonche.dylibs/libsaxonc-core-he.13.1.1.dylib`, 97 MB).
+- **No network** during `survey` and `bench`: the only network calls
+  found in the code of the measured libraries (factur-x: schematron through a
+  Saxon HTTP server; mcp-einvoicing-de: remote KoSIT validator) are never
+  exercised (see the library notes).
 
-Lancement : `./run.sh setup`, puis `./run.sh survey [lib…]` et
-`./run.sh bench [lib…]` (variables `OUT`, `COUNT`, `BENCHTIME` ; aussi
-`CHECK_TIMEOUT` = 30 s pour l'appel de contrôle d'un benchmark,
-`SURVEY_TIMEOUT` = 10 s par fichier du relevé, `CHILD_TIMEOUT` = 1800 s par
-processus fils). Chaque benchmark tourne dans un **processus fils neuf**, si
-bien que `first_call_ns` est un vrai premier appel (imports déjà faits,
-caches de la librairie froids). Le relevé lance un processus par librairie.
+How to run: `./run.sh setup`, then `./run.sh survey [lib…]` and
+`./run.sh bench [lib…]` (variables `OUT`, `COUNT`, `BENCHTIME`; also
+`CHECK_TIMEOUT` = 30 s for a benchmark's check call,
+`SURVEY_TIMEOUT` = 10 s per survey file, `CHILD_TIMEOUT` = 1800 s per
+child process). Each benchmark runs in a **fresh child process**, so
+`first_call_ns` is a true first call (imports already done, library caches
+cold). The survey starts one process per library.
 
-Les chemins `paquet/fichier.py:ligne` ci-dessous sont relatifs à
+The `package/file.py:line` paths below are relative to
 `.venv/lib/python3.13/site-packages/`.
 
-## Résultats du relevé (`./run.sh survey`)
+## Survey results (`./run.sh survey`)
 
-| Librairie | validate (signalés / 26) | parse (/ 26) | extract (/ 104) |
+| Library | validate (flagged / 26) | parse (/ 26) | extract (/ 104) |
 |---|---|---|---|
-| factur-x 7.10 | 0 (XSD seule) | 26 | 104 (97 avec `check_xsd=True`, la valeur par défaut) |
-| drafthorse 2025.2.0 | 0 (XSD seule) | 26 | — |
-| pycheval 0.4.0 | — | 7 | 65 (39 boucles infinies coupées) |
-| getafix 0.5.0 | 6 (six exceptions, aucune règle détectée) | 20 | 104 |
+| factur-x 7.10 | 0 (XSD only) | 26 | 104 (97 with `check_xsd=True`, the default) |
+| drafthorse 2025.2.0 | 0 (XSD only) | 26 | — |
+| pycheval 0.4.0 | — | 7 | 65 (39 infinite loops cut off) |
+| getafix 0.5.0 | 6 (six exceptions, no rule detected) | 20 | 104 |
 | zugferd-pdf 0.1.2 | — | — | 104 |
 | erechnung 0.3.0 | — | — | — |
 | mcp-einvoicing-de 0.11.4 | 2 (FX-SCH-A-000571 ×2) | 20 | 104 |
-| saxonche + XSLT officiels | **6** (BR-CL-25 ×2, CII-SR-465 ×4) | — | — |
+| saxonche + official XSLT | **6** (BR-CL-25 ×2, CII-SR-465 ×4) | — | — |
 
-« — » : l'opération n'existe pas dans la librairie (rien n'est écrit dans
+"—": the operation does not exist in the library (nothing is written to
 `survey_python.jsonl`).
 
-**Référence 6/26 reproduite** par `saxonche-schematron`, et expliquée : avec
-le CEN 1.3.17 seul, les quatre `XRECHNUNG_*.cii.xml` ne lèvent que
-CII-SR-465, de niveau `warning` dans le schematron CEN. Le validateur KoSIT
-(validator-configuration-xrechnung v2026-08-31, CHANGELOG « custom level
-error for CII-SR-465 and CII-SR-466 ») relève CII-SR-465/466 au niveau
-`error` et abaisse CII-SR-475/476 au niveau `information` dans le scénario
-CII. L'adaptateur applique ces niveaux quand BT-24 désigne XRechnung
-(`adapters/saxonche_schematron.py`, `_KOSIT_CUSTOM_LEVEL`) ; le paquet Go
-compte aussi CII-SR-465 comme une erreur (`internal/rules/en16931/syntax.go`).
-Les deux BR-CL-25 (schéma d'adresse électronique `EM` hors liste EAS) sont
-sur `EN16931_ElektronischeAdresse` et `EN16931_RechnungsUebertragung`.
-Contrôle de sensibilité : un GrandTotal modifié donne BR-CO-15 et BR-CO-16.
-Le fichier `not_validating_full_invoice…` du corpus ne lève aucune erreur
-fatal/error avec les XSLT officiels (ni avec les XSD Factur-X de factur-x et
-drafthorse) : son nom vient du corpus.
+**Reference 6/26 reproduced** by `saxonche-schematron`, and explained: with
+CEN 1.3.17 alone, the four `XRECHNUNG_*.cii.xml` raise only CII-SR-465,
+which is `warning` level in the CEN schematron. The KoSIT validator
+(validator-configuration-xrechnung v2026-08-31, CHANGELOG "custom level
+error for CII-SR-465 and CII-SR-466") raises CII-SR-465/466 to `error`
+level and lowers CII-SR-475/476 to `information` level in the CII
+scenario. The adapter applies these levels when BT-24 designates XRechnung
+(`adapters/saxonche_schematron.py`, `_KOSIT_CUSTOM_LEVEL`); the Go package
+also counts CII-SR-465 as an error (`internal/rules/en16931/syntax.go`).
+The two BR-CL-25 (electronic address scheme `EM` not in the EAS list) are
+on `EN16931_ElektronischeAdresse` and `EN16931_RechnungsUebertragung`.
+Sensitivity check: a modified GrandTotal yields BR-CO-15 and BR-CO-16.
+The corpus file `not_validating_full_invoice…` raises no fatal/error with
+the official XSLT (nor with the Factur-X XSD of factur-x and
+drafthorse): its name comes from the corpus.
 
-Détail des écarts à la référence :
+Details of the deviations from the reference:
 
-- **getafix 6/26** : les six signalements sont des exceptions de lecture, pas
-  des règles. Quatre `XRECHNUNG_*` refusés (« not a valid Profile »),
-  `EN16931_Betriebskostenabrechnung` (`ValueError` vide),
+- **getafix 6/26**: the six flags are parsing exceptions, not rules. Four
+  `XRECHNUNG_*` rejected ("not a valid Profile"),
+  `EN16931_Betriebskostenabrechnung` (empty `ValueError`),
   `EN16931_Physiotherapeut` (`TypeError: ProcuringProject.__init__() missing
-  … 'id' and 'name'`). Les deux BR-CL-25 ne sont pas vus (aucune règle
-  BR-CL dans getafix).
-- **mcp-einvoicing-de 2/26** : FX-SCH-A-000571 (équivalent FeRD de BR-CL-25)
-  sur les deux mêmes fichiers que la référence. Les XRECHNUNG passent :
-  CII-SR-465 reste un avertissement, et la librairie ne compte que les
-  erreurs (verdict de la librairie, conforme à sa documentation).
-- **factur-x, drafthorse 0/26** : validation XSD seule, et les 26 fichiers
-  sont conformes au XSD.
-- **parse** : pycheval refuse EXTENDED et XRECHNUNG (`pycheval/parse.py:356-361`),
-  les TypeCode 204, 387, 389, 575, le SubjectCode ADU, le schéma `EM`, et
-  les éléments vides (`BuyerAssignedID`, `LineTwo`,
-  `AttachmentBinaryObject`). mcp-einvoicing-de refuse 5 numéros de TVA
-  allemands d'exemple dont la clé de contrôle est fausse (DE123456789,
-  DE234567891) et une remise négative (modèle pydantic strict). getafix :
-  mêmes six fichiers que pour validate.
-- **extract** : pycheval boucle sans fin dès que la première pièce jointe
-  ne s'appelle pas `factur-x.xml` (`pycheval/pdf_extract.py:30-32`,
-  `while doc: if doc[0] == FACTURX_FILENAME: break` sans avancer) ; le
-  harnais coupe l'appel au bout de `SURVEY_TIMEOUT`. factur-x avec ses
-  options par défaut (`check_xsd=True`) refuse 7 XML extraits non conformes
-  au XSD.
+  … 'id' and 'name'`). The two BR-CL-25 are not seen (no BR-CL rule in
+  getafix).
+- **mcp-einvoicing-de 2/26**: FX-SCH-A-000571 (FeRD equivalent of BR-CL-25)
+  on the same two files as the reference. The XRECHNUNG files pass:
+  CII-SR-465 stays a warning, and the library counts only errors (the
+  library's verdict, consistent with its documentation).
+- **factur-x, drafthorse 0/26**: XSD validation only, and all 26 files
+  conform to the XSD.
+- **parse**: pycheval rejects EXTENDED and XRECHNUNG (`pycheval/parse.py:356-361`),
+  TypeCodes 204, 387, 389, 575, SubjectCode ADU, the `EM` scheme, and
+  empty elements (`BuyerAssignedID`, `LineTwo`,
+  `AttachmentBinaryObject`). mcp-einvoicing-de rejects 5 sample German VAT
+  numbers with a wrong check digit (DE123456789, DE234567891) and a
+  negative allowance (strict pydantic model). getafix: the same six files
+  as for validate.
+- **extract**: pycheval loops forever as soon as the first attachment is
+  not named `factur-x.xml` (`pycheval/pdf_extract.py:30-32`,
+  `while doc: if doc[0] == FACTURX_FILENAME: break` without advancing); the
+  harness cuts the call off after `SURVEY_TIMEOUT`. factur-x with its
+  default options (`check_xsd=True`) rejects 7 extracted XML files that do
+  not conform to the XSD.
 
-## Fiches : librairies retenues
+## Library notes: selected libraries
 
 ### factur-x 7.10 (Akretion)
 
-BSD, dernière version 2026-10-30, 411 142 téléchargements le mois dernier
-(pypistats). La librairie de référence de l'écosystème (Odoo).
+BSD, latest release 2026-10-30, 411,142 downloads last month
+(pypistats). The reference library of the ecosystem (Odoo).
 
-- Lecture : `parse_ubl_cii_xml` (`facturx/parse_xml.py:49`, XSD par défaut
-  ligne 56) vers un dictionnaire ; écriture `generate_cii_xml`
-  (`facturx/generate_xml.py:2351`) et `generate_ubl_xml` (ligne 3607).
-- PDF : `get_xml_from_pdf` (`facturx/facturx.py:662`),
-  `generate_from_binary` (ligne 1425, XMP PDF/A-3, sans conversion PDF/A,
-  passe par un fichier temporaire).
-- XSD embarqués : Factur-X **1.09** (5 profils,
+- Parsing: `parse_ubl_cii_xml` (`facturx/parse_xml.py:49`, XSD by default
+  at line 56) into a dictionary; writing: `generate_cii_xml`
+  (`facturx/generate_xml.py:2351`) and `generate_ubl_xml` (line 3607).
+- PDF: `get_xml_from_pdf` (`facturx/facturx.py:662`),
+  `generate_from_binary` (line 1425, PDF/A-3 XMP, no PDF/A conversion,
+  goes through a temporary file).
+- Bundled XSD: Factur-X **1.09** (5 profiles,
   `facturx/xsd_and_schematron/facturx-*/Factur-X_*.xsd`), UBL 2.1,
   ZUGFeRD 1.0, CII D22B (extended CTC FR).
-- Schematrons embarqués : Factur-X **1.09.2** (FNFE-MPE/FeRD, 5 profils ;
-  le XSLT EN 16931 compte 200 identifiants BR, 14 CII-SR et 218 FX-SCH),
-  BR-FR-Flux2 CII et UBL (124 identifiants BR-FR), CEN UBL **1.3.16**.
-  Mais `xml_check_schematron` ne les exécute **que par un POST HTTP vers un
-  serveur Saxon** (`facturx/facturx.py:495` `requests.post`, URL par défaut
-  `http://localhost:5000/transform` ligne 179 ; les codedb sont servies
-  depuis raw.githubusercontent.com, lignes 182-186). Ce serveur n'est pas
-  fourni (il faut une JVM) : hors ligne, la validation se réduit au XSD.
-- `generate_cii_xml` a `check_schematron="base"` par défaut
-  (`generate_xml.py:2355`) : l'adaptateur passe `check_schematron=False`
-  pour ne rien envoyer au réseau.
-- Pas de contrôle natif d'un PDF hybride (`CheckPDF` non supporté).
+- Bundled schematrons: Factur-X **1.09.2** (FNFE-MPE/FeRD, 5 profiles;
+  the EN 16931 XSLT counts 200 BR identifiers, 14 CII-SR and 218 FX-SCH),
+  BR-FR-Flux2 CII and UBL (124 BR-FR identifiers), CEN UBL **1.3.16**.
+  But `xml_check_schematron` runs them **only through an HTTP POST to a
+  Saxon server** (`facturx/facturx.py:495` `requests.post`, default URL
+  `http://localhost:5000/transform` at line 179; the codedb files are served
+  from raw.githubusercontent.com, lines 182-186). That server is not
+  provided (it needs a JVM): offline, validation comes down to the XSD.
+- `generate_cii_xml` has `check_schematron="base"` by default
+  (`generate_xml.py:2355`): the adapter passes `check_schematron=False`
+  so that nothing is sent over the network.
+- No native hybrid PDF check (`CheckPDF` not supported).
 
 ### drafthorse 2025.2.0 (pretix)
 
-Apache-2.0, dernière version 2025-09-15, 156 671 téléchargements/mois.
+Apache-2.0, latest release 2025-09-15, 156,671 downloads/month.
 
-- Modèle objet complet, `Document.parse` et `Document.serialize`
-  (`drafthorse/models/elements.py:70-78` : la sérialisation revalide la
-  sortie contre le XSD, ce qui entre dans `Write_*`).
-- XSD Factur-X **1.0.07** des 5 profils (`drafthorse/schema/Factur-X_1.0.07_*.xsd`,
-  `drafthorse/utils.py:14-15`), aucun schematron.
-- `attach_xml` (`drafthorse/pdf.py:47`) : XMP PDF/A-3, reprend les
-  OutputIntents de l'hôte ; pas de lecture de PDF (README).
+- Full object model, `Document.parse` and `Document.serialize`
+  (`drafthorse/models/elements.py:70-78`: serialization revalidates the
+  output against the XSD, which counts toward `Write_*`).
+- Factur-X **1.0.07** XSD for the 5 profiles (`drafthorse/schema/Factur-X_1.0.07_*.xsd`,
+  `drafthorse/utils.py:14-15`), no schematron.
+- `attach_xml` (`drafthorse/pdf.py:47`): PDF/A-3 XMP, reuses the host's
+  OutputIntents; no PDF reading (README).
 
 ### PyCheval 0.4.0
 
-Apache-2.0, dernière version 2026-11-16, 3 561 téléchargements/mois.
+Apache-2.0, latest release 2026-11-16, 3,561 downloads/month.
 
-- Le README annonce Factur-X 1.09.2, le code déclare
+- The README announces Factur-X 1.09.2, the code declares
   `FACTURX_VERSION = "1.0.07"` (`pycheval/__init__.py:19`).
-- Modèles MINIMUM, BASIC WL, BASIC, EN 16931 ; EXTENDED et XRECHNUNG
-  refusés à la lecture (`pycheval/parse.py:356-361`). 52 contrôles de
-  structure `raise ModelError` dans `pycheval/model.py`, pas de règles BR.
-- Extraction : boucle infinie décrite plus haut ; filtre aussi sur
+- Models MINIMUM, BASIC WL, BASIC, EN 16931; EXTENDED and XRECHNUNG
+  rejected at parse time (`pycheval/parse.py:356-361`). 52 structural
+  checks `raise ModelError` in `pycheval/model.py`, no BR rules.
+- Extraction: the infinite loop described above; also filters on
   `/Subtype /text/xml`.
-- Contrôle de l'AFRelationship selon le pays (fr, de) à la lecture d'un PDF
-  (`pycheval/pdf_parse.py:85-110`) : seul contrôle de conteneur.
-- Injection : l'API publique (`embed_facturx_file_in_pdf`,
-  `pycheval/pdf_embed.py:77`) lit le XML depuis un fichier ; l'adaptateur
-  appelle `_embed` (ligne 133) avec les mêmes options par défaut
-  (relation Data) pour rester en mémoire.
+- Check of the AFRelationship by country (fr, de) when reading a PDF
+  (`pycheval/pdf_parse.py:85-110`): the only container check.
+- Embedding: the public API (`embed_facturx_file_in_pdf`,
+  `pycheval/pdf_embed.py:77`) reads the XML from a file; the adapter
+  calls `_embed` (line 133) with the same default options
+  (Data relationship) to stay in memory.
 
 ### getafix 0.5.0
 
-Apache-2.0, dernière version 2026-11-10, 2 092 téléchargements/mois.
+Apache-2.0, latest release 2026-11-10, 2,092 downloads/month.
 
-- Modèle typé BT/BG, lecture et écriture CII (ElementTree de la stdlib).
-- Profils : enum « Factur-X 1.08 / ZUGFeRD 2.4 » (`getafix/schema/types.py:6-7`),
-  5 profils, pas de XRECHNUNG.
-- Règles codées à la main : 90 identifiants BR-* distincts dans le paquet
-  (comptés par AST), dont **89 des 223 règles BR du CEN 1.3.17** (après
-  normalisation BR-05/BR-5 et BR-IG/BR-AF), **aucune BR-CL**, aucune
-  CII-SR/CII-DT ; plus 16 BR-FXEXT-* (surcouche EXTENDED) et 11 GETAFIX-*
-  (`getafix/rules/*.py`). Les `ValidationWarning` ne comptent pas.
-- PDF : `extract_xml(pdf: Path)` (`getafix/pdf.py:92`) n'accepte qu'un
-  chemin (la lecture du fichier est dans la mesure) ; `attach_xml`
-  (ligne 45) ajoute une pièce jointe générique et, selon sa documentation
-  (lignes 18-20), ne rend pas le document PDF/A-3.
+- Typed BT/BG model, CII parsing and writing (stdlib ElementTree).
+- Profiles: enum "Factur-X 1.08 / ZUGFeRD 2.4" (`getafix/schema/types.py:6-7`),
+  5 profiles, no XRECHNUNG.
+- Hand-coded rules: 90 distinct BR-* identifiers in the package
+  (counted from the AST), including **89 of the 223 BR rules of CEN 1.3.17**
+  (after normalizing BR-05/BR-5 and BR-IG/BR-AF), **no BR-CL**, no
+  CII-SR/CII-DT; plus 16 BR-FXEXT-* (EXTENDED overlay) and 11 GETAFIX-*
+  (`getafix/rules/*.py`). `ValidationWarning`s do not count.
+- PDF: `extract_xml(pdf: Path)` (`getafix/pdf.py:92`) only accepts a
+  path (reading the file is inside the measurement); `attach_xml`
+  (line 45) adds a generic attachment and, according to its documentation
+  (lines 18-20), does not make the document PDF/A-3.
 
 ### zugferd-pdf 0.1.2 (module `zugferd`)
 
-MIT, dernière version 2026-08-25, 97 téléchargements/mois.
+MIT, latest release 2026-08-25, 97 downloads/month.
 
-- Écriture depuis un modèle maison (`generate_facturx_xml`), extraction
-  (`zugferd/extractor.py:13`), packaging PDF/A-3U
-  (`zugferd/pdfa_packager.py:140` : ajoute un OutputIntent sRGB et un XMP
-  PDF/A-3U, AFRelationship Alternative).
-- `validate_zugferd_pdf` (`zugferd/validator.py:78`) est le seul
-  « CheckPDF » natif du banc, mais il est fait maison : XMP, OutputIntent,
-  /AF, liste BT-24, BR-DEC-23 et décimales de BT-112 ; pas de schematron
-  malgré le README. Faux positifs : `pdfaid:part` n'est cherché que sous
-  forme d'élément (ligne 124), si bien que le `EN16931_Einfach.pdf`
-  officiel (XMP en attributs) est signalé « Missing pdfaid:part » et
-  « Missing /OutputIntents » (ligne 184).
-- Pas de lecture XML vers modèle : `Write_*` part d'un modèle construit à
-  la main (`adapters/zugferd_pdf.py`, `hand_model`).
+- Writing from an in-house model (`generate_facturx_xml`), extraction
+  (`zugferd/extractor.py:13`), PDF/A-3U packaging
+  (`zugferd/pdfa_packager.py:140`: adds an sRGB OutputIntent and a PDF/A-3U
+  XMP, AFRelationship Alternative).
+- `validate_zugferd_pdf` (`zugferd/validator.py:78`) is the only native
+  "CheckPDF" in the bench, but it is home-made: XMP, OutputIntent,
+  /AF, BT-24 list, BR-DEC-23 and BT-112 decimals; no schematron
+  despite the README. False positives: `pdfaid:part` is only looked for as
+  an element (line 124), so the official `EN16931_Einfach.pdf`
+  (XMP in attributes) is flagged "Missing pdfaid:part" and
+  "Missing /OutputIntents" (line 184).
+- No XML-to-model parsing: `Write_*` starts from a hand-built model
+  (`adapters/zugferd_pdf.py`, `hand_model`).
 
 ### erechnung 0.3.0
 
-MIT, dernière version 2026-08-28, 116 téléchargements/mois.
+MIT, latest release 2026-08-28, 116 downloads/month.
 
-- Génération seule : PDF DIN 5008 dessiné par reportlab, XML CII EN 16931
-  ou XRechnung 3.0 (`erechnung/xml.py:16-18`), puis attaché par factur-x
+- Generation only: DIN 5008 PDF drawn by reportlab, CII XML EN 16931
+  or XRechnung 3.0 (`erechnung/xml.py:16-18`), then attached by factur-x
   (`erechnung/generator.py:7`, 72).
-- Mesuré : `calculate` + `xml_bytes`, la partie XML du chemin public
-  `Invoice.zugferd_file`, sur un modèle construit à la main
-  (`adapters/erechnung.py`). `erechnung/validation.py` ne contrôle que les
-  données d'entrée Python (IBAN, pays, dates…).
+- Measured: `calculate` + `xml_bytes`, the XML part of the public path
+  `Invoice.zugferd_file`, on a hand-built model
+  (`adapters/erechnung.py`). `erechnung/validation.py` only checks the
+  Python input data (IBAN, country, dates…).
 
 ### mcp-einvoicing-de 0.11.4 (+ mcp-einvoicing-core 1.35.0)
 
-Apache-2.0, dernière version 2026-09-12, 287 téléchargements/mois (core :
-1 582). Serveur MCP ; on n'utilise que la couche bibliothèque.
+Apache-2.0, latest release 2026-09-12, 287 downloads/month (core:
+1,582). An MCP server; only the library layer is used.
 
-- Lecture / écriture : `ZUGFeRDCIIParser`, `ZUGFeRDCIISerializer`,
+- Parsing / writing: `ZUGFeRDCIIParser`, `ZUGFeRDCIISerializer`,
   `XRechnungUBLParser/Serializer` (`mcp_einvoicing_de/serializers.py:26-95`),
-  modèle pydantic strict (clé de contrôle des n° de TVA allemands). Le
-  sérialiseur perd les pièces jointes (`Write_Large` impossible à comparer
-  octet à octet).
-- Validation locale `invoice_validate` : XSLT embarqués exécutés par
+  strict pydantic model (check digit of German VAT numbers). The
+  serializer drops attachments (`Write_Large` cannot be compared
+  byte for byte).
+- Local validation `invoice_validate`: bundled XSLT run by
   saxonche (`mcp_einvoicing_de/validators/schematron.py:69-84`,
-  `tools/invoice_validate.py:172-195`). Profil EN 16931 : XSLT FeRD
-  Factur-X **1.09.2** (en-tête du fichier ; la docstring ligne 10 dit encore
-  1.08). XRECHNUNG : CEN EN 16931 CII (compilé par SchXslt 1.10.1, depuis la
-  configuration KoSIT 2026-08-31, donc CEN **1.3.16**) puis
-  XRechnung-CII-validation.xsl « Schematron Version 2.6.0 / XRechnung
-  3.0.2 », mêmes identifiants de règles que l'artefact officiel 2.6.0
-  (39 BR-DE, 7 BR-DEX, 6 BR-TMP, 22 PEPPOL-EN16931) mais fichier pas
-  identique octet à octet. Seules les erreurs fatal/error comptent.
-- Coût : `_run_one_stylesheet` (`tools/invoice_validate.py:278`) construit
-  un nouveau validateur à chaque appel, donc un nouveau `PySaxonProcessor`
-  et une recompilation de la feuille (`mcp_einvoicing_core/schematron.py:381-384`) :
-  ~0,1 à 0,2 s par validation, c'est le coût réel de l'API.
-- Réseau : la validation KoSIT distante (`validators/kosit.py`, httpx) est
-  désactivée par défaut depuis la 0.11 (`cloud_validate=False`,
-  `tools/invoice_validate.py:40` lit `EINVOICING_DE_KOSIT_ENABLE`).
-  L'adaptateur force cette variable à `0` avant l'import et vérifie
-  `validator_used == "local_schematron"` à chaque appel.
-- Pas d'usage des XSD trouvés dans le paquet DE ; pas de contrôle de PDF
-  hybride (`PDFEmbedder.identify` ne lit que le XMP).
+  `tools/invoice_validate.py:172-195`). EN 16931 profile: FeRD XSLT
+  Factur-X **1.09.2** (file header; the docstring at line 10 still says
+  1.08). XRECHNUNG: CEN EN 16931 CII (compiled by SchXslt 1.10.1, from the
+  KoSIT 2026-08-31 configuration, hence CEN **1.3.16**) then
+  XRechnung-CII-validation.xsl "Schematron Version 2.6.0 / XRechnung
+  3.0.2", same rule identifiers as the official 2.6.0 artifact
+  (39 BR-DE, 7 BR-DEX, 6 BR-TMP, 22 PEPPOL-EN16931) but the file is not
+  byte-for-byte identical. Only fatal/error results count.
+- Cost: `_run_one_stylesheet` (`tools/invoice_validate.py:278`) builds
+  a new validator on every call, hence a new `PySaxonProcessor`
+  and a recompilation of the stylesheet (`mcp_einvoicing_core/schematron.py:381-384`):
+  ~0.1 to 0.2 s per validation, which is the real cost of the API.
+- Network: remote KoSIT validation (`validators/kosit.py`, httpx) has been
+  disabled by default since 0.11 (`cloud_validate=False`,
+  `tools/invoice_validate.py:40` reads `EINVOICING_DE_KOSIT_ENABLE`).
+  The adapter forces this variable to `0` before the import and checks
+  `validator_used == "local_schematron"` on every call.
+- No use of the XSD found in the DE package; no hybrid PDF
+  check (`PDFEmbedder.identify` only reads the XMP).
 
-### saxonche 13.1.1 + XSLT officiels (validateur de référence)
+### saxonche 13.1.1 + official XSLT (reference validator)
 
-SaxonC-HE, MPL-2.0 selon Saxonica (champ licence vide sur PyPI), dernière
-version 2026-10-27, 1 978 505 téléchargements/mois. Natif, sans JVM.
+SaxonC-HE, MPL-2.0 according to Saxonica (empty license field on PyPI),
+latest release 2026-10-27, 1,978,505 downloads/month. Native, no JVM.
 
-- XSLT CEN EN 16931 CII 1.3.17 : 223 identifiants BR (dont 23 BR-CL et
-  21 BR-DEC), 486 CII-SR, 103 CII-DT. Plus le XSLT KoSIT XRechnung 2.6.0
-  quand BT-24 désigne XRechnung, avec les niveaux personnalisés KoSIT
-  (voir plus haut).
-- Compilation des deux feuilles au premier appel (0,15 à 0,3 s, compris
-  dans `first_call_ns`), puis 1 à 15 ms par facture du banc.
-- Seulement `ParseValidate_*` (validateur seul).
+- CEN EN 16931 CII 1.3.17 XSLT: 223 BR identifiers (including 23 BR-CL and
+  21 BR-DEC), 486 CII-SR, 103 CII-DT. Plus the KoSIT XRechnung 2.6.0 XSLT
+  when BT-24 designates XRechnung, with the KoSIT custom levels
+  (see above).
+- Both stylesheets are compiled on the first call (0.15 to 0.3 s, included
+  in `first_call_ns`), then 1 to 15 ms per bench invoice.
+- Only `ParseValidate_*` (validator only).
 
-## Statut des benchmarks
+## Benchmark status
 
-Essai `COUNT=1 BENCHTIME=0.2 ./run.sh bench` (2 min 30 s pour les
-8 librairies × 16 benchmarks ; les durées ne sont pas à retenir) :
+Trial run `COUNT=1 BENCHTIME=0.2 ./run.sh bench` (2 min 30 s for the
+8 libraries × 16 benchmarks; the durations are not meant to be quoted):
 
-| Librairie | ok | unsupported | fail |
+| Library | ok | unsupported | fail |
 |---|---|---|---|
 | factur-x | 14 | CheckPDF ×2 | — |
 | drafthorse | 10 | Extract ×4, CheckPDF ×2 | — |
-| pycheval | 6 | ParseValidate ×3, CheckPDF ×2 | Extract_Large, Extract_Extended (boucle infinie, coupée à 30 s), Parse_Lines et Write_Lines (`BuyerAssignedID has no text`), Parse_Large (profil XRECHNUNG refusé) |
-| getafix | 12 | CheckPDF ×2 | Parse_Large, ParseValidate_Large (profil XRECHNUNG refusé) |
+| pycheval | 6 | ParseValidate ×3, CheckPDF ×2 | Extract_Large, Extract_Extended (infinite loop, cut off at 30 s), Parse_Lines and Write_Lines (`BuyerAssignedID has no text`), Parse_Large (XRECHNUNG profile rejected) |
+| getafix | 12 | CheckPDF ×2 | Parse_Large, ParseValidate_Large (XRECHNUNG profile rejected) |
 | zugferd-pdf | 9 | Parse ×3, ParseValidate ×3, Write_Lines | — |
 | erechnung | 1 (Write_Small) | 15 | — |
 | mcp-einvoicing-de | 14 | CheckPDF ×2 | — |
 | saxonche-schematron | 3 (ParseValidate) | 13 | — |
 
-Points à connaître pour lire les chiffres :
+Things to know when reading the numbers:
 
-- `Write_*` part du modèle produit par le parseur de la librairie (lecture
-  hors mesure). zugferd-pdf et erechnung n'ont pas de parseur : `Write_Small`
-  part d'un modèle construit à la main d'après `EN16931_Einfach`
-  (`note: "modèle construit à la main"`), `Write_Lines` est `unsupported`.
-- `Embed_*` est relu avec la librairie elle-même quand elle sait extraire,
-  sinon avec factur-x (`note: "relu avec factur-x"`, cas de drafthorse).
-- factur-x `Parse_*` inclut la validation XSD (option par défaut), d'où
-  `Parse_Large` plus lent que `ParseValidate_Large` (XSD seule).
-- drafthorse `Write_*` revalide la sortie contre le XSD (comportement de
+- `Write_*` starts from the model produced by the library's parser (parsing
+  outside the measurement). zugferd-pdf and erechnung have no parser: `Write_Small`
+  starts from a hand-built model based on `EN16931_Einfach`
+  (`note: "modèle construit à la main"`), `Write_Lines` is `unsupported`.
+- `Embed_*` is read back with the library itself when it can extract,
+  otherwise with factur-x (`note: "relu avec factur-x"`, the drafthorse case).
+- factur-x `Parse_*` includes XSD validation (default option), hence
+  `Parse_Large` being slower than `ParseValidate_Large` (XSD only).
+- drafthorse `Write_*` revalidates the output against the XSD (behavior of
   `serialize`).
-- getafix `Extract_*` lit le fichier sur disque dans la mesure (API par chemin, cache OS).
-- mcp-einvoicing-de `ParseValidate_*` recompile la feuille XSLT à chaque
-  appel (~0,12 à 0,2 s/op) ; saxonche-schematron compile une fois.
-- Le seul `CheckPDF` natif est celui de zugferd-pdf, contrôles maison.
+- getafix `Extract_*` reads the file from disk inside the measurement
+  (path-based API, OS cache).
+- mcp-einvoicing-de `ParseValidate_*` recompiles the XSLT stylesheet on every
+  call (~0.12 to 0.2 s/op); saxonche-schematron compiles once.
+- The only native `CheckPDF` is zugferd-pdf's, with home-made checks.
 
-## Fiches : librairies écartées
+## Library notes: excluded libraries
 
-| Paquet | Raison |
+| Package | Reason |
 |---|---|
-| en16931 0.2 (b2brouter) | UBL seulement ; validation par l'API distante validex.net |
-| zugferd 0.1.1, xrechnung 0.1.2 | clients de l'API distante xrechnung.dev |
-| beliq 0.7.3, factora 0.1.2, invowerk 1.0.19, facturx-engine 0.1.0 | clients d'API distantes ou de conteneurs Docker |
-| python-invoice-lint 1.0.0 | enveloppe de saxonche + CEN téléchargé à l'exécution dans `~/.cache` (doublon du validateur de référence), API par chemin, recompile à chaque appel, URL de projet « your-org » laissées en place, licence « Other/Proprietary » ; 26 téléchargements/mois |
-| pyfactx 0.7.0 | génération seule, épingle `saxonche<13`, autovalidation par XSLT Factur-X 1.07.2 ; 20/mois |
-| facturxlib 1.0.1 | génération seule, le modèle simplifié ne gère qu'un taux de TVA (EN16931_Einfach en a deux) ; 25/mois ; installé pour essai puis retiré |
-| pydantic-factur-x 0.2.0 | génération seule, dernière version 2023-12 ; 70/mois |
-| factur-x-nolog 1.7.3 | fourche ancienne de factur-x |
-| pyschematron 1.2.5 | moteur Schematron générique pur Python (GPLv3+, 7 401/mois), pas une librairie Factur-X. Essai hors banc avec le `.sch` prétraité du CEN 1.3.17 : verdicts corrects (BR-CL-25 trouvé), mais 12 s pour `EN16931_Einfach`, 33 s pour `EN16931_ElektronischeAdresse` et 97 s pour le fichier CEN complet, contre quelques ms pour saxonche : inutilisable pour ce banc |
-| einvoice 0.0.1 | QR code de facture indienne |
-| invoice2data | extraction de texte de PDF par gabarits, pas de XML |
-| python-ubl, peppol-py | UBL/Peppol seulement, ou transport AS4 |
-| Liaisons Rust/C | aucune trouvée sur PyPI (`core-invoice`, `zugferd-rs`, `facturx-rs`… : 404 sur l'API JSON de PyPI ; rien dans les recherches web et GitHub) |
+| en16931 0.2 (b2brouter) | UBL only; validation through the remote validex.net API |
+| zugferd 0.1.1, xrechnung 0.1.2 | clients of the remote xrechnung.dev API |
+| beliq 0.7.3, factora 0.1.2, invowerk 1.0.19, facturx-engine 0.1.0 | clients of remote APIs or of Docker containers |
+| python-invoice-lint 1.0.0 | wrapper around saxonche + CEN downloaded at run time into `~/.cache` (duplicate of the reference validator), path-based API, recompiles on every call, "your-org" project URLs left in place, "Other/Proprietary" license; 26 downloads/month |
+| pyfactx 0.7.0 | generation only, pins `saxonche<13`, self-validation through the Factur-X 1.07.2 XSLT; 20/month |
+| facturxlib 1.0.1 | generation only, the simplified model handles only one VAT rate (EN16931_Einfach has two); 25/month; installed for a trial, then removed |
+| pydantic-factur-x 0.2.0 | generation only, latest release 2023-12; 70/month |
+| factur-x-nolog 1.7.3 | old fork of factur-x |
+| pyschematron 1.2.5 | generic pure-Python Schematron engine (GPLv3+, 7,401/month), not a Factur-X library. Off-bench trial with the preprocessed CEN 1.3.17 `.sch`: correct verdicts (BR-CL-25 found), but 12 s for `EN16931_Einfach`, 33 s for `EN16931_ElektronischeAdresse` and 97 s for the full CEN file, against a few ms for saxonche: unusable for this bench |
+| einvoice 0.0.1 | Indian invoice QR code |
+| invoice2data | template-based text extraction from PDFs, no XML |
+| python-ubl, peppol-py | UBL/Peppol only, or AS4 transport |
+| Rust/C bindings | none found on PyPI (`core-invoice`, `zugferd-rs`, `facturx-rs`…: 404 on the PyPI JSON API; nothing in web and GitHub searches) |
 
-## Couverture de la norme
+## Coverage of the standard
 
-| Librairie | Version | Licence | Dernière version | Téléchargements | Lecture CII | Écriture CII | UBL | Extraction PDF | Injection PDF | XSD | EN 16931 (CII) | Profils Factur-X (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | Contrôle du conteneur PDF/A-3 | Dépendances externes |
+| Library | Version | License | Latest release | Downloads | CII parsing | CII writing | UBL | PDF extraction | PDF embedding | XSD | EN 16931 (CII) | Factur-X profiles (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | PDF/A-3 container check | External dependencies |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| factur-x | 7.10 | BSD | 2026-11-19 | 411 142/mois | oui (dictionnaire) | oui | oui (lecture, écriture ; XSLT CEN UBL 1.3.16 via serveur Saxon) | oui | oui (XMP PDF/A-3, sans conversion) | oui (Factur-X 1.09, 5 profils) | XSLT FNFE-MPE Factur-X 1.09.2 embarqué, exécuté seulement par un serveur Saxon HTTP ; hors ligne : non | XSD des 5 profils ; schematron des 5 profils via serveur Saxon | XSLT BR-FR-Flux2 (124 règles) via serveur Saxon | non | non | non | lxml, pypdf, requests ; serveur Saxon HTTP (JVM) pour tout schematron |
-| drafthorse | 2025.2.0 | Apache-2.0 | 2025-09-15 | 156 671/mois | oui | oui (revalidée par XSD) | non | non | oui (XMP PDF/A-3) | oui (Factur-X 1.0.07, 5 profils) | non | XSD des 5 profils | non | non | non | non | lxml, pypdf |
-| pycheval | 0.4.0 | Apache-2.0 | 2026-11-16 | 3 561/mois | partiel (7/26 : refuse EXTENDED, XRECHNUNG, plusieurs TypeCode) | oui | non | partiel (65/104, boucle infinie) | oui (API publique par fichier) | non | non (52 contrôles de structure) | MINIMUM, BASIC WL, BASIC, EN 16931 ; pas EXTENDED | non | non (XRECHNUNG refusé) | non | partiel (AFRelationship selon le pays) | pypdf |
-| getafix | 0.5.0 | Apache-2.0 | 2026-11-10 | 2 092/mois | oui (20/26) | oui | non | oui (chemin seulement) | partiel (pièce jointe sans XMP ni PDF/A-3) | non | partiel (89 des 223 règles BR du CEN, aucune BR-CL ni CII-SR) | 5 profils (Factur-X 1.08) ; EXTENDED : 16 règles BR-FXEXT | non | non | non | non | tagic, pypdf |
-| zugferd-pdf | 0.1.2 | MIT | 2026-08-25 | 97/mois | non | oui (modèle maison) | non | oui | oui (ajoute OutputIntent sRGB et XMP PDF/A-3U) | non | non (BR-DEC-23, décimales BT-112) | liste BT-24 seulement | non | non | non | partiel (contrôles maison, faux positifs sur XMP en attributs) | pikepdf, pypdf, lxml, reportlab |
-| erechnung | 0.3.0 | MIT | 2026-08-28 | 116/mois | non | oui (EN 16931, XRechnung 3.0) | non | non | non (dessine son PDF, attaché par factur-x) | non | non (données d'entrée seulement) | non | non | non | non | non | reportlab, factur-x, pikepdf, lxml, pillow |
-| mcp-einvoicing-de | 0.11.4 | Apache-2.0 | 2026-09-12 | 287/mois (core 1 582) | oui (20/26, modèle strict) | oui (avec pertes) | oui (parseur, sérialiseur, XSLT CEN UBL et XRechnung UBL) | oui | oui (pikepdf, XMP pdfaid, OutputIntent sRGB) | non | XSLT FeRD Factur-X 1.09.2 (EN 16931) ou CEN CII 1.3.16 (XRECHNUNG) via saxonche, hors ligne | XSLT FeRD des 5 profils via saxonche | non | XSLT KoSIT XRechnung 3.0.2, schematron 2.6.0 via saxonche | non (22 règles PEPPOL-EN16931 reprises par XRechnung) | non | saxonche (97 Mo natif), pikepdf, pydantic, httpx, fastmcp, cryptography ; KoSIT distant optionnel, désactivé |
-| saxonche + XSLT officiels (référence) | 13.1.1 ; CEN 1.3.17 ; KoSIT 2.6.0 | MPL-2.0 | 2026-10-27 | 1 978 505/mois | — | — | non (XSLT CII seulement) | — | — | non (le CEN ne fournit pas de XSD CII) | XSLT officiel CEN 1.3.17 via Saxon (223 BR, 589 CII-SR/CII-DT) | non | non | XSLT officiel KoSIT 2.6.0 via Saxon, niveaux KoSIT | non (22 règles PEPPOL-EN16931 via XRechnung) | non | saxonche natif (sans JVM) ; artefacts téléchargés par `run.sh setup` |
+| factur-x | 7.10 | BSD | 2026-11-19 | 411,142/month | yes (dictionary) | yes | yes (parsing, writing; CEN UBL 1.3.16 XSLT via Saxon server) | yes | yes (PDF/A-3 XMP, no conversion) | yes (Factur-X 1.09, 5 profiles) | FNFE-MPE Factur-X 1.09.2 XSLT bundled, run only by a Saxon HTTP server; offline: no | XSD for the 5 profiles; schematron for the 5 profiles via Saxon server | BR-FR-Flux2 XSLT (124 rules) via Saxon server | no | no | no | lxml, pypdf, requests; Saxon HTTP server (JVM) for any schematron |
+| drafthorse | 2025.2.0 | Apache-2.0 | 2025-09-15 | 156,671/month | yes | yes (revalidated against the XSD) | no | no | yes (PDF/A-3 XMP) | yes (Factur-X 1.0.07, 5 profiles) | no | XSD for the 5 profiles | no | no | no | no | lxml, pypdf |
+| pycheval | 0.4.0 | Apache-2.0 | 2026-11-16 | 3,561/month | partial (7/26: rejects EXTENDED, XRECHNUNG, several TypeCodes) | yes | no | partial (65/104, infinite loop) | yes (file-based public API) | no | no (52 structural checks) | MINIMUM, BASIC WL, BASIC, EN 16931; not EXTENDED | no | no (XRECHNUNG rejected) | no | partial (AFRelationship by country) | pypdf |
+| getafix | 0.5.0 | Apache-2.0 | 2026-11-10 | 2,092/month | yes (20/26) | yes | no | yes (path only) | partial (attachment without XMP or PDF/A-3) | no | partial (89 of the 223 CEN BR rules, no BR-CL or CII-SR) | 5 profiles (Factur-X 1.08); EXTENDED: 16 BR-FXEXT rules | no | no | no | no | tagic, pypdf |
+| zugferd-pdf | 0.1.2 | MIT | 2026-08-25 | 97/month | no | yes (in-house model) | no | yes | yes (adds an sRGB OutputIntent and a PDF/A-3U XMP) | no | no (BR-DEC-23, BT-112 decimals) | BT-24 list only | no | no | no | partial (home-made checks, false positives on XMP in attributes) | pikepdf, pypdf, lxml, reportlab |
+| erechnung | 0.3.0 | MIT | 2026-08-28 | 116/month | no | yes (EN 16931, XRechnung 3.0) | no | no | no (draws its own PDF, attached by factur-x) | no | no (input data only) | no | no | no | no | no | reportlab, factur-x, pikepdf, lxml, pillow |
+| mcp-einvoicing-de | 0.11.4 | Apache-2.0 | 2026-09-12 | 287/month (core 1,582) | yes (20/26, strict model) | yes (lossy) | yes (parser, serializer, CEN UBL and XRechnung UBL XSLT) | yes | yes (pikepdf, pdfaid XMP, sRGB OutputIntent) | no | FeRD Factur-X 1.09.2 XSLT (EN 16931) or CEN CII 1.3.16 (XRECHNUNG) via saxonche, offline | FeRD XSLT for the 5 profiles via saxonche | no | KoSIT XRechnung 3.0.2 XSLT, schematron 2.6.0 via saxonche | no (22 PEPPOL-EN16931 rules carried over by XRechnung) | no | saxonche (97 MB native), pikepdf, pydantic, httpx, fastmcp, cryptography; remote KoSIT optional, disabled |
+| saxonche + official XSLT (reference) | 13.1.1; CEN 1.3.17; KoSIT 2.6.0 | MPL-2.0 | 2026-10-27 | 1,978,505/month | — | — | no (CII XSLT only) | — | — | no (CEN does not provide a CII XSD) | official CEN 1.3.17 XSLT via Saxon (223 BR, 589 CII-SR/CII-DT) | no | no | official KoSIT 2.6.0 XSLT via Saxon, KoSIT levels | no (22 PEPPOL-EN16931 rules via XRechnung) | no | native saxonche (no JVM); artifacts downloaded by `run.sh setup` |
 
-Téléchargements : pypistats, 30 derniers jours au 2026-11-17. Licences et
-dates : API JSON de PyPI.
+Downloads: pypistats, last 30 days as of 2026-11-17. Licenses and
+dates: PyPI JSON API.
