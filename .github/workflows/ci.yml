@@ -16,7 +16,8 @@ jobs:
   check:
     # Each library is a separate module whose dependencies come from
     # ./run.sh setup; only the modules that build without it are compiled
-    # here: the one that measures ZeRechnung and the two report tools.
+    # here: the one that measures ZeRechnung, the two report tools, the
+    # scoring of the conformance cases and the site generator.
     name: Go modules and scripts
     runs-on: ubuntu-latest
     steps:
@@ -34,11 +35,14 @@ jobs:
           fi
       - name: go vet
         run: |
-          for d in cases go/libs/ritoon-zerechnung go/report report; do
+          for d in cases go/libs/ritoon-zerechnung go/report report site; do
             (cd "$d" && go vet ./...)
           done
       - name: go test (scoring of the conformance cases)
         run: cd cases && go test ./...
+      - name: site builds from the committed records
+        working-directory: site
+        run: go run . -out "$RUNNER_TEMP/site"
       - name: bash -n
         run: |
           for f in $(git ls-files '*.sh'); do

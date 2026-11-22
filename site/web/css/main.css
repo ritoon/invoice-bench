@@ -1,0 +1,619 @@
+/* main.css — design tokens and the few styles Tailwind does not cover.
+ *
+ * Colours are roles, not hex: every component reads these custom properties,
+ * so the light and dark themes swap in one place. Dark is its own set of
+ * steps (validated against the dark surface), not an automatic inversion.
+ */
+
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f2f1ed;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #7a7873;
+  --grid: #e8e7e1;
+  --axis: #c3c2b7;
+  --line: rgba(11, 11, 11, 0.1);
+  --accent: #2a78d6;
+  --accent-ink: #1c5cab;
+  --accent-wash: #eaf2fc;
+  --accent-track: #cde2fb;
+  --other: #a3a19a;
+  --critical: #d03b3b;
+  --critical-wash: #fbeaea;
+  --tooltip: #0b0b0b;
+  --tooltip-ink: #f0efec;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #8f8d87;
+    --grid: #2c2c2a;
+    --axis: #45443f;
+    --line: rgba(255, 255, 255, 0.1);
+    --accent: #3987e5;
+    --accent-ink: #86b6ef;
+    --accent-wash: #16263a;
+    --accent-track: #184f95;
+    --other: #6b6a64;
+    --critical: #e05252;
+    --critical-wash: #3a1a1a;
+    --tooltip: #f0efec;
+    --tooltip-ink: #0b0b0b;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --ink: #f0efec;
+  --ink-2: #c3c2b7;
+  --muted: #8f8d87;
+  --grid: #2c2c2a;
+  --axis: #45443f;
+  --line: rgba(255, 255, 255, 0.1);
+  --accent: #3987e5;
+  --accent-ink: #86b6ef;
+  --accent-wash: #16263a;
+  --accent-track: #184f95;
+  --other: #6b6a64;
+  --critical: #e05252;
+  --critical-wash: #3a1a1a;
+  --tooltip: #f0efec;
+  --tooltip-ink: #0b0b0b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cards and section rhythm */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.prose-site a,
+a.link {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-track);
+  text-underline-offset: 3px;
+}
+.prose-site a:hover,
+a.link:hover {
+  text-decoration-color: currentColor;
+}
+.prose-site code {
+  font-size: 0.85em;
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* Navigation */
+.nav-tab {
+  color: var(--ink-2);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background-color 0.15s, color 0.15s;
+}
+.nav-tab:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.nav-tab[aria-current="page"] {
+  background: var(--ink);
+  color: var(--page);
+}
+
+/* Controls: segmented buttons and chips */
+.segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface-2);
+  border-radius: 10px;
+}
+.segmented button {
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: background-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.segmented button:hover {
+  color: var(--ink);
+}
+.segmented button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.segmented.small button {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.chip:hover {
+  color: var(--ink);
+}
+.chip[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--axis);
+}
+.chip .check {
+  width: 0.75rem;
+  height: 0.75rem;
+  fill: none;
+  stroke: var(--axis);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+.chip[aria-pressed="true"] .check {
+  stroke: var(--accent);
+  opacity: 1;
+}
+
+/* Small tags next to library names */
+.tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+.tag.lang {
+  color: var(--muted);
+  background: transparent;
+  padding: 0;
+  font-weight: 500;
+}
+.tag.self {
+  color: var(--accent-ink);
+  background: var(--accent-wash);
+}
+
+/* Stat tiles */
+.tile-value {
+  font-size: 1.75rem;
+  line-height: 2.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Charts */
+.chart svg {
+  display: block;
+  overflow: visible;
+}
+.chart text {
+  fill: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.chart .label-strong {
+  fill: var(--ink);
+  font-weight: 600;
+  font-size: 12px;
+}
+.chart .label {
+  fill: var(--ink-2);
+  font-size: 12px;
+}
+.chart .grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart .baseline {
+  stroke: var(--axis);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart .hit {
+  fill: transparent;
+  cursor: default;
+}
+.chart .row-hover {
+  fill: var(--surface-2);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.chart g.row:hover .row-hover,
+.chart g.row:focus-visible .row-hover,
+.chart g.row.is-active .row-hover {
+  opacity: 1;
+}
+.chart g.row:focus-visible {
+  outline: none;
+}
+
+/* Tooltip: values lead, labels follow */
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  max-width: 320px;
+  background: var(--tooltip);
+  color: var(--tooltip-ink);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.1s, transform 0.1s;
+}
+.tooltip.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.tooltip .tt-title {
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+.tooltip .tt-sub {
+  opacity: 0.7;
+}
+.tooltip .tt-rows {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 0.9rem;
+  row-gap: 0.1rem;
+  margin-top: 0.4rem;
+}
+.tooltip .tt-k {
+  opacity: 0.7;
+}
+.tooltip .tt-v {
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.tooltip .tt-note {
+  margin-top: 0.4rem;
+  opacity: 0.8;
+}
+
+/* Data tables */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+}
+.data-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--axis);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 1;
+}
+.data-table th.r,
+.data-table td.r {
+  text-align: right;
+}
+.data-table td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--grid);
+  vertical-align: middle;
+}
+.data-table tbody tr {
+  transition: background-color 0.1s;
+}
+.data-table tbody tr:hover,
+.data-table tbody tr.is-active,
+.data-table tbody tr:focus-visible {
+  background: var(--surface-2);
+}
+.data-table tbody tr:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.data-table tr.self td {
+  background: var(--accent-wash);
+}
+.data-table th button.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: inherit;
+  font: inherit;
+}
+.data-table th button.sort:hover {
+  color: var(--ink);
+}
+.data-table th[aria-sort] button.sort {
+  color: var(--ink);
+}
+.data-table th button.sort .arrow {
+  opacity: 0;
+  font-size: 0.65rem;
+}
+.data-table th[aria-sort] button.sort .arrow {
+  opacity: 1;
+}
+
+/* On phones the library column stays put while the figures scroll. */
+@media (max-width: 639px) {
+  .data-table.sticky-first td:first-child,
+  .data-table.sticky-first th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--surface);
+    box-shadow: 1px 0 0 var(--grid);
+  }
+  .data-table.sticky-first tr.self td:first-child {
+    background: var(--accent-wash);
+  }
+  .data-table.sticky-first tbody tr:hover td:first-child,
+  .data-table.sticky-first tbody tr.is-active td:first-child {
+    background: var(--surface-2);
+  }
+}
+
+/* Inline bars in tables (log scale) */
+.ibar {
+  position: relative;
+  height: 6px;
+  width: 100%;
+  min-width: 48px;
+  border-radius: 999px;
+  background: var(--grid);
+}
+.ibar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--other);
+}
+tr.self .ibar > span {
+  background: var(--accent);
+}
+
+/* Agreement matrix glyphs */
+.mx {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+}
+.mx td.cell,
+.mx th.col {
+  padding: 0;
+  width: 18px;
+  min-width: 18px;
+  height: 24px;
+  text-align: center;
+  vertical-align: middle;
+}
+.mx td.cell.ref,
+.mx th.col.ref {
+  background: var(--accent-wash);
+}
+.mx tr.is-active td,
+.mx tbody tr:hover td {
+  box-shadow: inset 0 1px 0 var(--axis), inset 0 -1px 0 var(--axis);
+}
+.mx td.name {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--surface);
+  padding-right: 0.75rem;
+  white-space: nowrap;
+}
+.mx tr.reference td.name,
+.mx tr.self td.name {
+  font-weight: 600;
+}
+.mx tr.reference td {
+  border-bottom: 1px solid var(--axis);
+}
+.mx tr.group td {
+  padding-top: 0.9rem;
+}
+
+.g {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+}
+.g-clean {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--axis);
+}
+.g-match {
+  border-radius: 2px;
+  background: var(--accent);
+}
+.g-miss {
+  border-radius: 2px;
+  border: 1.5px solid var(--accent);
+}
+.g-extra {
+  width: 8px;
+  height: 8px;
+  border-radius: 1.5px;
+  background: var(--critical);
+  transform: rotate(45deg);
+}
+.g-error {
+  position: relative;
+}
+.g-error::before,
+.g-error::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  width: 2px;
+  height: 12px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--critical);
+  transform: rotate(45deg);
+}
+.g-error::after {
+  transform: rotate(-45deg);
+}
+
+/* Meters (coverage) */
+.meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent-track);
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Harvey balls */
+.harvey {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+}
+.harvey circle.ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+.harvey path,
+.harvey circle.fill {
+  fill: var(--accent);
+}
+.harvey.none circle.ring {
+  stroke: var(--axis);
+}
+
+.std td.cell {
+  text-align: center;
+}
+.std.details td.cell {
+  text-align: left;
+  vertical-align: top;
+  min-width: 128px;
+}
+.std .cell-text {
+  display: none;
+}
+.std.details .cell-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--ink-2);
+}
+
+/* Disclosure for table views */
+details.table-view > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+details.table-view > summary::-webkit-details-marker {
+  display: none;
+}
+details.table-view > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 0.35rem;
+  transition: transform 0.15s;
+}
+details.table-view[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+/* Refetch keeps the frame: dim instead of flashing */
+.is-loading {
+  opacity: 0.5;
+}

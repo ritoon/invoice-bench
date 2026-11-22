@@ -1,0 +1,100 @@
+{
+  "source": "Enforced standards table of README.md, surveyed in the libraries' code (files and lines in each COVERAGE.md). Kept by hand: update it with the README.",
+  "columns": [
+    {"id": "xsd", "label": "XSD"},
+    {"id": "en16931", "label": "EN 16931 (CII)"},
+    {"id": "profiles", "label": "Factur-X profiles"},
+    {"id": "brfr", "label": "BR-FR"},
+    {"id": "brde", "label": "BR-DE (XRechnung)"},
+    {"id": "peppol", "label": "Peppol BIS 3 in CII"},
+    {"id": "pdfa", "label": "PDF/A-3 container"},
+    {"id": "ubl", "label": "UBL"}
+  ],
+  "levels": [
+    {"id": "full", "label": "Enforced"},
+    {"id": "partial", "label": "Partial, or in a separate package"},
+    {"id": "external", "label": "Only through a server, Java or a download"},
+    {"id": "none", "label": "No"}
+  ],
+  "rows": [
+    {"name": "ZeRechnung", "lang": "go", "self": true, "cells": [
+      ["full", "Factur-X 1.09.2, CII D16B (XRECHNUNG), UBL 2.1"],
+      ["full", "793 assertions, CEN 1.3.17"],
+      ["full", "544 rules (schematrons 1.09 and 1.09.2)"],
+      ["full", "FNFE-MPE 1.4.0.04"],
+      ["full", "KoSIT 3.0.2, Leitweg-ID and GEBA"],
+      ["full", "3.0.21 (90 assertions)"],
+      ["full", "69 container checks, page content and fonts read; partial conversion"],
+      ["full", "parsing, writing, EN 16931, BR-FR, BR-DE, Peppol validation"]
+    ]},
+    {"name": "@stackforge-eu/factur-x", "lang": "typescript", "usage": "94,000/week", "cells": [
+      ["full", "Factur-X 1.09"], ["none", "no"], ["partial", "XSD only"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"]
+    ]},
+    {"name": "@e-invoice-eu/core", "lang": "typescript", "usage": "63,000/week", "cells": [
+      ["none", "no"], ["none", "no (generation)"], ["partial", "generation"], ["none", "no"], ["partial", "generation"], ["none", "no"], ["none", "no"], ["partial", "writing"]
+    ]},
+    {"name": "@conformo/toolkit", "lang": "typescript", "cells": [
+      ["full", "yes"], ["full", "CEN 1.3.17 (SaxonJS)"], ["partial", "XSD only"], ["full", "Flux 2, if country: \"FR\""], ["full", "KoSIT 3.0.2"], ["partial", "UBL only"], ["partial", "partial"], ["full", "yes"]
+    ]},
+    {"name": "@sweberdev/summand", "lang": "typescript", "cells": [
+      ["full", "yes"], ["full", "CEN 1.3.16"], ["partial", "XMP compared with BT-24"], ["none", "no"], ["full", "KoSIT 2.6.0"], ["none", "no"], ["partial", "partial"], ["partial", "validation"]
+    ]},
+    {"name": "@stafyniaksacha/facturx", "lang": "typescript", "cells": [
+      ["full", "Factur-X 1.09"], ["full", "through the Factur-X 1.09 schematron (SaxonJS)"], ["partial", "yes, without severities"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"]
+    ]},
+    {"name": "factur-x (Akretion)", "lang": "python", "usage": "411,000/month", "cells": [
+      ["full", "Factur-X 1.09"], ["external", "only through a Saxon HTTP server"], ["external", "XSD; schematron through a server"], ["external", "124 rules, through a server"], ["none", "no"], ["none", "no"], ["none", "no"], ["partial", "parsing, writing"]
+    ]},
+    {"name": "drafthorse", "lang": "python", "usage": "157,000/month", "cells": [
+      ["full", "Factur-X 1.0.07"], ["none", "no"], ["partial", "XSD only"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"]
+    ]},
+    {"name": "mcp-einvoicing-de", "lang": "python", "cells": [
+      ["none", "no"], ["full", "FeRD 1.09.2 or CEN 1.3.16 (saxonche)"], ["full", "yes (saxonche)"], ["none", "no"], ["full", "KoSIT 3.0.2"], ["none", "no"], ["none", "no"], ["full", "yes"]
+    ]},
+    {"name": "en16931 + en16931-formats", "lang": "rust", "usage": "9,700 downloads", "cells": [
+      ["none", "no"], ["partial", "CEN 1.3.17 rewritten, 447 of the 522 CII-SR and CII-DT"], ["partial", "partial"], ["none", "no"], ["full", "KoSIT 2.6.0"], ["full", "yes, 3.0.21"], ["partial", "partial"], ["full", "yes"]
+    ]},
+    {"name": "einvoice-validator", "lang": "rust", "cells": [
+      ["full", "yes"], ["full", "CEN 1.3.17 XSLT run in Rust"], ["external", "only with the fetch feature (download)"], ["external", "only with the fetch feature (download)"], ["external", "only with the fetch feature (download)"], ["external", "only with the fetch feature (download)"], ["none", "no"], ["partial", "validation"]
+    ]},
+    {"name": "erechnung-validator", "lang": "rust", "cells": [
+      ["full", "yes"], ["full", "CEN 1.3.16"], ["full", "Factur-X 1.09.2, 5 profiles"], ["none", "no"], ["full", "KoSIT 3.0.2"], ["none", "no"], ["none", "no"], ["partial", "validation"]
+    ]},
+    {"name": "zugferd-rs", "lang": "rust", "cells": [
+      ["full", "Factur-X 1.09.2"], ["partial", "partial (XPath 1.0)"], ["partial", "XSD"], ["none", "no"], ["none", "no"], ["none", "no"], ["partial", "21 veraPDF rules"], ["full", "yes"]
+    ]},
+    {"name": "Mustang", "lang": "java", "cells": [
+      ["full", "Factur-X 1.09.2"], ["full", "through the Factur-X EN16931 schematron"], ["full", "5 profiles (Factur-X 1.09.2)"], ["full", "Flux 2 1.3.0, between French companies"], ["full", "KoSIT 2.4.0"], ["none", "no"], ["full", "veraPDF, XMP, attachment"], ["partial", "parsing"]
+    ]},
+    {"name": "phive + phive-rules", "lang": "java", "cells": [
+      ["full", "CII D16B, Factur-X 1.09.2"], ["full", "CEN 1.3.17 XSLT"], ["full", "5 profiles (ZUGFeRD 2.5.2)"], ["partial", "separate package"], ["full", "KoSIT 2.6.0, KoSIT levels"], ["partial", "separate package"], ["none", "no"], ["partial", "validation"]
+    ]},
+    {"name": "KoSIT validator", "lang": "java", "cells": [
+      ["full", "CII D16B"], ["full", "CEN 1.3.16 XSLT"], ["none", "no"], ["none", "no"], ["full", "KoSIT 2.6.0, KoSIT levels"], ["none", "no"], ["none", "no"], ["partial", "validation"]
+    ]},
+    {"name": "Paniolo", "lang": "java", "cells": [
+      ["full", "CII D16B, Factur-X 1.09.2"], ["full", "CEN 1.3.16 XSLT (KoSIT configuration)"], ["full", "5 profiles"], ["partial", "EXTENDED-CTC-FR profile only"], ["full", "KoSIT XRechnung 3.0.2 configuration"], ["none", "no"], ["full", "veraPDF, XMP, relationship"], ["partial", "parsing, writing"]
+    ]},
+    {"name": "ZUGFeRD-csharp", "lang": "csharp", "usage": "1.8 M downloads", "cells": [
+      ["none", "no"], ["partial", "totals recomputed"], ["partial", "parsing and writing, without rules"], ["none", "no"], ["none", "no"], ["none", "no"], ["none", "no"], ["partial", "XRechnung UBL"]
+    ]},
+    {"name": "International.EInvoicing", "lang": "csharp", "cells": [
+      ["full", "CII D16B"], ["full", "CEN 1.3.16, in-house engine"], ["external", "not offline"], ["partial", "not loaded"], ["partial", "partial (52 assertions)"], ["partial", "separate package"], ["none", "no"], ["full", "yes"]
+    ]},
+    {"name": "Antiphon (commercial)", "lang": "csharp", "cells": [
+      ["full", "CII D16B"], ["full", "CEN 1.3.16 precompiled"], ["partial", "generation only"], ["none", "no"], ["full", "KoSIT 2.6.0, without levels"], ["partial", "separate package"], ["none", "no"], ["partial", "separate packages"]
+    ]},
+    {"name": "Kura", "lang": "cpp", "cells": [
+      ["none", "no"], ["none", "no"], ["partial", "profile inferred for the XMP"], ["none", "no"], ["none", "no"], ["none", "no"], ["partial", "partial (payload, /AF, XMP)"], ["none", "no"]
+    ]},
+    {"name": "horstoeko/zugferd", "lang": "php", "usage": "1.25 M/month", "cells": [
+      ["full", "Factur-X, 5 profiles"], ["external", "not offline (KoSIT through Java)"], ["partial", "XSD only"], ["none", "no"], ["external", "KoSIT through Java only"], ["none", "no"], ["external", "veraPDF through Java only"], ["none", "no"]
+    ]},
+    {"name": "dealerweb/einvoice", "lang": "php", "cells": [
+      ["full", "CII D16B, UBL"], ["full", "CEN 1.3.16 XSLT compiled to PHP"], ["full", "FeRD 1.09.2 schematron"], ["full", "FNFE-MPE 1.4.0 (option)"], ["full", "XRechnung 3.0.2, KoSIT levels"], ["full", "BIS 3.0.21 rewritten"], ["none", "no"], ["full", "yes"]
+    ]},
+    {"name": "intragile/php-einvoicing", "lang": "php", "cells": [
+      ["full", "CII D16B"], ["full", "CEN 1.3.16 schematron precompiled to PHP"], ["full", "Factur-X 1.09.2 schematron"], ["none", "no"], ["full", "XRechnung 2.6.0, KoSIT levels"], ["partial", "not installed"], ["none", "no"], ["full", "yes"]
+    ]}
+  ]
+}

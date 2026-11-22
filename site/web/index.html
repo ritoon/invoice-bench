@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPU & memory · invoice-bench</title>
+  <meta name="description" content="CPU time and peak memory of Factur-X / ZUGFeRD / EN 16931 libraries in nine languages, measured with the same protocol on the official ZUGFeRD corpus.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/common.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="min-h-screen">
+  <a href="#app" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 card px-3 py-2 text-sm">Skip to content</a>
+  <header id="site-header" class="border-b border-line"></header>
+  <main id="app" class="mx-auto max-w-site px-4 sm:px-6">
+    <p class="py-24 text-center text-sm text-muted">Loading the measurements…</p>
+  </main>
+  <footer id="site-footer" class="border-t border-line"></footer>
+
+  <!-- Components -->
+  <script src="components/site-header.js"></script>
+  <script src="components/site-footer.js"></script>
+  <script src="components/tooltip.js"></script>
+  <script src="components/controls.js"></script>
+  <script src="components/range-chart.js"></script>
+  <script src="components/scatter-chart.js"></script>
+  <script src="components/perf-table.js"></script>
+
+  <!-- Page -->
+  <script src="js/perf.js"></script>
+</body>
+</html>
