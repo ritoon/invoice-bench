@@ -1,5 +1,5 @@
-// Command report merges the Go results of this repository's package
-// (bench_facturx.txt, survey_facturx.txt, produced by bench/ecosystem/run.sh)
+// Command report merges the Go results of ZeRechnung
+// (bench_facturx.txt, survey_facturx.txt, produced by ecosystem/run.sh)
 // with the results of the other languages (bench_<lang>.jsonl,
 // survey_<lang>.jsonl: TypeScript, Python, Rust, Java, C#, C, C++, PHP) into
 // Markdown comparison tables. It adds the allocations of one call when the
@@ -44,8 +44,21 @@ type resource struct {
 	child  bool    // the library runs child processes, not counted
 }
 
-// goOneCore is the second Go round of the resources pass, GOMAXPROCS=1.
-const goOneCore = "ZeRechnung, GOMAXPROCS=1"
+// goLib is the name of ZeRechnung in the tables and in the records of
+// run.sh; goOneCore is its second round of the resources pass, GOMAXPROCS=1.
+const (
+	goLib     = "ZeRechnung"
+	goOneCore = "ZeRechnung, GOMAXPROCS=1"
+)
+
+// libName maps "ZeRechnung (ce dépôt)", the name of ZeRechnung in the records
+// written while this harness lived in the repository of ZeRechnung, to goLib.
+func libName(lib string) string {
+	if lib == "ZeRechnung (ce dépôt)" {
+		return goLib
+	}
+	return lib
+}
 
 type group struct {
 	title   string
@@ -112,7 +125,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("<!-- Généré par bench/polyglot/report à partir de %s -->\n", filepath.Base(dir))
+	fmt.Printf("<!-- Généré par polyglot/report à partir de %s -->\n", filepath.Base(dir))
 	printSurveys(surveys)
 	for _, g := range groups {
 		printGroup(g, res, surveys)
@@ -180,7 +193,7 @@ func loadAllocs(dir string) map[key]map[string]alloc {
 		}
 	})
 	for b := range bytes {
-		put(key{"ZeRechnung (ce dépôt)", "go"}, b, alloc{"ok", median(bytes[b]), median(allocs[b]), false})
+		put(key{goLib, "go"}, b, alloc{"ok", median(bytes[b]), median(allocs[b]), false})
 	}
 	files, _ := filepath.Glob(filepath.Join(dir, "alloc_*.jsonl"))
 	for _, f := range files {
@@ -198,7 +211,7 @@ func loadAllocs(dir string) map[key]map[string]alloc {
 			if r.Allocs != nil {
 				a.allocs = *r.Allocs
 			}
-			put(key{r.Lib, r.Lang}, r.Bench, a)
+			put(key{libName(r.Lib), r.Lang}, r.Bench, a)
 		})
 	}
 	return out
@@ -275,7 +288,7 @@ func fmtBytes(b float64) string {
 }
 
 func loadGo(dir string, res map[string]map[key]result, surveys map[key]map[string]string) error {
-	k := key{"ZeRechnung (ce dépôt)", "go"}
+	k := key{goLib, "go"}
 	raw := map[string][]float64{}
 	version := ""
 	err := eachLine(filepath.Join(dir, "bench_facturx.txt"), func(line string) {
@@ -314,8 +327,8 @@ func loadJSONBench(path string, res map[string]map[key]result, notes map[key]map
 		if strings.TrimSpace(line) == "" || json.Unmarshal([]byte(line), &r) != nil {
 			return
 		}
-		k := key{r.Lib, r.Lang}
-		out := result{lib: r.Lib, lang: r.Lang, version: r.Version, status: r.Status, first: r.FirstCallNs, note: r.Note}
+		k := key{libName(r.Lib), r.Lang}
+		out := result{lib: libName(r.Lib), lang: r.Lang, version: r.Version, status: r.Status, first: r.FirstCallNs, note: r.Note}
 		if r.Status == "ok" && len(r.NsPerOp) > 0 {
 			out.ns = median(r.NsPerOp)
 		}
@@ -339,7 +352,7 @@ func loadJSONSurvey(path string, surveys map[key]map[string]string) error {
 		if strings.TrimSpace(line) == "" || json.Unmarshal([]byte(line), &r) != nil {
 			return
 		}
-		k := key{r.Lib, r.Lang}
+		k := key{libName(r.Lib), r.Lang}
 		if surveys[k] == nil {
 			surveys[k] = map[string]string{}
 		}
@@ -364,7 +377,7 @@ func loadResources(path string, rs map[string]map[key]resource) error {
 		} else if r.Status == "ok" {
 			out.status = "fail"
 		}
-		k := key{r.Lib, r.Lang}
+		k := key{libName(r.Lib), r.Lang}
 		if rs[r.Bench] == nil {
 			rs[r.Bench] = map[key]resource{}
 		}
@@ -398,7 +411,7 @@ func printSurveys(s map[key]map[string]string) {
 func printGroup(g group, res map[string]map[key]result, surveys map[key]map[string]string) {
 	libs := map[key]bool{}
 	best := map[string]float64{}
-	goKey := key{"ZeRechnung (ce dépôt)", "go"}
+	goKey := key{goLib, "go"}
 	for _, b := range g.benches {
 		for k, r := range res[b] {
 			if r.status == "unsupported" {
@@ -476,7 +489,7 @@ func printGroup(g group, res map[string]map[key]result, surveys map[key]map[stri
 		}
 		fmt.Println("| " + strings.Join(row, " | ") + " |")
 	}
-	fmt.Printf("\nEn gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go de ce dépôt. Tri sur la colonne « %s » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).\n", g.labels[0])
+	fmt.Printf("\nEn gras : le plus rapide de la colonne. (×n) : temps rapporté à celui du package Go ZeRechnung. Tri sur la colonne « %s » ; « Premier appel » : durée du premier appel dans le processus, même colonne (non mesurée pour Go).\n", g.labels[0])
 }
 
 // printResourcesByLang summarises the resources pass per language: spread of
@@ -525,7 +538,7 @@ func printResGroup(g group, rs map[string]map[key]resource, kind string) {
 	}
 	libs := map[key]bool{}
 	best := map[string]float64{}
-	goKey := key{"ZeRechnung (ce dépôt)", "go"}
+	goKey := key{goLib, "go"}
 	for _, b := range g.benches {
 		for k, r := range rs[b] {
 			if r.status == "unsupported" {
@@ -604,7 +617,7 @@ func printResGroup(g group, rs map[string]map[key]resource, kind string) {
 	if kind == "cpu" {
 		fmt.Printf("Temps CPU par opération (utilisateur + système, tous les fils du processus) sur la série chronométrée ; entre parenthèses, rapporté au temps réel de la même série (100 %% = un cœur). En gras : le plus faible de la colonne. Tri sur la colonne « %s ».\n", g.labels[0])
 	} else {
-		fmt.Printf("Pic de mémoire résidente du processus qui n'a exécuté que ce benchmark, runtime compris. En gras : le plus faible de la colonne. (×n) : rapporté au package Go de ce dépôt. Tri sur la colonne « %s ».\n", g.labels[0])
+		fmt.Printf("Pic de mémoire résidente du processus qui n'a exécuté que ce benchmark, runtime compris. En gras : le plus faible de la colonne. (×n) : rapporté au package Go ZeRechnung. Tri sur la colonne « %s ».\n", g.labels[0])
 	}
 }
 

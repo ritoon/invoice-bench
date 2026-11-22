@@ -1,4 +1,4 @@
-// Benchmarks of this repository's own package, github.com/ritoon/zerechnung,
+// Benchmarks of ZeRechnung, github.com/ritoon/zerechnung,
 // measured with the same harness as the other libraries.
 package facturxbench
 
@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 	"github.com/ritoon/zerechnung"
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
 	"github.com/ritoon/zerechnung/cii"
 	"github.com/ritoon/zerechnung/invoice"
 	"github.com/ritoon/zerechnung/validate"

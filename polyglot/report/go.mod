@@ -1,3 +1,3 @@
-module github.com/ritoon/zerechnung/bench/polyglot/report
+module github.com/ritoon/invoice-bench/polyglot/report
 
 go 1.24

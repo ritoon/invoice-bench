@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Cross-language campaign: this repository's Go package against the
+# Cross-language campaign: ZeRechnung, the Go package, against the
 # TypeScript, Python, Rust, Java, C#, C, C++ and PHP libraries. See PROTOCOL.md.
 #
-#   ./run.sh setup              corpus (via bench/ecosystem), then each language's dependencies
+#   ./run.sh setup              corpus (via ../ecosystem), then each language's dependencies
 #   ./run.sh survey    [lang…]  correctness surveys
 #   ./run.sh bench     [lang…]  benchmarks, one language after the other
 #   ./run.sh alloc     [lang…]  allocations of one call of each operation (go, typescript, python, rust)
@@ -13,9 +13,12 @@
 # Languages: go typescript python rust java csharp c cpp php (all by default).
 # Results go to results/<date>/ (OUT can be overridden); COUNT and BENCHTIME as
 # in PROTOCOL.md (resources: RES_COUNT, 1 by default, and RES_BENCHTIME, 1).
+# ZERECHNUNG_DIR measures a local clone of ZeRechnung (see
+# ../ecosystem/zerechnung.sh).
 set -euo pipefail
 cd "$(dirname "$0")"
 here=$(pwd)
+. ../ecosystem/zerechnung.sh
 
 LANGS=(go typescript python rust java csharp c cpp php)
 OUT=${OUT:-results/$(date +%F)}
@@ -66,7 +69,7 @@ resources() {
 	done
 }
 
-# go_resources runs each benchmark of bench/ecosystem/facturx in its own test
+# go_resources runs each benchmark of ../ecosystem/facturx in its own test
 # binary process, under /usr/bin/time -l for the peak RSS; FX_CPU makes the
 # shared helpers report the CPU time per operation ("cpu-ns/op"). A second
 # round with GOMAXPROCS=1 shows the package confined to one core (the GC then
@@ -74,11 +77,12 @@ resources() {
 go_resources() {
 	local dir=../ecosystem/facturx tmp out="$OUT/resources_go.jsonl" ver b rss procs lib
 	tmp=$(mktemp -d)
-	(cd "$dir" && go test -c -o "$tmp/facturx.test" .)
+	zerechnung_version "$dir"
+	(export GOFLAGS=$(facturx_goflags "$dir") && cd "$dir" && go test -c -o "$tmp/facturx.test" .)
 	ver=$(go version | awk '{print $3}')
 	: >"$out"
 	for procs in "" 1; do
-		lib="ZeRechnung (ce dépôt)"
+		lib="ZeRechnung"
 		[ -n "$procs" ] && lib="ZeRechnung, GOMAXPROCS=1"
 		for b in $(cd "$dir" && "$tmp/facturx.test" -test.list '^Benchmark' | sed 's/^Benchmark//'); do
 			(cd "$dir" && env FX_CPU=1 ${procs:+GOMAXPROCS=$procs} /usr/bin/time -l -o "$tmp/time" "$tmp/facturx.test" -test.run '^$' \

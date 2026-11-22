@@ -1,11 +1,11 @@
-module github.com/ritoon/zerechnung/bench/ecosystem/gopdfattach
+module github.com/ritoon/invoice-bench/ecosystem/gopdfattach
 
 go 1.26
 
 require (
 	github.com/MarlinKuhn/gopdfattach v0.0.3
 	github.com/pdfcpu/pdfcpu v0.9.1
-	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
+	github.com/ritoon/invoice-bench/ecosystem/common v0.0.0
 )
 
 require (
@@ -20,4 +20,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common
+replace github.com/ritoon/invoice-bench/ecosystem/common => ../common

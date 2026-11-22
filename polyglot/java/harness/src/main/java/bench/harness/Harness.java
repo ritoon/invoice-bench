@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 
 /**
  * Shared harness of the Java benchmarks, the Java mirror of
- * {@code rust/harness/src/lib.rs}, {@code bench/ecosystem/common} and
- * {@code bench/polyglot/PROTOCOL.md}.
+ * {@code rust/harness/src/lib.rs}, {@code ecosystem/common} and
+ * {@code polyglot/PROTOCOL.md}.
  *
  * <p>Each library module has a {@code bench.Main} whose {@code main} calls
  * {@link #run} with its identity and a body that registers the operations in
@@ -156,7 +156,7 @@ public final class Harness {
 
     // ------------------------------------------------------------ corpus
 
-    /** {@code bench/ecosystem}, where the corpus and the host PDFs live
+    /** {@code ecosystem}, where the corpus and the host PDFs live
      *  ({@code FX_ECOSYSTEM}, default {@code ../../ecosystem} from java/). */
     public static Path ecosystem() {
         String v = System.getenv("FX_ECOSYSTEM");

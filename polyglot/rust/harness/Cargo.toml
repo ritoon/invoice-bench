@@ -3,7 +3,7 @@ name = "harness"
 version = "0.1.0"
 edition = "2024"
 publish = false
-description = "Shared harness of the Rust benchmarks (bench/polyglot/PROTOCOL.md)"
+description = "Shared harness of the Rust benchmarks (polyglot/PROTOCOL.md)"
 
 [dependencies]
 # getrusage: CPU time per series and peak RSS (resources pass).

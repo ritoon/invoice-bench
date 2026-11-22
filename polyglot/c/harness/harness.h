@@ -1,6 +1,6 @@
 /*
  * Shared harness of the C and C++ benchmarks, the C mirror of
- * bench/polyglot/rust/harness/src/lib.rs and of bench/polyglot/PROTOCOL.md.
+ * polyglot/rust/harness/src/lib.rs and of polyglot/PROTOCOL.md.
  *
  * Each library is one executable whose main() calls fx_run() with its
  * identity and a body that registers the operations in the protocol's order:
@@ -135,7 +135,7 @@ void fx_check_pdf(fx_harness *h, const char *note, fx_check_fn f, fx_free_fn fre
 /* Whether this run is the survey. */
 int fx_is_survey(const fx_harness *h);
 
-/* bench/ecosystem, where the corpus and the host PDFs live (FX_ECOSYSTEM). */
+/* ecosystem, where the corpus and the host PDFs live (FX_ECOSYSTEM). */
 const char *fx_ecosystem(void);
 /* Root of the ZUGFeRD/corpus checkout (FX_CORPUS). */
 const char *fx_corpus(void);

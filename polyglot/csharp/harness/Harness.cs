@@ -1,5 +1,5 @@
-// Shared harness of the C# benchmarks, the C# mirror of bench/ecosystem/common,
-// of rust/harness/src/lib.rs and of bench/polyglot/PROTOCOL.md.
+// Shared harness of the C# benchmarks, the C# mirror of ecosystem/common,
+// of rust/harness/src/lib.rs and of polyglot/PROTOCOL.md.
 //
 // Each library project is a console program whose Main calls Harness.Run with
 // its identity and a body that registers the operations in the protocol's
@@ -55,12 +55,12 @@ public sealed record Findings(int Errors, IReadOnlyList<string> Rules)
     public static readonly Findings None = new(0, []);
 }
 
-/// <summary>The corpus and host PDFs of bench/ecosystem.</summary>
+/// <summary>The corpus and host PDFs of ecosystem.</summary>
 public static class Corpus
 {
     private static string? _ecosystem;
 
-    /// <summary>bench/ecosystem (FX_ECOSYSTEM overrides it).</summary>
+    /// <summary>ecosystem (FX_ECOSYSTEM overrides it).</summary>
     public static string Ecosystem => _ecosystem ??= FindEcosystem();
 
     /// <summary>Root of the ZUGFeRD/corpus checkout (FX_CORPUS overrides it, as in Go).</summary>
@@ -74,7 +74,8 @@ public static class Corpus
         {
             return e;
         }
-        // Walk up from the binary to bench/, which holds ecosystem/host.pdf.
+        // Walk up from the binary to the root of the repository, which holds
+        // ecosystem/host.pdf.
         for (var d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
         {
             var candidate = Path.Combine(d.FullName, "ecosystem");
@@ -83,7 +84,7 @@ public static class Corpus
                 return candidate;
             }
         }
-        throw new DirectoryNotFoundException("bench/ecosystem not found: set FX_ECOSYSTEM");
+        throw new DirectoryNotFoundException("ecosystem not found: set FX_ECOSYSTEM");
     }
 
     /// <summary>csharp/.artefacts, where run.sh setup unpacks the official validation artefacts.</summary>

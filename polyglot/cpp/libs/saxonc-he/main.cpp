@@ -1,6 +1,6 @@
 // Reference validator: SaxonC-HE 13.1.1 (Saxonica, MPL-2.0), Saxon compiled
 // to a native library by GraalVM (no JVM), running the official stylesheets,
-// as bench/polyglot/python/adapters/saxonche_schematron.py does with saxonche
+// as polyglot/python/adapters/saxonche_schematron.py does with saxonche
 // (the Python binding of the same SaxonC):
 //
 // - CEN EN 16931 CII 1.3.17 (ConnectingEurope/eInvoicing-EN16931,

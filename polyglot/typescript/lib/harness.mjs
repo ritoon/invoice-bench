@@ -1,4 +1,4 @@
-// Timing and survey harness, a port of bench/ecosystem/common/harness.go to
+// Timing and survey harness, a port of ecosystem/common/harness.go to
 // the rules of ../PROTOCOL.md: check the result once before timing (that call
 // is first_call_ns), "unsupported" when the library cannot do the operation,
 // "fail" when it throws or returns a wrong result, then N found by steps

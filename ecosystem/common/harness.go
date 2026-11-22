@@ -12,7 +12,7 @@ import (
 // that reports it per iteration as "cpu-ns/op". Call it right before the
 // b.Loop loop and the returned function right after: with b.Loop, b.N is then
 // the number of iterations of the timed window. Off by default, so the output
-// of the usual campaigns keeps its format; bench/polyglot sets it.
+// of the usual campaigns keeps its format; polyglot sets it.
 func cpuMetric(b *testing.B) func() {
 	if os.Getenv("FX_CPU") == "" {
 		return func() {}

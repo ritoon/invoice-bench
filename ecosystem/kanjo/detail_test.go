@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/cyprienbrisset/kanjo/pkg/rules"
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 )
 
 func TestDetail(t *testing.T) {

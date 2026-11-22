@@ -7,9 +7,12 @@
 #   ./run.sh report             tables in results/<date>/tables.md
 #   ./run.sh all    [module…]   setup + survey + bench + report
 #
-# Results go to results/<date>/ (OUT can be overridden).
+# Results go to results/<date>/ (OUT can be overridden). ZERECHNUNG_DIR
+# measures a local clone of ZeRechnung instead of the version that
+# facturx/go.mod requires (see zerechnung.sh).
 set -euo pipefail
 cd "$(dirname "$0")"
+. ./zerechnung.sh
 
 CORPUS_URL=https://github.com/ZUGFeRD/corpus.git
 CORPUS_COMMIT=84f8d8f68f6c3698aa3019d701a8b82db9ba0aac
@@ -45,12 +48,16 @@ setup() {
 
 modules() { if [ $# -gt 0 ]; then echo "$@"; else echo "${MODULES[@]}"; fi; }
 
+# goflags prints the GOFLAGS of module $1: those of facturx_goflags for
+# facturx, the exported ones for the others.
+goflags() { if [ "$1" = facturx ]; then facturx_goflags facturx; else echo "$GOFLAGS"; fi; }
+
 survey() {
 	mkdir -p "$OUT"
 	for m in $(modules "$@"); do
 		[ "$m" = floor ] && continue
 		echo "== survey $m"
-		(cd "$m" && go test -count 1 -run '^TestSurvey$' -v . 2>&1 || true) |
+		(export GOFLAGS=$(goflags "$m") && cd "$m" && go test -count 1 -run '^TestSurvey$' -v . 2>&1 || true) |
 			grep -E 'SURVEY|FLAG|MISS|PARSEFAIL' | sed -E 's/^ +[a-z_]+\.go:[0-9]+: //' >"$OUT/survey_$m.txt" || true
 		grep SURVEY "$OUT/survey_$m.txt" || echo "   (aucun résultat)"
 	done
@@ -61,8 +68,12 @@ bench() {
 	for m in $(modules "$@"); do
 		echo "== bench $m"
 		# Some benchmarks fail on purpose (a library returns a PDF that does not
-		# read back): keep going and record what was measured.
-		{ (cd "$m" && go version && go test -run '^$' -bench . -benchmem -count "$COUNT" -benchtime "$BENCHTIME" . 2>&1) || true; } >"$OUT/bench_$m.txt"
+		# read back): keep going and record what was measured. The output of
+		# facturx starts with the version of ZeRechnung it measures.
+		{
+			[ "$m" = facturx ] && zerechnung_version facturx
+			(export GOFLAGS=$(goflags "$m") && cd "$m" && go version && go test -run '^$' -bench . -benchmem -count "$COUNT" -benchtime "$BENCHTIME" . 2>&1) || true
+		} >"$OUT/bench_$m.txt"
 		grep -E -- '--- FAIL|^FAIL' "$OUT/bench_$m.txt" || true
 	done
 }

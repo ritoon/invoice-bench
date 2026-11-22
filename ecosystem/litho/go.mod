@@ -1,10 +1,10 @@
-module github.com/ritoon/zerechnung/bench/ecosystem/litho
+module github.com/ritoon/invoice-bench/ecosystem/litho
 
 go 1.27.3
 
 require (
 	github.com/gotenberg/litho v0.0.18
-	github.com/ritoon/zerechnung/bench/ecosystem/common v0.0.0
+	github.com/ritoon/invoice-bench/ecosystem/common v0.0.0
 )
 
 require (
@@ -20,4 +20,4 @@ require (
 	golang.org/x/text v0.43.0 // indirect
 )
 
-replace github.com/ritoon/zerechnung/bench/ecosystem/common => ../common
+replace github.com/ritoon/invoice-bench/ecosystem/common => ../common

@@ -1,12 +1,12 @@
 # Protocole commun : bancs TypeScript, Python, Rust, Java, C#, C, C++ et PHP
 
-Ce dossier mesure les librairies Factur-X / ZUGFeRD / EN 16931 des écosystèmes TypeScript, Python, Rust, Java, C# (.NET), C, C++ et PHP avec **le même protocole** que le banc Go de `bench/ecosystem` (voir `bench/ecosystem/common/common.go` et `harness.go`), pour comparer leurs temps à ceux du package Go de ce dépôt.
+Ce dossier mesure les librairies Factur-X / ZUGFeRD / EN 16931 des écosystèmes TypeScript, Python, Rust, Java, C# (.NET), C, C++ et PHP avec **le même protocole** que le banc Go de `ecosystem` (voir `ecosystem/common/common.go` et `harness.go`), pour comparer leurs temps à ceux de [ZeRechnung](https://github.com/ritoon/zerechnung), le package Go.
 
 Un sous-dossier par langage : `typescript/`, `python/`, `rust/`, `java/`, `csharp/`, `c/`, `cpp/`, `php/`. Chacun est autonome (ses dépendances, son harnais) et ne touche à rien d'autre dans le dépôt.
 
 ## Fichiers d'entrée
 
-Chemins relatifs à `bench/ecosystem/` (le corpus est récupéré par `bench/ecosystem/run.sh setup`, commit ZUGFeRD/corpus `84f8d8f`). Utiliser ces octets-là, sans copie ni modification.
+Chemins relatifs à `ecosystem/` (le corpus est récupéré par `ecosystem/run.sh setup`, commit ZUGFeRD/corpus `84f8d8f`). Utiliser ces octets-là, sans copie ni modification.
 
 | Nom | Fichier |
 |---|---|
@@ -62,7 +62,7 @@ Calquée sur `go test -bench . -count 3 -benchtime 1s` :
 Deux mesures complètent le temps réel, dans tous les langages :
 
 - **Temps CPU par opération** (`cpu_ns_per_op`, en regard de `ns_per_op`) : pour chaque série chronométrée, le temps CPU du processus (utilisateur + système, **tous les fils** : ramasse-miettes, JIT, fils du runtime) consommé pendant la même fenêtre que l'horloge monotone, divisé par N. Horloge lue une fois avant et une fois après la série : `process.cpuUsage()`, `time.process_time_ns()`, `getrusage(RUSAGE_SELF)` (Rust, C, C++, PHP, Go), `OperatingSystemMXBean.getProcessCpuTime()`, `Environment.CpuUsage`. Le rapport CPU / temps réel vaut 100 % pour un cœur occupé ; au-delà, du travail tourne en parallèle du fil mesuré.
-- **Pic de mémoire** (`max_rss_bytes`) : la mémoire résidente maximale (max RSS) d'un processus qui charge la librairie et n'exécute **qu'un** benchmark (vérification, premier appel, calibrage, séries), runtime compris. Lue en fin de processus par `getrusage(RUSAGE_SELF).ru_maxrss`, ou mesurée de l'extérieur par `/usr/bin/time -l` sur le processus lui-même (jamais sur un lanceur comme npm, mvn, `dotnet run` ou `cargo run`). Pour Go, chaque benchmark tourne dans son propre binaire de test (`go test -c`), `FX_CPU=1` fait rapporter `cpu-ns/op` par les aides de `bench/ecosystem/common`. Une seconde série Go tourne avec `GOMAXPROCS=1` (ligne « ZeRechnung, GOMAXPROCS=1 ») : le ramasse-miettes concurrent de Go occupe sinon d'autres cœurs, et cette série montre le package limité à un cœur.
+- **Pic de mémoire** (`max_rss_bytes`) : la mémoire résidente maximale (max RSS) d'un processus qui charge la librairie et n'exécute **qu'un** benchmark (vérification, premier appel, calibrage, séries), runtime compris. Lue en fin de processus par `getrusage(RUSAGE_SELF).ru_maxrss`, ou mesurée de l'extérieur par `/usr/bin/time -l` sur le processus lui-même (jamais sur un lanceur comme npm, mvn, `dotnet run` ou `cargo run`). Pour Go, chaque benchmark tourne dans son propre binaire de test (`go test -c`), `FX_CPU=1` fait rapporter `cpu-ns/op` par les aides de `ecosystem/common`. Une seconde série Go tourne avec `GOMAXPROCS=1` (ligne « ZeRechnung, GOMAXPROCS=1 ») : le ramasse-miettes concurrent de Go occupe sinon d'autres cœurs, et cette série montre le package limité à un cœur.
 
 Ces deux mesures viennent d'une passe à part, `resources` : un processus par librairie et par benchmark, `COUNT=1` et `BENCHTIME=1` par défaut (`RES_COUNT`, `RES_BENCHTIME` dans `run.sh` à la racine). Les temps des tableaux principaux restent ceux de la passe `bench`. Le travail d'un processus enfant lancé par une librairie (une JVM, un outil en ligne de commande) n'est pas compté ; le harnais le signale dans `note`.
 
@@ -80,7 +80,7 @@ Ces deux mesures viennent d'une passe à part, `resources` : un processus par li
 
 ## Sorties
 
-`run.sh` dans chaque dossier, avec les mêmes sous-commandes que `bench/ecosystem/run.sh` :
+`run.sh` dans chaque dossier, avec les mêmes sous-commandes que `ecosystem/run.sh` :
 
 ```bash
 ./run.sh setup              # dépendances (npm, venv, cargo, Maven, dotnet, CMake, Composer)

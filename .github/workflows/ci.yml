@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    # Each library is a separate module whose dependencies come from
+    # ./run.sh setup; only the modules that build without it are compiled
+    # here: the one that measures ZeRechnung and the two report tools.
+    name: Modules Go et scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable
+      - name: gofmt
+        run: |
+          files=$(gofmt -l $(git ls-files '*.go'))
+          if [ -n "$files" ]; then
+            echo "Files not formatted with gofmt:"
+            echo "$files"
+            exit 1
+          fi
+      - name: go vet
+        run: |
+          for d in ecosystem/facturx ecosystem/report polyglot/report; do
+            (cd "$d" && go vet ./...)
+          done
+      - name: bash -n
+        run: |
+          for f in $(git ls-files '*.sh'); do
+            bash -n "$f"
+          done

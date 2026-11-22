@@ -3,7 +3,7 @@ package kanjobench
 import (
 	"testing"
 
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 )
 
 func BenchmarkEmbedClassic_Small(b *testing.B) {

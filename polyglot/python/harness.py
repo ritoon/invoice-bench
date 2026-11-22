@@ -1,6 +1,6 @@
 """Harnais Python du banc polyglotte (voir ../PROTOCOL.md).
 
-Calqué sur bench/ecosystem/common/{common,harness}.go : mêmes fichiers
+Calqué sur ecosystem/common/{common,harness}.go : mêmes fichiers
 d'entrée, contrôle du résultat avant la mesure, « unsupported » si la
 librairie ne sait pas faire l'opération, « fail » si elle renvoie un résultat
 faux ou lève une exception.

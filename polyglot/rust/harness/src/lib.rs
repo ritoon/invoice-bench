@@ -1,5 +1,5 @@
 //! Shared harness of the Rust benchmarks, the Rust mirror of
-//! `bench/ecosystem/common` and of `bench/polyglot/PROTOCOL.md`.
+//! `ecosystem/common` and of `polyglot/PROTOCOL.md`.
 //!
 //! Each library crate is a binary whose `main` calls [`run`] with its identity
 //! and a closure that registers the operations in the protocol's order:
@@ -164,7 +164,7 @@ fn count_allocs(f: impl FnOnce()) -> (u64, u64) {
 
 // ---------------------------------------------------------------- corpus
 
-/// `bench/ecosystem`, where the corpus and the host PDFs live.
+/// `ecosystem`, where the corpus and the host PDFs live.
 pub fn ecosystem() -> PathBuf {
     if let Ok(v) = std::env::var("FX_ECOSYSTEM") {
         return PathBuf::from(v);

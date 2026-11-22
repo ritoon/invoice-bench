@@ -30,7 +30,7 @@ var names = map[string]string{
 	"speedata": "speedata", "andee": "andee", "dotwave": "dotwave", "goblde": "gobl.de",
 	"angelo": "angelo", "papierleicht": "papierleicht", "dcnws": "DCNWS", "pdf0": "pdf0",
 	"litho": "litho", "kanjo": "kanjo", "taha": "taha", "fx": "fX", "gopdfattach": "gopdfattach",
-	"pdfcpu": "pdfcpu", "floor": "plancher", "facturx": "**ZeRechnung (ce dépôt)**",
+	"pdfcpu": "pdfcpu", "floor": "plancher", "facturx": "**ZeRechnung**",
 }
 
 type group struct {
@@ -71,7 +71,7 @@ func main() {
 	}
 	surveys := loadSurveys(dir) // lib -> kind -> "n/total"
 
-	fmt.Printf("<!-- Généré par bench/ecosystem/report à partir de %s -->\n", filepath.Base(dir))
+	fmt.Printf("<!-- Généré par ecosystem/report à partir de %s -->\n", filepath.Base(dir))
 	printSurveys(surveys)
 	for _, g := range groups {
 		printGroup(g, results, surveys)

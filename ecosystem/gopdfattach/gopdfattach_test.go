@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/MarlinKuhn/gopdfattach"
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 )
 
 func extract(p []byte) ([]byte, error) {

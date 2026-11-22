@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/mgilbir/formalis"
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 )
 
 func TestDetail(t *testing.T) {

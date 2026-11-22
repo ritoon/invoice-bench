@@ -1,4 +1,4 @@
-// Shared inputs, identical to bench/ecosystem/common/common.go: same files,
+// Shared inputs, identical to ecosystem/common/common.go: same files,
 // same lists, same sanity check.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
@@ -31,7 +31,7 @@ export const xmlSmall = () => load('XML-Rechnung', 'CII', 'EN16931_Einfach.cii.x
 export const xmlLines = () => load('XML-Rechnung', 'CII', 'EN16931_Rabatte.cii.xml');
 export const xmlLarge = () => load('XML-Rechnung', 'CII', 'XRECHNUNG_Elektron.cii.xml');
 
-// Host PDFs for embedding (built by bench/ecosystem/run.sh setup).
+// Host PDFs for embedding (built by ecosystem/run.sh setup).
 export const hostPDF = () => loadHost('host.pdf');
 export const hostPDFClassic = () => loadHost('host_classic.pdf');
 

@@ -1,8 +1,8 @@
 # Benchmarks TypeScript, Python, Rust, Java, C#, C, C++ et PHP
 
-Ce dossier compare le package Go de ce dépôt aux librairies Factur-X / ZUGFeRD / EN 16931 des écosystèmes TypeScript, Python, Rust, Java, C# (.NET), C, C++ et PHP : temps de réponse, temps CPU et mémoire, allocations par appel, exactitude sur le corpus officiel ZUGFeRD, et normes réellement appliquées. Il complète [`bench/ecosystem`](../ecosystem), qui fait la même chose pour les librairies Go.
+Ce dossier compare [ZeRechnung](https://github.com/ritoon/zerechnung), le package Go, aux librairies Factur-X / ZUGFeRD / EN 16931 des écosystèmes TypeScript, Python, Rust, Java, C# (.NET), C, C++ et PHP : temps de réponse, temps CPU et mémoire, allocations par appel, exactitude sur le corpus officiel ZUGFeRD, et normes réellement appliquées. Il complète [`ecosystem`](../ecosystem), qui fait la même chose pour les librairies Go.
 
-Le code de ce dossier ne fait pas partie du package `zerechnung`. Chaque langage a son propre dossier, autonome :
+Chaque langage a son propre dossier, autonome :
 
 | Dossier | Contenu |
 |---|---|
@@ -35,7 +35,7 @@ Un **plancher** est une librairie générique (PDF ou XML) qui ne connaît pas F
 ## Utilisation
 
 ```bash
-./run.sh setup     # corpus (via bench/ecosystem), npm ci, venv, cargo, Maven, dotnet, CMake, Composer, artefacts officiels
+./run.sh setup     # corpus (via ecosystem), npm ci, venv, cargo, Maven, dotnet, CMake, Composer, artefacts officiels
 ./run.sh survey    # exactitude sur le corpus, les neuf langages
 ./run.sh bench     # benchmarks, un langage après l'autre
 ./run.sh alloc     # allocations par appel (TypeScript, Python, Rust ; Go les donne avec bench)
@@ -44,7 +44,7 @@ Un **plancher** est une librairie générique (PDF ou XML) qui ne connaît pas F
 ./run.sh all       # les six à la suite
 ```
 
-`survey`, `bench`, `alloc` et `resources` acceptent une liste de langages (`./run.sh bench rust go`) ; chaque dossier a aussi son propre `run.sh`, qui accepte une liste de librairies. Variables : `OUT`, `COUNT` (3), `BENCHTIME` (1, en secondes), et pour `resources` `RES_COUNT` (1) et `RES_BENCHTIME` (1).
+`survey`, `bench`, `alloc` et `resources` acceptent une liste de langages (`./run.sh bench rust go`) ; chaque dossier a aussi son propre `run.sh`, qui accepte une liste de librairies. Variables : `OUT`, `COUNT` (3), `BENCHTIME` (1, en secondes), pour `resources` `RES_COUNT` (1) et `RES_BENCHTIME` (1), et `ZERECHNUNG_DIR`, qui mesure un clone local de ZeRechnung au lieu de la version que requiert `../ecosystem/facturx/go.mod` (voir [`../ecosystem`](../ecosystem/README.md#utilisation)).
 
 Prérequis :
 
@@ -61,7 +61,7 @@ Sur un Apple M4 Pro, les relevés d'exactitude durent une dizaine de minutes, le
 
 Apple M4 Pro sur batterie, mode hautes performances (`powermode 2`). Go 1.27.4, Node 22.15.0, CPython 3.13.18, rustc 1.93.1, OpenJDK 27.0.1.1, .NET 11.0.0, Apple clang 21, PHP 8.6.0 sans OPcache ni JIT ; versions complètes dans [`results/2026-11-22/env.txt`](results/2026-11-22/env.txt). Tableaux complets : [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md) ; ceux de la campagne du 17/11 (v0.1.0, TypeScript, Python et Rust) restent dans [`results/2026-11-17/`](results/2026-11-17/tables.md).
 
-Les résultats réunissent deux campagnes du même jour, sur le même code du package Go (commits `3a3b11a` et `8d728bd` : entre les deux, seul le site change) :
+Les résultats réunissent deux campagnes du même jour, sur le même code de ZeRechnung (commits [`3a3b11a`](https://github.com/ritoon/zerechnung/commit/3a3b11a) et [`8d728bd`](https://github.com/ritoon/zerechnung/commit/8d728bd) : entre les deux, seul le site change) :
 
 - **Go, TypeScript, Python et Rust** : relevés, temps et allocations au commit `3a3b11a` (30 commits après v0.1.0), avec les dernières versions des librairies ;
 - **Java, C#, C, C++ et PHP** : relevés et temps au commit `8d728bd`, Docker Desktop actif en tâche de fond (environ 17 % d'un cœur) ;
@@ -88,7 +88,7 @@ Validation EN 16931 complète (schematrons CEN, avec ou sans KoSIT), la plus rap
 
 | Langage | Librairie | Temps | Premier appel | Valides signalés /26 |
 |---|---|---|---|---|
-| Go | **ZeRechnung (ce dépôt)**, règles compilées | 24,8 µs | — | 6 |
+| Go | **ZeRechnung**, règles compilées | 24,8 µs | — | 6 |
 | Java | Saxon-HE + XSLT officiels | 419 µs (×17) | 629 ms | 6 |
 | Rust | einvoice-validator (XSLT CEN exécuté en Rust) | 483 µs (×19) | 23 ms | 2 |
 | C# | SaxonCS-HE + XSLT officiels | 528 µs (×21) | 707 ms | 6 |
@@ -105,7 +105,7 @@ Validation EN 16931 complète (schematrons CEN, avec ou sans KoSIT), la plus rap
   - validation : pdf-invoice (Rust, 14 règles) sur 19 Ko (40,1 µs contre 45,4 µs), pat-o-dev/factur-x (PHP, quelques règles écrites à la main) sur 1,3 Mo (466 µs contre 794 µs) ;
   - injection dans un hôte à xref classique : pdfa (Rust), 88,6 µs contre 96,2 µs, qui refuse les hôtes à flux xref ;
   - contrôle complet des PDF de 149 Ko et de 1,1 Mo : zugferd-pdf (Python, 213 et 269 µs), @attestwire/en16931 (TS, 368 et 403 µs) et en16931 (Rust, 489 et 817 µs) ne lisent ni le contenu des pages ni les polices (point suivant).
-- **Le contrôle d'un PDF hybride est passé de 75,0 µs (17/11, v0.1.0) à 811 µs.** Depuis la PR #73, `Check` vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, programmes de police, images JPEG 2000) : le profil CPU montre le temps passé à décompresser et lire les programmes de polices TrueType (`pdfaScan.font`), et un appel alloue 10 fois plus d'octets (700 Ko au lieu de 69 Ko). Les librairies plus rapides ne contrôlent que le conteneur et le XMP.
+- **Le contrôle d'un PDF hybride est passé de 75,0 µs (17/11, v0.1.0) à 811 µs.** Depuis la PR ritoon/zerechnung#73, `Check` vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, programmes de police, images JPEG 2000) : le profil CPU montre le temps passé à décompresser et lire les programmes de polices TrueType (`pdfaScan.font`), et un appel alloue 10 fois plus d'octets (700 Ko au lieu de 69 Ko). Les librairies plus rapides ne contrôlent que le conteneur et le XMP.
 - Les validateurs qui exécutent le schematron officiel coûtent de 0,4 ms à 101 ms par facture, sauf @lucaapp/zugferd-ts (de 2,7 à 9,2 s). Les plus lents : mustang (Java) 11 ms, erechnung-validator (Rust) 32 ms, securibox (C#) 38 ms, @kontor-mcp/core (TS) 48 ms, vampire-php (PHP) 64 ms, @conformo/toolkit (TS) 72 ms, mcp-einvoicing-de (Python) 101 ms, qui recompile ses XSLT à chaque appel. Leur premier appel compile les feuilles de style : de 18 ms (summand) à 2,1 s (validateur KoSIT). Les règles du package Go sont du code compilé : il n'y a rien à charger.
 - Injection : Mustang (Java) met 5,2 ms (`ZUGFeRDExporterFromPDFA`, PDF enregistré sans compression) ; plusieurs librairies refusent les hôtes du banc ou y laissent deux `factur-x.xml` (voir « Particularités connues »).
 
@@ -191,7 +191,7 @@ Relevé dans le code des librairies, pas dans leur README (fichiers et lignes da
 
 | Librairie | Langage | XSD | EN 16931 (CII) | Profils Factur-X | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 en CII | Conteneur PDF/A-3 | UBL |
 |---|---|---|---|---|---|---|---|---|---|
-| **ZeRechnung (ce dépôt)** | Go | Factur-X 1.09.2, CII D16B (XRECHNUNG), UBL 2.1 | 793 assertions, CEN 1.3.17 | 544 règles (schematrons 1.09 et 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2, Leitweg-ID et GEBA | 3.0.21 (90 assertions) | 69 contrôles du conteneur, contenu des pages et polices lus ; conversion partielle | lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol |
+| **ZeRechnung** | Go | Factur-X 1.09.2, CII D16B (XRECHNUNG), UBL 2.1 | 793 assertions, CEN 1.3.17 | 544 règles (schematrons 1.09 et 1.09.2) | FNFE-MPE 1.4.0.04 | KoSIT 3.0.2, Leitweg-ID et GEBA | 3.0.21 (90 assertions) | 69 contrôles du conteneur, contenu des pages et polices lus ; conversion partielle | lecture, écriture, validation EN 16931, BR-FR, BR-DE, Peppol |
 | @stackforge-eu/factur-x (94 000/sem.) | TS | Factur-X 1.09 | non | XSD seul | non | non | non | non | non |
 | @e-invoice-eu/core (63 000/sem.) | TS | non | non (génération) | génération | non | génération | non | non | écriture |
 | @conformo/toolkit | TS | oui | CEN 1.3.17 (SaxonJS) | XSD seul | Flux 2, si `country: "FR"` | KoSIT 3.0.2 | UBL seulement | partiel | oui |
@@ -245,7 +245,7 @@ La **conversion en PDF/A-3** du PDF hôte, que font zugferd-rs, @lucaapp/zugferd
 - **PHP** : PHP CLI tel qu'installé, OPcache éteint (`opcache.enable_cli=0`), donc sans JIT ; `memory_limit=4G` et `zend.assertions=-1` passés par `PHP_OPTS`. Aucun moteur XSLT 2.0 n'est utilisable en PHP 8.6 (ext-xsl est en XSLT 1.0, l'extension SaxonC 13.1.1 ne compile pas avec PHP 8.6) : les validateurs complets sont des réécritures en PHP. Le parseur gratuit de FPDI ne lit pas les flux xref, d'où les échecs d'`Embed_Small` des injecteurs FPDI ou mPDF. L'installation passe `--no-scripts --no-plugins`.
 - **Installation** : `npm ci --ignore-scripts` (le postinstall de @fin.cx/einvoice télécharge des schematrons non figés), wheels Python seulement (sauf `tagic`, pur Python, relu), `cargo build --ignore-rust-version` pour einvoice-validator, `RAYON_NUM_THREADS=1` pour lopdf.
 - **Allocations** : le compteur de Python ne voit pas la mémoire qu'une librairie gère elle-même par `mmap`, comme le tas GraalVM de saxonche, dont les chiffres sont sous-estimés. En TypeScript, « ≥ » signale qu'un ramasse-miettes a tourné pendant la série : les `ArrayBuffer` qu'il a libérés manquent, la valeur est un minimum.
-- Le contrôle complet d'un PDF par le package Go mesure 811 µs (2 383 allocations) au commit `3a3b11a`, contre 75,0 µs (504 allocations) en v0.1.0 : depuis la PR #73, `zerechnung.Check` vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, programmes de police, images JPEG 2000).
+- Le contrôle complet d'un PDF par le package Go mesure 811 µs (2 383 allocations) au commit `3a3b11a`, contre 75,0 µs (504 allocations) en v0.1.0 : depuis la PR ritoon/zerechnung#73, `zerechnung.Check` vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, programmes de police, images JPEG 2000).
 
 ## Licences
 

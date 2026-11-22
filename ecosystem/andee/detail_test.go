@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	xinvoice "github.com/andeedotnet/go-xinvoice"
-	"github.com/ritoon/zerechnung/bench/ecosystem/common"
+	"github.com/ritoon/invoice-bench/ecosystem/common"
 )
 
 func TestDetail(t *testing.T) {

@@ -1,3 +1,3 @@
-module github.com/ritoon/zerechnung/bench/ecosystem/common
+module github.com/ritoon/invoice-bench/ecosystem/common
 
 go 1.26

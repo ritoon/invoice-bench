@@ -1,6 +1,6 @@
 // node survey.mjs <lib>  →  lines of survey_typescript.jsonl (validate, parse, extract)
 //
-// Same surveys as bench/ecosystem/common/harness.go: valid samples a validator
+// Same surveys as ecosystem/common/harness.go: valid samples a validator
 // flags (false positives, out of 26), CII samples a parser reads (out of 26),
 // hybrid PDFs an invoice XML is extracted from (out of 104).
 import { pathToFileURL } from 'node:url';

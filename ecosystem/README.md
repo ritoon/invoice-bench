@@ -5,7 +5,7 @@ Ce dossier mesure les librairies Go existantes sur le corpus officiel ZUGFeRD : 
 - [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks)
 - [Grille de la norme](https://github.com/ritoon/zerechnung/wiki/Grille-de-la-norme)
 
-Le code de ce dossier ne fait pas partie du package `zerechnung` : chaque sous-dossier est un module Go indépendant.
+Chaque sous-dossier est un module Go indépendant. Le module `facturx` mesure [ZeRechnung](https://github.com/ritoon/zerechnung) à la version que requiert son `go.mod`, ou un clone local (voir `ZERECHNUNG_DIR` plus bas).
 
 ## Prérequis
 
@@ -22,7 +22,9 @@ Le code de ce dossier ne fait pas partie du package `zerechnung` : chaque sous-d
 ./run.sh all       # les quatre à la suite
 ```
 
-Chaque commande accepte une liste de modules (`./run.sh bench pdf0 litho`). Les variables `OUT`, `COUNT` et `BENCHTIME` changent le dossier de sortie, le nombre d'exécutions et la durée de chaque benchmark. Une campagne complète prend une dizaine de minutes sur un Apple M4 Pro.
+Chaque commande accepte une liste de modules (`./run.sh bench pdf0 litho`). Les variables `OUT`, `COUNT` et `BENCHTIME` changent le dossier de sortie, le nombre d'exécutions et la durée de chaque benchmark.
+
+`ZERECHNUNG_DIR` mesure un clone local de ZeRechnung au lieu de la version que requiert `facturx/go.mod`, par exemple une branche avant sa fusion : `ZERECHNUNG_DIR=~/src/zerechnung ./run.sh bench facturx`. [`zerechnung.sh`](zerechnung.sh) écrit alors `facturx/local.mod`, une copie de `facturx/go.mod` avec une directive `replace` vers ce clone, et la passe au go command par `-modfile`. `bench_facturx.txt` commence par la version mesurée, telle que l'affiche `go list -m`. Pour mesurer une nouvelle version publiée : `cd facturx && go get github.com/ritoon/zerechnung@<version>`. Une campagne complète prend une dizaine de minutes sur un Apple M4 Pro.
 
 ## Organisation
 
@@ -32,6 +34,7 @@ Chaque commande accepte une liste de modules (`./run.sh bench pdf0 litho`). Les 
 | `floor/` | Planchers : découpage en jetons par `encoding/xml`, copie mémoire |
 | `<librairie>/` | Un module par librairie : benchmarks, `TestSurvey`, parfois `TestDetail` |
 | `report/` | Outil qui produit les tableaux du wiki à partir des sorties brutes |
+| `zerechnung.sh` | Choix de la version de ZeRechnung mesurée (`ZERECHNUNG_DIR`), partagé avec `../polyglot/run.sh` |
 | `results/<date>/` | Sorties brutes (`bench_*.txt`, `survey_*.txt`) et tableaux (`tables.md`) |
 | `corpus/`, `.deps/`, `host*.pdf` | Récupérés ou générés par `./run.sh setup`, non versionnés |
 
@@ -71,7 +74,7 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 | `fx` | solarpush/fX v1.4.0 + 6 commits (`1314f3d`) | `pdf.ExtractXML`, `cii.Parse`, `invoice.ValidateReport`, `cii.Generate` |
 | `gopdfattach` | MarlinKuhn/gopdfattach v0.0.3 | `gopdfattach.Extract`, `gopdfattach.AttachFacturX` |
 | `pdfcpu` | pdfcpu v0.16.4 | `api.ExtractAttachmentsRaw` ; injection par une recette bas niveau écrite pour ce banc (FileSpec, `/AF`, XMP) |
-| `facturx` | ce dépôt (par `replace` vers la racine) | `facturx.Extract`, `cii.Parse`, `validate.XML`, `cii.Marshal`, `facturx.Embed`, `facturx.Check` |
+| `facturx` | ZeRechnung, à la version de `facturx/go.mod` ou depuis `ZERECHNUNG_DIR` | `facturx.Extract`, `cii.Parse`, `validate.XML`, `cii.Marshal`, `facturx.Embed`, `facturx.Check` |
 
 ## Particularités connues
 
@@ -85,20 +88,20 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 
 ## Résultats du 22/11/2026
 
-Apple M4 Pro sur batterie, mode hautes performances (`powermode 2`), Go 1.27.4 pour tous les modules. Le package de ce dépôt est mesuré au commit `3a3b11a`, en 6 exécutions ; les autres librairies en 3. litho passe de v0.0.13 à v0.0.18. Les tableaux sont dans [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md), avec, pour chaque opération, les octets et le nombre d'allocations d'un appel (`go test -benchmem`) ; l'analyse est sur la page [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) du wiki.
+Apple M4 Pro sur batterie, mode hautes performances (`powermode 2`), Go 1.27.4 pour tous les modules. ZeRechnung est mesuré au commit [`3a3b11a`](https://github.com/ritoon/zerechnung/commit/3a3b11a), en 6 exécutions ; les autres librairies en 3. litho passe de v0.0.13 à v0.0.18. Les tableaux sont dans [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md), avec, pour chaque opération, les octets et le nombre d'allocations d'un appel (`go test -benchmem`) ; l'analyse est sur la page [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) du wiki.
 
 - Le package est le plus rapide sur chaque opération, et c'est lui qui alloue le moins sur chacune : 28 Ko en 104 allocations pour lire une facture de 13 Ko, quand le seul découpage en jetons d'`encoding/xml` en demande 31 Ko et 711 ; une seule allocation de 8 Ko pour l'écrire ; 245 Ko pour l'injecter dans un PDF, contre 1,3 Mo pour pdf0.
-- Le contrôle complet d'un PDF prend 832 µs, contre 54,8 µs le 16/11 : depuis la PR #73, il vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, polices, images JPEG 2000). DCNWS, le suivant, met 1,11 ms.
+- Le contrôle complet d'un PDF prend 832 µs, contre 54,8 µs le 16/11 : depuis la PR ritoon/zerechnung#73, il vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, polices, images JPEG 2000). DCNWS, le suivant, met 1,11 ms.
 
 ## Résultats du 16/11/2026
 
-Les fichiers `bench_*.txt` de `results/2026-11-16/` ont été produits avant le déplacement du harnais dans ce dépôt : le chemin de module qu'ils affichent est `example.local/fxbench/…`, le code mesuré est le même. Les fichiers `survey_*.txt` ont été régénérés depuis ce dossier et donnent les mêmes chiffres. Pour angelo, kanjo, fX et gopdfattach, les mesures datent d'avant la désactivation du `config.yml` de pdfcpu ; une nouvelle mesure de `Extract_Small` après correction diffère de moins de 7 %, sans changer le classement.
+Les fichiers `bench_*.txt` de `results/2026-11-16/` ont été produits avant le déplacement du harnais dans le dépôt de ZeRechnung : le chemin de module qu'ils affichent est `example.local/fxbench/…`, le code mesuré est le même. Les fichiers `survey_*.txt` ont été régénérés depuis ce dossier et donnent les mêmes chiffres. Pour angelo, kanjo, fX et gopdfattach, les mesures datent d'avant la désactivation du `config.yml` de pdfcpu ; une nouvelle mesure de `Extract_Small` après correction diffère de moins de 7 %, sans changer le classement.
 
-Les fichiers `bench_facturx.txt` et `survey_facturx.txt` mesurent la première version du package de ce dépôt, sur la même machine (Apple M4 Pro) et le même jour. Son validateur applique par défaut le schéma, les règles EN 16931 et les règles de profil Factur-X, sans les règles françaises ; les 6 XML qu'il rejette sont ceux que rejette aussi papierleicht, qui exécute les schematrons officiels (CEN et KoSIT) : BR-CL-25 deux fois, CII-SR-465 quatre fois (sur les exemples XRECHNUNG).
+Les fichiers `bench_facturx.txt` et `survey_facturx.txt` mesurent la première version de ZeRechnung, sur la même machine (Apple M4 Pro) et le même jour. Son validateur applique par défaut le schéma, les règles EN 16931 et les règles de profil Factur-X, sans les règles françaises ; les 6 XML qu'il rejette sont ceux que rejette aussi papierleicht, qui exécute les schematrons officiels (CEN et KoSIT) : BR-CL-25 deux fois, CII-SR-465 quatre fois (sur les exemples XRECHNUNG).
 
 ## Ajouter une librairie
 
-1. Créer un dossier avec un `go.mod` qui dépend de `github.com/ritoon/zerechnung/bench/ecosystem/common` par `replace … => ../common`.
+1. Créer un dossier avec un `go.mod` qui dépend de `github.com/ritoon/invoice-bench/ecosystem/common` par `replace … => ../common`.
 2. Écrire des fonctions `extract`, `parse`, `validate`, `write` ou `embed` selon ce que la librairie sait faire, et les passer aux fonctions de `common`.
 3. Ajouter un `TestSurvey`, puis le nom du dossier dans `MODULES` de `run.sh`.
 
