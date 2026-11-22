@@ -58,10 +58,10 @@ On an Apple M4 Pro, the accuracy surveys take about ten minutes, the conformance
 
 ## Measured ZeRechnung version
 
-[`go/facturx/go.mod`](go/facturx/go.mod) pins the ZeRechnung version that both campaigns measure. The `ZERECHNUNG_DIR` variable measures a local clone instead, for example a branch before it is merged:
+[`go/libs/ritoon-zerechnung/go.mod`](go/libs/ritoon-zerechnung/go.mod) pins the ZeRechnung version that both campaigns measure. The `ZERECHNUNG_DIR` variable measures a local clone instead, for example a branch before it is merged:
 
 ```bash
-ZERECHNUNG_DIR=~/src/zerechnung ./go/run.sh bench facturx
+ZERECHNUNG_DIR=~/src/zerechnung ./go/run.sh bench ritoon-zerechnung
 ```
 
 ## Method
@@ -213,7 +213,7 @@ All 104 hybrid PDFs are extracted by the Go package and by most of the libraries
 
 ### Confidence by country
 
-Conformance cases of [`cases`](cases/README.md), run on 2026-11-22 evening, all nine languages, with the library versions of this campaign (ZeRechnung at the commit `724b388` that `go/facturx/go.mod` requires). Each library validates 561 documents (EN 16931 and XRechnung 3.0.2, CII and UBL) with the adapter and rule set of the survey; the expected verdicts and rules are those of the KoSIT validator 1.6.3 with the XRechnung 3.0.2 configuration of 2026-08-31. Score out of 100: 100 × √(S × D), S the share of the 208 valid cases accepted, D the mean detection of the 247 expected rules (1 raised, 0.5 rejected otherwise, 0 accepted); Germany is the mean of the four parts. Per part, counts and rules raised by family: [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md).
+Conformance cases of [`cases`](cases/README.md), run on 2026-11-22 evening, all nine languages, with the library versions of this campaign (ZeRechnung at the commit `724b388` that `go/libs/ritoon-zerechnung/go.mod` requires). Each library validates 561 documents (EN 16931 and XRechnung 3.0.2, CII and UBL) with the adapter and rule set of the survey; the expected verdicts and rules are those of the KoSIT validator 1.6.3 with the XRechnung 3.0.2 configuration of 2026-08-31. Score out of 100: 100 × √(S × D), S the share of the 208 valid cases accepted, D the mean detection of the 247 expected rules (1 raised, 0.5 rejected otherwise, 0 accepted); Germany is the mean of the four parts. Per part, counts and rules raised by family: [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md).
 
 | Germany | Libraries |
 |---|---|
@@ -283,7 +283,7 @@ The most downloaded libraries do not validate the business rules: @stackforge-eu
 - **@stafyniaksacha/facturx** fails on any host whose trailer has an `/ID`, like both hosts of the bench. **OfficeIMO (C#)** and the PHP embedders, except dealerweb/einvoice and intragile/php-einvoicing, fail on the host with an xref stream, like pdfa (Rust). **FacturXDotNet** fails on both hosts: its CII reader rejects the Small XML (`schemeID` of the seller's tax identifier).
 - **Hand-built models** for `Write_Small` when the library cannot parse CII: @stackforge-eu/factur-x, @e-invoice-eu/core, node-zugferd, @ekwo-ai/factur-x, zugferd-pdf, erechnung, zugferd (Rust). Their `Write_Lines` is not measured.
 - **One process per benchmark** in TypeScript, Python and PHP: "First call" there is a cold call. In Rust, Java, C#, C and C++, one process per library: in Java and C#, the first call therefore includes class loading and JIT compilation.
-- **The host PDFs were fixed on 2026-11-22.** `host.pdf` and `host_classic.pdf` (written by `TestMakeHost` and `TestMakeHostClassic` in `go/pdfcpu`) had lost their `/EmbeddedFiles` tree, but their catalog kept in `/AF` the file specification of the old `factur-x.xml`, with its stream, and their XMP the Factur-X schema. Paniolo (Java), en16931 (Rust), intragile/php-einvoicing and pat-o-dev/factur-x (PHP) refused to embed a second invoice into them; Mustang (Java) and Kura (C++) left two in `/AF` (PDF-28 for `zerechnung validate`). They are now PDF/A-3 documents with no attachment, no `/AF` and no Factur-X XMP, which `TestHostsStrict` checks, and both embedding benchmarks were measured again in every language. Effects:
+- **The host PDFs were fixed on 2026-11-22.** `host.pdf` and `host_classic.pdf` (written by `TestMakeHost` and `TestMakeHostClassic` in `go/libs/pdfcpu-pdfcpu`) had lost their `/EmbeddedFiles` tree, but their catalog kept in `/AF` the file specification of the old `factur-x.xml`, with its stream, and their XMP the Factur-X schema. Paniolo (Java), en16931 (Rust), intragile/php-einvoicing and pat-o-dev/factur-x (PHP) refused to embed a second invoice into them; Mustang (Java) and Kura (C++) left two in `/AF` (PDF-28 for `zerechnung validate`). They are now PDF/A-3 documents with no attachment, no `/AF` and no Factur-X XMP, which `TestHostsStrict` checks, and both embedding benchmarks were measured again in every language. Effects:
   - Paniolo, en16931 and intragile/php-einvoicing embed into both hosts, pat-o-dev/factur-x into the host with a classic xref table (it does not read xref streams);
   - Mustang and Kura produce a single `factur-x.xml`; Kura's PDF is still flagged PDF-18 (no `/Params /ModDate` on the attachment stream), pat-o-dev/factur-x's PDF-08 and PDF-18;
   - several embedders are much faster on these hosts: @ekwo-ai/factur-x and @fin.cx/einvoice go from 1.9–2.5 ms to 0.54–0.61 ms, Kura from 25 to 12.4 ms on the host with a classic xref table; the Go package allocates 226 KB in 376 allocations instead of 245 KB in 456 on the host with an xref stream, for a slightly shorter time (93.1 µs against 96.7 µs; 91.5 µs against 96.2 µs on the host with a classic xref table);

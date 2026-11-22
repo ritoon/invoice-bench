@@ -1,13 +1,14 @@
 // Command report merges the Go results of ZeRechnung
-// (bench_facturx.txt, survey_facturx.txt, produced by go/run.sh)
-// with the results of the other languages (bench_<lang>.jsonl,
+// (bench_ritoon-zerechnung.txt, survey_ritoon-zerechnung.txt, produced by
+// go/run.sh) with the results of the other languages (bench_<lang>.jsonl,
 // survey_<lang>.jsonl: TypeScript, Python, Rust, Java, C#, C, C++, PHP) into
 // Markdown comparison tables. It adds the allocations of one call when the
 // alloc pass ran (alloc_<lang>.jsonl: TypeScript, Python, Rust; Go from the
 // benchmarks), and the CPU time and peak memory tables when the resources
 // pass ran (resources_<lang>.jsonl, Go included), and the confidence scores
-// by country when the cases pass ran (cases_<lang>.jsonl, cases_facturx.jsonl
-// for Go; the cases are read from ../cases, or CASES_DIR).
+// by country when the cases pass ran (cases_<lang>.jsonl,
+// cases_ritoon-zerechnung.jsonl for Go; the cases are read from ../cases, or
+// CASES_DIR).
 //
 // Usage: go run . ../results/2026-11-17 > ../results/2026-11-17/tables.md
 package main
@@ -55,6 +56,10 @@ const (
 	goOneCore = "ZeRechnung, GOMAXPROCS=1"
 )
 
+// goModule is the module of ../go/libs that measures ZeRechnung: it names the
+// Go raw outputs and is the lib of the Go records of the cases files.
+const goModule = "ritoon-zerechnung"
+
 type group struct {
 	title   string
 	benches []string
@@ -101,7 +106,7 @@ func main() {
 	surveys := map[key]map[string]string{}
 	notes := map[key]map[string][]string{} // lib -> note -> benches
 
-	// A campaign of the cases alone has no bench_facturx.txt.
+	// A campaign of the cases alone has no bench_ritoon-zerechnung.txt.
 	if err := loadGo(dir, res, surveys); err != nil && !os.IsNotExist(err) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -170,11 +175,11 @@ func printCases(dir string, res map[string]map[key]result) error {
 	if err != nil {
 		return err
 	}
-	// Go is ZeRechnung here (the facturx module); the other Go libraries are
-	// rated in ../go.
+	// Go is ZeRechnung here (goModule); the other Go libraries are rated in
+	// ../go.
 	var runs []cases.Run
 	for _, r := range loaded {
-		if r.Lang != "go" || r.Lib == "facturx" {
+		if r.Lang != "go" || r.Lib == goModule {
 			runs = append(runs, r)
 		}
 	}
@@ -204,7 +209,7 @@ func printCases(dir string, res map[string]map[key]result) error {
 		}
 	}
 	// Libraries and their successful operations, keyed lang/lib as in the
-	// cases files (the Go package runs as the facturx module).
+	// cases files (the Go package runs as goModule).
 	ops := map[string][]string{}
 	validates := map[key]bool{}
 	all := map[key]bool{}
@@ -219,7 +224,7 @@ func printCases(dir string, res map[string]map[key]result) error {
 	for k := range all {
 		lib := k.lib
 		if k.lang == "go" {
-			lib = "facturx"
+			lib = goModule
 		}
 		var list []string
 		for _, f := range opFamilies {
@@ -240,7 +245,7 @@ func printCases(dir string, res map[string]map[key]result) error {
 	for k := range all {
 		lib := k.lib
 		if k.lang == "go" {
-			lib = "facturx"
+			lib = goModule
 		}
 		if !validates[k] && !rated[k.lang+"/"+lib] {
 			unrated = append(unrated, k)
@@ -253,7 +258,7 @@ func printCases(dir string, res map[string]map[key]result) error {
 	}
 	cases.Markdown(os.Stdout, idx, runs, cases.Options{
 		Name: func(lang, lib string) string {
-			if lang == "go" && lib == "facturx" {
+			if lang == "go" && lib == goModule {
 				return "**" + goLib + "**"
 			}
 			return lib
@@ -317,8 +322,9 @@ var allocColumns = []struct{ bench, label string }{
 
 var goMem = regexp.MustCompile(`^Benchmark(\S+?)-\d+\s+\d+\s+[\d.]+ ns/op(?:\s+[\d.]+ MB/s)?\s+(\d+) B/op\s+(\d+) allocs/op`)
 
-// loadAllocs reads the allocations of ZeRechnung from bench_facturx.txt
-// (go test -benchmem) and those of the other languages from alloc_<lang>.jsonl.
+// loadAllocs reads the allocations of ZeRechnung from
+// bench_ritoon-zerechnung.txt (go test -benchmem) and those of the other
+// languages from alloc_<lang>.jsonl.
 func loadAllocs(dir string) map[key]map[string]alloc {
 	out := map[key]map[string]alloc{}
 	put := func(k key, bench string, a alloc) {
@@ -328,7 +334,7 @@ func loadAllocs(dir string) map[key]map[string]alloc {
 		out[k][bench] = a
 	}
 	bytes, allocs := map[string][]float64{}, map[string][]float64{}
-	eachLine(filepath.Join(dir, "bench_facturx.txt"), func(line string) {
+	eachLine(filepath.Join(dir, "bench_ritoon-zerechnung.txt"), func(line string) {
 		if m := goMem.FindStringSubmatch(line); m != nil {
 			b, _ := strconv.ParseFloat(m[2], 64)
 			n, _ := strconv.ParseFloat(m[3], 64)
@@ -435,7 +441,7 @@ func loadGo(dir string, res map[string]map[key]result, surveys map[key]map[strin
 	k := key{goLib, "go"}
 	raw := map[string][]float64{}
 	version := ""
-	err := eachLine(filepath.Join(dir, "bench_facturx.txt"), func(line string) {
+	err := eachLine(filepath.Join(dir, "bench_ritoon-zerechnung.txt"), func(line string) {
 		if m := goVer.FindStringSubmatch(line); m != nil {
 			version = m[1]
 		}
@@ -450,7 +456,7 @@ func loadGo(dir string, res map[string]map[key]result, surveys map[key]map[strin
 	for b, v := range raw {
 		put(res, b, k, result{lib: k.lib, lang: "go", version: version, status: "ok", ns: median(v)})
 	}
-	eachLine(filepath.Join(dir, "survey_facturx.txt"), func(line string) {
+	eachLine(filepath.Join(dir, "survey_ritoon-zerechnung.txt"), func(line string) {
 		if m := goSurvey.FindStringSubmatch(line); m != nil {
 			if surveys[k] == nil {
 				surveys[k] = map[string]string{}

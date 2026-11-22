@@ -27,12 +27,28 @@ var (
 	surveyLine = regexp.MustCompile(`SURVEY (validate|extract|parse): (\d+)/(\d+)`)
 )
 
-// Display names, matching the abbreviations used on the wiki.
+// zerechnung is the module that measures ZeRechnung, listed first.
+const zerechnung = "ritoon-zerechnung"
+
+// Display names of the modules (the folders of ../libs, which name the raw
+// outputs), matching the abbreviations used on the wiki.
 var names = map[string]string{
-	"speedata": "speedata", "andee": "andee", "dotwave": "dotwave", "goblde": "gobl.de",
-	"angelo": "angelo", "papierleicht": "papierleicht", "dcnws": "DCNWS", "pdf0": "pdf0",
-	"litho": "litho", "kanjo": "kanjo", "taha": "taha", "fx": "fX", "gopdfattach": "gopdfattach",
-	"pdfcpu": "pdfcpu", "floor": "floor", "facturx": "**ZeRechnung**",
+	"speedata-einvoice":                    "speedata",
+	"andeedotnet-go-xinvoice":              "andee",
+	"dotwavehq-go-einvoice":                "dotwave",
+	"invopop-gobl.de.xinvoice":             "gobl.de",
+	"angelodlfrtr-go-invoice-generator":    "angelo",
+	"papierleicht-go-e-rechnung-validator": "papierleicht",
+	"dcnws-invoicekit.go":                  "DCNWS",
+	"mgilbir-pdf0":                         "pdf0",
+	"gotenberg-litho":                      "litho",
+	"cyprienbrisset-kanjo":                 "kanjo",
+	"tahayassine-facturx-go":               "taha",
+	"solarpush-fx":                         "fX",
+	"marlinkuhn-gopdfattach":               "gopdfattach",
+	"pdfcpu-pdfcpu":                        "pdfcpu",
+	"stdlib":                               "floor",
+	zerechnung:                             "**ZeRechnung**",
 }
 
 type group struct {
@@ -116,8 +132,8 @@ func printAllocs(res map[string]map[string]run) {
 	}
 	order := keys(libs)
 	sort.Slice(order, func(i, j int) bool {
-		if (order[i] == "facturx") != (order[j] == "facturx") {
-			return order[i] == "facturx"
+		if (order[i] == zerechnung) != (order[j] == zerechnung) {
+			return order[i] == zerechnung
 		}
 		return strings.ToLower(display(order[i])) < strings.ToLower(display(order[j]))
 	})
@@ -145,7 +161,7 @@ func printAllocs(res map[string]map[string]run) {
 		}
 		fmt.Println("| " + strings.Join(row, " | ") + " |")
 	}
-	if r, ok := res["Floor_XMLRawToken_Small"]["floor"]; ok {
+	if r, ok := res["Floor_XMLRawToken_Small"]["stdlib"]; ok {
 		row := []string{"*floor: `encoding/xml` tokens*"}
 		for _, c := range allocColumns {
 			if c.bench == "Parse_Small" {
@@ -283,7 +299,7 @@ func printCases(dir string, res map[string]map[string]run) error {
 	}
 	var unrated []string
 	for l := range libs {
-		if l != "floor" && !validates[l] && !rated[l] {
+		if l != "stdlib" && !validates[l] && !rated[l] {
 			unrated = append(unrated, display(l))
 		}
 	}

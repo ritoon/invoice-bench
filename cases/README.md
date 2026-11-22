@@ -91,7 +91,7 @@ Each harness writes one JSON line per library and per suite, to `cases_<lang>.js
 ./fetch.sh                          # fetch the KoSIT test suite
 ./confirm.sh                        # run the reference, record the verdicts in cases.tsv
 cd .. && ./run.sh cases             # all nine languages (or: ./run.sh cases java rust)
-cd ../go && ./run.sh cases          # the Go libraries (or: ./run.sh cases facturx kanjo)
+cd ../go && ./run.sh cases          # the Go libraries (or: ./run.sh cases ritoon-zerechnung cyprienbrisset-kanjo)
 ```
 
 `gen.sh` and `confirm.sh` are only needed to change the cases; `cases.tsv` is versioned. The confidence tables are part of the `tables.md` written by each report tool; they need the `cases_*.jsonl` files of the same results folder.
