@@ -498,11 +498,11 @@ benchmarks, 304 lines; the timings are not meant to be used):
 | php-erechnung-toolkit | 12 | Embed ×2, CheckPDF ×2 | — |
 | john-wink/en16931-php | 6 | Extract ×4, Write ×2, Embed ×2, CheckPDF ×2 | — |
 | invoicepress/vampire-php | 3 (ParseValidate) | 13 | — |
-| intragile/php-einvoicing | 12 | CheckPDF ×2 | Embed_Small, EmbedClassic_Small (`InvoiceAlreadyEmbedded`) |
+| intragile/php-einvoicing | 14 | CheckPDF ×2 | — |
 | dealerweb/einvoice | 14 | CheckPDF ×2 | — |
 | quittio/core | 13 | CheckPDF ×2 | Embed_Small (FPDI via mPDF) |
 | pnscripts/pn-invoice | 4 (ParseValidate ×3, Write_Small) | Extract ×4, Parse ×3, Write_Lines, Embed ×2, CheckPDF ×2 | — |
-| pat-o-dev/factur-x | 4 (ParseValidate ×3, Write_Small) | Parse ×3, Write_Lines, CheckPDF ×2 | Extract ×4 (unresolved /Names or /AF references), Embed_Small (xref stream), EmbedClassic_Small (catalog with /AF) |
+| pat-o-dev/factur-x | 5 (ParseValidate ×3, Write_Small, EmbedClassic_Small) | Parse ×3, Write_Lines, CheckPDF ×2 | Extract ×4 (unresolved /Names or /AF references), Embed_Small (xref stream) |
 | stann/factur-x | 4 (ParseValidate ×3, EmbedClassic_Small) | Extract ×4, Parse ×3, Write ×2, CheckPDF ×2 | Embed_Small (FPDI via mPDF) |
 | smalot/pdfparser | 4 (Extract) | 12 | — |
 | ext-dom | 3 (ParseValidate) | 13 | — |
@@ -517,16 +517,17 @@ Things to know when reading the numbers:
   cannot read it ("compression technique which is not supported by the free
   parser"). All the FPDI- or mPDF-based embedders (horstoeko, invoicesuite,
   atgp, tiime, mahdiabderraouf, quittio, stann) fail on `Embed_Small` and
-  succeed on `host_classic.pdf`. Only dealerweb (its own PDF layer)
-  succeeds on both.
-- **Hosts with a leftover /AF**: `host.pdf` and `host_classic.pdf` keep in
-  their catalog an `/AF` pointing to a `factur-x.xml` Filespec (pdfcpu
-  `RemoveAttachments` only removed the name tree). intragile sees it and
-  refuses to add a second invoice (`InvoiceAlreadyEmbedded`, a choice made
-  by the library); pat-o-dev refuses a catalog that already has /AF. The
-  embedders that rewrite the document do not notice. To be fixed in
-  `../../ecosystem` (outside this bench) if these two libraries are to be
-  measured.
+  succeed on `host_classic.pdf`. dealerweb (its own PDF layer) and
+  intragile (no FPDI) succeed on both.
+- **Hosts without an invoice**: `host.pdf` and `host_classic.pdf` have no
+  attachment, no `/AF` and no Factur-X XMP. Until 2026-11-22, their catalog
+  kept an `/AF` pointing to a `factur-x.xml` Filespec (pdfcpu
+  `RemoveAttachments` only removed the name tree): intragile, which refuses
+  to add a second invoice (`InvoiceAlreadyEmbedded`, a choice made by the
+  library), and pat-o-dev, which refuses a catalog that already has `/AF`
+  or `/Names`, failed. On the fixed hosts, intragile embeds into both;
+  pat-o-dev embeds into `host_classic.pdf` and still fails on `host.pdf`
+  (xref streams not supported).
 - `Embed_*` is read back with the library itself when it can extract,
   otherwise with horstoeko/zugferd (`note: "read back with horstoeko/zugferd"`,
   the case of stann).

@@ -69,7 +69,7 @@ declared in `include/mupdf/pdf/zugferd.h:28-47`.
 - Embedding: no library function. A floor written in
   `libs/mupdf/main.c:94-183` with MuPDF's primitives:
   `pdf_add_embedded_file` (`:123`), sorted insertion into
-  `/Names/EmbeddedFiles`, `/AF` (an invoice file left by the host is
+  `/Names/EmbeddedFiles`, `/AF` (an invoice file already listed is
   replaced), `/AFRelationship` `Alternative` (or `Data` for MINIMUM and
   BASIC WL), `/Desc`, a new `/Metadata` stream with a Factur-X XMP written by
   the harness (`fx_facturx_xmp`), full rewrite by `pdf_write_document`
@@ -212,8 +212,8 @@ order:
   `FX_DUMP_EMBED=<dir>`, the PDF from that check call is kept for
   inspection with other tools (this is how MuPDF's PDFs were run through
   `zerechnung validate`, Kura and `qpdf --check`).
-- The protocol's host PDFs (`host.pdf`, `host_classic.pdf`) no longer have
-  `/Names/EmbeddedFiles`, but keep in `/AF` the `factur-x.xml` of the
-  intarsys PDF they come from, as well as its Factur-X XMP. The MuPDF floor
-  removes every invoice file from `/AF` before adding its own; without that,
-  `zerechnung validate` reports two invoice attachments (PDF-28).
+- The protocol's host PDFs (`host.pdf`, `host_classic.pdf`) are PDF/A-3
+  documents without an invoice: no attachment, no `/AF`, no Factur-X XMP.
+  The MuPDF floor still removes every invoice file from `/AF` before adding
+  its own: on a PDF that already carries one, `zerechnung validate` would
+  otherwise report two invoice attachments (PDF-28).

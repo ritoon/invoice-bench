@@ -40,9 +40,10 @@ and writers, ZUGFeRD / Factur-X extraction and embedding (features `cii`,
   (`en16931-formats-0.10.1/src/zugferd/extract.rs:22-83`). There is no
   ISO 19005 check.
 - Embedding: by incremental update (`src/zugferd/embed.rs:1-17`). It refuses
-  a host that already carries Factur-X metadata. Both protocol hosts have an
-  XMP containing the `fx:` namespace, hence the `fail` on `Embed_Small` and
-  `EmbedClassic_Small`.
+  a host that already carries Factur-X metadata. Until 2026-11-22, both
+  protocol hosts had an XMP containing the `fx:` namespace, hence a `fail`
+  on `Embed_Small` and `EmbedClassic_Small`; the fixed hosts no longer have
+  it, and embedding succeeds.
 - Measured validation: `receive(Policy::default())`, which applies the
   profile declared by BT-24 (BR-DE on the XRECHNUNG files). Fatal entries
   from the layers and `fatal()` findings are counted.

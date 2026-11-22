@@ -3,9 +3,9 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ritoon/zerechnung/bench/ecosystem/litho
 cpu: Apple M4 Pro
-BenchmarkEmbedClassic_Small-14    	      33	  34981174 ns/op	   4.21 MB/s	36437437 B/op	  394058 allocs/op
-BenchmarkEmbedClassic_Small-14    	      32	  35092632 ns/op	   4.20 MB/s	36346947 B/op	  394044 allocs/op
-BenchmarkEmbedClassic_Small-14    	      34	  35257287 ns/op	   4.18 MB/s	36356681 B/op	  394045 allocs/op
+BenchmarkEmbedClassic_Small-14    	      33	  34114562 ns/op	   4.10 MB/s	35306542 B/op	  383052 allocs/op
+BenchmarkEmbedClassic_Small-14    	      32	  34423208 ns/op	   4.06 MB/s	35229440 B/op	  383046 allocs/op
+BenchmarkEmbedClassic_Small-14    	      34	  34608186 ns/op	   4.04 MB/s	35306152 B/op	  383047 allocs/op
 BenchmarkExtract_Small-14         	   10000	    107350 ns/op	1388.76 MB/s	  599032 B/op	     826 allocs/op
 BenchmarkExtract_Small-14         	   10000	    106745 ns/op	1396.64 MB/s	  599030 B/op	     826 allocs/op
 BenchmarkExtract_Small-14         	   10000	    106673 ns/op	1397.59 MB/s	  599031 B/op	     826 allocs/op
@@ -24,8 +24,8 @@ BenchmarkCheckPDF_Small-14        	      58	  20005277 ns/op	   7.45 MB/s	175581
 BenchmarkCheckPDF_Large-14        	      55	  21401347 ns/op	  51.63 MB/s	19316264 B/op	  315569 allocs/op
 BenchmarkCheckPDF_Large-14        	      56	  21276030 ns/op	  51.93 MB/s	19291671 B/op	  315570 allocs/op
 BenchmarkCheckPDF_Large-14        	      54	  21621288 ns/op	  51.10 MB/s	19296136 B/op	  315573 allocs/op
-BenchmarkEmbed_Small-14           	      33	  35409894 ns/op	   4.06 MB/s	36782778 B/op	  394412 allocs/op
-BenchmarkEmbed_Small-14           	      32	  35343332 ns/op	   4.07 MB/s	36830223 B/op	  394413 allocs/op
-BenchmarkEmbed_Small-14           	      33	  35443167 ns/op	   4.06 MB/s	36745710 B/op	  394406 allocs/op
+BenchmarkEmbed_Small-14           	      33	  34649591 ns/op	   3.93 MB/s	35703476 B/op	  383412 allocs/op
+BenchmarkEmbed_Small-14           	      34	  34630270 ns/op	   3.94 MB/s	35666785 B/op	  383407 allocs/op
+BenchmarkEmbed_Small-14           	      32	  34324124 ns/op	   3.97 MB/s	35705029 B/op	  383412 allocs/op
 PASS
 ok  	github.com/ritoon/zerechnung/bench/ecosystem/litho	28.586s

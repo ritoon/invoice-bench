@@ -539,8 +539,8 @@ complete the entry.
   - The `build/` folder of DotNet.Bundle only activates on an explicit
     `BundleApp` target.
   - No other package runs code at build time.
-- The protocol's two hosts (`host.pdf`, `host_classic.pdf`) already have an
-  `/AF` pointing to a factur-x.xml. `PROTOCOL.md` describes `host.pdf` as
-  "without an attachment". The `Embed_*` check rereads the embedded XML and
-  compares it with the CII profile, not with the exact content: a library
-  that left the old file in place would pass.
+- The protocol's two hosts (`host.pdf`, `host_classic.pdf`) are PDF/A-3
+  documents without an invoice: no attachment, no `/AF`, no Factur-X XMP
+  (until 2026-11-22, they kept an `/AF` pointing to a factur-x.xml). The
+  `Embed_*` check rereads the embedded XML and compares it with the CII
+  profile, not with the exact content.

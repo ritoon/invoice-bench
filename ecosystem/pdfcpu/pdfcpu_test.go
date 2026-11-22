@@ -3,6 +3,8 @@ package pdfcpubench
 import (
 	"bytes"
 	"context"
+	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -57,16 +59,118 @@ func BenchmarkExtract_Extended(b *testing.B) { benchExtract(b, common.PDFExtende
 
 // ---------- Host PDF used by every Embed benchmark ----------
 
+// TestMakeHost writes host.pdf: the small Factur-X PDF without its invoice, a
+// PDF/A-3 document into which every library injects one.
 func TestMakeHost(t *testing.T) {
 	s := common.PDFSmall(t)
+	out, err := withoutInvoice(s.Data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join("..", "host.pdf"), out, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("host.pdf: %d bytes", len(out))
+}
+
+// withoutInvoice removes from a Factur-X PDF everything that makes it one: the
+// EmbeddedFiles tree, the catalog's /AF with the file specification and its
+// stream, and the Factur-X part of the XMP. The PDF/A identification stays.
+func withoutInvoice(pdf []byte) ([]byte, error) {
+	c := context.Background()
+	ctx, err := api.ReadContext(c, bytes.NewReader(pdf), conf())
+	if err != nil {
+		return nil, err
+	}
+	if _, err := ctx.RemoveAttachments(c, nil); err != nil {
+		return nil, err
+	}
+	xrt := ctx.XRefTable
+	cat, err := xrt.Catalog()
+	if err != nil {
+		return nil, err
+	}
+	if af := cat.Delete("AF"); af != nil {
+		if err := xrt.DeleteObject(c, af); err != nil {
+			return nil, err
+		}
+	}
+	ir, ok := cat["Metadata"].(types.IndirectRef)
+	if !ok {
+		return nil, fmt.Errorf("catalog /Metadata: %T, want an indirect reference", cat["Metadata"])
+	}
+	e, ok := xrt.FindTableEntryForIndRef(&ir)
+	if !ok {
+		return nil, fmt.Errorf("catalog /Metadata: %s not found", ir)
+	}
+	sd, ok := e.Object.(types.StreamDict)
+	if !ok {
+		return nil, fmt.Errorf("catalog /Metadata: %T, want a stream", e.Object)
+	}
+	if err := sd.Decode(); err != nil {
+		return nil, err
+	}
+	if sd.Content, err = xmpWithoutFacturX(sd.Content); err != nil {
+		return nil, err
+	}
+	if err := sd.Encode(); err != nil {
+		return nil, err
+	}
+	e.Object = sd
 	var out bytes.Buffer
-	if err := api.RemoveAttachments(context.Background(), bytes.NewReader(s.Data), &out, nil, conf()); err != nil {
-		t.Fatal(err)
+	if err := api.WriteContext(c, ctx, &out); err != nil {
+		return nil, err
 	}
-	if err := os.WriteFile(filepath.Join("..", "host.pdf"), out.Bytes(), 0o644); err != nil {
-		t.Fatal(err)
+	return out.Bytes(), nil
+}
+
+// Namespaces of the invoice properties in the XMP of Factur-X, ZUGFeRD 2 and
+// ZUGFeRD 1 documents.
+var invoiceXMPNamespaces = []string{"urn:factur-x:", "urn:zugferd:", "urn:ferd:"}
+
+// xmpWithoutFacturX drops from an XMP packet every rdf:Description that holds
+// invoice properties or declares their PDF/A extension schema (in the corpus
+// PDF, that extension declares the Factur-X schema only).
+func xmpWithoutFacturX(x []byte) ([]byte, error) {
+	const open, closing = "<rdf:Description", "</rdf:Description>"
+	var out []byte
+	for {
+		i := bytes.Index(x, []byte(open))
+		if i < 0 {
+			return append(out, x...), nil
+		}
+		gt := bytes.IndexByte(x[i:], '>')
+		if gt < 0 {
+			return nil, errors.New("XMP: unterminated rdf:Description")
+		}
+		end := i + gt + 1
+		if x[end-2] != '/' {
+			j := bytes.Index(x[end:], []byte(closing))
+			if j < 0 {
+				return nil, errors.New("XMP: rdf:Description without its end tag")
+			}
+			if bytes.Contains(x[end:end+j], []byte(open)) {
+				return nil, errors.New("XMP: nested rdf:Description")
+			}
+			end += j + len(closing)
+		}
+		out = append(out, x[:i]...)
+		if desc := x[i:end]; containsAny(desc, invoiceXMPNamespaces) {
+			out = bytes.TrimRight(out, " \t\r\n")
+		} else {
+			out = append(out, desc...)
+		}
+		x = x[end:]
 	}
-	t.Logf("host.pdf: %d bytes", out.Len())
+}
+
+func containsAny(b []byte, subs []string) bool {
+	for _, s := range subs {
+		if bytes.Contains(b, []byte(s)) {
+			return true
+		}
+	}
+	return false
 }
 
 // TestMakeHostClassic rewrites host.pdf with a classic xref table and no object
@@ -90,14 +194,85 @@ func TestMakeHostClassic(t *testing.T) {
 	t.Logf("host_classic.pdf: %d bytes", out.Len())
 }
 
-// TestHostsStrict checks that both host PDFs pass pdfcpu's strict validation,
-// so that an embedding failure is the library's fault, not the host's.
+// TestHostsStrict checks that both host PDFs pass pdfcpu's strict validation
+// and hold no invoice, so that an embedding failure is the library's fault,
+// not the host's.
 func TestHostsStrict(t *testing.T) {
-	for _, s := range []common.Sample{common.HostPDF(t), common.HostPDFClassic(t)} {
-		cf := model.NewDefaultConfiguration()
-		cf.ValidationMode = model.ValidationStrict
-		if err := api.Validate(context.Background(), bytes.NewReader(s.Data), cf, nil); err != nil {
-			t.Errorf("%s: %v", s.Name, err)
+	for _, h := range []struct {
+		s          common.Sample
+		xrefStream bool
+	}{{common.HostPDF(t), true}, {common.HostPDFClassic(t), false}} {
+		t.Run(h.s.Name, func(t *testing.T) {
+			cf := model.NewDefaultConfiguration()
+			cf.ValidationMode = model.ValidationStrict
+			if err := api.Validate(context.Background(), bytes.NewReader(h.s.Data), cf, nil); err != nil {
+				t.Errorf("strict validation: %v", err)
+			}
+			t.Run("NoInvoice", func(t *testing.T) { checkNoInvoice(t, h.s.Data, h.xrefStream) })
+		})
+	}
+}
+
+// checkNoInvoice checks that a host is a PDF/A-3 document without invoice: no
+// /AF, no EmbeddedFiles tree, no file specification or embedded file left in
+// the file, an XMP that keeps the PDF/A-3 identification but no Factur-X
+// property nor extension schema, and the expected kind of cross-reference.
+func checkNoInvoice(t *testing.T, pdf []byte, xrefStream bool) {
+	ctx, err := api.ReadContext(context.Background(), bytes.NewReader(pdf), conf())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if ctx.Read.UsingXRefStreams != xrefStream {
+		t.Errorf("xref stream: %v, want %v", ctx.Read.UsingXRefStreams, xrefStream)
+	}
+	xrt := ctx.XRefTable
+	cat, err := xrt.Catalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := cat.Find("Names"); ok {
+		names, err := xrt.DereferenceDict(cat["Names"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, ok := names.Find("EmbeddedFiles"); ok {
+			t.Error("catalog /Names has an EmbeddedFiles tree")
+		}
+	}
+	for nr, e := range xrt.Table {
+		if e.Free || e.Object == nil {
+			continue
+		}
+		var d types.Dict
+		switch o := e.Object.(type) {
+		case types.Dict:
+			d = o
+		case types.StreamDict:
+			d = o.Dict
+		default:
+			continue
+		}
+		if _, ok := d.Find("AF"); ok {
+			t.Errorf("object %d has /AF", nr)
+		}
+		if typ := d.Type(); typ != nil && (*typ == "Filespec" || *typ == "EmbeddedFile") {
+			t.Errorf("object %d: /Type /%s", nr, *typ)
+		}
+	}
+	sd, _, err := xrt.DereferenceStreamDict(cat["Metadata"])
+	if err != nil || sd == nil {
+		t.Fatalf("catalog /Metadata: %v", err)
+	}
+	if err := sd.Decode(); err != nil {
+		t.Fatal(err)
+	}
+	x := sd.Content
+	if !bytes.Contains(x, []byte(`pdfaid:part="3"`)) && !bytes.Contains(x, []byte("<pdfaid:part>3</pdfaid:part>")) {
+		t.Error("XMP: no PDF/A-3 identification (pdfaid:part 3)")
+	}
+	for _, ns := range append(invoiceXMPNamespaces, "pdfaExtension:schemas") {
+		if bytes.Contains(x, []byte(ns)) {
+			t.Errorf("XMP: still contains %q", ns)
 		}
 	}
 }

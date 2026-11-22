@@ -38,9 +38,9 @@ BenchmarkWrite_Lines-14            	    2270	    530613 ns/op	  305921 B/op	    
 BenchmarkWrite_Lines-14            	    2265	    526641 ns/op	  305921 B/op	    5206 allocs/op
 --- FAIL: BenchmarkEmbed_Small
     harness.go:58: embedded PDF does not round-trip: xinvoice-pdf: read PDF: pdfcpu: IsObjValid: no entry for obj#20
-BenchmarkEmbedClassic_Small-14     	    2054	    565116 ns/op	 260.73 MB/s	 2121766 B/op	    6912 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2158	    562030 ns/op	 262.17 MB/s	 2121466 B/op	    6913 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2115	    569984 ns/op	 258.51 MB/s	 2121293 B/op	    6913 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2127	    561372 ns/op	 248.99 MB/s	 2079779 B/op	    6813 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2172	    565023 ns/op	 247.38 MB/s	 2081150 B/op	    6813 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2094	    562661 ns/op	 248.42 MB/s	 2080498 B/op	    6814 allocs/op
 FAIL
 exit status 1
 FAIL	github.com/ritoon/zerechnung/bench/ecosystem/andee	43.422s

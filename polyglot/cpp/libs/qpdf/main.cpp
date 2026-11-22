@@ -6,7 +6,7 @@
 //   stream decoded with qpdf_dl_generalized.
 // - Embed: QPDFEFStreamObjectHelper / QPDFFileSpecObjectHelper /
 //   replaceEmbeddedFile, plus by hand /AF (where the invoice replaces the
-//   one the host may keep), /AFRelationship (by level) and a Factur-X XMP
+//   invoice file already listed), /AFRelationship (by level) and a Factur-X XMP
 //   packet replacing /Metadata; written by QPDFWriter (always a full
 //   rewrite) with a newline before endstream as PDF/A wants. No PDF/A
 //   conversion.
@@ -69,8 +69,8 @@ BufBytes embed(fx::Bytes host, fx::Bytes xml) {
 	fso.replaceKey("/AFRelationship", QPDFObjectHandle::newName(std::string("/") + fx_facturx_relationship(level)));
 	efdh.replaceEmbeddedFile(FX_ATTACHMENT, QPDFFileSpecObjectHelper(fso));
 
-	// /AF: an earlier invoice file (such as the one the host keeps from its
-	// original Factur-X) is replaced, so that the PDF has one.
+	// /AF: an invoice file already listed there is replaced, so that the PDF
+	// has one.
 	QPDFObjectHandle root = q.getRoot();
 	QPDFObjectHandle af = root.getKey("/AF");
 	QPDFObjectHandle keep = QPDFObjectHandle::newArray();
@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
 		fx_unsupported(h, FX_WRITE, "PDF library only");
 		fx::embed(h,
 			  "floor: QPDFEFStreamObjectHelper + QPDFFileSpecObjectHelper + replaceEmbeddedFile; "
-			  "/AF (the invoice replaces the host's), /AFRelationship Alternative or Data depending on the "
+			  "/AF (the invoice replaces any invoice already listed), /AFRelationship Alternative or Data depending on the "
 			  "profile and Factur-X XMP written by hand (host's XMP replaced); full rewrite by "
 			  "QPDFWriter (newline before endstream), no PDF/A conversion",
 			  em, ex);

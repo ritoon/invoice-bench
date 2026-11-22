@@ -59,9 +59,11 @@ schematron, veraPDF).
 - Embedding: `ZUGFeRDExporterFromPDFA` accepts a PDF/A-1 or PDF/A-3 host and
   rejects the others (`ZUGFeRDExporterFromPDFA.java:59-75`). The file is
   saved without compression (`ZUGFeRDExporterFromA3.java:361`). The resulting
-  PDF is PDF/A-3U and passes the Mustang validator. Yet it keeps the host's
-  leftover `factur-x.xml` file specification in `/AF` next to the new one
-  (see the notes): Paniolo rejects it (FX-MULTIPLE-INVOICES).
+  PDF is PDF/A-3U and passes the Mustang validator. Mustang does not remove
+  an invoice file already listed in `/AF`: until 2026-11-22, the protocol
+  hosts kept one, and the resulting PDF contained two `factur-x.xml`
+  (Paniolo rejected it: FX-MULTIPLE-INVOICES). On the fixed hosts, it
+  contains only one and passes `zerechnung validate` without errors.
 - Classpath of 78 jars: Saxon-HE 12.10, PDFBox 3.0.8 and preflight, veraPDF
   validation-model-jakarta 1.30.2 (GPL-3.0 or MPL-2.0), ph-schematron 8.0.6,
   jaxb-runtime 4.0.2.
@@ -178,8 +180,11 @@ the bundled official artifacts (Saxon-HE 13.1), PDF through `paniolo-facturx`
   - It rejects a PDF that already contains an invoice
     (`PdfBoxFacturXSupport.java:1190-1192`) and, to find out, also counts
     the files in `/AF` (`:248-291`).
-  - Both protocol hosts keep a `factur-x.xml` file specification in `/AF`:
-    hence the `fail` on `Embed_Small` and `EmbedClassic_Small`.
+  - Until 2026-11-22, both protocol hosts kept a `factur-x.xml` file
+    specification in `/AF`, hence a `fail` on `Embed_Small` and
+    `EmbedClassic_Small`. The fixed hosts no longer have an `/AF`: embedding
+    succeeds (13.3 ms on each host, revalidation included) and the resulting
+    PDF passes `zerechnung validate` without errors or warnings.
   - Replacement (`replaceInvoice`) exists only in the SPI.
 - Network: none.
 
@@ -338,7 +343,7 @@ order:
 
 | Library | Version | License | Latest version | Downloads | CII parsing | CII writing | UBL | PDF extraction | PDF embedding | XSD | EN 16931 (CII) | Factur-X profiles (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | PDF/A-3 container check | External dependencies |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Mustang (library + validator) | 2.26.0 | Apache-2.0 (veraPDF: GPL-3.0 or MPL-2.0) | 2.26.0 (2026-08-25) | ★497; dependents: library 3, validator 1 | partial (rejects 3/26 whose amount due it cannot reproduce) | yes (all profiles, XRechnung) | parsing; writing: despatch advice only | yes (also parses into the model) | yes (PDF/A-1 or A-3 host required, PDF/A-3U produced; keeps the host's leftover `/AF`) | yes: Factur-X 1.09.2 per profile | yes: CEN rules recoded in the Factur-X EN16931 schematron; CEN CII 1.3.16 XSLT on top for XRechnung | yes: Factur-X 1.09.2 schematrons for the 5 profiles | yes: BR-FR Flux 2 V1.3.0, only if seller and buyer are French | yes: XRechnung 3.0.2, KoSIT 2.4.0 schematron (70 assertions); as notice on BASIC and EN16931 | no | yes: veraPDF, XMP, attachment | none (pure Java: PDFBox, Saxon-HE 12.10, veraPDF) |
+| Mustang (library + validator) | 2.26.0 | Apache-2.0 (veraPDF: GPL-3.0 or MPL-2.0) | 2.26.0 (2026-08-25) | ★497; dependents: library 3, validator 1 | partial (rejects 3/26 whose amount due it cannot reproduce) | yes (all profiles, XRechnung) | parsing; writing: despatch advice only | yes (also parses into the model) | yes (PDF/A-1 or A-3 host required, PDF/A-3U produced; does not remove an invoice already listed in `/AF`) | yes: Factur-X 1.09.2 per profile | yes: CEN rules recoded in the Factur-X EN16931 schematron; CEN CII 1.3.16 XSLT on top for XRechnung | yes: Factur-X 1.09.2 schematrons for the 5 profiles | yes: BR-FR Flux 2 V1.3.0, only if seller and buyer are French | yes: XRechnung 3.0.2, KoSIT 2.4.0 schematron (70 assertions); as notice on BASIC and EN16931 | no | yes: veraPDF, XMP, attachment | none (pure Java: PDFBox, Saxon-HE 12.10, veraPDF) |
 | phive + phive-rules | 12.3.0 / 4.7.1 | Apache-2.0 (phive-rules: "Apache 2" in the POM, NOASSERTION on GitHub; CEN artifacts EUPL-1.2) | 12.3.0 (2026-11-15) / 4.7.1 (2026-11-17) | ★79 / ★55; dependents: not indexed | no (validator only) | no | validation (UBL EN 16931 and XRechnung sets) | no | no | yes: CII D16B; Factur-X 1.09.2 per profile | yes: official CEN 1.3.17 XSLT (810 assertions) via ph-schematron and Saxon-HE | yes: ZUGFeRD 2.5.2 / Factur-X 1.09.2, 5 profiles | not loaded (separate phive-rules-france package) | yes: XRechnung 3.0.2, KoSIT 2.6.0 schematron (74 assertions), phive's own levels (CII-SR-465 as a warning) | not loaded (separate phive-rules-peppol package) | no | none (pure Java; jaxb-runtime must be supplied) |
 | KoSIT validator + XRechnung configuration | 1.6.3 / v2026-08-31 | Apache-2.0 (engine and configuration) | 1.6.3 (2026-08-20); 2.0.0-tp2 as a preview | ★199 (configuration ★120); dependents: 0 | no (validator only) | no | validation (UBL scenarios of the configuration) | no | no | yes: CII D16B (configuration) | yes: CEN CII 1.3.16 XSLT (806 assertions) from the configuration, via Saxon-HE 12.9 | no (no Factur-X scenario) | no | yes: KoSIT 2.6.0 schematron and custom levels (25 BR-DE, 7 BR-DEX, 5 BR-DE-CVD) | no (20 PEPPOL-EN16931 rules taken over by XRechnung) | no | official configuration downloaded by `setup` (SHA-256); jaxb-runtime must be supplied |
 | Saxon-HE + official XSLTs (floor) | 13.1 | MPL-2.0 (CEN artifacts EUPL-1.2, KoSIT Apache-2.0) | 13.1 (2026-10-15) | ★178; dependents: 30 | no | no | no | no | no | no | official CEN CII 1.3.17 XSLT via Saxon | no | no | official KoSIT 2.6.0 XSLT via Saxon, KoSIT v2026-08-31 levels | no | no | official artifacts downloaded by `setup` (SHA-256) |
@@ -400,9 +405,10 @@ order:
   by SHA-256 and unpacks into `.artefacts/` the three official artifacts: CEN
   `validation-1.3.17` (CII), KoSIT `xrechnung-schematron` v2.6.0 and KoSIT
   `validator-configuration-xrechnung` v2026-08-31. Maven downloads the jars.
-- Hosts: `host.pdf` and `host_classic.pdf` no longer have an `/EmbeddedFiles`
-  tree. Yet their catalog keeps in `/AF` a `factur-x.xml` file specification
-  (`/AFRelationship /Alternative`) with its `/UF` stream, as well as a
-  Factur-X XMP in PDF/A-3. Consequences:
-  - Paniolo refuses to embed an invoice into them;
-  - Mustang produces a PDF that contains two `factur-x.xml` in `/AF`.
+- Hosts: `host.pdf` and `host_classic.pdf` are PDF/A-3 documents without an
+  invoice (no attachment, no `/AF`, no Factur-X XMP). Until 2026-11-22,
+  their catalog kept in `/AF` the `factur-x.xml` file specification of the
+  original PDF, with its stream, and a Factur-X XMP: Paniolo refused to
+  embed an invoice into them, and Mustang produced a PDF with two
+  `factur-x.xml` in `/AF`. On the fixed hosts, both embed, and the resulting
+  PDF has a single `factur-x.xml` (`zerechnung validate`: no error).

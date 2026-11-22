@@ -94,15 +94,15 @@ Memory and allocations: column "13 KB". Sorted on that same column.
 
 | Library | classic xref host | xref-stream host | Memory/op | Allocations/op |
 |---|---|---|---|---|
-| **ZeRechnung** | **96.2 µs** | **98.7 µs** | 249 KB | 438 |
-| kanjo | 340 µs (×3.5) | failed | 739 KB | 3,213 |
-| DCNWS | 406 µs (×4.2) | 1.70 ms (×17.2) | 2.5 MB | 6,157 |
-| pdfcpu | 428 µs (×4.4) | 451 µs (×4.6) | 1.5 MB | 3,840 |
-| pdf0 | 453 µs (×4.7) | 529 µs (×5.4) | 912 KB | 9,390 |
-| andee | 565 µs (×5.9) | failed | 2.0 MB | 6,913 |
-| gopdfattach | 1.08 ms (×11.2) | 1.18 ms (×11.9) | 5.2 MB | 7,992 |
-| dotwave | 1.10 ms (×11.4) | 1.15 ms (×11.7) | 4.9 MB | 8,797 |
-| litho | 35.09 ms (×364.6) | 35.41 ms (×358.7) | 34.7 MB | 394,045 |
+| **ZeRechnung** | **89.4 µs** | **92.0 µs** | 231 KB | 359 |
+| kanjo | 306 µs (×3.4) | failed | 681 KB | 2,788 |
+| pdfcpu | 413 µs (×4.6) | 426 µs (×4.6) | 1.4 MB | 3,704 |
+| pdf0 | 416 µs (×4.7) | 486 µs (×5.3) | 824 KB | 8,342 |
+| DCNWS | 427 µs (×4.8) | 1.79 ms (×19.4) | 2.5 MB | 5,951 |
+| andee | 563 µs (×6.3) | failed | 2.0 MB | 6,813 |
+| gopdfattach | 1.01 ms (×11.3) | 1.09 ms (×11.9) | 5.1 MB | 7,084 |
+| dotwave | 1.07 ms (×12.0) | 1.15 ms (×12.5) | 4.9 MB | 8,351 |
+| litho | 34.42 ms (×385.2) | 34.63 ms (×376.5) | 33.7 MB | 383,047 |
 
 Memory and allocations: column "classic xref host". Sorted on that same column.
 
@@ -130,19 +130,19 @@ Memory and allocations: column "RawToken 13 KB". Sorted on that same column.
 
 | Library | Extraction, 149 KB PDF | Parsing, 13 KB XML | Validation, 13 KB XML | Validation, 1.3 MB XML | Writing, 13 KB XML | Embedding, xref-stream host | Check, 149 KB PDF |
 |---|---|---|---|---|---|---|---|
-| **ZeRechnung** | **39 KB · 228** | **28 KB · 104** | **23 KB · 75** | **1.3 MB · 159** | **8 KB · 1** | **245 KB · 456** | **701 KB · 2,376** |
+| **ZeRechnung** | **39 KB · 228** | **28 KB · 104** | **23 KB · 75** | **1.3 MB · 159** | **8 KB · 1** | **226 KB · 376** | **701 KB · 2,376** |
 | andee | 658 KB · 4,390 | 78 KB · 1,326 | 100 KB · 2,166 | 7.8 MB · 2,284 | 165 KB · 2,980 | — | — |
 | angelo | 628 KB · 3,303 | 56 KB · 1,268 | 91 KB · 1,912 | 4.1 MB · 2,133 | — | — | — |
-| DCNWS | 184 KB · 4,926 | 128 KB · 2,079 | 624 KB · 15,279 | 7.1 MB · 15,945 | 72 KB · 1,130 | 3.7 MB · 44,347 | 896 KB · 24,617 |
-| dotwave | 628 KB · 3,304 | 64 KB · 1,253 | — | — | 34 KB · 361 | 5.0 MB · 8,855 | — |
+| DCNWS | 184 KB · 4,926 | 128 KB · 2,079 | 624 KB · 15,279 | 7.1 MB · 15,945 | 72 KB · 1,130 | 3.7 MB · 44,129 | 896 KB · 24,617 |
+| dotwave | 628 KB · 3,304 | 64 KB · 1,253 | — | — | 34 KB · 361 | 4.9 MB · 8,404 | — |
 | fX | 628 KB · 3,305 | 53 KB · 1,165 | 58 KB · 1,224 | 4.1 MB · 1,506 | 32 KB · 175 | — | — |
 | gobl.de | — | 256 KB · 5,246 | 981 KB · 15,543 | 11.1 MB · 17,829 | — | — | — |
-| gopdfattach | 651 KB · 3,136 | — | — | — | — | 5.3 MB · 8,043 | — |
+| gopdfattach | 651 KB · 3,136 | — | — | — | — | 5.2 MB · 7,131 | — |
 | kanjo | 628 KB · 3,308 | 99 KB · 2,036 | 120 KB · 2,106 | 8.1 MB · 2,535 | 547 KB · 826 | — | — |
-| litho | 585 KB · 826 | — | — | — | — | 35.1 MB · 394,412 | 16.7 MB · 298,499 |
+| litho | 585 KB · 826 | — | — | — | — | 34.0 MB · 383,412 | 16.7 MB · 298,499 |
 | papierleicht | 417 KB · 490 | — | 65.6 MB · 254,560 | 24.1 MB · 54,181 | — | — | 66.0 MB · 255,047 |
-| pdf0 | — | — | 67 KB · 1,462 | 6.6 MB · 1,842 | — | 1.3 MB · 9,593 | 1.8 MB · 7,536 |
-| pdfcpu | 613 KB · 3,629 | — | — | — | — | 1.5 MB · 3,896 | — |
+| pdf0 | — | — | 67 KB · 1,462 | 6.6 MB · 1,842 | — | 1.2 MB · 8,552 | 1.8 MB · 7,536 |
+| pdfcpu | 613 KB · 3,629 | — | — | — | — | 1.5 MB · 3,762 | — |
 | speedata | 401 KB · 318 | 331 KB · 4,531 | 1.9 MB · 46,459 | 11.4 MB · 59,403 | 44 KB · 988 | — | — |
 | taha | — | 209 KB · 1,237 | 209 KB · 1,246 | 20.3 MB · 1,562 | 812 KB · 341 | — | — |
 | *floor: `encoding/xml` tokens* |  | *31 KB · 711* |  |  |  |  |  |

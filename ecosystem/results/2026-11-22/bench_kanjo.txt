@@ -3,9 +3,9 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ritoon/zerechnung/bench/ecosystem/kanjo
 cpu: Apple M4 Pro
-BenchmarkEmbedClassic_Small-14     	    3529	    339572 ns/op	 433.91 MB/s	  756117 B/op	    3212 allocs/op
-BenchmarkEmbedClassic_Small-14     	    3524	    343434 ns/op	 429.03 MB/s	  757168 B/op	    3213 allocs/op
-BenchmarkEmbedClassic_Small-14     	    3547	    338123 ns/op	 435.77 MB/s	  756787 B/op	    3213 allocs/op
+BenchmarkEmbedClassic_Small-14     	    3464	    323781 ns/op	 431.70 MB/s	  696454 B/op	    2787 allocs/op
+BenchmarkEmbedClassic_Small-14     	    3910	    305987 ns/op	 456.81 MB/s	  696889 B/op	    2788 allocs/op
+BenchmarkEmbedClassic_Small-14     	    3822	    306149 ns/op	 456.56 MB/s	  697359 B/op	    2788 allocs/op
 BenchmarkExtract_Small-14          	    3411	    355166 ns/op	 419.76 MB/s	  643179 B/op	    3308 allocs/op
 BenchmarkExtract_Small-14          	    3463	    351916 ns/op	 423.63 MB/s	  643188 B/op	    3308 allocs/op
 BenchmarkExtract_Small-14          	    3286	    348269 ns/op	 428.07 MB/s	  643183 B/op	    3308 allocs/op

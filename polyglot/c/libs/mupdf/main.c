@@ -8,7 +8,7 @@
  *   associated files (/AF). No XMP declaration or no /AF: no invoice.
  * - Embed: no library function; a floor written by hand with MuPDF's
  *   primitives (pdf_add_embedded_file, /Names/EmbeddedFiles, /AF where the
- *   invoice replaces the one the host may keep, /AFRelationship by level,
+ *   invoice replaces any invoice file already listed, /AFRelationship by level,
  *   Factur-X XMP), full rewrite by pdf_write_document
  *   with the default options. Read back with pdf_zugferd_xml().
  * - pdf_zugferd_profile() only detects the profile from the XMP: no check.
@@ -137,8 +137,8 @@ static int embed(void *ctx, const unsigned char *host, size_t host_len, const un
 			arr = pdf_dict_put_array(c, tree, PDF_NAME(Names), 2);
 		name_tree_insert(c, doc, arr, FX_ATTACHMENT, fs);
 
-		/* /AF: an earlier invoice file (such as the one the host keeps from
-		 * its original Factur-X) is replaced, so that the PDF has one. */
+		/* /AF: an invoice file already listed there is replaced, so that the
+		 * PDF has one. */
 		pdf_obj *af = pdf_dict_get(c, root, PDF_NAME(AF));
 		if (!pdf_is_array(c, af))
 			af = pdf_dict_put_array(c, root, PDF_NAME(AF), 1);
@@ -193,7 +193,7 @@ static void body(fx_harness *h, void *ctx) {
 	fx_unsupported(h, FX_WRITE, "no XML generation");
 	fx_embed(h,
 		 "floor: embedding written by hand with the MuPDF primitives (pdf_add_embedded_file, "
-		 "/Names/EmbeddedFiles, /AF where the invoice replaces the host's, /AFRelationship Alternative "
+		 "/Names/EmbeddedFiles, /AF where the invoice replaces any invoice already listed, /AFRelationship Alternative "
 		 "or Data by profile, Factur-X XMP replaced), full rewrite by pdf_write_document "
 		 "(default options), without PDF/A conversion; read back by pdf_zugferd_xml",
 		 embed, NULL, extract, NULL);
