@@ -312,3 +312,9 @@ Things to know when reading the numbers:
 
 Downloads: pypistats, last 30 days as of 2026-11-17. Licenses and
 dates: PyPI JSON API.
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **saxonche + official XSLT**: the CEN UBL 1.3.17 XSLT for a UBL document (fetched by `run.sh setup`), the KoSIT XRechnung UBL schematron when BT-24 declares XRechnung, and all the custom levels of the KoSIT scenarios, as the Java floor does. Survey unchanged (6/26).

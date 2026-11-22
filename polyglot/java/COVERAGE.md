@@ -412,3 +412,10 @@ order:
   embed an invoice into them, and Mustang produced a PDF with two
   `factur-x.xml` in `/AF`. On the fixed hosts, both embed, and the resulting
   PDF has a single `factur-x.xml` (`zerechnung validate`: no error).
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **Saxon-HE + official XSLT**: the CEN UBL 1.3.17 XSLT (`en16931-ubl-1.3.17.zip`, verified by SHA-256) for a UBL document, and the KoSIT XRechnung UBL schematron when its BT-24 declares XRechnung. The floor now applies all the custom levels of the KoSIT scenarios of 2026-08-31 (by profile: BR-CL-10/11/24/25/26 and UBL-CR-646 as information for the extension, BR-CO-16 and UBL-CR-470 for the UBL extension, BR-CL-13 for the CVD profile, UBL-CR-646 as an error for CVD and UBL invoices; BR-CL-21, BR-CL-23, CII-SR-475 and CII-SR-476 left out; CII-SR-452 to 454, 465 and 466 raised to errors). The survey is unchanged: 6 files flagged out of 26.
+- **phive**: the EN 16931 or XRechnung UBL rule set for a UBL document, and the XRechnung extension set when BT-24 declares the XRechnung extension (CII or UBL invoice); the set is chosen by syntax and BT-24. Survey unchanged (2/26).

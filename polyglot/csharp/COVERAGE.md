@@ -544,3 +544,10 @@ complete the entry.
   (until 2026-11-22, they kept an `/AF` pointing to a factur-x.xml). The
   `Embed_*` check rereads the embedded XML and compares it with the CII
   profile, not with the exact content.
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **SaxonCS-HE + official XSLT**: CEN UBL 1.3.17 XSLT for a UBL document, KoSIT XRechnung UBL schematron when BT-24 declares XRechnung, all the custom levels of the KoSIT scenarios. Survey unchanged (6/26).
+- **System.Xml.Schema floor**: the UBL 2.1 Invoice and CreditNote schemas for a UBL document; the XML-DSig schema they import has a DOCTYPE and is loaded first, with `DtdProcessing.Parse`. Survey unchanged (0/26).

@@ -16,7 +16,7 @@ Each language has its own self-contained folder:
 | [`cpp/`](cpp) | Kura (PDF/A container only), SaxonC-HE with the official XSLT, 5 floors (qpdf, PoDoFo, poppler-cpp, Xerces-C, pugixml); library notes in [`cpp/COVERAGE.md`](cpp/COVERAGE.md) |
 | [`php/`](php) | 19 Packagist packages (including the smalot/pdfparser and ext-dom floors), PHP 8.6 CLI, one process per benchmark; library notes in [`php/COVERAGE.md`](php/COVERAGE.md) |
 | `report/` | Tool that merges the outputs into Markdown tables |
-| `results/<date>/` | Raw outputs (`bench_*`, `resources_*`, `alloc_*`, `survey_*`), environment (`env.txt`) and tables (`tables.md`) |
+| `results/<date>/` | Raw outputs (`bench_*`, `resources_*`, `alloc_*`, `survey_*`, `cases_*`), environment (`env.txt`) and tables (`tables.md`) |
 
 ## Method
 
@@ -30,6 +30,8 @@ Allocations are counted separately (`./run.sh alloc`): after the same result che
 
 For validation, each library applies the most complete rule set it has offline, without French rules (the corpus is German). Remote API clients, libraries that require a JVM outside the Java bench, and empty packages are left out; the reason is given in each `COVERAGE.md`.
 
+The **conformance cases** ([`../cases`](../cases/README.md)) run each validating library, with the same adapter and rule set, on 561 valid and invalid documents, CII and UBL, whose expected verdict and rules come from a reference validator (the KoSIT validator for Germany), and give it a confidence score per country: 100 × √(S × D), S the share of valid cases accepted, D the mean detection of the expected rules. The rules of the harnesses are in [`PROTOCOL.md`](PROTOCOL.md#conformance-cases).
+
 A **floor** is a generic library (PDF or XML) that knows nothing about Factur-X, wired in with a few lines in the adapter: it gives the minimum cost of an operation in the language. In C, there are only floors.
 
 ## Usage
@@ -37,14 +39,15 @@ A **floor** is a generic library (PDF or XML) that knows nothing about Factur-X,
 ```bash
 ./run.sh setup     # corpus (through ecosystem), npm ci, venv, cargo, Maven, dotnet, CMake, Composer, official artifacts
 ./run.sh survey    # accuracy on the corpus, all nine languages
+./run.sh cases     # conformance cases (../cases): confidence score per country, all nine languages
 ./run.sh bench     # benchmarks, one language after the other
 ./run.sh alloc     # allocations per call (TypeScript, Python, Rust; Go reports them with bench)
 ./run.sh resources # CPU time and peak memory, one process per library and per benchmark
 ./run.sh report    # results/<date>/tables.md and env.txt
-./run.sh all       # all six in a row
+./run.sh all       # all seven in a row
 ```
 
-`survey`, `bench`, `alloc` and `resources` accept a list of languages (`./run.sh bench rust go`); each folder also has its own `run.sh`, which accepts a list of libraries. Variables: `OUT`, `COUNT` (3), `BENCHTIME` (1, in seconds), for `resources` `RES_COUNT` (1) and `RES_BENCHTIME` (1), and `ZERECHNUNG_DIR`, which measures a local clone of ZeRechnung instead of the version `../ecosystem/facturx/go.mod` requires (see [`../ecosystem`](../ecosystem/README.md#usage)).
+`survey`, `cases`, `bench`, `alloc` and `resources` accept a list of languages (`./run.sh bench rust go`); each folder also has its own `run.sh`, which accepts a list of libraries. Variables: `OUT`, `COUNT` (3), `BENCHTIME` (1, in seconds), for `resources` `RES_COUNT` (1) and `RES_BENCHTIME` (1), and `ZERECHNUNG_DIR`, which measures a local clone of ZeRechnung instead of the version `../ecosystem/facturx/go.mod` requires (see [`../ecosystem`](../ecosystem/README.md#usage)).
 
 Requirements:
 
@@ -55,7 +58,7 @@ Requirements:
 - PHP: PHP 8.4 or newer as CLI, with the extensions listed in [`php/COVERAGE.md`](php/COVERAGE.md), Composer 2, and `pdfdetach` (poppler);
 - curl, unzip, shasum and network access during `setup`.
 
-On an Apple M4 Pro, the accuracy surveys take about ten minutes, the timing measurements about 1 h 25 min (including 17 minutes for PHP and 16 to 18 for TypeScript, because of the slow validators), the allocations an hour and a half (including 85 minutes for TypeScript, one process per benchmark) and the CPU and memory pass about 55 minutes. Run the measurements on an idle machine, on mains power or in high performance mode, lid open (`run.sh` prevents idle sleep with `caffeinate -i`, not lid-closed sleep): another process that keeps a core busy, or a sleep, skews the times.
+On an Apple M4 Pro, the accuracy surveys take about ten minutes, the conformance cases about an hour (18 minutes for TypeScript, @lucaapp/zugferd-ts taking 2.7 s per document), the timing measurements about 1 h 25 min (including 17 minutes for PHP and 16 to 18 for TypeScript, because of the slow validators), the allocations an hour and a half (including 85 minutes for TypeScript, one process per benchmark) and the CPU and memory pass about 55 minutes. Run the measurements on an idle machine, on mains power or in high performance mode, lid open (`run.sh` prevents idle sleep with `caffeinate -i`, not lid-closed sleep): another process that keeps a core busy, or a sleep, skews the times.
 
 ## Results of 2026-11-22
 
@@ -186,6 +189,28 @@ Of the 26 valid CII XML files of the corpus, the official schematrons (CEN EN 16
 
 All 104 hybrid PDFs are extracted by the Go package and by most of the libraries that can extract, floors included. The others: ZUGFeRD-csharp and MuPDF 103, @stafyniaksacha/facturx, atgp/factur-x and facturx-php 100, pdf-invoice 101, horstoeko/invoicesuite 88, Securibox 74, FacturXDotNet and tiime/factur-x 70, pycheval 65, pdfa 32, pat-o-dev/factur-x 1.
 
+### Confidence by country
+
+Conformance cases of [`../cases`](../cases/README.md), run on 2026-11-22 evening, all nine languages, with the library versions of this campaign (ZeRechnung at the commit `724b388` that `../ecosystem/facturx/go.mod` requires). Each library validates 561 documents (EN 16931 and XRechnung 3.0.2, CII and UBL) with the adapter and rule set of the survey; the expected verdicts and rules are those of the KoSIT validator 1.6.3 with the XRechnung 3.0.2 configuration of 2026-08-31. Score out of 100: 100 × √(S × D), S the share of the 208 valid cases accepted, D the mean detection of the 247 expected rules (1 raised, 0.5 rejected otherwise, 0 accepted); Germany is the mean of the four parts. Per part, counts and rules raised by family: [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md).
+
+| Germany | Libraries |
+|---|---|
+| 100 | KoSIT validator (the reference), Paniolo (Java); dealerweb/einvoice, intragile/php-einvoicing, vampire-php (PHP); Saxon with the official XSLT in Java, Python, C# and C++ |
+| 90 to 99 | **ZeRechnung (Go)**, @conformo/toolkit, @kontor-mcp/core, phive (99); @sweberdev/summand (95); erechnung-validator (93); International.EInvoicing, mcp-einvoicing-de, Mustang (92) |
+| 70 to 89 | en16931 (Rust, 88), einvoice-validator (82), john-wink/en16931-php (79), @attestwire/en16931 (78), en16931 (TS, 73) |
+| 50 to 69 | Balsoft (67), En16931 (C#, 63), Antiphon (55), core-invoice and pn-invoice (53), OfficeIMO (51) |
+| 20 to 49 | @lucaapp/zugferd-ts (45), quittio/core (40), zugferd-rs (32), @fin.cx/einvoice (27), horstoeko/invoicesuite and ZUGFeRD-csharp (24), pat-o-dev/factur-x (22), Securibox and the ext-dom floor (20) |
+| 1 to 19 | the libraries that stop at the schema: factur-x (Python, 18), @stackforge-eu/factur-x, drafthorse, easybill/zugferd-php (14), stann/factur-x (15), atgp/factur-x, tiime/factur-x, facturx-php (7), and the XSD floors (System.Xml.Schema 12, libxml2 and Xerces-C 11); getafix (17), horstoeko/zugferd and @ekwo-ai/factur-x (15), factur-x (Rust, 13), FacturXDotNet (10), php-erechnung-toolkit and pdf-invoice (8), @stafyniaksacha/facturx (6), ph-cii (5) |
+| 0 | factur-x-kit, invoice4j, pax.XRechnung.NET: they reject every valid case |
+
+- **The official rules, run whole, score 100**: the KoSIT validator, Paniolo (KoSIT configuration), the Saxon floors (official XSLT and the KoSIT levels), and three PHP libraries that bring the same artifacts to PHP: dealerweb/einvoice (XSLT compiled to PHP), intragile/php-einvoicing (schematron precompiled to PHP), vampire-php (its own XPath 2.0 interpreter). The Saxon floors, which have no schema check, accept 17 of the 63 schema-only cases and still round to 100: the schema counts as one rule of each part.
+- **ZeRechnung scores 99**, an upper bound since the mutation cases come from its tests: it rejects one valid CII case, an invoice with `TestIndicator`, which its Factur-X EN16931 schema does not allow (CII-SR-002 is a warning for the reference).
+- **The most downloaded libraries stop at the schema** and score 7 to 18: @stackforge-eu/factur-x, factur-x (Python), atgp/factur-x, drafthorse, horstoeko/zugferd; atgp/factur-x, tiime/factur-x and facturx-php also refuse the XRechnung identifier (BT-24), hence 0 on both XRechnung parts.
+- **A syntax the library does not read counts 0**: the libraries that read CII only (Factur-X and ZUGFeRD libraries, getafix, Securibox, FacturXDotNet…) are capped near 50; Antiphon validates UBL in separate packages, not measured (16 and 10 on the UBL parts).
+- **National rules applied to every document**: quittio/core runs its German VAT law checks (DE-USTG) on plain EN 16931 invoices and rejects most of the valid ones (23 and 0 on the EN 16931 parts); Securibox rejects every valid XRechnung CII case on its code lists.
+- **BR-CO-25**, which no CEN artifact checks, is applied by @kontor-mcp/core, en16931 (Rust), john-wink/en16931-php, quittio/core, pat-o-dev/factur-x and getafix: they reject the valid EN 16931 CII cases, whose base document has a positive amount due without due date or payment terms. These rejections are not counted against them (see [`../cases`](../cases/README.md#the-score)).
+- The adapters of en16931 (TS), @lucaapp/zugferd-ts, einvoice-validator, zugferd-rs, intragile/php-einvoicing, phive, of the Saxon floors and of the XSD floors send a UBL document to the library's UBL rules; the CII path the benchmarks time is unchanged (notes in each `COVERAGE.md`).
+
 ### Enforced standards
 
 Surveyed in the libraries' code, not in their README (files and lines in each `COVERAGE.md`). A selection: the most downloaded and the most complete in each language.
@@ -226,7 +251,7 @@ No library, in any of the eight other languages, combines the full EN 16931 rule
 
 The most downloaded libraries do not validate the business rules: @stackforge-eu/factur-x, factur-x (Python), atgp/factur-x and horstoeko/zugferd offline stop at the XSD; ZUGFeRD-csharp recomputes the totals; @e-invoice-eu/core and node-zugferd only generate.
 
-**PDF/A-3 conversion** of the host PDF, which zugferd-rs, @lucaapp/zugferd-ts, @conformo/toolkit and Kura do (mcp-einvoicing-de adds an sRGB OutputIntent), also exists in the Go package: it is partial and rejects what would require a PDF engine, such as embedding a font; the bench does not measure it. Mustang and Paniolo hand the PDF/A check to **veraPDF**, the reference tool; the Go package has its own checks. It also parses, writes and validates the **UBL** syntax, like several of these libraries (@conformo/toolkit, en16931, zugferd-rs, mcp-einvoicing-de, @lucaapp/zugferd-ts…), but the bench only measures CII.
+**PDF/A-3 conversion** of the host PDF, which zugferd-rs, @lucaapp/zugferd-ts, @conformo/toolkit and Kura do (mcp-einvoicing-de adds an sRGB OutputIntent), also exists in the Go package: it is partial and rejects what would require a PDF engine, such as embedding a font; the bench does not measure it. Mustang and Paniolo hand the PDF/A check to **veraPDF**, the reference tool; the Go package has its own checks. It also parses, writes and validates the **UBL** syntax, like several of these libraries (@conformo/toolkit, en16931, zugferd-rs, mcp-einvoicing-de, @lucaapp/zugferd-ts…); the benchmarks only measure CII, the conformance cases also UBL.
 
 ## Known specifics
 

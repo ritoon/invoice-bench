@@ -1,17 +1,19 @@
 # invoice-bench
 
-Benchmarks and a conformance comparison of Factur-X / ZUGFeRD / EN 16931 e-invoicing libraries, in nine languages. They measure [ZeRechnung](https://github.com/ritoon/zerechnung), a Go package, against the other libraries, on the same files from the official ZUGFeRD corpus and with the same protocol.
+Benchmarks and a conformance comparison of Factur-X / ZUGFeRD / EN 16931 e-invoicing libraries, in nine languages. They measure [ZeRechnung](https://github.com/ritoon/zerechnung), a Go package, against the other libraries, on the same files from the official ZUGFeRD corpus and with the same protocol. The conformance cases then say which rules of a country each library enforces, as a **confidence score per country** (Germany first: EN 16931 and XRechnung, CII and UBL).
 
 | Folder | Contents |
 |---|---|
 | [`ecosystem/`](ecosystem) | ZeRechnung and 14 other Go libraries: response time, memory and accuracy for extraction, parsing, validation, writing, embedding into a PDF and checking a hybrid PDF |
+| [`cases/`](cases) | Conformance cases: 561 valid and invalid documents whose verdict and rules come from the reference validator (KoSIT for Germany), the scoring and its limits ([`cases/README.md`](cases/README.md)) |
 | [`polyglot/`](polyglot) | The TypeScript, Python, Rust, Java, C#, C, C++ and PHP libraries, with the same protocol ([`PROTOCOL.md`](polyglot/PROTOCOL.md)): time, CPU time, memory, allocations, accuracy, and the standards each library actually enforces (one `COVERAGE.md` file per language) |
 
 ## Usage
 
 ```bash
-cd ecosystem && ./run.sh all        # Go bench: corpus, surveys, measurements, tables
+cd ecosystem && ./run.sh all        # Go bench: corpus, surveys, conformance cases, measurements, tables
 cd polyglot && ./run.sh all         # the other languages (requirements in polyglot/README.md)
+cd polyglot && ./run.sh cases       # conformance cases only, all nine languages
 ```
 
 The Go bench needs Go 1.26 or newer, git and network access; a full run takes about ten minutes on an Apple M4 Pro. The multi-language bench needs each language's toolchain and takes several hours. The details are in each folder's README.
@@ -26,7 +28,7 @@ ZERECHNUNG_DIR=~/src/zerechnung ./ecosystem/run.sh bench facturx
 
 ## Results
 
-Each README gives the results of its latest run, and `results/<date>/` holds the raw outputs and the full tables. The analysis is published on the ZeRechnung wiki, in French: [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) for the Go libraries, [Benchmarks autres langages](https://github.com/ritoon/zerechnung/wiki/Benchmarks-autres-langages) for the others.
+Each README gives the results of its latest run, and `results/<date>/` holds the raw outputs and the full tables, confidence by country included. The analysis is published on the ZeRechnung wiki, in French: [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) for the Go libraries, [Benchmarks autres langages](https://github.com/ritoon/zerechnung/wiki/Benchmarks-autres-langages) for the others.
 
 ## History
 

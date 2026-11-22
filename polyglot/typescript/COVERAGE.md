@@ -292,3 +292,11 @@ Legend for the "rules" columns:
 | @sweberdev/summand | 2.0.1 | MIT | 2.0.1 (2026-10-13) | 323 | no (Pro version) | no (Pro version) | yes (validation) | yes | no | yes, CII + UBL (in-house validator) | yes, CEN 1.3.16, 806 asserts (in-house engine) | partial (XMP profile compared with BT-24) | no | yes, XRechnung 2.6.0 (52 asserts) | no | partial (XMP profile) | none |
 | en16931 | 0.1.0 | MIT AND EUPL-1.2 | 0.1.0 (2026-07-28) | 360 | no | no | yes (validation) | no | no | no | yes, CEN 1.3.16 copied (fontoxpath, exact decimals, no severities) | no | no | no | no | no | none |
 | @fin.cx/einvoice | 11.3.1 | MIT | 11.3.1 (2026-09-30) | 323 | yes | yes | yes | yes | partial (attachment without XMP) | no | partial, rewritten (≈ 200 ids) | no | no | partial, rewritten (12 BR-DE) | no (2 ids) | no | network postinstall (not run) |
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **en16931**: `loadUblSchematron()` (CEN UBL 1.3.16 schematron, shipped by the package) for a UBL document.
+- **@lucaapp/zugferd-ts**: `validateUblXml` for a UBL document: the UBL 2.1 schema only, the library's only UBL validation.
+- @conformo/toolkit, @kontor-mcp/core and @sweberdev/summand detect the syntax themselves.
