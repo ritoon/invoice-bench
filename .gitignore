@@ -15,3 +15,5 @@ results/*/cpp-parts/
 results/*/csharp-parts/
 results/*/java-parts/
 results/*/*-res-parts/
+# Built by site/ (go run . -out ../_site)
+/_site/
