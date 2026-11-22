@@ -24,25 +24,25 @@ use horstoeko\invoicesuite\validators\InvoiceSuiteXsdDocumentValidator;
 return [
     'pkg' => 'horstoeko/invoicesuite',
     'notes' => [
-        'extract' => 'InvoiceSuitePdfDocumentReader::createFromContent (prinsfrank/pdfparser ; le lecteur désérialise aussi le XML trouvé) puis getInvoiceDocumentAttachment()->getAttachmentContent()',
-        'parse' => 'InvoiceSuiteDocumentReader::createFromContent (fournisseur de format deviné, JMS Serializer)',
-        'validate' => 'InvoiceSuiteXsdDocumentValidator::createFromContent()->validate() : XSD du fournisseur de format reconnu (Factur-X EN16931 pour XRechnung CII) ; validateurs KoSIT (Java) et Docuflair (service distant) non mesurés',
-        'write' => 'InvoiceSuiteDocumentReader::copyToBuilder()->getContent() (DTO puis sérialisation)',
+        'extract' => 'InvoiceSuitePdfDocumentReader::createFromContent (prinsfrank/pdfparser; the reader also deserializes the XML it finds) then getInvoiceDocumentAttachment()->getAttachmentContent()',
+        'parse' => 'InvoiceSuiteDocumentReader::createFromContent (format provider guessed, JMS Serializer)',
+        'validate' => 'InvoiceSuiteXsdDocumentValidator::createFromContent()->validate(): XSD of the recognised format provider (Factur-X EN16931 for XRechnung CII); KoSIT (Java) and Docuflair (remote service) validators not measured',
+        'write' => 'InvoiceSuiteDocumentReader::copyToBuilder()->getContent() (DTO then serialization)',
         'embed' => 'InvoiceSuitePdfDocumentBuilder::createFromDocumentContentAndPdfContent()->generatePdfDocumentAndGetContent() (FPDI/TCPDF)',
     ],
     'unsupported' => [
-        'check_pdf' => 'pas de contrôle PDF/A',
+        'check_pdf' => 'no PDF/A check',
     ],
     'survey_notes' => [
-        'validate' => 'XSD seulement (KoSIT exige Java, Docuflair est un service distant)',
+        'validate' => 'XSD only (KoSIT requires Java, Docuflair is a remote service)',
         'parse' => 'InvoiceSuiteDocumentReader::createFromContent',
-        'extract' => 'InvoiceSuitePdfDocumentReader::createFromContent (échoue si le XML trouvé ne correspond à aucun fournisseur de format)',
+        'extract' => 'InvoiceSuitePdfDocumentReader::createFromContent (fails if the XML found matches no format provider)',
     ],
 
     'extract' => static function (string $pdf, ?string $path): string {
         $att = InvoiceSuitePdfDocumentReader::createFromContent($pdf)->getInvoiceDocumentAttachment();
         if ($att === null) {
-            throw new \RuntimeException('aucune pièce jointe de facture');
+            throw new \RuntimeException('no invoice attachment');
         }
 
         return $att->getAttachmentContent();

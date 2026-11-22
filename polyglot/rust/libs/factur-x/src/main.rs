@@ -30,15 +30,15 @@ fn write(inv: &Invoice) -> Result<String, String> {
 
 fn main() {
     harness::run(LIB, |h| {
-        h.unsupported(Op::Extract, "pas de lecture de PDF (crate sœur `pdfa`)");
+        h.unsupported(Op::Extract, "no PDF parsing (sister crate `pdfa`)");
         h.parse("parse(Syntax::Cii) → Invoice", parse);
         h.validate(
-            "adaptateur : parse + validate(&Invoice) ; 16 règles sur le modèle (BR-01 à BR-06, BR-09, BR-16, BR-CO-10, BR-CO-13 à BR-CO-18, BR-S-08) ; pas de XSD, pas de règles de profil ni nationales",
+            "adapter: parse + validate(&Invoice); 16 rules on the model (BR-01 to BR-06, BR-09, BR-16, BR-CO-10, BR-CO-13 to BR-CO-18, BR-S-08); no XSD, no profile or national rules",
             validate,
             summarize,
         );
-        h.write("generate(Syntax::Cii), modèle lu par parse", parse, write);
-        h.unsupported(Op::Embed, "pas d'écriture de PDF (crate sœur `pdfa`)");
-        h.unsupported(Op::CheckPdf, "pas de lecture de PDF");
+        h.write("generate(Syntax::Cii), model read by parse", parse, write);
+        h.unsupported(Op::Embed, "no PDF writing (sister crate `pdfa`)");
+        h.unsupported(Op::CheckPdf, "no PDF parsing");
     });
 }

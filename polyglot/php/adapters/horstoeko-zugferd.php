@@ -22,16 +22,16 @@ return [
     'pkg' => 'horstoeko/zugferd',
     'notes' => [
         'extract' => 'ZugferdDocumentPdfReader::getXmlFromContent (smalot/pdfparser)',
-        'parse' => 'ZugferdDocumentReader::readAndGuessFromContent (JMS Serializer, profil résolu par BT-24)',
-        'validate' => 'lecture + ZugferdXsdValidator : XSD Factur-X du profil sur le document resérialisé ; schematron embarqué non exécuté, KoSIT exige Java',
-        'write' => 'ZugferdDocument::serializeAsXml (JMS) du modèle lu par ZugferdDocumentReader',
-        'embed' => 'ZugferdDocumentPdfMerger(xml, pdf)->generateDocument()->downloadString() (FPDI : la PDF est réécrite, XMP PDF/A-3B)',
+        'parse' => 'ZugferdDocumentReader::readAndGuessFromContent (JMS Serializer, profile resolved from BT-24)',
+        'validate' => 'parsing + ZugferdXsdValidator: Factur-X XSD of the profile on the re-serialized document; bundled schematron not run, KoSIT requires Java',
+        'write' => 'ZugferdDocument::serializeAsXml (JMS) of the model read by ZugferdDocumentReader',
+        'embed' => 'ZugferdDocumentPdfMerger(xml, pdf)->generateDocument()->downloadString() (FPDI: the PDF is rewritten, PDF/A-3B XMP)',
     ],
     'unsupported' => [
-        'check_pdf' => 'ZugferdPdfValidator télécharge veraPDF et lance Java (exclu)',
+        'check_pdf' => 'ZugferdPdfValidator downloads veraPDF and starts Java (excluded)',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X du profil (ZugferdXsdValidator) après lecture ; pas de schematron hors ligne',
+        'validate' => 'Factur-X XSD of the profile (ZugferdXsdValidator) after parsing; no offline schematron',
         'parse' => 'ZugferdDocumentReader::readAndGuessFromContent',
         'extract' => 'ZugferdDocumentPdfReader::getXmlFromContent',
     ],

@@ -97,14 +97,14 @@ done:
 static void body(fx_harness *h, void *ctx) {
 	(void)ctx;
 	fx_extract(h,
-		   "plancher : extraction écrite à la main sur l'API C de qpdf (qpdf_read_memory, arbre "
-		   "/Names/EmbeddedFiles avec /Kids, qpdf_oh_get_stream_data) ; pas une librairie Factur-X",
+		   "floor: extraction written by hand on the qpdf C API (qpdf_read_memory, "
+		   "/Names/EmbeddedFiles tree with /Kids, qpdf_oh_get_stream_data); not a Factur-X library",
 		   extract, NULL);
-	fx_unsupported(h, FX_PARSE, "plancher d'extraction seulement");
-	fx_unsupported(h, FX_VALIDATE, "plancher d'extraction seulement");
-	fx_unsupported(h, FX_WRITE, "plancher d'extraction seulement");
-	fx_unsupported(h, FX_EMBED, "plancher d'extraction seulement (injection mesurée avec l'API C++ de qpdf, banc cpp)");
-	fx_unsupported(h, FX_CHECK_PDF, "plancher d'extraction seulement");
+	fx_unsupported(h, FX_PARSE, "extraction floor only");
+	fx_unsupported(h, FX_VALIDATE, "extraction floor only");
+	fx_unsupported(h, FX_WRITE, "extraction floor only");
+	fx_unsupported(h, FX_EMBED, "extraction floor only (embedding measured with the qpdf C++ API, cpp bench)");
+	fx_unsupported(h, FX_CHECK_PDF, "extraction floor only");
 }
 
 int main(int argc, char **argv) {

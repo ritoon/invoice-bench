@@ -9,12 +9,12 @@ export default {
 		extract: 'extractXml',
 		parse: 'parseCiiXml',
 		validate:
-			'validateXml (défauts) : XSD Factur-X 1.08 du profil détecté (xmllint-wasm) + schematron CEN EN 16931 CII 1.3.16 (node-schematron, JS pur), issues de sévérité error ; la librairie classe toute assertion en échec en error (les flag="warning" du CEN ne sont pas lus)',
-		write: 'parseCiiXml puis detectProfile hors mesure, serializeToXml(modèle, profil)',
-		embed: 'embedXml(pdf, xml) (défauts : factur-x.xml, surcouche PDF/A-3b)',
+			'validateXml (defaults): Factur-X 1.08 XSD of the detected profile (xmllint-wasm) + CEN EN 16931 CII 1.3.16 schematron (node-schematron, pure JS), error-severity issues; the library classifies every failed assertion as error (the CEN flag="warning" attributes are not read)',
+		write: 'parseCiiXml then detectProfile outside the measurement, serializeToXml(model, profile)',
+		embed: 'embedXml(pdf, xml) (defaults: factur-x.xml, PDF/A-3b layer)',
 	},
 	unsupported: {
-		check: 'pas de contrôle complet natif : validatePdfA ne contrôle que le conteneur (21 règles, PDFA_RULES), validateXml que le XML',
+		check: 'no native complete check: validatePdfA checks only the container (21 rules, PDFA_RULES), validateXml only the XML',
 	},
 	extract(s) {
 		return extractXml(s.bytes);

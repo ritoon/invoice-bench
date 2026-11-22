@@ -32,19 +32,19 @@ var noValidation = new WriterOptions { ValidateBeforeWriting = false };
 
 return Harness.Run(lib, args, h =>
 {
-    h.Extract("HybridPdf.ExtractXml : arbre des noms /EmbeddedFiles (factur-x.xml, xrechnung.xml, zugferd-invoice.xml, sinon le premier .xml), octets bruts", Extract);
-    h.Parse("InvoiceReader.Read (XDocument puis lecteur CII ou UBL selon l'espace de noms racine)", Parse);
+    h.Extract("HybridPdf.ExtractXml: /EmbeddedFiles name tree (factur-x.xml, xrechnung.xml, zugferd-invoice.xml, otherwise the first .xml), raw bytes", Extract);
+    h.Parse("InvoiceReader.Read (XDocument then CII or UBL reader depending on the root namespace)", Parse);
     h.Validate(
-        "InvoiceReader.Read + InvoiceValidator.Validate(profil lu, EN16931 à défaut) + ReadResult.TotalsDiscrepancies : règles codées en C# sur le modèle (BR-*, codes, profils XRechnung/Factur-X), pas de XSD ni de schematron",
+        "InvoiceReader.Read + InvoiceValidator.Validate(profile read, else EN16931) + ReadResult.TotalsDiscrepancies: rules coded in C# on the model (BR-*, codes, XRechnung/Factur-X profiles), no XSD or schematron",
         Validate,
         Summarize);
     h.Write(
-        "CiiWriter.Write(profil lu) avec ValidateBeforeWriting=false (activé par défaut : la validation est mesurée par ParseValidate) ; modèle lu par InvoiceReader.Read",
+        "CiiWriter.Write(profile read) with ValidateBeforeWriting=false (enabled by default: the validation is measured by ParseValidate); model read by InvoiceReader.Read",
         Parse,
         r => CiiWriter.Write(r.Invoice, r.Profile ?? InvoiceProfile.EN16931, noValidation));
     h.Embed(
-        "HybridPdf.Create(octets XML, EN16931) : recopie les pages dans un nouveau document PDFsharp, factur-x.xml en fichier associé, OutputIntent sRGB, polices manquantes prises dans les dossiers système, XMP remplacé par mise à jour incrémentale ; dates = DateTimeOffset.Now (réglable, laissé par défaut)",
+        "HybridPdf.Create(XML bytes, EN16931): copies the pages into a new PDFsharp document, factur-x.xml as associated file, sRGB OutputIntent, missing fonts taken from the system folders, XMP replaced by incremental update; dates = DateTimeOffset.Now (configurable, left at the default)",
         (host, xml) => HybridPdf.Create(host, xml, InvoiceProfile.EN16931),
         Extract);
-    h.Unsupported(Op.CheckPdf, "pas de contrôle de PDF hybride");
+    h.Unsupported(Op.CheckPdf, "no hybrid PDF check");
 });

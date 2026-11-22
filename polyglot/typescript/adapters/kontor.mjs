@@ -8,14 +8,14 @@ export default {
 	pkg: '@kontor-mcp/core',
 	notes: {
 		extract: 'extractEmbeddedXml',
-		parse: 'parseInvoice(octets)',
+		parse: 'parseInvoice(bytes)',
 		validate:
-			'validateInvoice(octets) (défauts) : XSD CII D16B (xmllint-wasm) + schematron CEN EN 16931 CII 1.3.16, plus KoSIT XRechnung 3.0.2 (schematron 2.5.0) si BT-24 le déclare, compilés en SEF et exécutés par SaxonJS ; erreurs error/fatal hors couche « plausibility » (règles maison KONTOR-PLAUS-*, que la librairie exclut elle-même de valid)',
+			'validateInvoice(bytes) (defaults): CII D16B XSD (xmllint-wasm) + CEN EN 16931 CII 1.3.16 schematron, plus KoSIT XRechnung 3.0.2 (schematron 2.5.0) if BT-24 declares it, compiled to SEF and run by SaxonJS; error/fatal errors outside the "plausibility" layer (in-house KONTOR-PLAUS-* rules, which the library itself excludes from valid)',
 	},
 	unsupported: {
-		write: 'pas de sérialisation CII publique : modelToCii n’est pas exporté (exports limités à « . »), seul convertInvoice enchaîne lecture, validation et écriture',
-		embed: 'pas d’injection dans un PDF existant : generateZugferdPdf dessine son propre PDF à partir d’une saisie',
-		check: 'pas de contrôle natif d’un PDF hybride : validateInvoice ne prend que du XML (detectInvoicePdf extrait, sans valider)',
+		write: 'no public CII serialization: modelToCii is not exported (exports limited to "."), only convertInvoice chains parsing, validation and writing',
+		embed: 'no embedding into an existing PDF: generateZugferdPdf draws its own PDF from an input structure',
+		check: 'no native check of a hybrid PDF: validateInvoice only takes XML (detectInvoicePdf extracts, without validating)',
 	},
 	async extract(s) {
 		return (await extractEmbeddedXml(s.bytes)).xml;

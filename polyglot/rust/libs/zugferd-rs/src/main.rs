@@ -55,19 +55,19 @@ fn main() {
         h.extract("extract_xml (lopdf)", extract);
         h.parse("parse_cii_xml → Invoice", parse);
         h.validate(
-            "validate_xml (défaut) : XSD Factur-X 1.09.2 du profil déclaré + Schematron CEN EN 16931 évalué par libxml2 (XPath 1.0 seulement : les règles XPath 2.0 sont sautées, résultat déclaré incomplet) ; pas de BR-DE",
+            "validate_xml (defaults): Factur-X 1.09.2 XSD of the declared profile + CEN EN 16931 Schematron evaluated by libxml2 (XPath 1.0 only: the XPath 2.0 rules are skipped, result declared incomplete); no BR-DE",
             validate,
             summarize,
         );
-        h.write("serialize_to_xml(ZugferdProfile::En16931), modèle lu par parse_cii_xml", parse, write);
+        h.write("serialize_to_xml(ZugferdProfile::En16931), model read by parse_cii_xml", parse, write);
         h.embed(
-            "embed_xml (profil EN 16931) : réécrit le PDF en PDF/A-3b (XMP Factur-X, OutputIntent sRGB) ; le XML est injecté tel quel",
+            "embed_xml (EN 16931 profile): rewrites the PDF as PDF/A-3b (Factur-X XMP, sRGB OutputIntent); the XML is embedded as is",
             embed,
             extract,
         );
         h.unsupported(
             Op::CheckPdf,
-            "pas de contrôle complet natif : validate_pdf_a ne vérifie que le conteneur (~21 règles PDF/A-3b), pas le XML",
+            "no native full check: validate_pdf_a only checks the container (~21 PDF/A-3b rules), not the XML",
         );
     });
 }

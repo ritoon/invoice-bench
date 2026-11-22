@@ -60,21 +60,21 @@ fn embed(host: &[u8], xml: &[u8]) -> Result<Vec<u8>, String> {
 fn main() {
     harness::run(LIB, |h| {
         h.extract(
-            "adaptateur : Document::load_mem (pdfluent-lopdf) + extract_xml_attachment essayé pour 5 noms standard",
+            "adapter: Document::load_mem (pdfluent-lopdf) + extract_xml_attachment tried for 5 standard names",
             extract,
         );
-        h.parse("ZugferdInvoice::from_xml (montants en f64)", parse);
+        h.parse("ZugferdInvoice::from_xml (amounts as f64)", parse);
         h.validate(
-            "adaptateur : from_xml + validate (exigences du profil) + validate_en16931 (14 règles : BR-01 à BR-08, BR-CL-01, BR-CL-04, BR-CO-10, BR-CO-13, BR-CO-15, BR-S-08) ; pas de XSD",
+            "adapter: from_xml + validate (profile requirements) + validate_en16931 (14 rules: BR-01 to BR-08, BR-CL-01, BR-CL-04, BR-CO-10, BR-CO-13, BR-CO-15, BR-S-08); no XSD",
             validate,
             summarize,
         );
-        h.write("to_xml (valide d'abord le profil et les 14 règles EN 16931, refuse d'écrire sinon), modèle lu par from_xml", parse, write);
+        h.write("to_xml (first validates the profile and the 14 EN 16931 rules, refuses to write otherwise), model read by from_xml", parse, write);
         h.embed(
-            "adaptateur : Document::load_mem + embed_xml_attachment (Alternative) + add_zugferd_xmp + save_to ; réécrit tout le fichier, remplace le XMP sans conversion PDF/A",
+            "adapter: Document::load_mem + embed_xml_attachment (Alternative) + add_zugferd_xmp + save_to; rewrites the whole file, replaces the XMP without PDF/A conversion",
             embed,
             extract,
         );
-        h.unsupported(harness::Op::CheckPdf, "pas de contrôle de PDF hybride");
+        h.unsupported(harness::Op::CheckPdf, "no hybrid PDF check");
     });
 }

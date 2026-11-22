@@ -15,17 +15,17 @@ return [
     'pkg' => 'ext-dom',
     'version' => static fn (): string => \PHP_VERSION . ' (libxml ' . \LIBXML_DOTTED_VERSION . ')',
     'notes' => [
-        'validate' => 'plancher écrit à la main : DOMDocument::loadXML + schemaValidate, XSD Factur-X 1.09.2 du profil (EN16931 pour XRechnung), libxml2 ' . \LIBXML_DOTTED_VERSION,
+        'validate' => 'floor written by hand: DOMDocument::loadXML + schemaValidate, Factur-X 1.09.2 XSD of the profile (EN16931 for XRechnung), libxml2 ' . \LIBXML_DOTTED_VERSION,
     ],
     'unsupported' => [
-        'extract' => 'extension XML seulement',
-        'parse' => 'pas de modèle (DOM seul)',
-        'write' => 'pas de modèle',
-        'embed' => 'extension XML seulement',
-        'check_pdf' => 'extension XML seulement',
+        'extract' => 'XML extension only',
+        'parse' => 'no model (DOM only)',
+        'write' => 'no model',
+        'embed' => 'XML extension only',
+        'check_pdf' => 'XML extension only',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.09.2 seulement (libxml2 ' . \LIBXML_DOTTED_VERSION . ')',
+        'validate' => 'Factur-X 1.09.2 XSD only (libxml2 ' . \LIBXML_DOTTED_VERSION . ')',
     ],
 
     'validate' => static function (string $xml, ?string $path): array {

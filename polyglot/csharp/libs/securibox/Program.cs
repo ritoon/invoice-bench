@@ -23,25 +23,25 @@ var lib = new Lib("securibox", "Securibox.FacturX", "0.6.0-alpha-3");
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "new FacturxImporter(flux).ImportDataWithDeserialization() : PDFsharp, XMP, XML /AF ou arbre des noms, puis validation XSD + schematron (résultat ignoré) et désérialisation ; pas d'API publique qui rende les octets",
+        "new FacturxImporter(stream).ImportDataWithDeserialization(): PDFsharp, XMP, XML from /AF or the name tree, then XSD + schematron validation (result ignored) and deserialisation; no public API that returns the bytes",
         Adapter.Extract,
         Adapter.Serialize);
-    h.Parse("XmlSerializer sur SpecificationModels.<profil>.CrossIndustryInvoice (classes de la bibliothèque, profil détecté par CrossIndustryInvoiceProfileProbe comme le fait FacturxImporter)", Adapter.Parse);
+    h.Parse("XmlSerializer on SpecificationModels.<profile>.CrossIndustryInvoice (the library's classes, profile detected by CrossIndustryInvoiceProfileProbe as FacturxImporter does)", Adapter.Parse);
     h.Validate(
-        "FacturxXsdValidator.ValidateXml + FacturxSchematronValidator.ValidateXml au profil détecté : XSD et schematrons FeRD Factur-X 1.09 embarqués (XRechnung et EN 16931 → profil EN 16931), moteur Schematron maison sur XPath2 ; le .sch est relu à chaque appel",
+        "FacturxXsdValidator.ValidateXml + FacturxSchematronValidator.ValidateXml at the detected profile: embedded FeRD Factur-X 1.09 XSD and schematrons (XRechnung and EN 16931 → EN 16931 profile), in-house Schematron engine on XPath2; the .sch is read again on every call",
         Adapter.Validate,
         r => Findings.Of(r.Sch._results.Where(x => x.IsError).Select(Adapter.RuleOf)
             .Concat(r.Xsd.Select(_ => "xsd"))));
     h.Write(
-        "adaptateur : XmlSerializer.Serialize du modèle avec les espaces de noms de FacturxExporter.CreateFacturXStream (pas d'API publique modèle → XML sans PDF) ; modèle lu par XmlSerializer",
+        "adapter: XmlSerializer.Serialize of the model with the namespaces of FacturxExporter.CreateFacturXStream (no public model → XML API without a PDF); model read by XmlSerializer",
         Adapter.Parse,
         Adapter.Serialize);
     h.Embed(
-        "FacturxExporter.CreateFacturXStream(PDF, XML, EN 16931) : validation XSD + schematron d'abord (échec si erreur), puis recopie des pages dans un nouveau document PDFsharp, factur-x.xml en fichier associé, XMP par XmpCore",
+        "FacturxExporter.CreateFacturXStream(PDF, XML, EN 16931): XSD + schematron validation first (fails on error), then copy of the pages into a new PDFsharp document, factur-x.xml as associated file, XMP by XmpCore",
         Adapter.Embed,
         pdf => Adapter.Serialize(Adapter.Extract(pdf)));
     h.CheckPdf(
-        "new FacturxImporter(flux).IsFacturXValid() : XMP Factur-X, XML embarqué, XSD + schematron Factur-X 1.09 ; pas de contrôle PDF/A",
+        "new FacturxImporter(stream).IsFacturXValid(): Factur-X XMP, embedded XML, Factur-X 1.09 XSD + schematron; no PDF/A check",
         Adapter.Check);
 });
 

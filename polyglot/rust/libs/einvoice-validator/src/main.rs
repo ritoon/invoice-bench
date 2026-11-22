@@ -40,15 +40,15 @@ fn summarize(r: &Report) -> Findings {
 
 fn main() {
     harness::run(LIB, |h| {
-        h.extract("pdf::extract (einvoice-pdf, Limits par défaut)", extract);
-        h.unsupported(Op::Parse, "pas de modèle de facture : la librairie valide le XML sans le lire dans un modèle");
+        h.extract("pdf::extract (einvoice-pdf, default Limits)", extract);
+        h.unsupported(Op::Parse, "no invoice model: the library validates the XML without reading it into a model");
         h.validate(
-            "Validator::cen_cii() : XSD UN/CEFACT CII D16B + XSLT officiel CEN EN 16931 CII 1.3.17 exécuté en Rust ; seule règle hors ligne intégrée (XRechnung, Factur-X et Peppol demandent la feature `fetch` et un téléchargement)",
+            "Validator::cen_cii(): UN/CEFACT CII D16B XSD + official CEN EN 16931 CII 1.3.17 XSLT executed in Rust; the only rule set bundled offline (XRechnung, Factur-X and Peppol need the `fetch` feature and a download)",
             validate,
             summarize,
         );
-        h.unsupported(Op::Write, "pas de génération de XML");
-        h.unsupported(Op::Embed, "pas d'injection dans un PDF");
-        h.unsupported(Op::CheckPdf, "pas de contrôle natif d'un PDF hybride (extraction puis validation à composer par l'appelant)");
+        h.unsupported(Op::Write, "no XML generation");
+        h.unsupported(Op::Embed, "no embedding in a PDF");
+        h.unsupported(Op::CheckPdf, "no native check of a hybrid PDF (extraction then validation, to be combined by the caller)");
     });
 }

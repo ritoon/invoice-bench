@@ -86,26 +86,26 @@ static void body(fx_harness *h, void *ctx) {
 	int xr_ok = try_compile(XR_REL, &xr);
 	char note[2048];
 	if (cen.errors < 0 || xr.errors < 0) {
-		snprintf(note, sizeof note, "artefacts absents : %s%s", cen.errors < 0 ? cen.first : "",
+		snprintf(note, sizeof note, "missing artefacts: %s%s", cen.errors < 0 ? cen.first : "",
 			 xr.errors < 0 ? xr.first : "");
 	} else if (!cen_ok || !xr_ok) {
 		snprintf(note, sizeof note,
-			 "libxslt %s ne fait que XSLT 1.0 : la feuille officielle CEN EN 16931 CII 1.3.17 (XSLT 2.0) "
-			 "ne compile pas (%d erreurs de compilation, dont « %s »), ni la feuille KoSIT XRechnung "
-			 "2.6.0 (%d erreurs) ; vérifié à l'exécution par xsltParseStylesheetFile",
+			 "libxslt %s only does XSLT 1.0: the official CEN EN 16931 CII 1.3.17 stylesheet (XSLT 2.0) "
+			 "does not compile (%d compilation errors, including \"%s\"), nor does the KoSIT XRechnung "
+			 "2.6.0 stylesheet (%d errors); checked at run time by xsltParseStylesheetFile",
 			 LIBXSLT_DOTTED_VERSION, cen.errors, cen.first, xr.errors);
 	} else {
-		snprintf(note, sizeof note, "inattendu : libxslt a compilé les feuilles XSLT 2.0");
+		snprintf(note, sizeof note, "unexpected: libxslt compiled the XSLT 2.0 stylesheets");
 	}
 	if (!fx_is_survey(h))
 		fprintf(stderr, "   compile CEN: %s (%d errors), KoSIT: %s (%d errors)\n", cen_ok ? "ok" : "refused",
 			cen.errors, xr_ok ? "ok" : "refused", xr.errors);
-	fx_unsupported(h, FX_EXTRACT, "moteur XSLT seulement");
-	fx_unsupported(h, FX_PARSE, "moteur XSLT seulement");
+	fx_unsupported(h, FX_EXTRACT, "XSLT engine only");
+	fx_unsupported(h, FX_PARSE, "XSLT engine only");
 	fx_unsupported(h, FX_VALIDATE, note);
-	fx_unsupported(h, FX_WRITE, "moteur XSLT seulement");
-	fx_unsupported(h, FX_EMBED, "moteur XSLT seulement");
-	fx_unsupported(h, FX_CHECK_PDF, "moteur XSLT seulement");
+	fx_unsupported(h, FX_WRITE, "XSLT engine only");
+	fx_unsupported(h, FX_EMBED, "XSLT engine only");
+	fx_unsupported(h, FX_CHECK_PDF, "XSLT engine only");
 }
 
 int main(int argc, char **argv) {

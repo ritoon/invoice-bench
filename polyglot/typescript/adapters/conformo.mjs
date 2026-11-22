@@ -28,13 +28,13 @@ export default {
 	pkg: '@conformo/toolkit',
 	notes: {
 		extract: '@conformo/parse extractEmbeddedXml',
-		parse: '@conformo/parse detectXmlFormat (lecture CII/UBL vers le modèle EN 16931 de @conformo/core)',
+		parse: '@conformo/parse detectXmlFormat (CII/UBL parsing into the EN 16931 model of @conformo/core)',
 		validate:
-			'@conformo/validate validate(xml) (défauts) : XSD CII D16B (xmllint-wasm) + schematron CEN EN 16931 CII 1.3.17, et KoSIT XRechnung 3.0.2 si BT-24 le déclare, compilés en SEF et exécutés par SaxonJS ; sévérités error/fatal après les re-niveaux de la configuration KoSIT ; BR-FR non activé (country non fourni)',
-		write: 'detectXmlFormat hors mesure, puis @conformo/toolkit serialize(invoice, "cii")',
+			'@conformo/validate validate(xml) (defaults): CII D16B XSD (xmllint-wasm) + CEN EN 16931 CII 1.3.17 schematron, and KoSIT XRechnung 3.0.2 if BT-24 declares it, compiled to SEF and run by SaxonJS; error/fatal severities after the level overrides of the KoSIT configuration; BR-FR not enabled (country not supplied)',
+		write: 'detectXmlFormat outside the measurement, then @conformo/toolkit serialize(invoice, "cii")',
 		embed:
-			'recette de createPdf appliquée à l’hôte : PDFDocument.load (pdf-lib) + @conformo/pdf finalizePDFA (profil en16931, ICC sRGB du toolkit, date fixe) + save({ useObjectStreams: false })',
-		check: '@conformo/toolkit validate(octets du PDF) : extraction + XSD + schematrons + notices du conteneur (XMP, nom de fichier ; n’affectent pas valid)',
+			'createPdf recipe applied to the host: PDFDocument.load (pdf-lib) + @conformo/pdf finalizePDFA (en16931 profile, sRGB ICC of the toolkit, fixed date) + save({ useObjectStreams: false })',
+		check: '@conformo/toolkit validate(PDF bytes): extraction + XSD + schematrons + container notices (XMP, file name; they do not affect valid)',
 	},
 	extract(s) {
 		return extractEmbeddedXml(s.bytes).then((r) => r.xml);

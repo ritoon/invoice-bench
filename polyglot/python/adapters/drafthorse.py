@@ -1,8 +1,8 @@
-"""drafthorse (pretix) : modèle ZUGFeRD 1:1, lecture/écriture CII, injection PDF.
+"""drafthorse (pretix): 1:1 ZUGFeRD model, CII parsing/writing, PDF embedding.
 
-Pas d'extraction PDF (« We do not support parsing PDF files »), pas de
-schematron : la seule validation est le XSD Factur-X 1.0.07 embarqué
-(drafthorse/utils.py validate_xml, appelée par Document.serialize).
+No PDF extraction ("We do not support parsing PDF files"), no
+schematron: the only validation is the bundled Factur-X 1.0.07 XSD
+(drafthorse/utils.py validate_xml, called by Document.serialize).
 """
 
 from lxml import etree
@@ -14,18 +14,18 @@ from drafthorse.utils import validate_xml
 PKG = "drafthorse"
 
 NOTES = {
-    "validate": "XSD Factur-X 1.0.07 EN16931 (drafthorse.utils.validate_xml, arrêt à la première erreur)",
-    "write": "Document.serialize(schema='FACTUR-X_EN16931'), revalide la sortie contre le XSD",
-    "embed": "attach_xml, options par défaut (profil détecté, XMP PDF/A-3)",
+    "validate": "Factur-X 1.0.07 EN16931 XSD (drafthorse.utils.validate_xml, stops at the first error)",
+    "write": "Document.serialize(schema='FACTUR-X_EN16931'), revalidates the output against the XSD",
+    "embed": "attach_xml, default options (detected profile, PDF/A-3 XMP)",
 }
 
 UNSUPPORTED = {
-    "extract": "pas de lecture de PDF (README : « We do not support parsing PDF files »)",
-    "check_pdf": "pas de contrôle de PDF",
+    "extract": 'no PDF parsing (README: "We do not support parsing PDF files")',
+    "check_pdf": "no PDF check",
 }
 
 SURVEY_NOTES = {
-    "validate": "XSD Factur-X 1.0.07 EN16931 seulement",
+    "validate": "Factur-X 1.0.07 EN16931 XSD only",
     "parse": "Document.parse(strict=True)",
 }
 

@@ -1,22 +1,22 @@
-"""Validateur de référence : saxonche (SaxonC-HE, sans Java) + XSLT officiels.
+"""Reference validator: saxonche (SaxonC-HE, no Java) + official XSLT.
 
 - CEN EN 16931 CII 1.3.17 (ConnectingEurope/eInvoicing-EN16931, xslt/EN16931-CII-validation.xslt)
-  pour toutes les factures ;
+  for all invoices;
 - KoSIT XRechnung 3.0.2 schematron 2.6.0 (itplr-kosit/xrechnung-schematron,
-  schematron/cii/XRechnung-CII-validation.xsl) en plus quand BT-24 désigne XRechnung,
-  comme le scénario CII du validator-configuration-xrechnung.
+  schematron/cii/XRechnung-CII-validation.xsl) in addition when BT-24 designates XRechnung,
+  like the CII scenario of validator-configuration-xrechnung.
 
-Artefacts téléchargés par `run.sh setup` dans .artefacts/ (SHA-256 vérifiés).
-Les feuilles sont compilées au premier appel (compris dans first_call_ns), puis
-réutilisées.
+Artifacts downloaded by `run.sh setup` into .artefacts/ (SHA-256 checked).
+The stylesheets are compiled on the first call (included in first_call_ns), then
+reused.
 
-Comptage comme le validateur KoSIT : est une erreur toute assertion de flag
-fatal ou error. Pour le scénario XRechnung, les niveaux personnalisés du
-validator-configuration-xrechnung v2026-08-31 (CHANGELOG « custom level ») sont
-appliqués : CII-SR-465 et CII-SR-466 (warning dans le CEN) deviennent des
-erreurs, CII-SR-475 et CII-SR-476 deviennent des informations. C'est ce qui
-donne le résultat de référence 6/26 (BR-CL-25 ×2, CII-SR-465 ×4 sur XRECHNUNG).
-Pas de XSD (non fourni par les artefacts CEN CII).
+Counting like the KoSIT validator: an error is any assertion whose flag is
+fatal or error. For the XRechnung scenario, the custom levels of
+validator-configuration-xrechnung v2026-08-31 (CHANGELOG "custom level") are
+applied: CII-SR-465 and CII-SR-466 (warning in the CEN) become
+errors, CII-SR-475 and CII-SR-476 become information. That is what
+gives the reference result 6/26 (BR-CL-25 ×2, CII-SR-465 ×4 on XRECHNUNG).
+No XSD (not provided by the CEN CII artifacts).
 """
 
 import re
@@ -34,24 +34,24 @@ CEN_XSLT = ART / f"cen-{CEN_VERSION}" / "xslt" / "EN16931-CII-validation.xslt"
 XR_XSLT = ART / f"xrechnung-{XR_VERSION}" / "schematron" / "cii" / "XRechnung-CII-validation.xsl"
 
 NOTES = {
-    "validate": f"XSLT officiels CEN EN 16931 CII {CEN_VERSION} (+ KoSIT XRechnung 3.0.2 schematron {XR_VERSION} si BT-24 XRechnung) via saxonche, compilés au premier appel ; erreurs fatal/error avec les niveaux KoSIT",
+    "validate": f"official CEN EN 16931 CII {CEN_VERSION} XSLT (+ KoSIT XRechnung 3.0.2 schematron {XR_VERSION} if BT-24 is XRechnung) via saxonche, compiled on the first call; fatal/error errors with the KoSIT levels",
 }
 
 UNSUPPORTED = {
-    "extract": "validateur seul",
-    "parse": "validateur seul",
-    "write": "validateur seul",
-    "embed": "validateur seul",
-    "check_pdf": "validateur seul",
+    "extract": "validator only",
+    "parse": "validator only",
+    "write": "validator only",
+    "embed": "validator only",
+    "check_pdf": "validator only",
 }
 
 SURVEY_NOTES = {
-    "validate": f"CEN {CEN_VERSION} + KoSIT XRechnung {XR_VERSION} (XRECHNUNG), erreurs fatal/error avec les niveaux personnalisés KoSIT v2026-08-31",
+    "validate": f"CEN {CEN_VERSION} + KoSIT XRechnung {XR_VERSION} (XRECHNUNG), fatal/error errors with the KoSIT v2026-08-31 custom levels",
 }
 
 _BT24 = re.compile(rb"GuidelineSpecifiedDocumentContextParameter>\s*<(?:\w+:)?ID>([^<]+)<")
 _SVRL = {"svrl": "http://purl.oclc.org/dsdl/svrl"}
-# validator-configuration-xrechnung v2026-08-31, scénario CII : niveaux personnalisés
+# validator-configuration-xrechnung v2026-08-31, CII scenario: custom levels
 _KOSIT_CUSTOM_LEVEL = {"CII-SR-465": "error", "CII-SR-466": "error", "CII-SR-475": "information", "CII-SR-476": "information"}
 _ERROR_FLAGS = ("fatal", "error")
 _state = {}
@@ -61,7 +61,7 @@ def _compiled():
     if not _state:
         for p in (CEN_XSLT, XR_XSLT):
             if not p.exists():
-                raise FileNotFoundError(f"{p} absent : lancer ./run.sh setup")
+                raise FileNotFoundError(f"{p} missing: run ./run.sh setup")
         proc = PySaxonProcessor(license=False)
         xslt = proc.new_xslt30_processor()
         _state["proc"] = proc

@@ -171,18 +171,17 @@ static void free_report(void *ctx, void *r) {
 
 static void body(fx_harness *h, void *ctx) {
 	(void)ctx;
-	fx_unsupported(h, FX_EXTRACT, "librairie XML seulement");
-	fx_parse(h, "plancher : DOM libxml2 (xmlCtxtReadMemory, XML_PARSE_NONET), pas un modèle de facture", parse,
+	fx_unsupported(h, FX_EXTRACT, "XML library only");
+	fx_parse(h, "floor: libxml2 DOM (xmlCtxtReadMemory, XML_PARSE_NONET), not an invoice model", parse,
 		 free_doc, NULL);
 	fx_validate(h,
-		    "plancher : DOM + xmlSchemaValidateDoc, XSD UN/CEFACT CII D16B (configuration KoSIT XRechnung "
-		    "3.0.2 du 2026-08-31), schéma compilé au premier appel ; schéma seulement, aucune règle "
-		    "métier EN 16931",
+		    "floor: DOM + xmlSchemaValidateDoc, UN/CEFACT CII D16B XSD (KoSIT XRechnung 3.0.2 configuration "
+		    "of 2026-08-31), schema compiled on the first call; schema only, no EN 16931 business rules",
 		    validate, summarize, free_report, NULL);
-	fx_write(h, "plancher : sérialisation du DOM libxml2 (xmlDocDumpMemory), pas un modèle de facture", parse,
+	fx_write(h, "floor: serialization of the libxml2 DOM (xmlDocDumpMemory), not an invoice model", parse,
 		 free_doc, write_doc, NULL);
-	fx_unsupported(h, FX_EMBED, "librairie XML seulement");
-	fx_unsupported(h, FX_CHECK_PDF, "librairie XML seulement");
+	fx_unsupported(h, FX_EMBED, "XML library only");
+	fx_unsupported(h, FX_CHECK_PDF, "XML library only");
 }
 
 int main(int argc, char **argv) {

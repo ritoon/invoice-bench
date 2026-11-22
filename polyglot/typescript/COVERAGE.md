@@ -49,7 +49,7 @@ Three libraries match the reference of 6 flagged files exactly: conformo, summan
 
   PDFs are always passed as bytes.
 - **Asynchronous.** A function that returns a promise is awaited in the loop (`await`). The cost of a microtask turn is therefore included, as it would be for a real caller.
-- **Hand-built models.** `Write_*` starts from the model produced by the library's parser when there is one. Four libraries have no reader, or have a reader whose model cannot be written back: stackforge, e-invoice-eu, node-zugferd and ekwo. For them, the `EN16931_Einfach` model is written by hand in `lib/handmodels.mjs`, with the note `"modèle construit à la main"` (the harness literal for "hand-built model").
+- **Hand-built models.** `Write_*` starts from the model produced by the library's parser when there is one. Four libraries have no reader, or have a reader whose model cannot be written back: stackforge, e-invoice-eu, node-zugferd and ekwo. For them, the `EN16931_Einfach` model is written by hand in `lib/handmodels.mjs`, with the note `"hand-built model"`.
   - Only `Write_Small` is measured; `Write_Lines` is `unsupported`.
   - The four outputs were run through summand: 0 errors against the XSD and the CEN schematron.
 - **Reading back `Embed`.** The PDF produced is read back with the library's own extractor. Every library that embeds has one.

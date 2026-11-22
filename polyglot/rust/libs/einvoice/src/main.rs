@@ -22,15 +22,15 @@ fn main() {
     harness::run(LIB, |h| {
         h.unsupported(
             Op::Extract,
-            "extraction privée (get_embedded_xml_file) ; seule validate_zugferd_pdf(chemin de fichier) l'utilise, pas d'API sur octets",
+            "private extraction (get_embedded_xml_file); only validate_zugferd_pdf(file path) uses it, no API on bytes",
         );
-        h.parse("yaserde::de::from_str::<CrossIndustryInvoice> (modèle généré du XSD, celui de validate_invoice)", parse);
+        h.parse("yaserde::de::from_str::<CrossIndustryInvoice> (model generated from the XSD, the one validate_invoice uses)", parse);
         h.unsupported(
             Op::Validate,
-            "validate_invoice n'évalue aucune règle : les 777 règles CII générées depuis le Schematron sont des bouchons `if false` (src/cii/cii_business_rule_validator.rs)",
+            "validate_invoice evaluates no rule: the 777 CII rules generated from the Schematron are `if false` stubs (src/cii/cii_business_rule_validator.rs)",
         );
-        h.write("yaserde::ser::to_string, modèle lu par from_str", parse, write);
-        h.unsupported(Op::Embed, "pas d'injection dans un PDF");
-        h.unsupported(Op::CheckPdf, "validate_zugferd_pdf prend un chemin de fichier et ne contrôle pas le conteneur ; ses règles sont des bouchons");
+        h.write("yaserde::ser::to_string, model read by from_str", parse, write);
+        h.unsupported(Op::Embed, "no embedding in a PDF");
+        h.unsupported(Op::CheckPdf, "validate_zugferd_pdf takes a file path and does not check the container; its rules are stubs");
     });
 }

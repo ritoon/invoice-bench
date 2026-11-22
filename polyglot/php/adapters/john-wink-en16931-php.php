@@ -32,17 +32,17 @@ $pick = static function (string $xml) use (&$validators): En16931Validator {
 return [
     'pkg' => 'john-wink/en16931-php',
     'notes' => [
-        'parse' => 'CiiInvoiceReader::read (DOM + XPath vers le modèle sémantique EN 16931)',
-        'validate' => 'En16931Validator::validate : XSD CII D16B + 1276 règles de syntaxe KoSIT + 274 règles métier EN 16931 (+ CIUS XRechnung si BT-24 la nomme), réécrites en PHP ; référence validator-configuration-xrechnung 3.0.2 ; erreurs = violations fatales',
+        'parse' => 'CiiInvoiceReader::read (DOM + XPath to the EN 16931 semantic model)',
+        'validate' => 'En16931Validator::validate: CII D16B XSD + 1276 KoSIT syntax rules + 274 EN 16931 business rules (+ XRechnung CIUS if BT-24 names it), rewritten in PHP; reference validator-configuration-xrechnung 3.0.2; errors = fatal violations',
     ],
     'unsupported' => [
-        'extract' => 'pas de PDF',
-        'write' => 'lecteur seulement (pas d\'écriture CII)',
-        'embed' => 'pas de PDF',
-        'check_pdf' => 'pas de PDF',
+        'extract' => 'no PDF',
+        'write' => 'reader only (no CII writing)',
+        'embed' => 'no PDF',
+        'check_pdf' => 'no PDF',
     ],
     'survey_notes' => [
-        'validate' => 'XSD CII D16B + syntaxe KoSIT + règles EN 16931, et CIUS XRechnung quand BT-24 la nomme (portage PHP, pas le XSLT officiel)',
+        'validate' => 'CII D16B XSD + KoSIT syntax + EN 16931 rules, and XRechnung CIUS when BT-24 names it (PHP port, not the official XSLT)',
         'parse' => 'CiiInvoiceReader::read',
     ],
 

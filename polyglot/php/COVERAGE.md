@@ -528,12 +528,12 @@ Things to know when reading the numbers:
   `../../ecosystem` (outside this bench) if these two libraries are to be
   measured.
 - `Embed_*` is read back with the library itself when it can extract,
-  otherwise with horstoeko/zugferd (`note: "relu avec horstoeko/zugferd"`,
+  otherwise with horstoeko/zugferd (`note: "read back with horstoeko/zugferd"`,
   the case of stann).
 - `Write_*` starts from the model produced by the library's parser (parsing
   outside the measurement). Without a parser, `Write_Small` starts from a
   hand-built model based on `EN16931_Einfach`
-  (`note: "modèle construit à la main"`) and `Write_Lines` is
+  (`note: "hand-built model"`) and `Write_Lines` is
   `unsupported`: pn-invoice, pat-o-dev, and mahdiabderraouf (written at the
   BASIC profile, since the generator lacks EN16931). These three
   `Write_Small` results are not comparable with the others.

@@ -122,8 +122,8 @@ returns 36 compilation errors, the first being
 `xsl:when : could not compile test expression 'xs:decimal(ram:LineTotalAmount) = …'`;
 on the KoSIT stylesheet `XRechnung-CII-validation.xsl` (schematron 2.6.0),
 170 errors. ParseValidate is therefore `unsupported`, with these numbers in
-the message; the other operations are `unsupported` ("moteur XSLT
-seulement").
+the message; the other operations are `unsupported` ("XSLT engine
+only").
 
 ## Excluded libraries
 

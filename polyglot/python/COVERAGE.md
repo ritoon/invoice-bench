@@ -266,9 +266,9 @@ Things to know when reading the numbers:
 - `Write_*` starts from the model produced by the library's parser (parsing
   outside the measurement). zugferd-pdf and erechnung have no parser: `Write_Small`
   starts from a hand-built model based on `EN16931_Einfach`
-  (`note: "modèle construit à la main"`), `Write_Lines` is `unsupported`.
+  (`note: "hand-built model"`), `Write_Lines` is `unsupported`.
 - `Embed_*` is read back with the library itself when it can extract,
-  otherwise with factur-x (`note: "relu avec factur-x"`, the drafthorse case).
+  otherwise with factur-x (`note: "read back with factur-x"`, the drafthorse case).
 - factur-x `Parse_*` includes XSD validation (default option), hence
   `Parse_Large` being slower than `ParseValidate_Large` (XSD only).
 - drafthorse `Write_*` revalidates the output against the XSD (behavior of

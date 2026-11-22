@@ -1,15 +1,15 @@
 // Hand-built models of corpus/XML-Rechnung/CII/EN16931_Einfach.cii.xml, one
 // per input format, for the libraries that can write CII but cannot read it
-// (PROTOCOL.md, Write_*: "à défaut, à la main à partir du contenu de
+// (PROTOCOL.md, Write_*: "failing that, by hand from the content of
 // EN16931_Einfach"). Same invoice everywhere: 471102 of 2018-03-05, two lines
-// (20 x 9.90 at 19 %, 50 x 5.50 at 7 %), 473.00 net, 56.87 VAT, 529.87 due.
+// (20 x 9.90 at 19%, 50 x 5.50 at 7%), 473.00 net, 56.87 VAT, 529.87 due.
 import { Unsupported } from './harness.mjs';
 
-export const HAND_NOTE = 'modèle construit à la main';
+export const HAND_NOTE = 'hand-built model';
 
 // Write_Lines has no hand model: only the Small invoice is rebuilt by hand.
-export function smallOnly(bench, why = 'pas de lecteur CII dans la librairie') {
-	if (bench !== 'Write_Small') throw new Unsupported(`modèle à la main seulement pour Write_Small (${why})`);
+export function smallOnly(bench, why = 'no CII reader in the library') {
+	if (bench !== 'Write_Small') throw new Unsupported(`hand-built model only for Write_Small (${why})`);
 }
 
 const NOTE_REG =

@@ -120,15 +120,15 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "validateur seul");
-            h.unsupported(Op.PARSE, "validateur seul");
-            h.validate("XSLT officiels CEN EN 16931 CII " + CEN_VERSION + " (+ KoSIT XRechnung 3.0.2 schematron "
-                    + XR_VERSION + " si BT-24 XRechnung) via Saxon-HE 13.1 (s9api), compilés au premier appel ; "
-                    + "erreurs fatal/error avec les niveaux personnalisés KoSIT v2026-08-31 ; pas de XSD",
+            h.unsupported(Op.EXTRACT, "validator only");
+            h.unsupported(Op.PARSE, "validator only");
+            h.validate("official CEN EN 16931 CII " + CEN_VERSION + " XSLT (+ KoSIT XRechnung 3.0.2 schematron "
+                    + XR_VERSION + " if BT-24 is XRechnung) via Saxon-HE 13.1 (s9api), compiled on the first call; "
+                    + "fatal/error errors with the KoSIT v2026-08-31 custom levels; no XSD",
                     Main::validate, f -> f);
-            h.unsupported(Op.WRITE, "validateur seul");
-            h.unsupported(Op.EMBED, "validateur seul");
-            h.unsupported(Op.CHECK_PDF, "validateur seul");
+            h.unsupported(Op.WRITE, "validator only");
+            h.unsupported(Op.EMBED, "validator only");
+            h.unsupported(Op.CHECK_PDF, "validator only");
         });
     }
 }

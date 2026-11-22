@@ -23,14 +23,14 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "pas de lecture de PDF");
-            h.parse("EInvoiceModelFactory.read(InputStream) → EInvoiceModelCII (DOM complet, puis lecture des champs "
-                    + "d'en-tête, des parties et des lignes par parcours des nœuds)", Main::parse);
-            h.unsupported(Op.VALIDATE, "pas de validation");
-            h.write("EInvoiceModel.getContent() : resérialise le DOM (indenté) que le modèle enveloppe, modèle lu "
-                    + "par EInvoiceModelFactory.read", Main::parse, EInvoiceModel::getContent);
-            h.unsupported(Op.EMBED, "pas d'écriture de PDF");
-            h.unsupported(Op.CHECK_PDF, "pas de lecture de PDF");
+            h.unsupported(Op.EXTRACT, "no PDF parsing");
+            h.parse("EInvoiceModelFactory.read(InputStream) → EInvoiceModelCII (full DOM, then parsing of the header, "
+                    + "party and line fields by walking the nodes)", Main::parse);
+            h.unsupported(Op.VALIDATE, "no validation");
+            h.write("EInvoiceModel.getContent(): reserializes the (indented) DOM that the model wraps, model read "
+                    + "by EInvoiceModelFactory.read", Main::parse, EInvoiceModel::getContent);
+            h.unsupported(Op.EMBED, "no PDF writing");
+            h.unsupported(Op.CHECK_PDF, "no PDF parsing");
         });
     }
 }

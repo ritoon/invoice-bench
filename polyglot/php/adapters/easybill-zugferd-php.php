@@ -31,16 +31,16 @@ return [
     'pkg' => 'easybill/zugferd-php',
     'notes' => [
         'parse' => 'Easybill\\ZUGFeRD2\\Reader::transform (JMS Serializer)',
-        'validate' => 'Validator::validateAgainstXsd : XSD Factur-X 1.08.0, schéma du profil choisi par l\'adaptateur d\'après BT-24 (EN16931 pour XRechnung)',
-        'write' => 'Easybill\\ZUGFeRD2\\Builder::transform du modèle lu par Reader',
+        'validate' => 'Validator::validateAgainstXsd: Factur-X 1.08.0 XSD, schema of the profile chosen by the adapter from BT-24 (EN16931 for XRechnung)',
+        'write' => 'Easybill\\ZUGFeRD2\\Builder::transform of the model read by Reader',
     ],
     'unsupported' => [
-        'extract' => 'pas de PDF',
-        'embed' => 'pas de PDF',
-        'check_pdf' => 'pas de PDF',
+        'extract' => 'no PDF',
+        'embed' => 'no PDF',
+        'check_pdf' => 'no PDF',
     ],
     'survey_notes' => [
-        'validate' => 'XSD Factur-X 1.08.0 seulement',
+        'validate' => 'Factur-X 1.08.0 XSD only',
         'parse' => 'Reader::transform',
     ],
 

@@ -141,7 +141,7 @@ async function allocWindow(fn, k, isAsync) {
 // calls, up to 100 calls or 0.2 s), then counts the bytes of a series of about
 // 0.2 s (1 to 1000 calls) that fits in the young generation.
 export async function measureAlloc(fn, check) {
-	if (typeof globalThis.gc !== 'function') throw new Error('lancer node avec --expose-gc (run.sh alloc)');
+	if (typeof globalThis.gc !== 'function') throw new Error('run node with --expose-gc (run.sh alloc)');
 	const t0 = now();
 	let res = fn();
 	const isAsync = isThenable(res);

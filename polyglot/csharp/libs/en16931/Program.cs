@@ -67,13 +67,13 @@ byte[] Write(IInvoice invoice)
 
 return Harness.Run(lib, args, h =>
 {
-    h.Unsupported(Op.Extract, "pas de PDF");
-    h.Parse("Parser.Parse (XSLT cii2ir via SaxonCS-HE puis désérialisation du modèle EN 16931 ; valide d'abord selon la spécification de BT-24)", Parse);
+    h.Unsupported(Op.Extract, "no PDF");
+    h.Parse("Parser.Parse (XSLT cii2ir via SaxonCS-HE then deserialisation of the EN 16931 model; first validates against the specification of BT-24)", Parse);
     h.Validate(
-        "ISpecificationValidator.Validate (FacturXEn16931 pour urn:cen.eu:en16931:2017, XRechnung pour XRechnung 3.0) : XSLT officiels CEN 1.3.16, FeRD Factur-X 1.09.2 EN 16931, KoSIT XRechnung 3.0.2 / 2.6.0 via SaxonCS-HE 13.1.0 ; erreurs = ValidationException.Errors",
+        "ISpecificationValidator.Validate (FacturXEn16931 for urn:cen.eu:en16931:2017, XRechnung for XRechnung 3.0): official XSLT of CEN 1.3.16, FeRD Factur-X 1.09.2 EN 16931, KoSIT XRechnung 3.0.2 / 2.6.0 via SaxonCS-HE 13.1.0; errors = ValidationException.Errors",
         Validate,
         rules => Findings.Of(rules.Select(r => r.Length > 80 ? r[..80] : r)));
-    h.Write("ISpecificationParser.Serialize(modèle, CiiD16b) (XSLT ir2cii), modèle lu par Parser.Parse", Parse, Write);
-    h.Unsupported(Op.Embed, "pas de PDF");
-    h.Unsupported(Op.CheckPdf, "pas de PDF");
+    h.Write("ISpecificationParser.Serialize(model, CiiD16b) (XSLT ir2cii), model read by Parser.Parse", Parse, Write);
+    h.Unsupported(Op.Embed, "no PDF");
+    h.Unsupported(Op.CheckPdf, "no PDF");
 });

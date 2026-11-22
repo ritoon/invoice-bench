@@ -29,17 +29,17 @@ $validator = null;
 return [
     'pkg' => 'pnscripts/pn-invoice',
     'notes' => [
-        'validate' => 'InvoiceValidator::validateXml : XSD CII D16B + 104 règles métier EN 16931 en PHP (pas BR-CL, BR-DEC, ni règles de syntaxe) ; couche schematron externe (Saxon/Java) non branchée ; erreurs = ValidationResult::errors()',
-        'write' => 'CiiWriter::write (pas de lecteur XML)',
+        'validate' => 'InvoiceValidator::validateXml: CII D16B XSD + 104 EN 16931 business rules in PHP (no BR-CL, BR-DEC or syntax rules); external schematron layer (Saxon/Java) not wired in; errors = ValidationResult::errors()',
+        'write' => 'CiiWriter::write (no XML reader)',
     ],
     'unsupported' => [
-        'extract' => 'pas de PDF',
-        'parse' => 'pas de lecteur XML (README : « No XML reader »)',
-        'embed' => 'pas de PDF (annoncé pour une offre commerciale « Pro »)',
-        'check_pdf' => 'pas de PDF',
+        'extract' => 'no PDF',
+        'parse' => 'no XML reader (README: "No XML reader")',
+        'embed' => 'no PDF (announced for a commercial "Pro" offer)',
+        'check_pdf' => 'no PDF',
     ],
     'survey_notes' => [
-        'validate' => 'XSD CII D16B + 104 règles EN 16931 en PHP (sans BR-CL ni BR-DEC)',
+        'validate' => 'CII D16B XSD + 104 EN 16931 rules in PHP (without BR-CL or BR-DEC)',
     ],
 
     'validate' => static function (string $xml, ?string $path) use (&$validator): array {

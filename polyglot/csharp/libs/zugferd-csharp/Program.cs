@@ -68,18 +68,18 @@ static byte[] Embed(byte[] host, byte[] xml)
 return Harness.Run(lib, args, h =>
 {
     h.Extract(
-        "InvoicePdfProcessor.LoadFromPdf : extraction (catalogue /AF, noms zugferd.xml, zugferd-invoice.xml, factur-x.xml, xrechnung.xml) + lecture du modèle ; pas d'API publique qui rende les octets",
+        "InvoicePdfProcessor.LoadFromPdf: extraction (catalog /AF, names zugferd.xml, zugferd-invoice.xml, factur-x.xml, xrechnung.xml) + parsing of the model; no public API that returns the bytes",
         FromPdf,
         d => Write(d));
-    h.Parse("InvoiceDescriptor.Load (lecteurs ZUGFeRD 1.0, 2.0, 2.3 CII, UBL)", Parse);
+    h.Parse("InvoiceDescriptor.Load (ZUGFeRD 1.0, 2.0, 2.3 CII, UBL readers)", Parse);
     h.Validate(
-        "InvoiceDescriptor.Load + InvoiceValidator.Validate : recalcul des totaux seulement (lignes, BR-CO-11 à BR-CO-17, BR-DEC-20) ; pas de XSD ni de schematron",
+        "InvoiceDescriptor.Load + InvoiceValidator.Validate: recomputation of the totals only (lines, BR-CO-11 to BR-CO-17, BR-DEC-20); no XSD or schematron",
         x => InvoiceValidator.Validate(Parse(x), ZUGFeRDVersion.Version23),
         Summarize);
-    h.Write("InvoiceDescriptor.Save(Version23, profil lu, CII), modèle lu par Load", Parse, Write);
+    h.Write("InvoiceDescriptor.Save(Version23, profile read, CII), model read by Load", Parse, Write);
     h.Embed(
-        "adaptateur : Load + InvoicePdfProcessor.SaveToPdf(Version23, Comfort, CII) ; réécrit le XML depuis le modèle, recopie les pages dans un nouveau document PDFsharp, XMP Factur-X, OutputIntent sRGB, polices système embarquées ; dates = DateTime.UtcNow (non réglable)",
+        "adapter: Load + InvoicePdfProcessor.SaveToPdf(Version23, Comfort, CII); rewrites the XML from the model, copies the pages into a new PDFsharp document, Factur-X XMP, sRGB OutputIntent, system fonts embedded; dates = DateTime.UtcNow (not configurable)",
         Embed,
         pdf => Write(FromPdf(pdf)));
-    h.Unsupported(Op.CheckPdf, "pas de contrôle de PDF hybride");
+    h.Unsupported(Op.CheckPdf, "no hybrid PDF check");
 });

@@ -56,14 +56,14 @@ List<string> Validate(byte[] xml)
 
 return Harness.Run(lib, args, h =>
 {
-    h.Unsupported(Op.Extract, "plancher de validation XSD seulement");
-    h.Unsupported(Op.Parse, "plancher de validation XSD seulement");
+    h.Unsupported(Op.Extract, "XSD validation floor only");
+    h.Unsupported(Op.Parse, "XSD validation floor only");
     h.Validate(
-        "plancher : XmlReader validant (XmlSchemaSet compilé une fois) contre les XSD UN/CEFACT CII D16B de la configuration KoSIT v2026-08-31 ; pas de règles métier",
+        "floor: validating XmlReader (XmlSchemaSet compiled once) against the UN/CEFACT CII D16B XSDs of the KoSIT configuration v2026-08-31; no business rules",
         Validate,
         rules => Findings.Of(rules));
     foreach (var op in new[] { Op.Write, Op.Embed, Op.CheckPdf })
     {
-        h.Unsupported(op, "plancher de validation XSD seulement");
+        h.Unsupported(op, "XSD validation floor only");
     }
 });

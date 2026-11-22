@@ -1,10 +1,10 @@
-"""zugferd-pdf (module « zugferd ») : génération XML/PDF/A-3U, extraction, contrôle de PDF.
+"""zugferd-pdf ("zugferd" module): XML/PDF/A-3U generation, extraction, PDF check.
 
-Pas de parseur XML vers modèle. validate_zugferd_pdf (zugferd/validator.py)
-est un contrôle maison : en-tête PDF, XMP (pdfaid:part=3 cherché sous forme
-d'élément seulement, conformance, schéma d'extension fx), OutputIntent et
-profil ICC, /AF, présence de la pièce jointe, BT-24 dans une liste, BR-DEC-23
-sur les lignes et décimales de BT-112. Aucun schematron, malgré le README.
+No XML-to-model parser. validate_zugferd_pdf (zugferd/validator.py)
+is a home-made check: PDF header, XMP (pdfaid:part=3 looked for as an
+element only, conformance, fx extension schema), OutputIntent and
+ICC profile, /AF, presence of the attachment, BT-24 in a list, BR-DEC-23
+on the lines and BT-112 decimals. No schematron, despite the README.
 """
 
 from datetime import date
@@ -16,14 +16,14 @@ from zugferd.models import Invoice, LineItem, PostalAddress, TradeParty
 PKG = "zugferd-pdf"
 
 NOTES = {
-    "write": "generate_facturx_xml (totaux et TVA recalculés depuis les lignes)",
-    "embed": "package_zugferd_pdfa3u : ajoute OutputIntent sRGB et XMP PDF/A-3U, date de création = maintenant",
-    "check_pdf": "validate_zugferd_pdf : contrôles maison du conteneur (XMP, OutputIntent, /AF) + BT-24 + 2 contrôles de décimales, pas de schematron",
+    "write": "generate_facturx_xml (totals and VAT recalculated from the lines)",
+    "embed": "package_zugferd_pdfa3u: adds an sRGB OutputIntent and a PDF/A-3U XMP, creation date = now",
+    "check_pdf": "validate_zugferd_pdf: home-made checks of the container (XMP, OutputIntent, /AF) + BT-24 + 2 decimal checks, no schematron",
 }
 
 UNSUPPORTED = {
-    "parse": "pas de lecture XML vers modèle",
-    "validate": "pas de validation d'un XML seul (validate_zugferd_pdf ne prend qu'un PDF)",
+    "parse": "no XML-to-model parsing",
+    "validate": "no validation of a standalone XML (validate_zugferd_pdf only takes a PDF)",
 }
 
 SURVEY_NOTES = {
@@ -36,10 +36,10 @@ def extract(pdf, _path=None):
 
 
 def hand_model():
-    """EN16931_Einfach.cii.xml recopié à la main dans le modèle de zugferd-pdf.
+    """EN16931_Einfach.cii.xml copied by hand into the zugferd-pdf model.
 
-    Le modèle n'a ni identifiants globaux, ni notes REG, ni conditions de paiement
-    structurées ; l'échéance (absente du XML) reprend la date du texte de paiement.
+    The model has no global identifiers, no REG notes, no structured payment
+    terms; the due date (missing from the XML) takes the date of the payment text.
     """
     seller = TradeParty(
         name="Lieferant GmbH",

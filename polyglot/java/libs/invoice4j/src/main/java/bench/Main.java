@@ -59,17 +59,17 @@ public final class Main {
 
     public static void main(String[] args) {
         Harness.run(LIB, args, h -> {
-            h.unsupported(Op.EXTRACT, "ZugferdPdfReader.read(File) seulement (pas d'API sur des octets en mémoire)");
-            h.parse("ZugferdInvoiceReader (validate(false)).readFromString → Invoice ; profil détecté par BT-24, "
-                    + "XRechnung refusé (« Unsupported ZUGFeRD profile »)", Main::parse);
-            h.validate("ZugferdInvoiceReader (validation par défaut : XSD Factur-X 1.09 du profil) + ZugferdBasicValidator "
-                    + "(3 règles : BR-CO-15, BR-CO-26, BR-S-2), arrêt à la première erreur ; XRechnung non pris en charge ; "
-                    + "les .sch embarqués ne sont jamais exécutés", Main::validate, f -> f);
-            h.write("ZugferdInvoiceWriter (profil EN16931, validate(false)).writeToString, modèle lu par readFromString ; "
-                    + "le lecteur perd les identifiants du vendeur (TVA, immatriculation), d'où BR-S-02 et BR-CO-26 au "
-                    + "schematron CEN sur la sortie", Main::parse, WRITER::writeToString);
-            h.unsupported(Op.EMBED, "ZugferdPdfWriter.write(File, File) seulement (pas d'API sur des octets en mémoire)");
-            h.unsupported(Op.CHECK_PDF, "pas de contrôle de PDF");
+            h.unsupported(Op.EXTRACT, "ZugferdPdfReader.read(File) only (no API on in-memory bytes)");
+            h.parse("ZugferdInvoiceReader (validate(false)).readFromString → Invoice; profile detected from BT-24, "
+                    + "XRechnung rejected (\"Unsupported ZUGFeRD profile\")", Main::parse);
+            h.validate("ZugferdInvoiceReader (default validation: the profile's Factur-X 1.09 XSD) + ZugferdBasicValidator "
+                    + "(3 rules: BR-CO-15, BR-CO-26, BR-S-2), stops at the first error; XRechnung not supported; "
+                    + "the bundled .sch files are never run", Main::validate, f -> f);
+            h.write("ZugferdInvoiceWriter (EN16931 profile, validate(false)).writeToString, model read by readFromString; "
+                    + "the reader loses the seller's identifiers (VAT, registration), hence BR-S-02 and BR-CO-26 from the "
+                    + "CEN schematron on the output", Main::parse, WRITER::writeToString);
+            h.unsupported(Op.EMBED, "ZugferdPdfWriter.write(File, File) only (no API on in-memory bytes)");
+            h.unsupported(Op.CHECK_PDF, "no PDF check");
         });
     }
 }

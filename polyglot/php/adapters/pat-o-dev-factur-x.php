@@ -37,18 +37,18 @@ use PatODev\FacturX\Validation\RuleResult;
 return [
     'pkg' => 'pat-o-dev/factur-x',
     'notes' => [
-        'extract' => 'EmbeddedXmlExtractor::extract (xref classique seulement)',
-        'validate' => 'InvoiceValidator::validate : sélection de règles écrites à la main (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), sans XSD ni schematron ; échecs BR-FR-* (règles françaises) non comptés',
-        'write' => 'FacturXGenerator::generateXml (pas de lecteur XML)',
-        'embed' => 'PdfA3Attacher::attach + XmpMetadataBuilder::build (mise à jour incrémentale ; xref classique seulement, refuse un catalogue avec /AF ou /Names)',
+        'extract' => 'EmbeddedXmlExtractor::extract (classic xref only)',
+        'validate' => 'InvoiceValidator::validate: selection of rules written by hand (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), without XSD or schematron; BR-FR-* failures (French rules) not counted',
+        'write' => 'FacturXGenerator::generateXml (no XML reader)',
+        'embed' => 'PdfA3Attacher::attach + XmpMetadataBuilder::build (incremental update; classic xref only, refuses a catalog with /AF or /Names)',
     ],
     'unsupported' => [
-        'parse' => 'pas de lecteur XML',
-        'check_pdf' => 'pas de contrôle PDF',
+        'parse' => 'no XML reader',
+        'check_pdf' => 'no PDF check',
     ],
     'survey_notes' => [
-        'validate' => 'quelques règles choisies à la main (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), sans les règles françaises',
-        'extract' => 'EmbeddedXmlExtractor::extract (xref classique seulement)',
+        'validate' => 'a few hand-picked rules (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), without the French rules',
+        'extract' => 'EmbeddedXmlExtractor::extract (classic xref only)',
     ],
 
     'extract' => static fn (string $pdf, ?string $path): string => (new EmbeddedXmlExtractor())->extract($pdf),

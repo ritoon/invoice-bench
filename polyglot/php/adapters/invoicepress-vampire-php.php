@@ -36,17 +36,17 @@ $get = static function () use (&$validator): Validator {
 return [
     'pkg' => 'invoicepress/vampire-php',
     'notes' => [
-        'validate' => 'Validator::validateString, scénario KoSIT de rulesets/scenarios.json : XSD puis schematron officiels précompilés (EN16931-CII 1.3.17, + XRechnung-CII 3.0.2 et niveaux KoSIT pour XRechnung), interprète XPath 2.0 en PHP ; erreurs = messages bloquants (fatal)',
+        'validate' => 'Validator::validateString, KoSIT scenario from rulesets/scenarios.json: XSD then official precompiled schematron (EN16931-CII 1.3.17, + XRechnung-CII 3.0.2 and KoSIT levels for XRechnung), XPath 2.0 interpreter in PHP; errors = blocking messages (fatal)',
     ],
     'unsupported' => [
-        'extract' => 'validation seulement',
-        'parse' => 'validation seulement (pas de modèle)',
-        'write' => 'validation seulement',
-        'embed' => 'validation seulement',
-        'check_pdf' => 'validation XML seulement',
+        'extract' => 'validation only',
+        'parse' => 'validation only (no model)',
+        'write' => 'validation only',
+        'embed' => 'validation only',
+        'check_pdf' => 'XML validation only',
     ],
     'survey_notes' => [
-        'validate' => 'scénarios KoSIT : XSD + schematron CEN 1.3.17 (+ XRechnung 3.0.2 et niveaux KoSIT), interprète XPath 2.0 maison',
+        'validate' => 'KoSIT scenarios: XSD + CEN 1.3.17 schematron (+ XRechnung 3.0.2 and KoSIT levels), in-house XPath 2.0 interpreter',
     ],
 
     'validate' => static function (string $xml, ?string $path) use ($get): array {

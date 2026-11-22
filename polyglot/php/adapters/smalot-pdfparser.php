@@ -17,17 +17,17 @@ const SMALOT_NAMES = ['factur-x.xml', 'zugferd-invoice.xml', 'xrechnung.xml', 'z
 return [
     'pkg' => 'smalot/pdfparser',
     'notes' => [
-        'extract' => 'plancher écrit à la main : Parser::parseContent, puis le premier /Filespec nommé factur-x.xml, zugferd-invoice.xml ou xrechnung.xml, flux /EF /F',
+        'extract' => 'floor written by hand: Parser::parseContent, then the first /Filespec named factur-x.xml, zugferd-invoice.xml or xrechnung.xml, /EF /F stream',
     ],
     'unsupported' => [
-        'parse' => 'librairie PDF généraliste',
-        'validate' => 'librairie PDF généraliste',
-        'write' => 'librairie PDF généraliste',
-        'embed' => 'lecture seule',
-        'check_pdf' => 'librairie PDF généraliste',
+        'parse' => 'general-purpose PDF library',
+        'validate' => 'general-purpose PDF library',
+        'write' => 'general-purpose PDF library',
+        'embed' => 'read only',
+        'check_pdf' => 'general-purpose PDF library',
     ],
     'survey_notes' => [
-        'extract' => 'plancher : Parser::parseContent + /Filespec /EF /F',
+        'extract' => 'floor: Parser::parseContent + /Filespec /EF /F',
     ],
 
     'extract' => static function (string $pdf, ?string $path): string {
@@ -54,6 +54,6 @@ return [
                 return $xml;
             }
         }
-        throw new \RuntimeException('aucune pièce jointe XML de facture trouvée');
+        throw new \RuntimeException('no XML invoice attachment found');
     },
 ];
