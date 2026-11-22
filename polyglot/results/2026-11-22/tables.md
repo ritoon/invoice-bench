@@ -87,6 +87,156 @@ Reference: the official schematrons (CEN EN 16931 and KoSIT) flag 6 of the 26 "v
 | tiime/cross-industry-invoice | PHP | — | 23/26 | — |
 | tiime/factur-x | PHP | 4/26 | — | 70/104 |
 
+#### Confidence by country
+
+Score out of 100 of each library on the conformance cases of a country ([`cases/`](../../../cases/README.md)): 100 × √(S × D), where S is the share of valid cases the library accepts and D the mean detection of the expected rules, each rule weighing the same: 1 when the library raises the rule on a case, 0.5 when it rejects the document under another rule or with an exception, 0 when it accepts it. The expected verdict and rules are those of the reference validator. The score of a country is the mean of the scores of its suites and syntaxes: a syntax the library does not read counts 0.
+
+Not rated, without a validation operation: @e-invoice-eu/core (TypeScript), node-zugferd (TypeScript), erechnung (Python), pycheval (Python), zugferd-pdf (Python), einvoice (Rust), lopdf (Rust), pdfa (Rust), zugferd (Rust), gallop (Java), imixs-e-invoice (Java), pdfbox (Java), pdfpig (C#), pdfsharp (C#), libxslt (C), mupdf (C), qpdf-c (C), kura (C++), podofo (C++), poppler-cpp (C++), pugixml (C++), qpdf (C++), easybill/e-invoicing (PHP), smalot/pdfparser (PHP), tiime/cross-industry-invoice (PHP).
+
+#### Confidence: Germany (DE)
+
+Suites: EN 16931 core rules (`en16931`: CII 115, UBL 66); XRechnung 3.0.2 (`xrechnung`: CII 173, UBL 205); 208 valid cases, 351 invalid, 247 expected rules. 2 cases are left out: the reference could not judge them (see the note column of `cases/cases.tsv`).
+
+Reference: KoSIT validator 1.6.3 with the official XRechnung 3.0.2 configuration of 2026-08-31 (CII D16B and UBL 2.1 XSD, CEN EN 16931 1.3.16, KoSIT XRechnung schematron 2.6.0, levels of its scenarios); it scores 100 by construction.
+
+Rules of the norm that the reference does not check: BR-CO-25. A valid case that a library rejects under these rules alone counts as accepted.
+
+Operations: those the library performed successfully in the bench pass of the same campaign (validation excepted).
+
+| Library | Language | Score | EN 16931 core rules, CII | EN 16931 core rules, UBL | XRechnung 3.0.2, CII | XRechnung 3.0.2, UBL | Valid accepted | Invalid rejected | Expected rule raised | Operations |
+|---|---|---|---|---|---|---|---|---|---|---|
+| dealerweb/einvoice | PHP | **100** | 100 | 100 | 100 | 100 | 208/208 | 351/351 | 351/351 | extract, parse, write, embed |
+| intragile/php-einvoicing | PHP | **100** | 100 | 100 | 100 | 99 | 207/208 | 351/351 | 351/351 | extract, parse, write, embed |
+| invoicepress/vampire-php | PHP | **100** | 100 | 100 | 100 | 99 | 207/208 | 349/351 | 349/351 | — |
+| kosit-validator (reference) | Java | **100** | 100 | 100 | 100 | 100 | 208/208 | 351/351 | 351/351 | — |
+| paniolo | Java | **100** | 99 | 99 | 100 | 100 | 208/208 | 348/351 | 348/351 | extract, parse, write, embed, check PDF |
+| saxon-schematron | Java | **100** | 100 | 100 | 100 | 100 | 208/208 | 334/351 | 327/351 | — |
+| saxonc-he | C++ | **100** | 100 | 100 | 100 | 100 | 208/208 | 334/351 | 327/351 | — |
+| saxonche-schematron | Python | **100** | 100 | 100 | 100 | 100 | 208/208 | 334/351 | 327/351 | — |
+| saxoncs | C# | **100** | 100 | 100 | 100 | 100 | 208/208 | 334/351 | 327/351 | — |
+| **ZeRechnung** | Go | **99** | 96 | 100 | 100 | 100 | 207/208 | 351/351 | 351/351 | extract, parse, write, embed, check PDF |
+| @conformo/toolkit | TypeScript | **99** | 100 | 100 | 97 | 99 | 207/208 | 351/351 | 343/351 | extract, parse, write, embed, check PDF |
+| @kontor-mcp/core | TypeScript | **99** | 100 | 100 | 97 | 98 | 206/208 | 347/351 | 344/351 | extract, parse |
+| phive | Java | **99** | 100 | 100 | 99 | 98 | 204/208 | 350/351 | 350/351 | — |
+| @sweberdev/summand | TypeScript | **95** | 99 | 100 | 90 | 91 | 208/208 | 321/351 | 321/351 | extract, check PDF |
+| erechnung-validator | Rust | **93** | 89 | 100 | 90 | 94 | 182/208 | 351/351 | 345/351 | check PDF |
+| international-einvoicing | C# | **92** | 98 | 99 | 85 | 85 | 193/208 | 305/351 | 303/351 | extract, parse, write, embed |
+| mcp-einvoicing-de | Python | **92** | 89 | 100 | 90 | 88 | 189/208 | 326/351 | 272/351 | extract, parse, write, embed |
+| mustang | Java | **92** | 85 | 100 | 91 | 91 | 182/208 | 342/351 | 296/351 | extract, parse, write, embed, check PDF |
+| en16931 | Rust | **88** | 92 | 82 | 86 | 93 | 198/208 | 311/351 | 263/351 | extract, parse, write, embed, check PDF |
+| einvoice-validator | Rust | **82** | 98 | 100 | 65 | 64 | 193/208 | 268/351 | 234/351 | extract |
+| john-wink/en16931-php | PHP | **79** | 95 | 88 | 77 | 54 | 198/208 | 254/351 | 231/351 | parse |
+| @attestwire/en16931 | TypeScript | **78** | 90 | 75 | 73 | 73 | 187/208 | 259/351 | 206/351 | extract, parse, write, check PDF |
+| en16931 | TypeScript | **73** | 95 | 77 | 59 | 60 | 166/208 | 251/351 | 194/351 | — |
+| balsoft | C# | **67** | 71 | 62 | 66 | 68 | 180/208 | 224/351 | 134/351 | extract, parse, write, embed |
+| en16931 | C# | **63** | 87 | 0 | 88 | 79 | 154/208 | 347/351 | 190/351 | parse, write |
+| antiphon | C# | **55** | 100 | 16 | 95 | 10 | 201/208 | 219/351 | 219/351 | extract, parse, write, embed |
+| core-invoice | Rust | **53** | 47 | 76 | 43 | 46 | 75/208 | 326/351 | 187/351 | parse, write |
+| pnscripts/pn-invoice | PHP | **53** | 63 | 48 | 50 | 51 | 205/208 | 157/351 | 147/351 | write |
+| officeimo | C# | **51** | 59 | 48 | 49 | 47 | 163/208 | 235/351 | 43/351 | extract, parse, embed, check PDF |
+| @lucaapp/zugferd-ts | TypeScript | **45** | 95 | 16 | 58 | 10 | 187/208 | 187/351 | 161/351 | extract, parse, write, embed |
+| quittio/core | PHP | **40** | 23 | 0 | 67 | 70 | 122/208 | 305/351 | 256/351 | extract, parse, write, embed |
+| zugferd-rs | Rust | **32** | 54 | 16 | 47 | 10 | 184/208 | 121/351 | 95/351 | extract, parse, write, embed |
+| @fin.cx/einvoice | TypeScript | **27** | 42 | 0 | 35 | 32 | 107/208 | 198/351 | 66/351 | extract, parse, write, embed |
+| horstoeko/invoicesuite | PHP | **24** | 21 | 0 | 40 | 33 | 151/208 | 157/351 | 48/351 | extract, parse, write, embed |
+| zugferd-csharp | C# | **24** | 26 | 0 | 36 | 36 | 184/208 | 67/351 | 24/351 | extract, parse, write, embed |
+| pat-o-dev/factur-x | PHP | **22** | 65 | 0 | 22 | 0 | 90/208 | 260/351 | 0/351 | write, embed |
+| ext-dom | PHP | **20** | 21 | 16 | 33 | 10 | 202/208 | 78/351 | 63/351 | — |
+| securibox | C# | **20** | 80 | 0 | 0 | 0 | 10/208 | 348/351 | 125/351 | extract, parse, write, embed, check PDF |
+| factur-x | Python | **18** | 21 | 11 | 33 | 7 | 202/208 | 78/351 | 39/351 | extract, parse, write, embed |
+| getafix | Python | **17** | 69 | 0 | 0 | 0 | 11/208 | 351/351 | 29/351 | extract, parse, write, embed |
+| @ekwo-ai/factur-x | TypeScript | **15** | 22 | 0 | 36 | 0 | 91/208 | 185/351 | 11/351 | extract, parse, write, embed |
+| horstoeko/zugferd | PHP | **15** | 21 | 0 | 40 | 0 | 84/208 | 196/351 | 6/351 | extract, parse, write, embed |
+| stann/factur-x | PHP | **15** | 30 | 0 | 31 | 0 | 76/208 | 223/351 | 63/351 | embed |
+| @stackforge-eu/factur-x | TypeScript | **14** | 21 | 0 | 33 | 0 | 88/208 | 210/351 | 63/351 | extract, write, embed |
+| drafthorse | Python | **14** | 21 | 0 | 33 | 0 | 88/208 | 210/351 | 63/351 | parse, write, embed |
+| easybill/zugferd-php | PHP | **14** | 21 | 0 | 33 | 0 | 88/208 | 210/351 | 63/351 | parse, write |
+| factur-x | Rust | **13** | 35 | 0 | 19 | 0 | 67/208 | 222/351 | 10/351 | parse |
+| xsd | C# | **12** | 10 | 16 | 11 | 10 | 207/208 | 65/351 | 63/351 | — |
+| libxml2 | C | **11** | 8 | 16 | 11 | 10 | 208/208 | 63/351 | 63/351 | parse, write |
+| xerces-c | C++ | **11** | 8 | 16 | 11 | 10 | 208/208 | 63/351 | 63/351 | parse, write |
+| facturxdotnet | C# | **10** | 41 | 0 | 0 | 0 | 128/208 | 117/351 | 3/351 | extract, check PDF |
+| daniel-jorg-schuppelius/php-erechnung-toolkit | PHP | **8** | 8 | 0 | 23 | 0 | 93/208 | 200/351 | 72/351 | extract, parse, write |
+| pdf-invoice | Rust | **8** | 0 | 0 | 33 | 0 | 74/208 | 269/351 | 6/351 | extract, parse, embed |
+| atgp/factur-x | PHP | **7** | 28 | 0 | 0 | 0 | 13/208 | 278/351 | 19/351 | extract, embed |
+| mahdiabderraouf/facturx-php | PHP | **7** | 28 | 0 | 0 | 0 | 13/208 | 278/351 | 18/351 | extract, write, embed |
+| tiime/factur-x | PHP | **7** | 28 | 0 | 0 | 0 | 13/208 | 278/351 | 19/351 | extract, embed |
+| @stafyniaksacha/facturx | TypeScript | **6** | 25 | 0 | 0 | 0 | 1/208 | 351/351 | 130/351 | extract, parse, write |
+| ph-cii | Java | **5** | 8 | 0 | 11 | 0 | 93/208 | 195/351 | 63/351 | parse, write |
+| factur-x-kit | TypeScript | **0** | 0 | 0 | 0 | 0 | 0/208 | 351/351 | 0/351 | parse, write |
+| invoice4j | Java | **0** | 0 | 0 | 0 | 0 | 0/208 | 351/351 | 20/351 | parse, write |
+| pax-xrechnung | C# | **0** | 0 | 0 | 0 | 0 | 0/208 | 351/351 | 19/351 | — |
+
+Valid cases counted as accepted although the library rejected them, under BR-CO-25 alone: @kontor-mcp/core (TypeScript) 14, en16931 (Rust) 14, john-wink/en16931-php (PHP) 16, quittio/core (PHP) 1, pat-o-dev/factur-x (PHP) 12, getafix (Python) 11.
+
+#### Rules raised: Germany (DE)
+
+Expected rules that the library raises under their identifier on at least one of their cases, by family (after normalization: case, prefixes, the equivalences of `cases/cases.go`). XSD: the documents the reference rejects on its schema alone; raising the rule the case was written to break counts too. A library that reports no rule identifiers scores here 0, whatever its verdicts.
+
+| Library | Language | BR (26) | BR-CO (15) | BR-CL (22) | BR-DEC (18) | VAT categories (76) | CII-SR, CII-DT (5) | UBL-CR, UBL-SR, UBL-DT (15) | BR-DE (31) | BR-DEX (13) | BR-TMP (3) | Peppol (22) | XSD (1) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| dealerweb/einvoice | PHP | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| intragile/php-einvoicing | PHP | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| invoicepress/vampire-php | PHP | 26 | 13 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| kosit-validator | Java | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| paniolo | Java | 26 | 15 | 20 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| saxon-schematron | Java | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| saxonc-he | C++ | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| saxonche-schematron | Python | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| saxoncs | C# | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| **ZeRechnung** | Go | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| @conformo/toolkit | TypeScript | 26 | 15 | 22 | 18 | 74 | 4 | 15 | 31 | 13 | 3 | 20 | 1 |
+| @kontor-mcp/core | TypeScript | 24 | 15 | 22 | 18 | 74 | 4 | 15 | 31 | 13 | 2 | 22 | 1 |
+| phive | Java | 26 | 15 | 22 | 18 | 76 | 5 | 14 | 31 | 13 | 3 | 22 | 1 |
+| @sweberdev/summand | TypeScript | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 0 | 1 |
+| erechnung-validator | Rust | 26 | 15 | 22 | 18 | 74 | 4 | 15 | 31 | 13 | 3 | 22 | 1 |
+| international-einvoicing | C# | 26 | 15 | 22 | 18 | 75 | 4 | 14 | 31 | 13 | 3 | 0 | 1 |
+| mcp-einvoicing-de | Python | 25 | 15 | 10 | 18 | 76 | 3 | 14 | 24 | 0 | 2 | 22 | 1 |
+| mustang | Java | 25 | 15 | 10 | 18 | 76 | 3 | 14 | 31 | 13 | 1 | 22 | 1 |
+| en16931 | Rust | 25 | 15 | 18 | 0 | 59 | 0 | 4 | 28 | 11 | 2 | 14 | 1 |
+| einvoice-validator | Rust | 26 | 15 | 22 | 18 | 76 | 5 | 14 | 0 | 0 | 0 | 0 | 1 |
+| john-wink/en16931-php | PHP | 25 | 11 | 16 | 18 | 59 | 2 | 13 | 27 | 4 | 0 | 0 | 1 |
+| @attestwire/en16931 | TypeScript | 23 | 11 | 18 | 9 | 67 | 0 | 0 | 24 | 0 | 0 | 0 | 1 |
+| en16931 | TypeScript | 26 | 15 | 22 | 18 | 74 | 4 | 15 | 0 | 0 | 0 | 0 | 1 |
+| balsoft | C# | 18 | 3 | 14 | 0 | 19 | 0 | 0 | 19 | 0 | 0 | 3 | 1 |
+| en16931 | C# | 19 | 14 | 4 | 17 | 76 | 3 | 1 | 19 | 0 | 2 | 17 | 0 |
+| antiphon | C# | 19 | 14 | 17 | 17 | 76 | 5 | 0 | 30 | 5 | 2 | 21 | 1 |
+| core-invoice | Rust | 25 | 15 | 18 | 0 | 42 | 0 | 0 | 21 | 0 | 1 | 0 | 1 |
+| pnscripts/pn-invoice | PHP | 19 | 13 | 0 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| officeimo | C# | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| @lucaapp/zugferd-ts | TypeScript | 19 | 14 | 17 | 17 | 74 | 4 | 0 | 0 | 0 | 0 | 0 | 1 |
+| quittio/core | PHP | 21 | 9 | 16 | 2 | 40 | 0 | 0 | 30 | 8 | 0 | 0 | 1 |
+| zugferd-rs | Rust | 18 | 5 | 2 | 16 | 6 | 2 | 0 | 0 | 0 | 0 | 0 | 1 |
+| @fin.cx/einvoice | TypeScript | 8 | 9 | 2 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 2 | 1 |
+| horstoeko/invoicesuite | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| zugferd-csharp | C# | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| pat-o-dev/factur-x | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ext-dom | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| securibox | C# | 18 | 13 | 0 | 17 | 74 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| factur-x | Python | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| getafix | Python | 2 | 6 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| @ekwo-ai/factur-x | TypeScript | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| horstoeko/zugferd | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| stann/factur-x | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| @stackforge-eu/factur-x | TypeScript | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| drafthorse | Python | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| easybill/zugferd-php | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| factur-x | Rust | 2 | 5 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| xsd | C# | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libxml2 | C | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| xerces-c | C++ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| facturxdotnet | C# | 0 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| daniel-jorg-schuppelius/php-erechnung-toolkit | PHP | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 2 | 1 |
+| pdf-invoice | Rust | 4 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| atgp/factur-x | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| mahdiabderraouf/facturx-php | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| tiime/factur-x | PHP | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| @stafyniaksacha/facturx | TypeScript | 17 | 13 | 0 | 17 | 74 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
+| ph-cii | Java | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| factur-x-kit | TypeScript | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| invoice4j | Java | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| pax-xrechnung | C# | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+
 #### Extraction
 
 | Library | Language | EN 16931, 149 KB | EN 16931, 1.1 MB | MINIMUM FNFE, 89 KB | EXTENDED ZF 2.0, 157 KB | First call |

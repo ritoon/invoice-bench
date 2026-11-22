@@ -345,3 +345,11 @@ order:
   addresses in IRIs (`oxixml-iri`, `einvoice-xsd`). The HTTPS client of
   einvoice-validator is not compiled (`fetch` feature inactive); the Saxon
   module of zugferd-rs (`validator::external`) is compiled but never called.
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **einvoice-validator**: `Validator::cen_ubl()` (UBL 2.1 schemas and CEN UBL 1.3.17 XSLT, in the default features) for a UBL document.
+- **zugferd-rs**: `validate_ubl_xml` for a UBL document: the UBL 2.1 schema only, the library's only UBL validation.
+- en16931, erechnung-validator and core-invoice detect the syntax themselves.

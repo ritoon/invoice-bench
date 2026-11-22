@@ -217,3 +217,9 @@ order:
   The MuPDF floor still removes every invoice file from `/AF` before adding
   its own: on a PDF that already carries one, `zerechnung validate` would
   otherwise report two invoice attachments (PDF-28).
+
+## Conformance cases (`./run.sh cases`)
+
+The adapters validate the documents of [`../../cases`](../../cases/README.md) with the same call and rule set as `survey` and `bench`; a UBL document (root element read in the first 64 KiB) goes to the library's UBL rules when it has them, and a library without UBL support gets the UBL documents like any other. The CII path, the one the benchmarks time, is unchanged. Adapter changes made for the cases:
+
+- **libxml2 floor**: the UBL 2.1 Invoice or CreditNote schema for a UBL document (chosen by the root element). Survey unchanged (0/26).

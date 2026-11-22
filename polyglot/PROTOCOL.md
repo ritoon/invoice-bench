@@ -85,6 +85,7 @@ These two measurements come from a separate pass, `resources`: one process per l
 ```bash
 ./run.sh setup              # dependencies (npm, venv, cargo, Maven, dotnet, CMake, Composer)
 ./run.sh survey    [lib…]   # accuracy surveys
+./run.sh cases     [lib…]   # conformance cases (../cases)
 ./run.sh bench     [lib…]   # benchmarks
 ./run.sh alloc     [lib…]   # allocations per call (TypeScript, Python, Rust)
 ./run.sh resources [lib…]   # CPU time and peak memory, one process per benchmark
@@ -113,6 +114,18 @@ Variables: `OUT` (default `../results/$(date +%F)`), `COUNT` (3), `BENCHTIME` (1
 ```
 
 For `validate`, `ok` = number of files **flagged** (at least one error, or an exception), `failures` = the list of those files with the number of errors and the rule identifiers. Reference: the official schematrons (CEN EN 16931 CII + KoSIT for the XRECHNUNG files) flag 6 files out of 26 (BR-CL-25 twice, CII-SR-465 four times on the XRECHNUNG examples).
+
+`cases_<lang>.jsonl`, one line per library and suite of conformance cases: the outcome of each document (number of errors, rule identifiers or messages, exception). Format and scoring in [`../cases/README.md`](../cases/README.md).
+
+## Conformance cases
+
+`./run.sh cases` runs each library's validation on the documents of [`../cases/cases.tsv`](../cases/cases.tsv) (`CASES_DIR` to read another folder), with the same adapter and the same rule set as `survey` and `bench`, in one process per library (PHP: survey child processes, restarted after a crash). Each document is validated once, outside any timing; an exception or a crash is recorded as an error of the document, and so is a call that exceeds the timeout where the harness has one (Go, Python); the run goes on. Rules:
+
+- the adapter routes a UBL document to the library's UBL rules when the library has them (by the root element, read in the first 64 KiB of the document); a library without UBL support gets the UBL documents like any other, and its rejections or failures count;
+- `errors` counts the findings the library reports as errors (fatal errors, `error` severity, or every finding for a library without severities), as in `survey`; `rules` gives their identifiers, or their messages when the library has no identifiers;
+- no case is skipped and none is retried: the outcome is that of the single call.
+
+The report tool turns these outcomes into a confidence score per country: section "Confidence by country" of `tables.md`, formula in [`../cases/README.md`](../cases/README.md#the-score).
 
 ## Coverage of the standard
 

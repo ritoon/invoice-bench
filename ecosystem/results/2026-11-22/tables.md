@@ -20,6 +20,54 @@
 | speedata | 0/26 | — | 104/104 |
 | taha | 15/26 | 26/26 | 48/104 |
 
+#### Confidence by country
+
+Score out of 100 of each library on the conformance cases of a country ([`cases/`](../../../cases/README.md)): 100 × √(S × D), where S is the share of valid cases the library accepts and D the mean detection of the expected rules, each rule weighing the same: 1 when the library raises the rule on a case, 0.5 when it rejects the document under another rule or with an exception, 0 when it accepts it. The expected verdict and rules are those of the reference validator. The score of a country is the mean of the scores of its suites and syntaxes: a syntax the library does not read counts 0.
+
+Not rated, without a validation operation: dotwave, gopdfattach, litho, pdfcpu.
+
+#### Confidence: Germany (DE)
+
+Suites: EN 16931 core rules (`en16931`: CII 115, UBL 66); XRechnung 3.0.2 (`xrechnung`: CII 173, UBL 205); 208 valid cases, 351 invalid, 247 expected rules. 2 cases are left out: the reference could not judge them (see the note column of `cases/cases.tsv`).
+
+Reference: KoSIT validator 1.6.3 with the official XRechnung 3.0.2 configuration of 2026-08-31 (CII D16B and UBL 2.1 XSD, CEN EN 16931 1.3.16, KoSIT XRechnung schematron 2.6.0, levels of its scenarios); it scores 100 by construction.
+
+Rules of the norm that the reference does not check: BR-CO-25. A valid case that a library rejects under these rules alone counts as accepted.
+
+Operations: those the library performed successfully in the bench pass of the same campaign (validation excepted).
+
+| Library | Score | EN 16931 core rules, CII | EN 16931 core rules, UBL | XRechnung 3.0.2, CII | XRechnung 3.0.2, UBL | Valid accepted | Invalid rejected | Expected rule raised | Operations |
+|---|---|---|---|---|---|---|---|---|---|
+| **ZeRechnung** | **99** | 96 | 100 | 100 | 100 | 207/208 | 351/351 | 351/351 | extract, parse, write, embed, check PDF |
+| pdf0 | **93** | 92 | 93 | 92 | 95 | 204/208 | 301/351 | 292/351 | embed, check PDF |
+| DCNWS | **81** | 98 | 100 | 64 | 63 | 193/208 | 236/351 | 192/351 | extract, parse, write, embed, check PDF |
+| papierleicht | **63** | 83 | 0 | 88 | 82 | 153/208 | 348/351 | 232/351 | extract, check PDF |
+| kanjo | **61** | 91 | 58 | 47 | 47 | 163/208 | 193/351 | 129/351 | extract, parse, write, embed |
+| andee | **37** | 0 | 0 | 74 | 74 | 164/208 | 265/351 | 154/351 | extract, parse, write, embed |
+| gobl.de | **24** | 73 | 0 | 11 | 13 | 19/208 | 341/351 | 29/351 | parse |
+| taha | **20** | 39 | 0 | 40 | 0 | 82/208 | 209/351 | 25/351 | extract, parse, write |
+| angelo | **11** | 0 | 0 | 43 | 0 | 29/208 | 350/351 | 0/351 | extract, parse |
+| fX | **0** | 0 | 0 | 0 | 0 | 0/208 | 351/351 | 0/351 | extract, parse, write |
+
+Valid cases counted as accepted although the library rejected them, under BR-CO-25 alone: kanjo 13, gobl.de 14.
+
+#### Rules raised: Germany (DE)
+
+Expected rules that the library raises under their identifier on at least one of their cases, by family (after normalization: case, prefixes, the equivalences of `cases/cases.go`). XSD: the documents the reference rejects on its schema alone; raising the rule the case was written to break counts too. A library that reports no rule identifiers scores here 0, whatever its verdicts.
+
+| Library | BR (26) | BR-CO (15) | BR-CL (22) | BR-DEC (18) | VAT categories (76) | CII-SR, CII-DT (5) | UBL-CR, UBL-SR, UBL-DT (15) | BR-DE (31) | BR-DEX (13) | BR-TMP (3) | Peppol (22) | XSD (1) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **ZeRechnung** | 26 | 15 | 22 | 18 | 76 | 5 | 15 | 31 | 13 | 3 | 22 | 1 |
+| pdf0 | 23 | 10 | 18 | 18 | 67 | 5 | 14 | 31 | 13 | 2 | 20 | 1 |
+| DCNWS | 26 | 15 | 22 | 18 | 76 | 5 | 14 | 0 | 0 | 0 | 0 | 1 |
+| papierleicht | 14 | 11 | 4 | 17 | 72 | 2 | 2 | 24 | 0 | 2 | 22 | 1 |
+| kanjo | 16 | 12 | 12 | 16 | 68 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| andee | 19 | 9 | 13 | 15 | 4 | 0 | 0 | 16 | 0 | 0 | 13 | 1 |
+| gobl.de | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 10 | 0 | 0 | 2 | 1 |
+| taha | 6 | 4 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| angelo | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| fX | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
 #### Extraction
 
 | Library | EN 16931, 149 KB | EN 16931, 1.1 MB | MINIMUM FNFE, 89 KB | EXTENDED ZF 2.0, 157 KB | Memory/op | Allocations/op |
