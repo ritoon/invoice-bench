@@ -3,9 +3,9 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ritoon/zerechnung/bench/ecosystem/dcnws
 cpu: Apple M4 Pro
-BenchmarkEmbedClassic_Small-14     	    2944	    405916 ns/op	 362.99 MB/s	 2591543 B/op	    6157 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2954	    419314 ns/op	 351.40 MB/s	 2591552 B/op	    6157 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2938	    405796 ns/op	 363.10 MB/s	 2591536 B/op	    6157 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2553	    423551 ns/op	 330.01 MB/s	 2586972 B/op	    5951 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2829	    429263 ns/op	 325.62 MB/s	 2586998 B/op	    5951 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2889	    427481 ns/op	 326.98 MB/s	 2586976 B/op	    5951 allocs/op
 BenchmarkExtract_Small-14          	    5949	    200802 ns/op	 742.44 MB/s	  188782 B/op	    4926 allocs/op
 BenchmarkExtract_Small-14          	    6032	    198894 ns/op	 749.57 MB/s	  188782 B/op	    4926 allocs/op
 BenchmarkExtract_Small-14          	    5962	    200441 ns/op	 743.78 MB/s	  188781 B/op	    4926 allocs/op
@@ -42,9 +42,9 @@ BenchmarkWrite_Small-14            	   33436	     36134 ns/op	   74000 B/op	    
 BenchmarkWrite_Lines-14            	   16957	     70780 ns/op	  142866 B/op	    2459 allocs/op
 BenchmarkWrite_Lines-14            	   16957	     70988 ns/op	  142866 B/op	    2459 allocs/op
 BenchmarkWrite_Lines-14            	   16902	     70861 ns/op	  142866 B/op	    2459 allocs/op
-BenchmarkEmbed_Small-14            	     712	   1691303 ns/op	  85.05 MB/s	 3865465 B/op	   44347 allocs/op
-BenchmarkEmbed_Small-14            	     712	   1695333 ns/op	  84.85 MB/s	 3865458 B/op	   44347 allocs/op
-BenchmarkEmbed_Small-14            	     703	   1696801 ns/op	  84.77 MB/s	 3865475 B/op	   44347 allocs/op
+BenchmarkEmbed_Small-14            	     652	   1787329 ns/op	  76.26 MB/s	 3858148 B/op	   44129 allocs/op
+BenchmarkEmbed_Small-14            	     642	   1808080 ns/op	  75.39 MB/s	 3858163 B/op	   44129 allocs/op
+BenchmarkEmbed_Small-14            	     690	   1771415 ns/op	  76.95 MB/s	 3858123 B/op	   44129 allocs/op
 BenchmarkCheckPDF_Small-14         	    1066	   1116804 ns/op	 133.49 MB/s	  917695 B/op	   24617 allocs/op
 BenchmarkCheckPDF_Small-14         	    1078	   1110501 ns/op	 134.25 MB/s	  917668 B/op	   24617 allocs/op
 BenchmarkCheckPDF_Small-14         	    1102	   1110014 ns/op	 134.31 MB/s	  917702 B/op	   24617 allocs/op

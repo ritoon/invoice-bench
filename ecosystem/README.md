@@ -78,7 +78,7 @@ The accuracy surveys (`TestSurvey`) cover 26 valid CII XML files (`XML-Rechnung/
 
 ## Known specifics
 
-- **`Embed_Small` fails for andee and kanjo, on purpose.** On the host with object streams, these libraries return a 25 KB PDF that cannot be read back (the host is 144 KB). `TestEmbedOutputSize` prints the input and output sizes. The script carries on and records the rest of the measurements.
+- **`Embed_Small` fails for andee and kanjo, on purpose.** On the host with object streams, these libraries return a 23 to 25 KB PDF that cannot be read back (the host is 136 KB). `TestEmbedOutputSize` prints the input and output sizes. The script carries on and records the rest of the measurements.
 - **fX is built from a local clone.** `go get` rejects the module archive of solarpush/fX (a file name contains a carriage return); `run.sh setup` clones the repository into `.deps/` and `fx/go.mod` references it with `replace`.
 - **pdf0 does not expose extraction on its own.** The XML is only reachable through `ValidateFacturX`, which checks the whole PDF: pdf0 therefore appears in `CheckPDF`, not in `Extract`.
 - **kanjo is restricted to the `en16931` rule set.** The default set includes the French rules and rejects the 26 German examples.
@@ -90,8 +90,12 @@ The accuracy surveys (`TestSurvey`) cover 26 valid CII XML files (`XML-Rechnung/
 
 Apple M4 Pro on battery, high performance mode (`powermode 2`), Go 1.27.4 for every module. ZeRechnung is measured at commit [`3a3b11a`](https://github.com/ritoon/zerechnung/commit/3a3b11a), over 6 runs; the other libraries over 3. litho moves from v0.0.13 to v0.0.18. The tables are in [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md), with, for each operation, the bytes and the number of allocations of one call (`go test -benchmem`); the analysis is on the [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) wiki page.
 
-- The package is the fastest on every operation, and it allocates the least on each one: 28 KB in 104 allocations to parse a 13 KB invoice, when tokenization alone with `encoding/xml` takes 31 KB and 711; a single 8 KB allocation to write it; 245 KB to embed it into a PDF, against 1.3 MB for pdf0.
+- The package is the fastest on every operation, and it allocates the least on each one: 28 KB in 104 allocations to parse a 13 KB invoice, when tokenization alone with `encoding/xml` takes 31 KB and 711; a single 8 KB allocation to write it; 226 KB to embed it into a PDF, against 1.2 MB for pdf0.
 - The full check of a PDF takes 832 µs, against 54.8 µs on 2026-11-16: since PR ritoon/zerechnung#73, it checks the PDF/A requirements across the whole file (every object, page content, fonts, JPEG 2000 images). DCNWS, the next one, takes 1.11 ms.
+
+Both embedding benchmarks (`Embed_Small`, `EmbedClassic_Small`) were measured again the same day, after the host PDFs were fixed, still in the ZeRechnung tree (commit [`8d728bd`](https://github.com/ritoon/zerechnung/commit/8d728bd), same package code as `3a3b11a`). `host.pdf` and `host_classic.pdf` had lost their `/EmbeddedFiles` tree, but their catalog kept in `/AF` the file specification of the former `factur-x.xml`, and their XMP the Factur-X schema. They are now PDF/A-3 documents with no attachment, no `/AF` and no Factur-X XMP, which `TestHostsStrict` (pdfcpu module) checks. The embedding lines of the `bench_*.txt` files come from this new run (local time, UTC+1): the package over 6 runs of its whole module, from 19:35 to 19:37; litho alone, at 19:22; the other modules in a full pass, from 17:56 to 18:05. The other benchmarks do not use the hosts.
+
+On the fixed hosts, the package embeds in 92.0 µs (xref stream) and 89.4 µs (classic xref), against 98.7 and 96.2 µs, and allocates 226 KB in 376 allocations instead of 245 KB in 456 (xref stream). The other embedders also allocate a little less (pdf0 1.2 MB instead of 1.3 MB, litho 383,412 allocations instead of 394,412) and are up to 10% faster (kanjo, pdf0), except DCNWS (+5%): the host is smaller (136 KB instead of 144), but these measurements were taken at other times than the campaign, on a machine where other work was running (disturbed steps were run again). andee and kanjo still fail on `Embed_Small`.
 
 ## Results of 2026-11-16
 

@@ -3,9 +3,9 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ritoon/zerechnung/bench/ecosystem/dotwave
 cpu: Apple M4 Pro
-BenchmarkEmbedClassic_Small-14    	    1010	   1098950 ns/op	 134.08 MB/s	 5167917 B/op	    8796 allocs/op
-BenchmarkEmbedClassic_Small-14    	    1092	   1106866 ns/op	 133.12 MB/s	 5168426 B/op	    8797 allocs/op
-BenchmarkEmbedClassic_Small-14    	    1100	   1089079 ns/op	 135.29 MB/s	 5168450 B/op	    8797 allocs/op
+BenchmarkEmbedClassic_Small-14    	    1050	   1070747 ns/op	 130.54 MB/s	 5115770 B/op	    8350 allocs/op
+BenchmarkEmbedClassic_Small-14    	    1140	   1084531 ns/op	 128.88 MB/s	 5116212 B/op	    8351 allocs/op
+BenchmarkEmbedClassic_Small-14    	    1134	   1064284 ns/op	 131.33 MB/s	 5116335 B/op	    8351 allocs/op
 BenchmarkExtract_Small-14         	    3661	    323393 ns/op	 461.00 MB/s	  642865 B/op	    3304 allocs/op
 BenchmarkExtract_Small-14         	    3802	    320452 ns/op	 465.23 MB/s	  642880 B/op	    3304 allocs/op
 BenchmarkExtract_Small-14         	    3768	    325407 ns/op	 458.15 MB/s	  642888 B/op	    3304 allocs/op
@@ -30,8 +30,8 @@ BenchmarkWrite_Small-14           	   58909	     20373 ns/op	   35000 B/op	     
 BenchmarkWrite_Lines-14           	   35371	     33427 ns/op	   60520 B/op	     540 allocs/op
 BenchmarkWrite_Lines-14           	   35905	     33399 ns/op	   60520 B/op	     540 allocs/op
 BenchmarkWrite_Lines-14           	   35767	     33353 ns/op	   60520 B/op	     540 allocs/op
-BenchmarkEmbed_Small-14           	     992	   1170963 ns/op	 122.84 MB/s	 5220956 B/op	    8855 allocs/op
-BenchmarkEmbed_Small-14           	    1046	   1151179 ns/op	 124.96 MB/s	 5220991 B/op	    8855 allocs/op
-BenchmarkEmbed_Small-14           	    1048	   1150897 ns/op	 124.99 MB/s	 5221005 B/op	    8855 allocs/op
+BenchmarkEmbed_Small-14           	    1027	   1152041 ns/op	 118.32 MB/s	 5168465 B/op	    8403 allocs/op
+BenchmarkEmbed_Small-14           	    1072	   1139252 ns/op	 119.65 MB/s	 5168703 B/op	    8404 allocs/op
+BenchmarkEmbed_Small-14           	    1068	   1148367 ns/op	 118.70 MB/s	 5168603 B/op	    8404 allocs/op
 PASS
 ok  	github.com/ritoon/zerechnung/bench/ecosystem/dotwave	36.096s

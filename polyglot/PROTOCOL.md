@@ -17,8 +17,8 @@ Paths relative to `ecosystem/` (the corpus is fetched by `ecosystem/run.sh setup
 | XML Small (13 KB) | `corpus/XML-Rechnung/CII/EN16931_Einfach.cii.xml` |
 | XML Lines (19 KB, allowances and charges) | `corpus/XML-Rechnung/CII/EN16931_Rabatte.cii.xml` |
 | XML Large (1.3 MB, base64 attachment) | `corpus/XML-Rechnung/CII/XRECHNUNG_Elektron.cii.xml` |
-| Host with xref stream | `host.pdf` (143 KB, no attachment) |
-| Host with classic xref table | `host_classic.pdf` (147 KB) |
+| Host with xref stream | `host.pdf` (136 KB): the Small PDF without its invoice, a PDF/A-3 document with no attachment, no `/AF` and no Factur-X XMP |
+| Host with classic xref table | `host_classic.pdf` (140 KB): the same, rewritten with a classic xref table and no object streams |
 
 Corpus of the accuracy surveys:
 

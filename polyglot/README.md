@@ -65,7 +65,8 @@ The results combine two runs from the same day, on the same ZeRechnung code (com
 
 - **Go, TypeScript, Python and Rust**: surveys, times and allocations at commit `3a3b11a` (30 commits after v0.1.0), with the latest versions of the libraries;
 - **Java, C#, C, C++ and PHP**: surveys and times at commit `8d728bd`, with Docker Desktop running in the background (about 17% of one core);
-- **CPU time and memory**, all nine languages: `resources` pass of the second run, where five libraries still had their previous version (@ekwo-ai/factur-x 0.25.2, @stackforge-eu/factur-x 1.4.6, factur-x 7.9 in Python, mcp-einvoicing-core 1.35.0 for mcp-einvoicing-de, pdf-invoice 1.4.0).
+- **CPU time and memory**, all nine languages: `resources` pass of the second run, where five libraries still had their previous version (@ekwo-ai/factur-x 0.25.2, @stackforge-eu/factur-x 1.4.6, factur-x 7.9 in Python, mcp-einvoicing-core 1.35.0 for mcp-einvoicing-de, pdf-invoice 1.4.0);
+- **embedding** (`Embed_Small` and `EmbedClassic_Small`), all nine languages: measured again the same day after the host PDFs were fixed (see "Known specifics"), on a machine where other work was running (disturbed steps were run again). Java and PHP from 17:25 to 17:49, C#, C and C++ from 18:08 to 18:16; in Python (drafthorse, pycheval, getafix, zugferd-pdf) and in Rust (en16931, zugferd-rs), the libraries whose version did not change between the two runs, from 17:17 to 17:25; with the versions of the first run, TypeScript from 18:48 to 18:49, factur-x and mcp-einvoicing-de (Python) at 19:10, pdf-invoice and pdfa (Rust) from 19:20 to 19:28, Go from 19:31 to 19:32, and the TypeScript, Python and Rust allocations at 19:01.
 
 ### Response time
 
@@ -80,8 +81,8 @@ The fastest of the other languages for each operation. A floor (generic PDF or X
 | Validation, all libraries (13 KB) | 24.8 µs | pdf-invoice (Rust): 26.3 µs, 14 rules, 20 false positives out of 26 | ×1.1 |
 | Full EN 16931 validation (13 KB) | 24.8 µs | official CEN and KoSIT XSLT with Saxon-HE (Java): 419 µs | ×17 |
 | Writing model → XML (13 KB) | 3.3 µs | pugixml (C++, floor): 3.7 µs; zugferd-rs (Rust): 7.0 µs | ×1.1; ×2.1 |
-| Embedding into a PDF with a classic xref table | 96.2 µs | pdfa (Rust): 88.6 µs, fails on a host with an xref stream | ×0.92 |
-| Embedding into a PDF with an xref stream | 96.7 µs | MuPDF (C, floor): 123 µs; pdf-invoice (Rust): 180 µs | ×1.3; ×1.9 |
+| Embedding into a PDF with a classic xref table | 91.5 µs | pat-o-dev/factur-x (PHP): 17.7 µs, by incremental update; pdfa (Rust): 84.7 µs; both fail on a host with an xref stream | ×0.19; ×0.93 |
+| Embedding into a PDF with an xref stream | 93.1 µs | MuPDF (C, floor): 115 µs; pdf-invoice (Rust): 174 µs | ×1.2; ×1.9 |
 | Full check of a hybrid PDF (149 KB) | 811 µs | zugferd-pdf (Python): 213 µs, container checks only | ×0.26 |
 
 Full EN 16931 validation (CEN schematrons, with or without KoSIT), the fastest in each language, on the 13 KB XML:
@@ -103,11 +104,11 @@ Full EN 16931 validation (CEN schematrons, with or without KoSIT), the fastest i
   - extraction: Kura (C++) reads the 149 KB PDF in 28.9 µs (×0.92) and the EXTENDED PDF in 28.2 µs (×0.78); pdfa (Rust) reads the MINIMUM PDF in 504 ns by searching the bytes for the first `/EmbeddedFile` stream, without reading the PDF structure, which misses 72 of the 104 PDFs of the corpus;
   - parsing the 1.3 MB XML: the Go package decodes the base64 attachment (3.5 MB allocated per parse); john-wink/en16931-php (PHP) parses the file in 646 µs, mcp-einvoicing-de (Python, lxml) in 704 µs while keeping the attachment as text;
   - validation: pdf-invoice (Rust, 14 rules) on 19 KB (40.1 µs against 45.4 µs), pat-o-dev/factur-x (PHP, a few hand-written rules) on 1.3 MB (466 µs against 794 µs);
-  - embedding into a host with a classic xref table: pdfa (Rust), 88.6 µs against 96.2 µs, which rejects hosts with an xref stream;
+  - embedding into a host with a classic xref table: pat-o-dev/factur-x (PHP), 17.7 µs against 91.5 µs, which appends the invoice at the end of the file (incremental update) without rewriting the rest, and pdfa (Rust), 84.7 µs; both reject hosts with an xref stream;
   - full check of the 149 KB and 1.1 MB PDFs: zugferd-pdf (Python, 213 and 269 µs), @attestwire/en16931 (TS, 368 and 403 µs) and en16931 (Rust, 489 and 817 µs) read neither the page content nor the fonts (next point).
 - **The hybrid PDF check went from 75.0 µs (2026-11-17, v0.1.0) to 811 µs.** Since PR ritoon/zerechnung#73, `Check` verifies the PDF/A requirements across the whole file (every object, page content, font programs, JPEG 2000 images): the CPU profile shows the time spent decompressing and reading the TrueType font programs (`pdfaScan.font`), and a call allocates 10 times more bytes (700 KB instead of 69 KB). The faster libraries only check the container and the XMP.
 - The validators that run the official schematron cost from 0.4 ms to 101 ms per invoice, except @lucaapp/zugferd-ts (from 2.7 to 9.2 s). The slowest: mustang (Java) 11 ms, erechnung-validator (Rust) 32 ms, securibox (C#) 38 ms, @kontor-mcp/core (TS) 48 ms, vampire-php (PHP) 64 ms, @conformo/toolkit (TS) 72 ms, mcp-einvoicing-de (Python) 101 ms, which recompiles its XSLT on every call. Their first call compiles the stylesheets: from 18 ms (summand) to 2.1 s (KoSIT validator). The Go package's rules are compiled code: there is nothing to load.
-- Embedding: Mustang (Java) takes 5.2 ms (`ZUGFeRDExporterFromPDFA`, PDF saved without compression); several libraries reject the bench's hosts or leave two `factur-x.xml` in them (see "Known specifics").
+- Embedding: Mustang (Java) takes 5.4 ms (classic xref) and 5.8 ms (xref stream) (`ZUGFeRDExporterFromPDFA`, PDF saved without compression), Kura (C++) 12.4 and 11.7 ms (conversion to PDF/A-3b), Paniolo (Java) 13.3 ms (revalidation of the output PDF by veraPDF included). Since the hosts were fixed, Mustang and Kura no longer leave two `factur-x.xml` in them, and four libraries that refused to embed now succeed (see "Known specifics").
 
 ### Allocations per call
 
@@ -119,7 +120,7 @@ Bytes allocated · number of allocations, for the library of each language that 
 | Parsing (13 KB) | **28 KB · 111** | fX 53 KB · 1,165 | @ekwo-ai/factur-x 164 KB | pycheval 374 KB · 3,302 | zugferd-rs 81 KB · 77 |
 | Full EN 16931 validation (13 KB) | **23 KB · 82** | pdf0 67 KB · 1,462 | @sweberdev/summand 3.1 MB | saxonche 321 KB · 749, GraalVM heap not counted | einvoice-validator 397 KB · 7,188 |
 | Writing (13 KB) | **8 KB · 1** | fX 32 KB · 175 | @stackforge-eu/factur-x 44 KB | pycheval 122 KB · 1,254 | core-invoice 24 KB · 396 |
-| Embedding (host with xref stream) | **245 KB · 456** | pdf0 1.3 MB · 9,593 | @ekwo-ai/factur-x 1.0 MB | mcp-einvoicing-de 3.4 MB · 5,847 | pdf-invoice 949 KB · 615 |
+| Embedding (host with xref stream) | **226 KB · 376** | pdf0 1.2 MB · 8,552 | @ekwo-ai/factur-x 969 KB | mcp-einvoicing-de 3.3 MB · 4,853 | pdf-invoice 930 KB · 569 |
 | Check (149 KB PDF) | 700 KB · 2,383 | DCNWS 896 KB · 24,617 | @attestwire/en16931 755 KB | **zugferd-pdf 466 KB · 4,008**, container only | en16931 1.5 MB · 3,834 |
 
 - The Go package allocates the least to parse, validate, write and embed. The two libraries that allocate less than it to extract and check do less work: pdfa fails on 72 of the 104 PDFs, zugferd-pdf only checks the container.
@@ -128,19 +129,19 @@ Bytes allocated · number of allocations, for the library of each language that 
 
 ### CPU time and memory
 
-`resources` pass of the second run, from 12:17 to 13:10, on mains power: one process per library and per benchmark, one series of one second. In each language, the median wall-clock time of this pass is within 5% of that of the `bench` pass of the same run; for Go, TypeScript, Python and Rust, the response times above come from the other run. Full tables per operation in `tables.md` ("CPU time: …" and "Peak memory: …").
+`resources` pass of the second run, from 12:17 to 13:10 (embedding measured again from 17:49 to 17:55 and at 18:16, after the host PDFs were fixed), on mains power: one process per library and per benchmark, one series of one second. In each language, the median wall-clock time of this pass is within 5% of that of the `bench` pass of the same run; for Go, TypeScript, Python and Rust, the response times above come from the other run. Full tables per operation in `tables.md` ("CPU time: …" and "Peak memory: …").
 
 | Language | Libraries | Processes | Peak memory min. | median | max. | CPU / wall time median | max. |
 |---|---|---|---|---|---|---|---|
-| Go | 1 | 16 | 16.8 MiB | 20.9 MiB | 25.5 MiB | 163% | 206% |
-| TypeScript | 13 | 119 | 65.4 MiB | 174 MiB | 509 MiB | 102% | 433% |
-| Python | 8 | 69 | 39.8 MiB | 59.5 MiB | 387 MiB | 100% | 100% |
-| Rust | 11 | 74 | 1.9 MiB | 7.2 MiB | 503 MiB | 100% | 111% |
-| Java | 10 | 63 | 259 MiB | 602 MiB | 2,129 MiB | 125% | 399% |
-| C# | 13 | 111 | 69.6 MiB | 90.0 MiB | 509 MiB | 100% | 506% |
+| Go | 1 | 16 | 16.8 MiB | 20.9 MiB | 25.5 MiB | 163% | 203% |
+| TypeScript | 13 | 119 | 65.4 MiB | 177 MiB | 509 MiB | 103% | 433% |
+| Python | 8 | 69 | 39.8 MiB | 60.2 MiB | 387 MiB | 100% | 100% |
+| Rust | 11 | 76 | 1.9 MiB | 7.2 MiB | 503 MiB | 100% | 111% |
+| Java | 10 | 65 | 259 MiB | 611 MiB | 2,129 MiB | 125% | 399% |
+| C# | 13 | 111 | 69.6 MiB | 90.9 MiB | 509 MiB | 100% | 457% |
 | C | 3 | 18 | 2.2 MiB | 5.8 MiB | 11.7 MiB | 100% | 100% |
 | C++ | 7 | 40 | 1.7 MiB | 9.1 MiB | 278 MiB | 100% | 100% |
-| PHP | 19 | 135 | 32.0 MiB | 43.0 MiB | 1,173 MiB | 100% | 100% |
+| PHP | 19 | 138 | 32.0 MiB | 43.0 MiB | 1,173 MiB | 100% | 100% |
 
 Without the Go series at `GOMAXPROCS=1` or the two PHP libraries that spawn child processes. Peak memory: maximum resident set size (max RSS) of the process, runtime included. CPU / wall time: 100% = one core busy during the timed series.
 
@@ -148,28 +149,28 @@ Per operation, the Go package and the fastest Factur-X library of each language 
 
 | Language | Extraction (149 KB) | Parsing XML → model (13 KB) | Full EN 16931 validation (13 KB) | Embedding (host with xref stream) | PDF check (149 KB) |
 |---|---|---|---|---|---|
-| **Go** | 46.9 µs (152%), 21.1 MiB | 32.0 µs (174%), 19.2 MiB | 34.5 µs (141%), 18.7 MiB | 193 µs (201%), 23.9 MiB | 1.15 ms (133%), 22.8 MiB |
-| **Go, `GOMAXPROCS=1`** | 33.0 µs (99%), 17.4 MiB | 22.3 µs (99%), 16.4 MiB | 29.2 µs (99%), 16.7 MiB | 106 µs (98%), 18.6 MiB | 892 µs (100%), 19.9 MiB |
-| TypeScript | @attestwire/en16931: 194 µs (102%), 142 MiB | @ekwo-ai/factur-x: 72.2 µs (100%), 104 MiB | @sweberdev/summand: 1.00 ms (111%), 154 MiB | @stackforge-eu/factur-x: 1.34 ms (109%), 185 MiB | @attestwire/en16931: 377 µs (102%), 157 MiB |
-| Python | zugferd-pdf: 79.2 µs (100%), 40.1 MiB | pycheval: 226 µs (100%), 42.5 MiB | saxonche + XSLT: 893 µs (100%), 214 MiB | mcp-einvoicing-de: 667 µs (100%), 96.8 MiB | zugferd-pdf: 211 µs (100%), 40.3 MiB |
-| Rust | einvoice-validator: 32.6 µs (100%), 3.1 MiB | zugferd-rs: 24.4 µs (100%), 6.6 MiB | einvoice-validator: 479 µs (100%), 26.7 MiB | pdf-invoice: 181 µs (104%), 9.0 MiB | en16931: 479 µs (100%), 5.5 MiB |
-| Java | Paniolo: 119 µs (100%), 272 MiB | imixs-e-invoice: 72.1 µs (100%), 536 MiB | Saxon-HE + XSLT: 1.96 ms (399%), 341 MiB | Mustang: 8.66 ms (154%), 295 MiB | Paniolo: 19.16 ms (165%), 612 MiB |
-| C# | Antiphon: 78.6 µs (100%), 73.6 MiB | Antiphon: 27.9 µs (100%), 74.3 MiB | SaxonCS-HE + XSLT: 527 µs (100%), 142 MiB | Balsoft: 1.07 ms (115%), 86.8 MiB | OfficeIMO: 229 µs (100%), 98.0 MiB |
-| C | qpdf (floor): 28.5 µs (100%), 3.6 MiB | libxml2 (floor): 53.9 µs (100%), 2.8 MiB | — | MuPDF (floor): 127 µs (100%), 11.5 MiB | — |
-| C++ | Kura: 28.3 µs (100%), 4.4 MiB | pugixml (floor): 5.3 µs (100%), 1.7 MiB | SaxonC-HE + XSLT: 823 µs (100%), 201 MiB | Kura: 13.03 ms (100%), 12.1 MiB | Kura: 1.54 ms (100%), 4.7 MiB |
-| PHP | quittio/core: 72.2 µs (100%), 39.2 MiB | tiime/cross-industry-invoice: 226 µs (100%), 40.5 MiB | dealerweb/einvoice: 7.61 ms (100%), 51.4 MiB | dealerweb/einvoice: 2.03 ms (100%), 54.4 MiB | — |
+| **Go** | 46.9 µs (152%), 21.1 MiB | 32.0 µs (174%), 19.2 MiB | 34.5 µs (141%), 18.7 MiB | 181 µs (198%), 24.6 MiB | 1.15 ms (133%), 22.8 MiB |
+| **Go, `GOMAXPROCS=1`** | 33.0 µs (99%), 17.4 MiB | 22.3 µs (99%), 16.4 MiB | 29.2 µs (99%), 16.7 MiB | 98.7 µs (98%), 18.5 MiB | 892 µs (100%), 19.9 MiB |
+| TypeScript | @attestwire/en16931: 194 µs (102%), 142 MiB | @ekwo-ai/factur-x: 72.2 µs (100%), 104 MiB | @sweberdev/summand: 1.00 ms (111%), 154 MiB | @fin.cx/einvoice: 635 µs (115%), 249 MiB | @attestwire/en16931: 377 µs (102%), 157 MiB |
+| Python | zugferd-pdf: 79.2 µs (100%), 40.1 MiB | pycheval: 226 µs (100%), 42.5 MiB | saxonche + XSLT: 893 µs (100%), 214 MiB | mcp-einvoicing-de: 631 µs (100%), 96.8 MiB | zugferd-pdf: 211 µs (100%), 40.3 MiB |
+| Rust | einvoice-validator: 32.6 µs (100%), 3.1 MiB | zugferd-rs: 24.4 µs (100%), 6.6 MiB | einvoice-validator: 479 µs (100%), 26.7 MiB | pdf-invoice: 176 µs (104%), 8.9 MiB | en16931: 479 µs (100%), 5.5 MiB |
+| Java | Paniolo: 119 µs (100%), 272 MiB | imixs-e-invoice: 72.1 µs (100%), 536 MiB | Saxon-HE + XSLT: 1.96 ms (399%), 341 MiB | Mustang: 8.17 ms (156%), 325 MiB | Paniolo: 19.16 ms (165%), 612 MiB |
+| C# | Antiphon: 78.6 µs (100%), 73.6 MiB | Antiphon: 27.9 µs (100%), 74.3 MiB | SaxonCS-HE + XSLT: 527 µs (100%), 142 MiB | Balsoft: 966 µs (111%), 86.6 MiB | OfficeIMO: 229 µs (100%), 98.0 MiB |
+| C | qpdf (floor): 28.5 µs (100%), 3.6 MiB | libxml2 (floor): 53.9 µs (100%), 2.8 MiB | — | MuPDF (floor): 114 µs (100%), 11.4 MiB | — |
+| C++ | Kura: 28.3 µs (100%), 4.4 MiB | pugixml (floor): 5.3 µs (100%), 1.7 MiB | SaxonC-HE + XSLT: 823 µs (100%), 201 MiB | Kura: 11.27 ms (100%), 11.5 MiB | Kura: 1.54 ms (100%), 4.7 MiB |
+| PHP | quittio/core: 72.2 µs (100%), 39.2 MiB | tiime/cross-industry-invoice: 226 µs (100%), 40.5 MiB | dealerweb/einvoice: 7.61 ms (100%), 51.4 MiB | intragile/php-einvoicing: 645 µs (100%), 40.1 MiB | — |
 
-- **The Go package uses more than one core**: from 125 to 206% of wall-clock time, 163% median. The measured thread is alone, but Go's concurrent garbage collector works on other cores (`GOMAXPROCS` is 14 on this machine). Limited to one core, the package uses 5 to 47% less CPU for a wall-clock time 4 to 38% longer: 33 µs per extraction, 22 µs per parse, 29 µs per validation, 4.4 µs per write, 107 µs per embedding. It then remains the fastest of the Factur-X libraries on parsing 13 KB, writing, and embedding into a host with an xref stream.
+- **The Go package uses more than one core**: from 125 to 203% of wall-clock time, 163% median. The measured thread is alone, but Go's concurrent garbage collector works on other cores (`GOMAXPROCS` is 14 on this machine). Limited to one core, the package uses 5 to 47% less CPU for a wall-clock time 4 to 38% longer: 33 µs per extraction, 22 µs per parse, 29 µs per validation, 4.4 µs per write, 100 µs per embedding. It then remains the fastest of the Factur-X libraries on parsing 13 KB, writing, and embedding into a host with an xref stream.
 - **Single-threaded runtimes stay at 100%**: Python, PHP, C, C++ and Rust; in Rust, lopdf keeps a rayon thread next to the measured thread (104 to 111% for zugferd-rs and pdf-invoice).
 - **JVM**: 125% median, up to 399% (Saxon-HE on validation, 231% for imixs-e-invoice on a parse). In a fresh JVM, JIT compilation and the G1 garbage collector are still running during the one-second series; in the `bench` pass, with a warm JVM, PDFBox is at 101 or 102%.
-- **.NET**: 100% median. ZUGFeRD-csharp goes up to 438 and 506% on embedding: on every call, about twenty threads of the .NET pool look for fonts in the system folders.
+- **.NET**: 100% median. ZUGFeRD-csharp goes up to 452 and 457% on embedding: on every call, about twenty threads of the .NET pool look for fonts in the system folders.
 - **Node**: 102% median; @stafyniaksacha/facturx goes up to 433% on writing, with the V8 threads.
 - **Peak memory of the Go package: 17 to 26 MiB** depending on the operation, runtime included (16 to 24 MiB on one core). That is 2 to 10 times more than Rust, C and C++ (2 to 13 MiB, excluding validators and the 1.3 MB XML), less than Python (at least 40 MiB, 60 median) and PHP (at least 32 MiB, 43 median), and far less than Node (65 to 509 MiB), .NET (70 to 509 MiB) and the JVM (259 MiB to 2.1 GiB).
 - **Java**: the peak mostly measures the size of the G1 heap, not the live data. With the default options, the maximum heap is a quarter of the machine's memory (6 GiB here) and G1 grows it under allocation pressure: PDFBox keeps about 2 MB live in a 448 MB heap. The KoSIT validator reaches 2.1 GiB on the 1.3 MB XML, Mustang 1.8 GiB on a parse.
 - **Validating with the official XSLT costs 140 to 340 MiB** whatever the language (Saxon in Java, C#, C++ and Python), against 27 MiB for einvoice-validator (Rust) and 19 MiB for the Go package.
 - **Other peaks**: quittio/core (PHP) 1.1 GiB when parsing the 1.3 MB XML, En16931 (C#) and @stafyniaksacha/facturx (TS) 509 MiB, erechnung-validator (Rust) 503 MiB, mcp-einvoicing-de (Python) 387 MiB.
 - **Child processes**: mahdiabderraouf/facturx-php and php-erechnung-toolkit run `pdfdetach` (poppler) on every extraction; their CPU (about 22 and 26 ms per call) and their memory are not counted (marked † in `tables.md`).
-- **A fresh process does not always run at the same speed** as the `bench` pass: in .NET, several libraries are 2 to 4 times slower in a one-second process (tiered compilation not finished); Kura, alone in its process, embeds and checks twice as fast.
+- **A fresh process does not always run at the same speed** as the `bench` pass: in .NET, several libraries are 2 to 4 times slower in a one-second process (tiered compilation not finished); Kura, alone in its process, checks a PDF twice as fast.
 
 ### Accuracy on the corpus
 
@@ -232,16 +233,19 @@ The most downloaded libraries do not validate the business rules: @stackforge-eu
 - **pdfa (Rust)** extracts by byte search: 504 ns and 36 KB on the MINIMUM PDF, but only 32 PDFs out of 104.
 - **Securibox (C#)** fails on `Extract_Extended` in the `bench` pass ("Schema namespace URI and prefix mismatch", XMP exception) but succeeds in the `resources` pass, alone in its process: the failure depends on the benchmarks already run in the process.
 - **erechnung-validator** appears in `CheckPDF` with `beide_pdf`, its own function, which extracts and validates the XML without checking the container.
-- **en16931 (Rust)** refuses to embed into the two host PDFs, because their XMP already contains `fx:` properties. **@stafyniaksacha/facturx** fails on any host whose trailer has an `/ID`.
+- **@stafyniaksacha/facturx** fails on any host whose trailer has an `/ID`, like both hosts of the bench. **OfficeIMO (C#)** and the PHP embedders, except dealerweb/einvoice and intragile/php-einvoicing, fail on the host with an xref stream, like pdfa (Rust). **FacturXDotNet** fails on both hosts: its CII reader rejects the Small XML (`schemeID` of the seller's tax identifier).
 - **Hand-built models** for `Write_Small` when the library cannot parse CII: @stackforge-eu/factur-x, @e-invoice-eu/core, node-zugferd, @ekwo-ai/factur-x, zugferd-pdf, erechnung, zugferd (Rust). Their `Write_Lines` is not measured.
 - **One process per benchmark** in TypeScript, Python and PHP: "First call" there is a cold call. In Rust, Java, C#, C and C++, one process per library: in Java and C#, the first call therefore includes class loading and JIT compilation.
-- **The host PDFs are not empty.** `host.pdf` and `host_classic.pdf` no longer have an `/EmbeddedFiles` tree, but their catalog keeps in `/AF` the file specification of the old `factur-x.xml` (with its stream) and a Factur-X XMP. The `Embed` check only verifies that a CII can be read back; the observed effects:
-  - refusal to embed a second invoice: Paniolo (Java), intragile/php-einvoicing and pat-o-dev/factur-x (PHP);
-  - PDF produced with two `factur-x.xml` in `/AF`: Mustang (Java), Kura (C++), whose PDF is flagged PDF-28 by `zerechnung validate`;
-  - the C and C++ floors, OfficeIMO (C#) and the other embedders remove or replace the old entry.
+- **The host PDFs were fixed on 2026-11-22.** `host.pdf` and `host_classic.pdf` (written by `TestMakeHost` and `TestMakeHostClassic` in `../ecosystem/pdfcpu`) had lost their `/EmbeddedFiles` tree, but their catalog kept in `/AF` the file specification of the old `factur-x.xml`, with its stream, and their XMP the Factur-X schema. Paniolo (Java), en16931 (Rust), intragile/php-einvoicing and pat-o-dev/factur-x (PHP) refused to embed a second invoice into them; Mustang (Java) and Kura (C++) left two in `/AF` (PDF-28 for `zerechnung validate`). They are now PDF/A-3 documents with no attachment, no `/AF` and no Factur-X XMP, which `TestHostsStrict` checks, and both embedding benchmarks were measured again in every language. Effects:
+  - Paniolo, en16931 and intragile/php-einvoicing embed into both hosts, pat-o-dev/factur-x into the host with a classic xref table (it does not read xref streams);
+  - Mustang and Kura produce a single `factur-x.xml`; Kura's PDF is still flagged PDF-18 (no `/Params /ModDate` on the attachment stream), pat-o-dev/factur-x's PDF-08 and PDF-18;
+  - several embedders are much faster on these hosts: @ekwo-ai/factur-x and @fin.cx/einvoice go from 1.9–2.5 ms to 0.54–0.61 ms, Kura from 25 to 12.4 ms on the host with a classic xref table; the Go package allocates 226 KB in 376 allocations instead of 245 KB in 456 on the host with an xref stream, for a slightly shorter time (93.1 µs against 96.7 µs; 91.5 µs against 96.2 µs on the host with a classic xref table);
+  - the PoDoFo harness assumed an `/AF` in the host; it was fixed.
+
+  Like the Small PDF they come from, the hosts have no OutputIntent: the PDFs produced by the embedders that do not add one are flagged PDF-06 (warning).
 - **Java**: Mustang's `Extract` includes parsing into the model (no raw extraction API). Mustang and phive apply their own severity levels and leave CII-SR-465 as a warning. No JVM options: the 512 MiB stack comes from a thread created by the harness.
 - **C#**: the programs run through `dotnet <dll>` (the apphost does not find a Homebrew .NET without `DOTNET_ROOT`); invariant culture set in the code (`InvariantGlobalization` breaks SaxonCS); 256 MiB stack for the official XSLT. Antiphon is closed commercial software, measured under an evaluation license.
-- **C and C++**: `CLOCK_UPTIME_RAW` clock on macOS (the one behind `Instant` in Rust), because `CLOCK_MONOTONIC` advances there in steps of 1 µs. The floors do not add an OutputIntent and do not convert to PDF/A; Kura converts to PDF/A-3b, hence its 12.6 ms (host with xref stream) and 25 ms (classic xref) per embedding. libxslt only does XSLT 1.0: the official XSLT (XSLT 2.0) do not compile with it.
+- **C and C++**: `CLOCK_UPTIME_RAW` clock on macOS (the one behind `Instant` in Rust), because `CLOCK_MONOTONIC` advances there in steps of 1 µs. The floors do not add an OutputIntent and do not convert to PDF/A; Kura converts to PDF/A-3b, hence its 11.7 ms (host with xref stream) and 12.4 ms (classic xref) per embedding. libxslt only does XSLT 1.0: the official XSLT (XSLT 2.0) do not compile with it.
 - **PHP**: PHP CLI as installed, OPcache off (`opcache.enable_cli=0`), hence no JIT; `memory_limit=4G` and `zend.assertions=-1` passed through `PHP_OPTS`. No XSLT 2.0 engine is usable in PHP 8.6 (ext-xsl is XSLT 1.0, the SaxonC 13.1.1 extension does not compile with PHP 8.6): the full validators are rewrites in PHP. FPDI's free parser does not read xref streams, hence the `Embed_Small` failures of the FPDI or mPDF embedders. The installation passes `--no-scripts --no-plugins`.
 - **Installation**: `npm ci --ignore-scripts` (the postinstall of @fin.cx/einvoice downloads unpinned schematrons), Python wheels only (except `tagic`, pure Python, reviewed), `cargo build --ignore-rust-version` for einvoice-validator, `RAYON_NUM_THREADS=1` for lopdf.
 - **Allocations**: the Python counter does not see the memory that a library manages itself through `mmap`, like the GraalVM heap of saxonche, whose figures are underestimated. In TypeScript, "≥" means that a garbage collection ran during the series: the `ArrayBuffer`s it freed are missing, the value is a minimum.

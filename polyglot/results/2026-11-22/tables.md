@@ -330,46 +330,46 @@ In bold: fastest in the column. (×n): time relative to the ZeRechnung Go packag
 
 | Library | Language | classic xref host | xref-stream host | First call |
 |---|---|---|---|---|
-| pdfa | Rust | **88.6 µs** (×0.9) | failed | 131 µs |
-| **ZeRechnung** | Go | 96.2 µs | **96.7 µs** | — |
-| mupdf | C | 114 µs (×1.2) | 123 µs (×1.3) | 164 µs |
-| pdf-invoice | Rust | 164 µs (×1.7) | 180 µs (×1.9) | 180 µs |
-| zugferd-rs | Rust | 206 µs (×2.1) | 221 µs (×2.3) | 218 µs |
-| balsoft | C# | 362 µs (×3.8) | 388 µs (×4.0) | 264 µs |
-| qpdf | C++ | 419 µs (×4.4) | 505 µs (×5.2) | 586 µs |
-| podofo | C++ | 425 µs (×4.4) | 395 µs (×4.1) | 427 µs |
-| mcp-einvoicing-de | Python | 775 µs (×8.1) | 679 µs (×7.0) | 1.49 ms |
-| international-einvoicing | C# | 854 µs (×8.9) | 875 µs (×9.0) | 287 µs |
-| antiphon | C# | 880 µs (×9.2) | 881 µs (×9.1) | 240 µs |
-| zugferd-pdf | Python | 888 µs (×9.2) | 782 µs (×8.1) | 5.17 ms |
-| officeimo | C# | 1.19 ms (×12) | failed | 19.83 ms |
-| @stackforge-eu/factur-x | TypeScript | 1.19 ms (×12) | 1.17 ms (×12) | 14.46 ms |
-| horstoeko/zugferd | PHP | 1.35 ms (×14) | failed | 8.49 ms |
-| atgp/factur-x | PHP | 1.62 ms (×17) | failed | 6.81 ms |
-| quittio/core | PHP | 1.86 ms (×19) | failed | 30.54 ms |
-| @fin.cx/einvoice | TypeScript | 1.88 ms (×20) | 1.95 ms (×20) | 52.01 ms |
-| dealerweb/einvoice | PHP | 2.06 ms (×21) | 2.14 ms (×22) | 10.73 ms |
-| getafix | Python | 2.10 ms (×22) | 2.13 ms (×22) | 2.88 ms |
-| drafthorse | Python | 2.13 ms (×22) | 2.16 ms (×22) | 3.38 ms |
-| @lucaapp/zugferd-ts | TypeScript | 2.15 ms (×22) | 2.03 ms (×21) | 11.96 ms |
-| @ekwo-ai/factur-x | TypeScript | 2.49 ms (×26) | 2.06 ms (×21) | 12.36 ms |
-| @conformo/toolkit | TypeScript | 2.50 ms (×26) | 2.54 ms (×26) | 15.69 ms |
-| stann/factur-x | PHP | 2.55 ms (×27) | failed | 33.78 ms |
-| pycheval | Python | 2.55 ms (×27) | 2.65 ms (×27) | 3.48 ms |
-| mahdiabderraouf/facturx-php | PHP | 3.02 ms (×31) | failed | 10.19 ms |
-| horstoeko/invoicesuite | PHP | 3.67 ms (×38) | failed | 14.46 ms |
-| factur-x | Python | 4.32 ms (×45) | 3.98 ms (×41) | 6.58 ms |
-| mustang | Java | 5.19 ms (×54) | 5.42 ms (×56) | 5.37 ms |
-| zugferd-csharp | C# | 5.30 ms (×55) | 4.55 ms (×47) | 4.85 ms |
-| tiime/factur-x | PHP | 6.26 ms (×65) | failed | 26.43 ms |
-| kura | C++ | 25.12 ms (×261) | 12.59 ms (×130) | 12.17 ms |
-| securibox | C# | 41.38 ms (×430) | 41.60 ms (×430) | 40.73 ms |
+| pat-o-dev/factur-x | PHP | **17.7 µs** (×0.2) | failed | 1.47 ms |
+| pdfa | Rust | 84.7 µs (×0.9) | failed | 125 µs |
+| **ZeRechnung** | Go | 91.5 µs | **93.1 µs** | — |
+| mupdf | C | 110 µs (×1.2) | 115 µs (×1.2) | 131 µs |
+| pdf-invoice | Rust | 157 µs (×1.7) | 174 µs (×1.9) | 171 µs |
+| zugferd-rs | Rust | 193 µs (×2.1) | 211 µs (×2.3) | 208 µs |
+| balsoft | C# | 355 µs (×3.9) | 372 µs (×4.0) | 250 µs |
+| qpdf | C++ | 389 µs (×4.3) | 471 µs (×5.1) | 496 µs |
+| podofo | C++ | 412 µs (×4.5) | 408 µs (×4.4) | 384 µs |
+| @fin.cx/einvoice | TypeScript | 540 µs (×5.9) | 550 µs (×5.9) | 52.62 ms |
+| @ekwo-ai/factur-x | TypeScript | 595 µs (×6.5) | 612 µs (×6.6) | 12.63 ms |
+| intragile/php-einvoicing | PHP | 644 µs (×7.0) | 679 µs (×7.3) | 5.61 ms |
+| mcp-einvoicing-de | Python | 792 µs (×8.6) | 624 µs (×6.7) | 1.35 ms |
+| international-einvoicing | C# | 804 µs (×8.8) | 822 µs (×8.8) | 173 µs |
+| zugferd-pdf | Python | 861 µs (×9.4) | 775 µs (×8.3) | 5.16 ms |
+| antiphon | C# | 885 µs (×9.7) | 885 µs (×9.5) | 314 µs |
+| en16931 | Rust | 934 µs (×10) | 617 µs (×6.6) | 970 µs |
+| officeimo | C# | 1.11 ms (×12) | failed | 18.64 ms |
+| @stackforge-eu/factur-x | TypeScript | 1.16 ms (×13) | 1.19 ms (×13) | 16.02 ms |
+| horstoeko/zugferd | PHP | 1.24 ms (×14) | failed | 9.79 ms |
+| atgp/factur-x | PHP | 1.59 ms (×17) | failed | 5.91 ms |
+| quittio/core | PHP | 1.83 ms (×20) | failed | 32.20 ms |
+| getafix | Python | 1.98 ms (×22) | 2.05 ms (×22) | 2.70 ms |
+| @lucaapp/zugferd-ts | TypeScript | 2.04 ms (×22) | 2.04 ms (×22) | 13.48 ms |
+| dealerweb/einvoice | PHP | 2.07 ms (×23) | 2.09 ms (×22) | 9.21 ms |
+| drafthorse | Python | 2.10 ms (×23) | 2.14 ms (×23) | 3.25 ms |
+| @conformo/toolkit | TypeScript | 2.17 ms (×24) | 2.20 ms (×24) | 15.60 ms |
+| pycheval | Python | 2.36 ms (×26) | 2.37 ms (×25) | 3.24 ms |
+| stann/factur-x | PHP | 2.55 ms (×28) | failed | 31.24 ms |
+| mahdiabderraouf/facturx-php | PHP | 2.61 ms (×29) | failed | 8.75 ms |
+| horstoeko/invoicesuite | PHP | 3.37 ms (×37) | failed | 12.10 ms |
+| factur-x | Python | 4.53 ms (×50) | 3.93 ms (×42) | 7.13 ms |
+| zugferd-csharp | C# | 4.67 ms (×51) | 4.46 ms (×48) | 4.45 ms |
+| mustang | Java | 5.40 ms (×59) | 5.76 ms (×62) | 5.85 ms |
+| tiime/factur-x | PHP | 6.04 ms (×66) | failed | 24.89 ms |
+| kura | C++ | 12.37 ms (×135) | 11.69 ms (×126) | 11.53 ms |
+| paniolo | Java | 13.29 ms (×145) | 13.33 ms (×143) | 14.34 ms |
+| securibox | C# | 43.77 ms (×478) | 45.14 ms (×485) | 45.41 ms |
 | @stafyniaksacha/facturx | TypeScript | failed | failed | — |
-| en16931 | Rust | failed | failed | — |
-| paniolo | Java | failed | failed | — |
 | facturxdotnet | C# | failed | failed | — |
-| intragile/php-einvoicing | PHP | failed | failed | — |
-| pat-o-dev/factur-x | PHP | failed | failed | — |
 
 In bold: fastest in the column. (×n): time relative to the ZeRechnung Go package. Sorted on the "classic xref host" column; "First call": duration of the first call in the process, same column (not measured for Go).
 
@@ -397,39 +397,39 @@ In bold: fastest in the column. (×n): time relative to the ZeRechnung Go packag
 
 | Library | Language | Extraction, 149 KB PDF | Parsing, 13 KB XML | Validation, 13 KB XML | Validation, 1.3 MB XML | Writing, 13 KB XML | Embedding, xref-stream host | Check, 149 KB PDF |
 |---|---|---|---|---|---|---|---|---|
-| **ZeRechnung** | Go | 39 KB · 228 | **28 KB · 111** | **23 KB · 82** | 1.3 MB · 159 | **8 KB · 1** | **245 KB · 456** | 700 KB · 2,383 |
+| **ZeRechnung** | Go | 39 KB · 228 | **28 KB · 111** | **23 KB · 82** | 1.3 MB · 159 | **8 KB · 1** | **226 KB · 376** | 700 KB · 2,383 |
 | @attestwire/en16931 | TypeScript | 397 KB | 278 KB | 425 KB | 3.0 MB | 174 KB | — | 755 KB |
 | @conformo/toolkit | TypeScript | 483 KB | 336 KB | ≥ 60.9 MB | ≥ 83.2 MB | 112 KB | 1.3 MB | ≥ 62.2 MB |
 | @e-invoice-eu/core | TypeScript | — | — | — | — | ≥ 184.7 MB | — | — |
-| @ekwo-ai/factur-x | TypeScript | 485 KB | 164 KB | 164 KB | 1.2 MB | 49 KB | 1.0 MB | — |
+| @ekwo-ai/factur-x | TypeScript | 485 KB | 164 KB | 164 KB | 1.2 MB | 49 KB | 969 KB | — |
 | @fin.cx/einvoice | TypeScript | 1.1 MB | 7.4 MB | 11.8 MB | 15.1 MB | 773 KB | 1.2 MB | — |
 | @kontor-mcp/core | TypeScript | 2.1 MB | 4.5 MB | 39.0 MB | 54.7 MB | — | — | — |
-| @lucaapp/zugferd-ts | TypeScript | 493 KB | 431 KB | ≥ 13.2 GB | ≥ 20.3 GB | 419 KB | 1.1 MB | — |
+| @lucaapp/zugferd-ts | TypeScript | 493 KB | 431 KB | ≥ 13.2 GB | ≥ 20.3 GB | 419 KB | 1.0 MB | — |
 | @stackforge-eu/factur-x | TypeScript | 484 KB | — | 112 KB | 120 KB | 44 KB | 2.4 MB | — |
 | @stafyniaksacha/facturx | TypeScript | 501 KB | 1.0 MB | ≥ 145.5 MB | ≥ 164.5 MB | 118 KB | failed | — |
 | @sweberdev/summand | TypeScript | 235 KB | — | 3.1 MB | 6.2 MB | — | — | 3.4 MB |
 | en16931 | TypeScript | — | — | ≥ 100.4 MB | ≥ 118.7 MB | — | — | — |
 | factur-x-kit | TypeScript | — | 638 KB | 696 KB | failed | 385 KB | — | — |
 | node-zugferd | TypeScript | — | — | — | — | 2.4 MB | — | — |
-| drafthorse | Python | — | 416 KB · 5,034 | 819 KB · 6,235 | 164.9 MB · 6,716 | 1.3 MB · 12,116 | 5.3 MB · 34,504 | — |
+| drafthorse | Python | — | 416 KB · 5,034 | 819 KB · 6,235 | 164.9 MB · 6,716 | 1.3 MB · 12,116 | 5.3 MB · 34,365 | — |
 | erechnung | Python | — | — | — | — | 222 KB · 2,166 | — | — |
-| factur-x | Python | 545 KB · 3,108 | 2.2 MB · 24,916 | 795 KB · 6,359 | 3.6 MB · 6,505 | 1.1 MB · 9,710 | 7.0 MB · 52,592 | — |
-| getafix | Python | 623 KB · 2,723 | 489 KB · 5,741 | 787 KB · 9,188 | failed | 505 KB · 5,306 | 5.4 MB · 35,125 | — |
-| mcp-einvoicing-de | Python | 186 KB · 1,553 | 572 KB · 6,040 | 5.0 MB · 41,334 | 48.8 MB · 58,413 | 190 KB · 1,898 | 3.4 MB · 5,847 | — |
-| pycheval | Python | 544 KB · 2,637 | 374 KB · 3,302 | — | — | 122 KB · 1,254 | 6.0 MB · 39,854 | — |
+| factur-x | Python | 545 KB · 3,108 | 2.2 MB · 24,916 | 795 KB · 6,359 | 3.6 MB · 6,505 | 1.1 MB · 9,710 | 6.9 MB · 50,985 | — |
+| getafix | Python | 623 KB · 2,723 | 489 KB · 5,741 | 787 KB · 9,188 | failed | 505 KB · 5,306 | 5.1 MB · 33,552 | — |
+| mcp-einvoicing-de | Python | 186 KB · 1,553 | 572 KB · 6,040 | 5.0 MB · 41,334 | 48.8 MB · 58,413 | 190 KB · 1,898 | 3.3 MB · 4,853 | — |
+| pycheval | Python | 544 KB · 2,637 | 374 KB · 3,302 | — | — | 122 KB · 1,254 | 5.5 MB · 35,830 | — |
 | saxonche-schematron | Python | — | — | 321 KB · 749 | 12.7 MB · 1,332 | — | — | — |
-| zugferd-pdf | Python | 187 KB · 1,552 | — | — | — | 207 KB · 1,804 | 3.7 MB · 5,582 | **466 KB · 4,008** |
+| zugferd-pdf | Python | 187 KB · 1,552 | — | — | — | 207 KB · 1,804 | 3.7 MB · 5,279 | **466 KB · 4,008** |
 | core-invoice | Rust | — | 120 KB · 113 | 201 KB · 141 | 3.9 MB · 191 | 24 KB · 396 | — | — |
 | einvoice | Rust | — | 409 KB · 8,465 | — | — | 79 KB · 981 | — | — |
 | einvoice-validator | Rust | 94 KB · 255 | — | 397 KB · 7,188 | 1.7 MB · 8,030 | — | — | — |
-| en16931 | Rust | 1.3 MB · 2,199 | 130 KB · 1,312 | 131 KB · 1,330 | 3.5 MB · 1,656 | 80 KB · 539 | failed | 1.5 MB · 3,834 |
+| en16931 | Rust | 1.3 MB · 2,199 | 130 KB · 1,312 | 131 KB · 1,330 | 3.5 MB · 1,656 | 80 KB · 539 | 2.7 MB · 4,676 | 1.5 MB · 3,834 |
 | erechnung-validator | Rust | — | — | 151.1 MB · 850,719 | 317.3 MB · 1,941,234 | — | — | 151.9 MB · 851,698 |
 | factur-x | Rust | — | failed | failed | 2.6 MB · 1,133 | failed | — | — |
 | lopdf | Rust | 529 KB · 415 | — | — | — | — | — | — |
-| pdf-invoice | Rust | 363 KB · 447 | 82 KB · 64 | 84 KB · 87 | **102 KB · 86** | failed | 949 KB · 615 | — |
+| pdf-invoice | Rust | 363 KB · 447 | 82 KB · 64 | 84 KB · 87 | **102 KB · 86** | failed | 930 KB · 569 | — |
 | pdfa | Rust | **36 KB · 18** | — | — | — | — | failed | — |
 | zugferd | Rust | — | — | — | — | 86 KB · 529 | — | — |
-| zugferd-rs | Rust | 544 KB · 503 | 81 KB · 77 | 204 KB · 2,943 | 221 KB · 2,945 | 28 KB · 196 | 1.6 MB · 979 | — |
+| zugferd-rs | Rust | 544 KB · 503 | 81 KB · 77 | 204 KB · 2,943 | 221 KB · 2,945 | 28 KB · 196 | 1.2 MB · 906 | — |
 
 Bytes allocated · number of allocations, for one call, after the same result check and a warm-up. Go: `go test -benchmem`, median of the runs. Rust: the harness's global allocator, which counts every `alloc` and `realloc`. Python: `PYTHONMALLOC=malloc` and a counter injected into the process, which counts every `malloc`, Python objects and C extensions included (libxml2, qpdf). TypeScript: growth of the V8 heap and of the ArrayBuffers during the series of calls; V8 does not count its allocations, hence no count, and "≥" when a garbage collection ran during the series. In bold: fewest bytes allocated in the column.
 
@@ -437,15 +437,15 @@ Bytes allocated · number of allocations, for one call, after the same result ch
 
 | Language | Libraries | Processes | Peak memory min. | median | max. | CPU / wall time median | max. |
 |---|---|---|---|---|---|---|---|
-| Go | 1 | 16 | 16.8 MiB | 20.9 MiB | 25.5 MiB | 163% | 206% |
-| TypeScript | 13 | 119 | 65.4 MiB | 174 MiB | 509 MiB | 102% | 433% |
-| Python | 8 | 69 | 39.8 MiB | 59.5 MiB | 387 MiB | 100% | 100% |
-| Rust | 11 | 74 | 1.9 MiB | 7.2 MiB | 503 MiB | 100% | 111% |
-| Java | 10 | 63 | 259 MiB | 602 MiB | 2,129 MiB | 125% | 399% |
-| C# | 13 | 111 | 69.6 MiB | 90.0 MiB | 509 MiB | 100% | 506% |
+| Go | 1 | 16 | 16.8 MiB | 20.9 MiB | 25.5 MiB | 163% | 203% |
+| TypeScript | 13 | 119 | 65.4 MiB | 177 MiB | 509 MiB | 103% | 433% |
+| Python | 8 | 69 | 39.8 MiB | 60.2 MiB | 387 MiB | 100% | 100% |
+| Rust | 11 | 76 | 1.9 MiB | 7.2 MiB | 503 MiB | 100% | 111% |
+| Java | 10 | 65 | 259 MiB | 611 MiB | 2,129 MiB | 125% | 399% |
+| C# | 13 | 111 | 69.6 MiB | 90.9 MiB | 509 MiB | 100% | 457% |
 | C | 3 | 18 | 2.2 MiB | 5.8 MiB | 11.7 MiB | 100% | 100% |
 | C++ | 7 | 40 | 1.7 MiB | 9.1 MiB | 278 MiB | 100% | 100% |
-| PHP | 19 | 135 | 32.0 MiB | 43.0 MiB | 1,173 MiB | 100% | 100% |
+| PHP | 19 | 138 | 32.0 MiB | 43.0 MiB | 1,173 MiB | 100% | 100% |
 
 One process per library and per benchmark (`resources` pass), without the Go series at `GOMAXPROCS=1` or the libraries that spawn child processes: loading the library, check, first call, calibration and timed series. Peak memory: maximum resident set size (max RSS) of the process, runtime included; 1 MiB = 1,048,576 bytes. CPU / wall time: CPU time of the process (user + system, all threads) relative to wall-clock time over the timed series; 100% = one busy core, more = parallel work (garbage collector, JIT).
 
@@ -700,47 +700,47 @@ CPU time per operation (user + system, all threads of the process) over the time
 
 | Library | Language | classic xref host | xref-stream host |
 |---|---|---|---|
-| pdfa | Rust | **89.1 µs** (100%) | failed |
-| **ZeRechnung, GOMAXPROCS=1** | Go | 104 µs (99%) | **106 µs** (98%) |
-| mupdf | C | 117 µs (100%) | 127 µs (100%) |
-| pdf-invoice | Rust | 164 µs (104%) | 181 µs (104%) |
-| **ZeRechnung** | Go | 197 µs (206%) | 193 µs (201%) |
-| zugferd-rs | Rust | 207 µs (103%) | 224 µs (103%) |
-| podofo | C++ | 407 µs (100%) | 393 µs (100%) |
-| qpdf | C++ | 419 µs (100%) | 527 µs (100%) |
-| antiphon | C# | 593 µs (131%) | 614 µs (137%) |
-| balsoft | C# | 622 µs (135%) | 1.07 ms (115%) |
-| mcp-einvoicing-de | Python | 795 µs (100%) | 667 µs (100%) |
-| zugferd-pdf | Python | 904 µs (100%) | 756 µs (100%) |
-| @fin.cx/einvoice | TypeScript | 1.21 ms (68%) | 1.54 ms (83%) |
-| horstoeko/zugferd | PHP | 1.24 ms (100%) | failed |
-| @stackforge-eu/factur-x | TypeScript | 1.31 ms (110%) | 1.34 ms (109%) |
-| @lucaapp/zugferd-ts | TypeScript | 1.37 ms (61%) | 1.32 ms (60%) |
-| officeimo | C# | 1.46 ms (103%) | failed |
-| @conformo/toolkit | TypeScript | 1.47 ms (61%) | 1.61 ms (64%) |
-| @ekwo-ai/factur-x | TypeScript | 1.56 ms (64%) | 1.68 ms (81%) |
-| atgp/factur-x | PHP | 1.57 ms (100%) | failed |
-| international-einvoicing | C# | 1.57 ms (118%) | 1.92 ms (106%) |
-| quittio/core | PHP | 1.84 ms (100%) | failed |
-| dealerweb/einvoice | PHP | 2.01 ms (100%) | 2.03 ms (100%) |
-| getafix | Python | 2.06 ms (100%) | 2.15 ms (100%) |
-| drafthorse | Python | 2.06 ms (100%) | 2.08 ms (100%) |
-| mahdiabderraouf/facturx-php | PHP | 2.47 ms (100%) | failed |
-| pycheval | Python | 2.52 ms (100%) | 2.55 ms (100%) |
-| stann/factur-x | PHP | 2.53 ms (100%) | failed |
-| horstoeko/invoicesuite | PHP | 3.36 ms (100%) | failed |
-| factur-x | Python | 4.11 ms (99%) | 3.82 ms (99%) |
-| tiime/factur-x | PHP | 5.94 ms (100%) | failed |
-| mustang | Java | 7.94 ms (142%) | 8.66 ms (154%) |
-| kura | C++ | 12.85 ms (100%) | 13.03 ms (100%) |
-| zugferd-csharp | C# | 39.98 ms (506%) | 37.09 ms (438%) |
-| securibox | C# | 83.59 ms (126%) | 121.77 ms (130%) |
+| pat-o-dev/factur-x | PHP | **17.6 µs** (100%) | failed |
+| pdfa | Rust | 84.5 µs (100%) | failed |
+| **ZeRechnung, GOMAXPROCS=1** | Go | 93.8 µs (99%) | **98.7 µs** (98%) |
+| mupdf | C | 105 µs (100%) | 114 µs (100%) |
+| pdf-invoice | Rust | 158 µs (104%) | 176 µs (104%) |
+| **ZeRechnung** | Go | 176 µs (203%) | 181 µs (198%) |
+| zugferd-rs | Rust | 190 µs (104%) | 209 µs (103%) |
+| qpdf | C++ | 396 µs (100%) | 496 µs (100%) |
+| podofo | C++ | 398 µs (100%) | 390 µs (100%) |
+| @fin.cx/einvoice | TypeScript | 617 µs (116%) | 635 µs (115%) |
+| intragile/php-einvoicing | PHP | 620 µs (100%) | 645 µs (100%) |
+| @ekwo-ai/factur-x | TypeScript | 649 µs (112%) | 683 µs (113%) |
+| international-einvoicing | C# | 676 µs (95%) | 659 µs (86%) |
+| antiphon | C# | 686 µs (146%) | 670 µs (136%) |
+| mcp-einvoicing-de | Python | 735 µs (100%) | 631 µs (100%) |
+| zugferd-pdf | Python | 855 µs (100%) | 751 µs (100%) |
+| en16931 | Rust | 911 µs (100%) | 598 µs (100%) |
+| balsoft | C# | 995 µs (110%) | 966 µs (111%) |
+| @conformo/toolkit | TypeScript | 1.17 ms (56%) | 1.34 ms (58%) |
+| officeimo | C# | 1.18 ms (108%) | failed |
+| horstoeko/zugferd | PHP | 1.22 ms (100%) | failed |
+| @stackforge-eu/factur-x | TypeScript | 1.24 ms (110%) | 1.29 ms (109%) |
+| @lucaapp/zugferd-ts | TypeScript | 1.28 ms (58%) | 1.37 ms (61%) |
+| atgp/factur-x | PHP | 1.54 ms (100%) | failed |
+| quittio/core | PHP | 1.80 ms (100%) | failed |
+| getafix | Python | 1.99 ms (100%) | 2.01 ms (100%) |
+| dealerweb/einvoice | PHP | 1.99 ms (100%) | 2.02 ms (100%) |
+| drafthorse | Python | 2.05 ms (100%) | 2.08 ms (100%) |
+| pycheval | Python | 2.21 ms (100%) | 2.27 ms (100%) |
+| mahdiabderraouf/facturx-php | PHP | 2.47 ms (99%) | failed |
+| stann/factur-x | PHP | 2.52 ms (100%) | failed |
+| horstoeko/invoicesuite | PHP | 3.32 ms (100%) | failed |
+| factur-x | Python | 3.94 ms (99%) | 3.70 ms (99%) |
+| tiime/factur-x | PHP | 5.91 ms (100%) | failed |
+| mustang | Java | 7.92 ms (148%) | 8.17 ms (156%) |
+| kura | C++ | 11.27 ms (100%) | 11.27 ms (100%) |
+| paniolo | Java | 26.52 ms (199%) | 23.07 ms (179%) |
+| zugferd-csharp | C# | 39.85 ms (457%) | 39.75 ms (452%) |
+| securibox | C# | 77.89 ms (125%) | 143.32 ms (124%) |
 | @stafyniaksacha/facturx | TypeScript | failed | failed |
-| en16931 | Rust | failed | failed |
-| paniolo | Java | failed | failed |
 | facturxdotnet | C# | failed | failed |
-| intragile/php-einvoicing | PHP | failed | failed |
-| pat-o-dev/factur-x | PHP | failed | failed |
 
 ZeRechnung, GOMAXPROCS=1: the Go package limited to one core; its garbage collector then shares the core of the measured thread. †: the library spawns child processes on every call, whose CPU and memory are not counted.
 CPU time per operation (user + system, all threads of the process) over the timed series; in parentheses, relative to the wall-clock time of the same series (100% = one core). In bold: lowest in the column. Sorted on the "classic xref host" column.
@@ -1019,46 +1019,46 @@ Peak resident memory of the process that ran this benchmark only, runtime includ
 | Library | Language | classic xref host | xref-stream host |
 |---|---|---|---|
 | pdfa | Rust | **3.6 MiB** (×0.2) | failed |
-| qpdf | C++ | 6.9 MiB (×0.3) | **7.5 MiB** (×0.3) |
-| pdf-invoice | Rust | 9.0 MiB (×0.4) | 9.0 MiB (×0.4) |
-| zugferd-rs | Rust | 9.7 MiB (×0.4) | 9.6 MiB (×0.4) |
-| mupdf | C | 11.6 MiB (×0.5) | 11.5 MiB (×0.5) |
-| podofo | C++ | 12.2 MiB (×0.5) | 12.6 MiB (×0.5) |
-| kura | C++ | 12.4 MiB (×0.5) | 12.1 MiB (×0.5) |
-| **ZeRechnung, GOMAXPROCS=1** | Go | 18.6 MiB (×0.8) | 18.6 MiB (×0.8) |
-| **ZeRechnung** | Go | 23.7 MiB | 23.9 MiB |
-| zugferd-pdf | Python | 47.2 MiB (×2.0) | 47.0 MiB (×2.0) |
+| qpdf | C++ | 6.7 MiB (×0.3) | 7.2 MiB (×0.3) |
+| en16931 | Rust | 7.2 MiB (×0.3) | **7.2 MiB** (×0.3) |
+| pdf-invoice | Rust | 8.9 MiB (×0.4) | 8.9 MiB (×0.4) |
+| zugferd-rs | Rust | 9.6 MiB (×0.4) | 9.8 MiB (×0.4) |
+| mupdf | C | 11.5 MiB (×0.5) | 11.4 MiB (×0.5) |
+| kura | C++ | 11.7 MiB (×0.5) | 11.5 MiB (×0.5) |
+| podofo | C++ | 12.2 MiB (×0.5) | 13.1 MiB (×0.5) |
+| **ZeRechnung, GOMAXPROCS=1** | Go | 18.7 MiB (×0.8) | 18.5 MiB (×0.8) |
+| **ZeRechnung** | Go | 23.4 MiB | 24.6 MiB |
+| pat-o-dev/factur-x | PHP | 39.2 MiB (×1.7) | failed |
+| intragile/php-einvoicing | PHP | 40.2 MiB (×1.7) | 40.1 MiB (×1.6) |
+| zugferd-pdf | Python | 46.4 MiB (×2.0) | 46.6 MiB (×1.9) |
 | mahdiabderraouf/facturx-php | PHP | 50.2 MiB (×2.1) | failed |
-| dealerweb/einvoice | PHP | 54.9 MiB (×2.3) | 54.4 MiB (×2.3) |
-| pycheval | Python | 58.6 MiB (×2.5) | 55.0 MiB (×2.3) |
-| getafix | Python | 59.5 MiB (×2.5) | 56.3 MiB (×2.4) |
-| factur-x | Python | 68.3 MiB (×2.9) | 68.5 MiB (×2.9) |
-| drafthorse | Python | 68.3 MiB (×2.9) | 67.6 MiB (×2.8) |
-| horstoeko/zugferd | PHP | 73.7 MiB (×3.1) | failed |
-| atgp/factur-x | PHP | 74.3 MiB (×3.1) | failed |
-| tiime/factur-x | PHP | 74.6 MiB (×3.1) | failed |
-| horstoeko/invoicesuite | PHP | 75.0 MiB (×3.2) | failed |
-| antiphon | C# | 83.5 MiB (×3.5) | 85.4 MiB (×3.6) |
-| international-einvoicing | C# | 86.4 MiB (×3.6) | 90.0 MiB (×3.8) |
-| balsoft | C# | 88.0 MiB (×3.7) | 86.8 MiB (×3.6) |
-| quittio/core | PHP | 95.4 MiB (×4.0) | failed |
-| mcp-einvoicing-de | Python | 96.8 MiB (×4.1) | 96.8 MiB (×4.0) |
-| stann/factur-x | PHP | 98.8 MiB (×4.2) | failed |
-| zugferd-csharp | C# | 99.1 MiB (×4.2) | 102 MiB (×4.3) |
-| officeimo | C# | 108 MiB (×4.6) | failed |
-| securibox | C# | 122 MiB (×5.1) | 121 MiB (×5.1) |
-| @ekwo-ai/factur-x | TypeScript | 140 MiB (×5.9) | 131 MiB (×5.5) |
-| @lucaapp/zugferd-ts | TypeScript | 176 MiB (×7.4) | 200 MiB (×8.4) |
-| @stackforge-eu/factur-x | TypeScript | 184 MiB (×7.7) | 185 MiB (×7.7) |
-| @fin.cx/einvoice | TypeScript | 227 MiB (×9.6) | 258 MiB (×11) |
-| mustang | Java | 298 MiB (×13) | 295 MiB (×12) |
-| @conformo/toolkit | TypeScript | 306 MiB (×13) | 286 MiB (×12) |
+| dealerweb/einvoice | PHP | 54.6 MiB (×2.3) | 54.5 MiB (×2.2) |
+| pycheval | Python | 62.7 MiB (×2.7) | 51.8 MiB (×2.1) |
+| getafix | Python | 66.4 MiB (×2.8) | 53.0 MiB (×2.2) |
+| factur-x | Python | 67.1 MiB (×2.9) | 67.6 MiB (×2.7) |
+| horstoeko/zugferd | PHP | 72.9 MiB (×3.1) | failed |
+| atgp/factur-x | PHP | 73.1 MiB (×3.1) | failed |
+| tiime/factur-x | PHP | 73.9 MiB (×3.2) | failed |
+| horstoeko/invoicesuite | PHP | 74.1 MiB (×3.2) | failed |
+| drafthorse | Python | 77.7 MiB (×3.3) | 65.1 MiB (×2.6) |
+| antiphon | C# | 84.0 MiB (×3.6) | 85.5 MiB (×3.5) |
+| balsoft | C# | 86.4 MiB (×3.7) | 86.6 MiB (×3.5) |
+| quittio/core | PHP | 94.4 MiB (×4.0) | failed |
+| international-einvoicing | C# | 94.4 MiB (×4.0) | 94.6 MiB (×3.8) |
+| mcp-einvoicing-de | Python | 97.1 MiB (×4.1) | 96.8 MiB (×3.9) |
+| stann/factur-x | PHP | 99.1 MiB (×4.2) | failed |
+| zugferd-csharp | C# | 102 MiB (×4.3) | 104 MiB (×4.2) |
+| officeimo | C# | 107 MiB (×4.6) | failed |
+| securibox | C# | 123 MiB (×5.2) | 120 MiB (×4.9) |
+| @ekwo-ai/factur-x | TypeScript | 177 MiB (×7.5) | 173 MiB (×7.0) |
+| @stackforge-eu/factur-x | TypeScript | 177 MiB (×7.5) | 187 MiB (×7.6) |
+| @lucaapp/zugferd-ts | TypeScript | 206 MiB (×8.8) | 178 MiB (×7.2) |
+| @fin.cx/einvoice | TypeScript | 271 MiB (×12) | 249 MiB (×10) |
+| @conformo/toolkit | TypeScript | 297 MiB (×13) | 276 MiB (×11) |
+| mustang | Java | 300 MiB (×13) | 325 MiB (×13) |
+| paniolo | Java | 636 MiB (×27) | 722 MiB (×29) |
 | @stafyniaksacha/facturx | TypeScript | failed | failed |
-| en16931 | Rust | failed | failed |
-| paniolo | Java | failed | failed |
 | facturxdotnet | C# | failed | failed |
-| intragile/php-einvoicing | PHP | failed | failed |
-| pat-o-dev/factur-x | PHP | failed | failed |
 
 ZeRechnung, GOMAXPROCS=1: the Go package limited to one core; its garbage collector then shares the core of the measured thread. †: the library spawns child processes on every call, whose CPU and memory are not counted.
 Peak resident memory of the process that ran this benchmark only, runtime included. In bold: lowest in the column. (×n): relative to the ZeRechnung Go package. Sorted on the "classic xref host" column.
@@ -1113,7 +1113,7 @@ Measured calls and specifics, for operations that succeeded or failed (the reaso
 - **core-invoice** (Rust): cii::write_unchecked, model read by read [Write_Small, Write_Lines]; read → Invoice (semantic model) [Parse_Small, Parse_Lines, Parse_Large]; validate_xml(profile from BT-24): EN 16931 rules reimplemented in Rust (aligned with CEN validation-1.3.16), currency lists, Peppol syntax if Peppol profile; BR-DE (feature `xrechnung`) on the XRECHNUNG files; no XSD or CII-SR rules [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **einvoice** (Rust): yaserde::de::from_str::<CrossIndustryInvoice> (model generated from the XSD, the one validate_invoice uses) [Parse_Small, Parse_Lines, Parse_Large]; yaserde::ser::to_string, model read by from_str [Write_Small, Write_Lines]
 - **einvoice-validator** (Rust): Validator::cen_cii(): UN/CEFACT CII D16B XSD + official CEN EN 16931 CII 1.3.17 XSLT executed in Rust; the only rule set bundled offline (XRechnung, Factur-X and Peppol need the `fetch` feature and a download) [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; pdf::extract (einvoice-pdf, default Limits) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
-- **en16931** (Rust): read → Invoice (EN 16931 semantic model) [Parse_Small, Parse_Lines, Parse_Large]; receive on the PDF: container layer (XMP, /AF, EmbeddedFiles tree, agreement with BT-24) + full validation of the XML; no PDF/A-3 check in the ISO 19005 sense [CheckPDF_Small, CheckPDF_Large]; receive(Policy::default()): syntax and schema layers (CII-SR/CII-DT rules generated from the CEN artifacts) + EN 16931 business rules reimplemented in Rust, profile declared by BT-24 (XRechnung 3.0: BR-DE; ZUGFeRD EXTENDED/BASIC: CEN core rules); CEN validation-1.3.17, KoSIT xrechnung-schematron v2.6.0 [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; the PDF already carries invoice metadata in the namespace "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"; embedding a second invoice is refused — adapter: read + Validated::<En16931>::new + zugferd::embed (the library rewrites the XML from its model; requires a PDF/A-3 host without Factur-X metadata, does not convert to PDF/A) [Embed_Small, EmbedClassic_Small]; write_unchecked(Syntax::Cii), model read by read [Write_Small, Write_Lines]; zugferd::extract (default Limits) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **en16931** (Rust): adapter: read + Validated::<En16931>::new + zugferd::embed (the library rewrites the XML from its model; requires a PDF/A-3 host without Factur-X metadata, does not convert to PDF/A) [Embed_Small, EmbedClassic_Small]; read → Invoice (EN 16931 semantic model) [Parse_Small, Parse_Lines, Parse_Large]; receive on the PDF: container layer (XMP, /AF, EmbeddedFiles tree, agreement with BT-24) + full validation of the XML; no PDF/A-3 check in the ISO 19005 sense [CheckPDF_Small, CheckPDF_Large]; receive(Policy::default()): syntax and schema layers (CII-SR/CII-DT rules generated from the CEN artifacts) + EN 16931 business rules reimplemented in Rust, profile declared by BT-24 (XRechnung 3.0: BR-DE; ZUGFeRD EXTENDED/BASIC: CEN core rules); CEN validation-1.3.17, KoSIT xrechnung-schematron v2.6.0 [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; write_unchecked(Syntax::Cii), model read by read [Write_Small, Write_Lines]; zugferd::extract (default Limits) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **erechnung-validator** (Rust): Validator::beide(Szenarien::Automatisch): KoSIT (CII D16B XSD, CEN EN 16931 1.3.16 as Schematron, XRechnung 3.0.2 / schematron 2.6.0 for the XRECHNUNG files, KoSIT configuration, CHANGELOG as of 2026-01-31) + Mustang 2.26.0 (Factur-X XSD and Schematron of the declared profile, XR 3.0 for the XRECHNUNG files); errors of both tools added up [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; Validator::beide_pdf: extraction of the XML then KoSIT + Mustang; no check of the PDF/A-3 container (PDF part of Mustang/veraPDF not carried over) [CheckPDF_Small, CheckPDF_Large]
 - **factur-x** (Rust): adapter: parse + validate(&Invoice); 16 rules on the model (BR-01 to BR-06, BR-09, BR-16, BR-CO-10, BR-CO-13 to BR-CO-18, BR-S-08); no XSD, no profile or national rules [ParseValidate_Large]; amount has an invalid value "3.3333" — adapter: parse + validate(&Invoice); 16 rules on the model (BR-01 to BR-06, BR-09, BR-16, BR-CO-10, BR-CO-13 to BR-CO-18, BR-S-08); no XSD, no profile or national rules [ParseValidate_Lines]; amount has an invalid value "3.3333" — parse(Syntax::Cii) → Invoice [Parse_Lines]; amount has an invalid value "9.9000" — adapter: parse + validate(&Invoice); 16 rules on the model (BR-01 to BR-06, BR-09, BR-16, BR-CO-10, BR-CO-13 to BR-CO-18, BR-S-08); no XSD, no profile or national rules [ParseValidate_Small]; amount has an invalid value "9.9000" — parse(Syntax::Cii) → Invoice [Parse_Small]; parse(Syntax::Cii) → Invoice [Parse_Large]; parse: amount has an invalid value "3.3333" [Write_Lines]; parse: amount has an invalid value "9.9000" [Write_Small]
 - **lopdf** (Rust): floor: extraction written by hand on lopdf (full load_mem, /Names/EmbeddedFiles tree with /Kids, inflate); not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
@@ -1125,8 +1125,8 @@ Measured calls and specifics, for operations that succeeded or failed (the reaso
 - **imixs-e-invoice** (Java): EInvoiceModel.getContent(): reserializes the (indented) DOM that the model wraps, model read by EInvoiceModelFactory.read [Write_Small, Write_Lines]; EInvoiceModelFactory.read(InputStream) → EInvoiceModelCII (full DOM, then parsing of the header, party and line fields by walking the nodes) [Parse_Small, Parse_Lines, Parse_Large]
 - **invoice4j** (Java): DeserializationException: Unsupported ZUGFeRD profile: urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0 — ZugferdInvoiceReader (default validation: the profile's Factur-X 1.09 XSD) + ZugferdBasicValidator (3 rules: BR-CO-15, BR-CO-26, BR-S-2), stops at the first error; XRechnung not supported; the bundled .sch files are never run [ParseValidate_Large]; DeserializationException: Unsupported ZUGFeRD profile: urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0 — ZugferdInvoiceReader (validate(false)).readFromString → Invoice; profile detected from BT-24, XRechnung rejected ("Unsupported ZUGFeRD profile") [Parse_Large]; ZugferdInvoiceReader (default validation: the profile's Factur-X 1.09 XSD) + ZugferdBasicValidator (3 rules: BR-CO-15, BR-CO-26, BR-S-2), stops at the first error; XRechnung not supported; the bundled .sch files are never run [ParseValidate_Small, ParseValidate_Lines]; ZugferdInvoiceReader (validate(false)).readFromString → Invoice; profile detected from BT-24, XRechnung rejected ("Unsupported ZUGFeRD profile") [Parse_Small, Parse_Lines]; ZugferdInvoiceWriter (EN16931 profile, validate(false)).writeToString, model read by readFromString; the reader loses the seller's identifiers (VAT, registration), hence BR-S-02 and BR-CO-26 from the CEN schematron on the output [Write_Small, Write_Lines]
 - **kosit-validator** (Java): DefaultCheck.checkInput with the official configuration validator-configuration-xrechnung v2026-08-31 (scenario chosen by BT-24: "EN16931 (CII)" = CII D16B XSD + CEN EN 16931 CII 1.3.16; XRechnung 3.0 = same + KoSIT XRechnung schematron 2.6.0, custom levels of the scenario); errors = XSD violations + assertions of effective level error/fatal; configuration loaded on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
-- **mustang** (Java): ZUGFeRD2PullProvider.generateXML (EN16931 profile), model read by setRawXML + extractInvoice [Write_Small, Write_Lines]; ZUGFeRDExporterFromPDFA.load + setXML + export (default EN16931 profile); PDF/A-3B hosts, hence ZUGFeRDExporterFromA3; a non-PDF/A host is rejected (PDF/A-1 converted to A-3 at the metadata level); saved without compression; the resulting PDF (PDF/A-3U) keeps the host's leftover factur-x.xml file specification in /AF next to the new one: the Mustang validator accepts it, Paniolo rejects it (FX-MULTIPLE-INVOICES) [Embed_Small, EmbedClassic_Small]; ZUGFeRDInvoiceImporter.setRawXML(xml, false) + extractInvoice → Invoice (rejects an invoice whose totals it cannot reproduce) [Parse_Small, Parse_Lines, Parse_Large]; ZUGFeRDValidator.validate on the PDF: PDF/A-3 by veraPDF, Factur-X XMP and attachment, then full validation of the extracted XML (as ParseValidate) [CheckPDF_Small, CheckPDF_Large]; ZUGFeRDValidator.validate(byte[], name): XSD + the profile's Factur-X 1.09.2 / ZUGFeRD 2.5.2 schematron (EN 16931 for the EN16931 samples), XRechnung 3.0.2 (KoSIT schematron 2.4.0 + CEN CII 1.3.16) if BT-24 is XRechnung, arithmetic check; BR-FR rules only if seller and buyer are French; errors = error/fatal/exception items; XSLT compiled on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; new ZUGFeRDImporter(InputStream).getRawXML(); the import also parses the XML into an Invoice model (setRawXML with automatic parsing), included in the measurement [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
-- **paniolo** (Java): IllegalArgumentException: The PDF already contains an embedded invoice, order, or despatch advice XML — Paniolo.embedXml(pdf, xml, FacturXProfile.EN16931).pdf(); checks BT-24, embeds then revalidates the resulting PDF (container, PDF/A by veraPDF, XML), revalidation included in the measurement; does not convert to PDF/A; rejects a host that already contains an invoice: host.pdf and host_classic.pdf keep in /AF a factur-x.xml file specification with its /UF stream (only the EmbeddedFiles tree was removed), which Paniolo reads (PdfBoxFacturXSupport.allFiles) [Embed_Small, EmbedClassic_Small]; Paniolo.extractXml(pdf) (paniolo-facturx) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; Paniolo.read(byte[]) in STRICT mode → Invoice (EN 16931 model; rejects amount discrepancies) [Parse_Small, Parse_Lines, Parse_Large]; Paniolo.toBytes(Invoice, InvoiceSyntax.CII), model read by read [Write_Small, Write_Lines]; Paniolo.validate on the PDF: Factur-X container (attachment, relationship, XMP), PDF/A by veraPDF (paniolo-pdfa), then full validation of the embedded XML for the declared profile [CheckPDF_Small, CheckPDF_Large]; Paniolo.validate(byte[]): XSD + bundled official schematrons chosen by BT-24 (XRechnung 3.0: KoSIT configuration validator-configuration-xrechnung v2026-08-31, i.e. CEN CII 1.3.16 + KoSIT 2.6.0 and its levels; plain EN 16931: the same rules, findings of the XRechnung CIUS (BR-DE, BR-TMP, PEPPOL) downgraded to information; Factur-X profiles: Factur-X 1.09.2 schematrons) + amount check; errors = ERROR/FATAL; rules compiled on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
+- **mustang** (Java): ZUGFeRD2PullProvider.generateXML (EN16931 profile), model read by setRawXML + extractInvoice [Write_Small, Write_Lines]; ZUGFeRDExporterFromPDFA.load + setXML + export (default EN16931 profile); PDF/A-3B hosts, hence ZUGFeRDExporterFromA3; a non-PDF/A host is rejected (PDF/A-1 converted to A-3 at the metadata level); saved without compression; resulting PDF in PDF/A-3U [Embed_Small, EmbedClassic_Small]; ZUGFeRDInvoiceImporter.setRawXML(xml, false) + extractInvoice → Invoice (rejects an invoice whose totals it cannot reproduce) [Parse_Small, Parse_Lines, Parse_Large]; ZUGFeRDValidator.validate on the PDF: PDF/A-3 by veraPDF, Factur-X XMP and attachment, then full validation of the extracted XML (as ParseValidate) [CheckPDF_Small, CheckPDF_Large]; ZUGFeRDValidator.validate(byte[], name): XSD + the profile's Factur-X 1.09.2 / ZUGFeRD 2.5.2 schematron (EN 16931 for the EN16931 samples), XRechnung 3.0.2 (KoSIT schematron 2.4.0 + CEN CII 1.3.16) if BT-24 is XRechnung, arithmetic check; BR-FR rules only if seller and buyer are French; errors = error/fatal/exception items; XSLT compiled on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; new ZUGFeRDImporter(InputStream).getRawXML(); the import also parses the XML into an Invoice model (setRawXML with automatic parsing), included in the measurement [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **paniolo** (Java): Paniolo.embedXml(pdf, xml, FacturXProfile.EN16931).pdf(); checks BT-24, embeds then revalidates the resulting PDF (container, PDF/A by veraPDF, XML), revalidation included in the measurement; does not convert to PDF/A; rejects a host that already contains an invoice (PdfBoxFacturXSupport.allFiles) [Embed_Small, EmbedClassic_Small]; Paniolo.extractXml(pdf) (paniolo-facturx) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; Paniolo.read(byte[]) in STRICT mode → Invoice (EN 16931 model; rejects amount discrepancies) [Parse_Small, Parse_Lines, Parse_Large]; Paniolo.toBytes(Invoice, InvoiceSyntax.CII), model read by read [Write_Small, Write_Lines]; Paniolo.validate on the PDF: Factur-X container (attachment, relationship, XMP), PDF/A by veraPDF (paniolo-pdfa), then full validation of the embedded XML for the declared profile [CheckPDF_Small, CheckPDF_Large]; Paniolo.validate(byte[]): XSD + bundled official schematrons chosen by BT-24 (XRechnung 3.0: KoSIT configuration validator-configuration-xrechnung v2026-08-31, i.e. CEN CII 1.3.16 + KoSIT 2.6.0 and its levels; plain EN 16931: the same rules, findings of the XRechnung CIUS (BR-DE, BR-TMP, PEPPOL) downgraded to information; Factur-X profiles: Factur-X 1.09.2 schematrons) + amount check; errors = ERROR/FATAL; rules compiled on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **pdfbox** (Java): floor: Loader.loadPDF + /EmbeddedFiles tree with /Kids (first file under a standard name, case ignored: factur-x.xml, zugferd-invoice.xml, xrechnung.xml, order-x.xml, cii.xml) + PDEmbeddedFile.toByteArray (/UF, otherwise /F), hand-written [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **ph-cii** (Java): CIID16BCrossIndustryInvoiceTypeMarshaller.read with the CII D16B XSD (default setting) and setCollectErrors: XSD only, no EN 16931 business rules [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; CIID16BCrossIndustryInvoiceTypeMarshaller.read(byte[]) without schema (setUseSchema(false)) → CrossIndustryInvoiceType (JAXB) [Parse_Small, Parse_Lines, Parse_Large]; getAsBytes(CrossIndustryInvoiceType) without schema, model read by read [Write_Small, Write_Lines]
 - **phive** (Java): ValidationExecutionManager.executeValidation, set chosen by BT-24: XRechnung CII 3.0.2 (D16B XSD + CEN CII 1.3.16 + KoSIT XRechnung 2.6.0, phive's own levels) for XRechnung, the profile's ZUGFeRD 2.5.2 (XSD + Factur-X 1.09.2 schematron) for MINIMUM/BASIC WL/BASIC/EXTENDED, EN 16931 CII 1.3.17 (D16B XSD + CEN schematron) otherwise; DOM parsing included; errors = level ERROR and above; registry initialized and XSLT loaded on the first call [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
@@ -1145,13 +1145,13 @@ Measured calls and specifics, for operations that succeeded or failed (the reaso
 - **xsd** (C#): floor: validating XmlReader (XmlSchemaSet compiled once) against the UN/CEFACT CII D16B XSDs of the KoSIT configuration v2026-08-31; no business rules [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **zugferd-csharp** (C#): InvoiceDescriptor.Load (ZUGFeRD 1.0, 2.0, 2.3 CII, UBL readers) [Parse_Small, Parse_Lines, Parse_Large]; InvoiceDescriptor.Load + InvoiceValidator.Validate: recomputation of the totals only (lines, BR-CO-11 to BR-CO-17, BR-DEC-20); no XSD or schematron [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; InvoiceDescriptor.Save(Version23, profile read, CII), model read by Load [Write_Small, Write_Lines]; InvoicePdfProcessor.LoadFromPdf: extraction (catalog /AF, names zugferd.xml, zugferd-invoice.xml, factur-x.xml, xrechnung.xml) + parsing of the model; no public API that returns the bytes [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; adapter: Load + InvoicePdfProcessor.SaveToPdf(Version23, Comfort, CII); rewrites the XML from the model, copies the pages into a new PDFsharp document, Factur-X XMP, sRGB OutputIntent, system fonts embedded; dates = DateTime.UtcNow (not configurable) [Embed_Small, EmbedClassic_Small]
 - **libxml2** (C): floor: DOM + xmlSchemaValidateDoc, UN/CEFACT CII D16B XSD (KoSIT XRechnung 3.0.2 configuration of 2026-08-31), schema compiled on the first call; schema only, no EN 16931 business rules [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; floor: libxml2 DOM (xmlCtxtReadMemory, XML_PARSE_NONET), not an invoice model [Parse_Small, Parse_Lines, Parse_Large]; floor: serialization of the libxml2 DOM (xmlDocDumpMemory), not an invoice model [Write_Small, Write_Lines]
-- **mupdf** (C): floor: embedding written by hand with the MuPDF primitives (pdf_add_embedded_file, /Names/EmbeddedFiles, /AF where the invoice replaces the host's, /AFRelationship Alternative or Data by profile, Factur-X XMP replaced), full rewrite by pdf_write_document (default options), without PDF/A conversion; read back by pdf_zugferd_xml [Embed_Small, EmbedClassic_Small]; pdf_zugferd_xml (ZUGFeRD function of MuPDF): file name read from the fx:/zf: XMP, attachment looked up among the associated files /AF [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **mupdf** (C): floor: embedding written by hand with the MuPDF primitives (pdf_add_embedded_file, /Names/EmbeddedFiles, /AF where the invoice replaces any invoice already listed, /AFRelationship Alternative or Data by profile, Factur-X XMP replaced), full rewrite by pdf_write_document (default options), without PDF/A conversion; read back by pdf_zugferd_xml [Embed_Small, EmbedClassic_Small]; pdf_zugferd_xml (ZUGFeRD function of MuPDF): file name read from the fx:/zf: XMP, attachment looked up among the associated files /AF [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **qpdf-c** (C): floor: extraction written by hand on the qpdf C API (qpdf_read_memory, /Names/EmbeddedFiles tree with /Kids, qpdf_oh_get_stream_data); not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
-- **kura** (C++): kura_convert level 3b with invoice_xml: full conversion of the host to PDF/A-3b, /AF /AFRelationship attachment and fx: XMP extension schema; read back by readInvoice; the factur-x.xml that the host keeps in /AF stays next to the new one (two attachments) [Embed_Small, EmbedClassic_Small]; kura_read_invoice (checkInvoice): consistency of payload, attachment name, /AFRelationship, /AF and XMP; not a PDF/A validation [CheckPDF_Small, CheckPDF_Large]; pdfa::readInvoice: first file of /Names/EmbeddedFiles under a Factur-X, ZUGFeRD, XRechnung or Order-X name [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
-- **podofo** (C++): floor: CreateFileSpec + SetEmbeddedData in the PdfEmbeddedFiles tree; /AF (the invoice replaces the host's), /AFRelationship Alternative or Data depending on the profile and Factur-X XMP written by hand (host's XMP replaced); PdfMemDocument::Save (full rewrite, NoMetadataUpdate), no PDF/A conversion [Embed_Small, EmbedClassic_Small]; floor: PdfMemDocument::LoadFromBuffer, PdfEmbeddedFiles tree (ToDictionary), first file under a standard invoice name, GetEmbeddedData; not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **kura** (C++): kura_convert level 3b with invoice_xml: full conversion of the host to PDF/A-3b, /AF /AFRelationship attachment and fx: XMP extension schema; read back by readInvoice [Embed_Small, EmbedClassic_Small]; kura_read_invoice (checkInvoice): consistency of payload, attachment name, /AFRelationship, /AF and XMP; not a PDF/A validation [CheckPDF_Small, CheckPDF_Large]; pdfa::readInvoice: first file of /Names/EmbeddedFiles under a Factur-X, ZUGFeRD, XRechnung or Order-X name [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **podofo** (C++): floor: CreateFileSpec + SetEmbeddedData in the PdfEmbeddedFiles tree; /AF (the invoice replaces any invoice already listed), /AFRelationship Alternative or Data depending on the profile and Factur-X XMP written by hand (host's XMP replaced); PdfMemDocument::Save (full rewrite, NoMetadataUpdate), no PDF/A conversion [Embed_Small, EmbedClassic_Small]; floor: PdfMemDocument::LoadFromBuffer, PdfEmbeddedFiles tree (ToDictionary), first file under a standard invoice name, GetEmbeddedData; not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **poppler-cpp** (C++): floor: document::load_from_raw_data, embedded_files(), first file under a standard invoice name, embedded_file::data(); not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **pugixml** (C++): floor: pugixml DOM (load_buffer, parse_default), not an invoice model [Parse_Small, Parse_Lines, Parse_Large]; floor: serialization of the pugixml DOM (save, format_default), not an invoice model [Write_Small, Write_Lines]
-- **qpdf** (C++): floor: QPDFEFStreamObjectHelper + QPDFFileSpecObjectHelper + replaceEmbeddedFile; /AF (the invoice replaces the host's), /AFRelationship Alternative or Data depending on the profile and Factur-X XMP written by hand (host's XMP replaced); full rewrite by QPDFWriter (newline before endstream), no PDF/A conversion [Embed_Small, EmbedClassic_Small]; floor: QPDFEmbeddedFileDocumentHelper::getEmbeddedFiles, first file under a standard invoice name, stream decoded; not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
+- **qpdf** (C++): floor: QPDFEFStreamObjectHelper + QPDFFileSpecObjectHelper + replaceEmbeddedFile; /AF (the invoice replaces any invoice already listed), /AFRelationship Alternative or Data depending on the profile and Factur-X XMP written by hand (host's XMP replaced); full rewrite by QPDFWriter (newline before endstream), no PDF/A conversion [Embed_Small, EmbedClassic_Small]; floor: QPDFEmbeddedFileDocumentHelper::getEmbeddedFiles, first file under a standard invoice name, stream decoded; not a Factur-X library [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]
 - **saxonc-he** (C++): official CEN EN 16931 CII 1.3.17 XSLT (+ KoSIT XRechnung 3.0.2 schematron 2.6.0 if BT-24 is XRechnung) via SaxonC-HE 13.1.1, compiled on the first call; fatal/error errors with the KoSIT levels [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **xerces-c** (C++): floor: Xerces DOM (XercesDOMParser reused, no validation), not an invoice model [Parse_Small, Parse_Lines, Parse_Large]; floor: XercesDOMParser with XML Schema validation, UN/CEFACT CII D16B XSD (KoSIT XRechnung 3.0.2 configuration of 2026-08-31) loaded once (loadGrammar, cached); schema only, no EN 16931 business rules [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; floor: serialization of the Xerces DOM (DOMLSSerializer, UTF-8), not an invoice model [Write_Small, Write_Lines]
 - **atgp/factur-x** (PHP): Reader::extractXML($pdf, validateXsd: false) (by default, extraction also validates against the XSD) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; Writer::generate, default options (XSD included, FPDI: the PDF is rewritten, PDF/A-3 XMP) [EmbedClassic_Small]; Writer::generate, default options (XSD included, FPDI: the PDF is rewritten, PDF/A-3 XMP); CrossReferenceException: This PDF document probably uses a compression technique which is not supported by the free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details) [Embed_Small]; XsdValidator::validate: Factur-X 1.09.2 XSD of the detected profile, nothing else [ParseValidate_Small, ParseValidate_Lines]; XsdValidator::validate: Factur-X 1.09.2 XSD of the detected profile, nothing else; InvalidProfileException: Invalid Factur-X URN : urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0 <- ProfileResolutionException: Invalid Factur-X URN : urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0 [ParseValidate_Large]
@@ -1162,11 +1162,11 @@ Measured calls and specifics, for operations that succeeded or failed (the reaso
 - **ext-dom** (PHP): floor written by hand: DOMDocument::loadXML + schemaValidate, Factur-X 1.09.2 XSD of the profile (EN16931 for XRechnung), libxml2 2.9.13 [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **horstoeko/invoicesuite** (PHP): InvoiceSuiteDocumentReader::copyToBuilder()->getContent() (DTO then serialization) [Write_Small, Write_Lines]; InvoiceSuiteDocumentReader::createFromContent (format provider guessed, JMS Serializer) [Parse_Small, Parse_Lines, Parse_Large]; InvoiceSuitePdfDocumentBuilder::createFromDocumentContentAndPdfContent()->generatePdfDocumentAndGetContent() (FPDI/TCPDF) [EmbedClassic_Small]; InvoiceSuitePdfDocumentBuilder::createFromDocumentContentAndPdfContent()->generatePdfDocumentAndGetContent() (FPDI/TCPDF); CrossReferenceException: This PDF document probably uses a compression technique which is not supported by the free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details) [Embed_Small]; InvoiceSuitePdfDocumentReader::createFromContent (prinsfrank/pdfparser; the reader also deserializes the XML it finds) then getInvoiceDocumentAttachment()->getAttachmentContent() [Extract_Small, Extract_Minimum, Extract_Extended]; InvoiceSuitePdfDocumentReader::createFromContent (prinsfrank/pdfparser; the reader also deserializes the XML it finds) then getInvoiceDocumentAttachment()->getAttachmentContent(); ParseFailureException: Unable to gzuncompress value ">> stream x??uP]??-H????? ..." [Extract_Large]; InvoiceSuiteXsdDocumentValidator::createFromContent()->validate(): XSD of the recognised format provider (Factur-X EN16931 for XRechnung CII); KoSIT (Java) and Docuflair (remote service) validators not measured [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **horstoeko/zugferd** (PHP): ZugferdDocument::serializeAsXml (JMS) of the model read by ZugferdDocumentReader [Write_Small, Write_Lines]; ZugferdDocumentPdfMerger(xml, pdf)->generateDocument()->downloadString() (FPDI: the PDF is rewritten, PDF/A-3B XMP) [EmbedClassic_Small]; ZugferdDocumentPdfMerger(xml, pdf)->generateDocument()->downloadString() (FPDI: the PDF is rewritten, PDF/A-3B XMP); CrossReferenceException: This PDF document probably uses a compression technique which is not supported by the free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details) [Embed_Small]; ZugferdDocumentPdfReader::getXmlFromContent (smalot/pdfparser) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; ZugferdDocumentReader::readAndGuessFromContent (JMS Serializer, profile resolved from BT-24) [Parse_Small, Parse_Lines, Parse_Large]; parsing + ZugferdXsdValidator: Factur-X XSD of the profile on the re-serialized document; bundled schematron not run, KoSIT requires Java [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
-- **intragile/php-einvoicing** (PHP): CiiReader::read()->invoice (EN 16931 model) [Parse_Small, Parse_Lines, Parse_Large]; CiiWriter::write of the model read by CiiReader [Write_Small, Write_Lines]; FacturXPdfReader::read()->xml (PDF reader written in the library) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; FacturXPdfWriter::embed (incremental update, without FPDI; does not convert to PDF/A); InvoiceAlreadyEmbedded: The PDF already carries an embedded invoice named "factur-x.xml"; a second one is not added. [Embed_Small, EmbedClassic_Small]; XRechnungValidator (KoSIT scenarios: CII D16B XSD + CEN 1.3.16 schematron precompiled to PHP, + XRechnung 2.6.0 and KoSIT levels if BT-24 is XRechnung); FacturXValidator for the other Factur-X profiles; errors = fatal + XSD + dynamic errors [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
+- **intragile/php-einvoicing** (PHP): CiiReader::read()->invoice (EN 16931 model) [Parse_Small, Parse_Lines, Parse_Large]; CiiWriter::write of the model read by CiiReader [Write_Small, Write_Lines]; FacturXPdfReader::read()->xml (PDF reader written in the library) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; FacturXPdfWriter::embed (incremental update, without FPDI; does not convert to PDF/A) [Embed_Small, EmbedClassic_Small]; XRechnungValidator (KoSIT scenarios: CII D16B XSD + CEN 1.3.16 schematron precompiled to PHP, + XRechnung 2.6.0 and KoSIT levels if BT-24 is XRechnung); FacturXValidator for the other Factur-X profiles; errors = fatal + XSD + dynamic errors [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **invoicepress/vampire-php** (PHP): Validator::validateString, KoSIT scenario from rulesets/scenarios.json: XSD then official precompiled schematron (EN16931-CII 1.3.17, + XRechnung-CII 3.0.2 and KoSIT levels for XRechnung), XPath 2.0 interpreter in PHP; errors = blocking messages (fatal) [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **john-wink/en16931-php** (PHP): CiiInvoiceReader::read (DOM + XPath to the EN 16931 semantic model) [Parse_Small, Parse_Lines, Parse_Large]; En16931Validator::validate: CII D16B XSD + 1276 KoSIT syntax rules + 274 EN 16931 business rules (+ XRechnung CIUS if BT-24 names it), rewritten in PHP; reference validator-configuration-xrechnung 3.0.2; errors = fatal violations [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **mahdiabderraouf/facturx-php** (PHP): Builder::build, BASIC profile (the generator does not offer EN16931; no XML reader); hand-built model [Write_Small]; Generator::generate($hostPath, $xml): XSD validation then PDF/A-3b by FPDI/tFPDF [EmbedClassic_Small]; Generator::generate($hostPath, $xml): XSD validation then PDF/A-3b by FPDI/tFPDF; CrossReferenceException: This PDF document probably uses a compression technique which is not supported by the free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details) [Embed_Small]; Parser::getXml($path): two calls to poppler's pdfdetach (-list then -save to a temporary file) [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; Validator::validate: Factur-X 1.09.2 XSD of the profile read from BT-24 (no XRechnung identifier in the Profile enum) [ParseValidate_Small, ParseValidate_Lines]; Validator::validate: Factur-X 1.09.2 XSD of the profile read from BT-24 (no XRechnung identifier in the Profile enum); InvalidXmlException: Invalid Factur-X XML : invalid profile found [ParseValidate_Large]
-- **pat-o-dev/factur-x** (PHP): EmbeddedXmlExtractor::extract (classic xref only); UnsupportedPdfException: The Catalog declares /Names or /AF but neither could be resolved to an embedded Filespec; inline (non-indirect) dictionaries are not supported in v1. [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; FacturXGenerator::generateXml (no XML reader); hand-built model [Write_Small]; InvoiceValidator::validate: selection of rules written by hand (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), without XSD or schematron; BR-FR-* failures (French rules) not counted [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; PdfA3Attacher::attach + XmpMetadataBuilder::build (incremental update; classic xref only, refuses a catalog with /AF or /Names); UnsupportedPdfException: The PDF Catalog already declares /AF; merging with an existing attachment tree is not supported in v1. [EmbedClassic_Small]; PdfA3Attacher::attach + XmpMetadataBuilder::build (incremental update; classic xref only, refuses a catalog with /AF or /Names); UnsupportedPdfException: This PDF uses a cross-reference stream (PDF 1.5+) or a non-standard xref layout, which is not yet supported. Regenerate the base PDF with a tool that emits a classic xref table (e.g. mPDF, TCPDF, DomPDF). [Embed_Small]
+- **pat-o-dev/factur-x** (PHP): EmbeddedXmlExtractor::extract (classic xref only); UnsupportedPdfException: The Catalog declares /Names or /AF but neither could be resolved to an embedded Filespec; inline (non-indirect) dictionaries are not supported in v1. [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; FacturXGenerator::generateXml (no XML reader); hand-built model [Write_Small]; InvoiceValidator::validate: selection of rules written by hand (structure, BR-CO-15, BR-CO-25, BR-CO-5-6), without XSD or schematron; BR-FR-* failures (French rules) not counted [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]; PdfA3Attacher::attach + XmpMetadataBuilder::build (incremental update; classic xref only, refuses a catalog with /AF or /Names) [EmbedClassic_Small]; PdfA3Attacher::attach + XmpMetadataBuilder::build (incremental update; classic xref only, refuses a catalog with /AF or /Names); UnsupportedPdfException: This PDF uses a cross-reference stream (PDF 1.5+) or a non-standard xref layout, which is not yet supported. Regenerate the base PDF with a tool that emits a classic xref table (e.g. mPDF, TCPDF, DomPDF). [Embed_Small]
 - **pnscripts/pn-invoice** (PHP): CiiWriter::write (no XML reader); hand-built model [Write_Small]; InvoiceValidator::validateXml: CII D16B XSD + 104 EN 16931 business rules in PHP (no BR-CL, BR-DEC or syntax rules); external schematron layer (Saxon/Java) not wired in; errors = ValidationResult::errors() [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **quittio/core** (PHP): CiiWriter::serialize of the data read by Quittio::read, profile recognised while parsing [Write_Small, Write_Lines]; MpdfPostProcessor::process (pages re-imported by FPDI through mPDF, XML as a PDF/A-3 associated file) [EmbedClassic_Small]; MpdfPostProcessor::process (pages re-imported by FPDI through mPDF, XML as a PDF/A-3 associated file); PdfException: The PDF could not be imported: This PDF document probably uses a compression technique which is not supported by the free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details) [Embed_Small]; PdfEmbeddedFileExtractor::extractFile()->xml [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]; Quittio::read (CII reader + Germany pack; recomputes the totals) [Parse_Small, Parse_Lines, Parse_Large]; Quittio::validateFile, default offline levels: L1-L3 PHP rules (EN 16931, BR-DE of the country-de pack), L4 CII D16B XSD, L7 plausibility; L5 schematron (KoSIT, Java) and L6 veraPDF not configured; errors = ValidationResult::errors() [ParseValidate_Small, ParseValidate_Lines, ParseValidate_Large]
 - **smalot/pdfparser** (PHP): floor written by hand: Parser::parseContent, then the first /Filespec named factur-x.xml, zugferd-invoice.xml or xrechnung.xml, /EF /F stream [Extract_Small, Extract_Large, Extract_Minimum, Extract_Extended]

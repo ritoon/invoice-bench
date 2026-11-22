@@ -39,12 +39,12 @@ BenchmarkWrite_Small-14            	  367620	      3265 ns/op	    8192 B/op	    
 BenchmarkWrite_Lines-14            	  231205	      5220 ns/op	   12288 B/op	       1 allocs/op
 BenchmarkWrite_Lines-14            	  223810	      5256 ns/op	   12288 B/op	       1 allocs/op
 BenchmarkWrite_Lines-14            	  225891	      5281 ns/op	   12288 B/op	       1 allocs/op
-BenchmarkEmbed_Small-14            	   12488	     96747 ns/op	1486.82 MB/s	  250643 B/op	     456 allocs/op
-BenchmarkEmbed_Small-14            	   12330	     97172 ns/op	1480.32 MB/s	  250766 B/op	     456 allocs/op
-BenchmarkEmbed_Small-14            	   12453	     96222 ns/op	1494.94 MB/s	  250632 B/op	     456 allocs/op
-BenchmarkEmbedClassic_Small-14     	   12439	     96175 ns/op	1532.05 MB/s	  255351 B/op	     438 allocs/op
-BenchmarkEmbedClassic_Small-14     	   12735	     94927 ns/op	1552.20 MB/s	  255236 B/op	     438 allocs/op
-BenchmarkEmbedClassic_Small-14     	   12235	     97251 ns/op	1515.10 MB/s	  255171 B/op	     438 allocs/op
+BenchmarkEmbed_Small-14            	   12889	     93142 ns/op	1463.46 MB/s	  231198 B/op	     376 allocs/op
+BenchmarkEmbed_Small-14            	   12918	     92853 ns/op	1468.01 MB/s	  231322 B/op	     376 allocs/op
+BenchmarkEmbed_Small-14            	   12858	     93066 ns/op	1464.65 MB/s	  231307 B/op	     376 allocs/op
+BenchmarkEmbedClassic_Small-14     	   13365	     90117 ns/op	1551.06 MB/s	  235757 B/op	     358 allocs/op
+BenchmarkEmbedClassic_Small-14     	   13030	     91541 ns/op	1526.93 MB/s	  236126 B/op	     358 allocs/op
+BenchmarkEmbedClassic_Small-14     	   12516	     95460 ns/op	1464.24 MB/s	  236234 B/op	     359 allocs/op
 BenchmarkCheckPDF_Small-14         	    1411	    825445 ns/op	 180.61 MB/s	  717428 B/op	    2383 allocs/op
 BenchmarkCheckPDF_Small-14         	    1492	    811294 ns/op	 183.76 MB/s	  717268 B/op	    2383 allocs/op
 BenchmarkCheckPDF_Small-14         	    1489	    810380 ns/op	 183.97 MB/s	  717070 B/op	    2383 allocs/op

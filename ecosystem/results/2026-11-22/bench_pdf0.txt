@@ -3,9 +3,9 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ritoon/zerechnung/bench/ecosystem/pdf0
 cpu: Apple M4 Pro
-BenchmarkEmbedClassic_Small-14     	    2637	    455497 ns/op	 323.48 MB/s	  934314 B/op	    9390 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2653	    451621 ns/op	 326.26 MB/s	  934316 B/op	    9390 allocs/op
-BenchmarkEmbedClassic_Small-14     	    2640	    453344 ns/op	 325.02 MB/s	  934312 B/op	    9390 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2863	    418363 ns/op	 334.10 MB/s	  843922 B/op	    8342 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2775	    416445 ns/op	 335.64 MB/s	  843917 B/op	    8342 allocs/op
+BenchmarkEmbedClassic_Small-14     	    2917	    414587 ns/op	 337.15 MB/s	  843922 B/op	    8342 allocs/op
 BenchmarkCheckPDF_Small-14         	     532	   2225239 ns/op	  67.00 MB/s	 1854471 B/op	    7536 allocs/op
 BenchmarkCheckPDF_Small-14         	     542	   2221739 ns/op	  67.10 MB/s	 1854471 B/op	    7536 allocs/op
 BenchmarkCheckPDF_Small-14         	     541	   2217247 ns/op	  67.24 MB/s	 1854471 B/op	    7536 allocs/op
@@ -21,8 +21,8 @@ BenchmarkParseValidate_Lines-14    	    6015	    203126 ns/op	  92.56 MB/s	  113
 BenchmarkParseValidate_Large-14    	     162	   7383333 ns/op	 176.79 MB/s	 6878565 B/op	    1842 allocs/op
 BenchmarkParseValidate_Large-14    	     165	   7179207 ns/op	 181.82 MB/s	 6878566 B/op	    1842 allocs/op
 BenchmarkParseValidate_Large-14    	     166	   7113272 ns/op	 183.50 MB/s	 6878567 B/op	    1842 allocs/op
-BenchmarkEmbed_Small-14            	    2259	    526446 ns/op	 273.24 MB/s	 1356626 B/op	    9593 allocs/op
-BenchmarkEmbed_Small-14            	    2300	    529067 ns/op	 271.89 MB/s	 1355831 B/op	    9593 allocs/op
-BenchmarkEmbed_Small-14            	    2240	    530772 ns/op	 271.01 MB/s	 1356148 B/op	    9593 allocs/op
+BenchmarkEmbed_Small-14            	    2394	    487062 ns/op	 279.86 MB/s	 1238475 B/op	    8552 allocs/op
+BenchmarkEmbed_Small-14            	    2425	    486125 ns/op	 280.40 MB/s	 1231080 B/op	    8552 allocs/op
+BenchmarkEmbed_Small-14            	    2468	    485021 ns/op	 281.04 MB/s	 1229653 B/op	    8552 allocs/op
 PASS
 ok  	github.com/ritoon/zerechnung/bench/ecosystem/pdf0	25.651s

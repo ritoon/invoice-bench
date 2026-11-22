@@ -69,18 +69,20 @@ the PDF level; it does not parse the CII (profile detected by text patterns,
   `core/src/sanitize.cpp:990`, called at `:1347`) with `/AF`,
   `/AFRelationship` and the `fx:` XMP extension schema; the profile and the
   file name come from `detectInvoice`. The whole PDF/A conversion is inside
-  the measurement (about 12.6 ms versus 0.1 to 0.5 ms for the floors, which
-  convert nothing).
-- Quirk observed: the protocol hosts keep in `/AF` the `factur-x.xml` of the
-  intarsys PDF they were derived from. Kura re-registers this orphaned file
-  in `/Names/EmbeddedFiles` (`sanitize.cpp:825-870`), then
-  `attachAssociatedFile` (`:934`) adds the new invoice without replacing
-  the old one: the output PDF contains two `factur-x.xml` files, and
-  `readInvoice` reads back the first one, the old one (the same invoice with
-  CRLF, 13,396 bytes versus 13,153). `zerechnung validate` reports a single
-  error on this PDF (PDF-28, two invoice attachments) and no warning. The
-  bench accepts it, because the read-back finds a CII, as in the Rust
-  harness; the note in the JSONL line says so.
+  the measurement (11.7 ms on the xref-stream host and 12.4 ms on the
+  classic-xref host, versus 0.4 to 0.5 ms for the floors, which convert
+  nothing).
+- Check of the output PDF (outside the bench, `FX_DUMP_EMBED`): a single
+  `factur-x.xml`; `zerechnung validate` reports one error, PDF-18 (the
+  attachment stream has no `/Params /ModDate`), and no warning.
+- Quirk observed: Kura re-registers in `/Names/EmbeddedFiles` the files
+  that `/AF` lists without naming them (`sanitize.cpp:825-870`), then
+  `attachAssociatedFile` (`:934`) adds the new invoice without removing an
+  invoice already present. Until 2026-11-22, the protocol hosts kept in
+  `/AF` the `factur-x.xml` of the intarsys PDF they were derived from: the
+  output PDF then contained two `factur-x.xml` files (PDF-28 for
+  `zerechnung validate`), and `readInvoice` read back the first, old one.
+  The fixed hosts no longer have an `/AF`.
 - CheckPDF: `kura_read_invoice` (`kura.h:123`, `kura_c.cpp:268`), which calls
   `pdfa::checkInvoice` (`core/src/einvoice_check.cpp:8-95`): specification
   URN, presence of the identifier, type code and date, more than one
@@ -144,7 +146,7 @@ of Factur-X.
 - Embedding (`:55-100`): `QPDFEFStreamObjectHelper::createEFStream`,
   `QPDFFileSpecObjectHelper::createFileSpec`, `replaceEmbeddedFile`; by
   hand: `/AFRelationship` (`Alternative`, or `Data` in MINIMUM and BASIC WL,
-  `:69`), `/AF` rebuilt without the invoice file left by the host
+  `:69`), `/AF` rebuilt without any invoice file already present
   (`:75-86`), new `/Metadata` with the harness's Factur-X XMP (`:91-93`);
   full write by `QPDFWriter` in memory with
   `setNewlineBeforeEndstream(true)` (`:97`, required by PDF/A). No PDF/A
@@ -162,13 +164,16 @@ General-purpose C++17 PDF library, with no knowledge of Factur-X.
   `PdfMemDocument::LoadFromBuffer`, `PdfEmbeddedFiles` tree walked with
   `ToDictionary` (including `/Kids`), first file under a standard invoice
   name, `PdfFileSpec::GetEmbeddedData`. 104 PDFs out of 104.
-- Embedding (`:47-104`): `CreateFileSpec` and `SetEmbeddedData`, added to
+- Embedding (`:47-106`): `CreateFileSpec` and `SetEmbeddedData`, added to
   the `PdfEmbeddedFiles` tree (`:71`); by hand: `/AFRelationship` per profile
-  (`:56`), `/AF` rebuilt without the host's invoice file
-  (`:77-90`), new Factur-X XMP `/Metadata` (`:94-97`);
-  `PdfMemDocument::Save` with `NoMetadataUpdate` (`:102`), so that PoDoFo
+  (`:56`), `/AF` rebuilt without any invoice file already present
+  (`:75-92`), new Factur-X XMP `/Metadata` (`:94-99`);
+  `PdfMemDocument::Save` with `NoMetadataUpdate` (`:104`), so that PoDoFo
   keeps this XMP and does not write the current time into it. No PDF/A
-  conversion. Same checks outside the bench as for qpdf, same results.
+  conversion. Same checks outside the bench as for qpdf, same results. The
+  host's `/AF` is read with `FindKey` (`:77`): `FindKeyAs<PdfArray *>`, used
+  until 2026-11-22, throws `ObjectNotFound` when the key is missing, which
+  made embedding fail on the fixed hosts, which have no `/AF`.
 
 ### poppler-cpp 26.11.0 (extraction floor)
 
@@ -270,7 +275,7 @@ order:
 
 | Library | Version | License | Latest version | Downloads | CII parsing | CII writing | UBL | PDF extraction | PDF embedding | XSD | EN 16931 (CII) | Factur-X profiles (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | PDF/A-3 container check | External dependencies |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Kura (bentopdf-kura) | 1.4.1 | AGPL-3.0 or commercial | 1.4.1 (2026-11-08) | ★25; no package | no (profile detected by patterns) | no | no | yes: `readInvoice`, 104/104 | yes: `kura_convert` level 3b, full conversion to PDF/A-3b (keeps the `factur-x.xml` left by the host in `/AF`) | no | no | profile inferred from the URN for the XMP; MINIMUM / BASIC WL warning | no | no | no | partial: consistency of payload, name, `/AFRelationship`, `/AF`, XMP (`checkInvoice`); not a PDF/A validation | qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib |
+| Kura (bentopdf-kura) | 1.4.1 | AGPL-3.0 or commercial | 1.4.1 (2026-11-08) | ★25; no package | no (profile detected by patterns) | no | no | yes: `readInvoice`, 104/104 | yes: `kura_convert` level 3b, full conversion to PDF/A-3b (does not remove an invoice already listed in `/AF`) | no | no | profile inferred from the URN for the XMP; MINIMUM / BASIC WL warning | no | no | no | partial: consistency of payload, name, `/AFRelationship`, `/AF`, XMP (`checkInvoice`); not a PDF/A validation | qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib |
 | SaxonC-HE (reference) | 13.1.1 | MPL-2.0 (CEN artifacts: EUPL-1.2; KoSIT: Apache-2.0) | 13.1.1 (2026-10-26) | Saxonica binary, no package | no | no | no (UBL XSLTs not loaded) | no | no | no | yes: official CEN 1.3.17 XSLTs, 810 rules | no | no | yes: KoSIT schematron 2.6.0 (XRechnung 3.0.2) if BT-24 is XRechnung | no (only the PEPPOL-EN16931-R rules of the KoSIT stylesheet) | no | none (embedded native GraalVM); macOS arm64 pinned |
 | qpdf (floor) | 12.4.2 | Apache-2.0 | 12.4.2 (2026-09-26) | ★5,606; Homebrew 85,709 / year | no | no | no | floor, 104/104 | hand-written floor | no | no | no | no | no | no | no | jpeg-turbo, openssl |
 | PoDoFo (floor) | 1.1.3 | LGPL-2.0-or-later or MPL-2.0 | 1.1.3 (2026-11-16) | ★616; Homebrew 918 / year | no | no | no | floor, 104/104 | hand-written floor | no | no | no | no | no | no | no | freetype, fontconfig, jpeg-turbo, libpng, libtiff, openssl |
@@ -322,10 +327,11 @@ order:
   validate`, Kura's `checkInvoice` and `qpdf --check`.
 - The embedding floors (qpdf, PoDoFo, and MuPDF in the C bench) write
   `/AFRelationship /Alternative`, or `/Data` for MINIMUM and BASIC WL
-  (Factur-X 1.0.07, § 6.2.2), remove from `/AF` any invoice file left by the
-  host and replace its XMP with a Factur-X packet written by the
-  harness. None of them converts to PDF/A (no output intent); Kura is the
-  only one that does, hence the gap of a factor of 25 to 100 on Embed.
+  (Factur-X 1.0.07, § 6.2.2), remove from `/AF` any invoice file already
+  listed (the fixed hosts have no `/AF`) and replace the host's XMP with a
+  Factur-X packet written by the harness. None of them converts to PDF/A
+  (no output intent); Kura is the only one that does, hence the gap of a
+  factor of 25 to 32 on Embed.
 - SaxonC-HE starts a GraalVM isolate: the first call (about 140 ms)
   includes this startup and the compilation of both stylesheets. PoDoFo
   once showed a first call of 141 ms (one-time initialization), not

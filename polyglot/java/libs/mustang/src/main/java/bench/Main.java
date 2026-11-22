@@ -97,9 +97,7 @@ public final class Main {
                     Main::parse, Main::write);
             h.embed("ZUGFeRDExporterFromPDFA.load + setXML + export (default EN16931 profile); PDF/A-3B hosts, "
                     + "hence ZUGFeRDExporterFromA3; a non-PDF/A host is rejected (PDF/A-1 converted to A-3 at the "
-                    + "metadata level); saved without compression; the resulting PDF (PDF/A-3U) keeps the host's "
-                    + "leftover factur-x.xml file specification in /AF next to the new one: the Mustang validator "
-                    + "accepts it, Paniolo rejects it (FX-MULTIPLE-INVOICES)", Main::embed, Main::extract);
+                    + "metadata level); saved without compression; resulting PDF in PDF/A-3U", Main::embed, Main::extract);
             h.checkPdf("ZUGFeRDValidator.validate on the PDF: PDF/A-3 by veraPDF, Factur-X XMP and attachment, "
                     + "then full validation of the extracted XML (as ParseValidate)", x -> validate(x, "invoice.pdf"));
         });

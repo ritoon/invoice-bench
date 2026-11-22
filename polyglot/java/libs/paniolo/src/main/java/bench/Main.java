@@ -58,9 +58,8 @@ public final class Main {
                     (Invoice inv) -> P.toBytes(inv, InvoiceSyntax.CII));
             h.embed("Paniolo.embedXml(pdf, xml, FacturXProfile.EN16931).pdf(); checks BT-24, embeds then revalidates the "
                     + "resulting PDF (container, PDF/A by veraPDF, XML), revalidation included in the measurement; does not "
-                    + "convert to PDF/A; rejects a host that already contains an invoice: host.pdf and host_classic.pdf keep "
-                    + "in /AF a factur-x.xml file specification with its /UF stream (only the EmbeddedFiles tree was removed), "
-                    + "which Paniolo reads (PdfBoxFacturXSupport.allFiles)", Main::embed, P::extractXml);
+                    + "convert to PDF/A; rejects a host that already contains an invoice (PdfBoxFacturXSupport.allFiles)",
+                    Main::embed, P::extractXml);
             h.checkPdf("Paniolo.validate on the PDF: Factur-X container (attachment, relationship, XMP), PDF/A by "
                     + "veraPDF (paniolo-pdfa), then full validation of the embedded XML for the declared profile",
                     P::validate);

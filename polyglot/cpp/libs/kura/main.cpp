@@ -11,10 +11,7 @@
 //   converts the host to PDF/A-3b and attaches the invoice with /AF,
 //   /AFRelationship and the fx: XMP extension schema (profile and file name
 //   detected from the XML by detectInvoice). The whole PDF/A conversion
-//   (fonts, colour spaces, metadata) is in the timing. The protocol's hosts
-//   keep in /AF the factur-x.xml of the PDF they come from: Kura lists it
-//   again in /Names/EmbeddedFiles next to the new one, and readInvoice reads
-//   back that first, older file (the same invoice, in CRLF).
+//   (fonts, colour spaces, metadata) is in the timing.
 // - CheckPDF: kura_read_invoice (pdfa::checkInvoice,
 //   core/src/einvoice_check.cpp), the consistency check between the payload,
 //   the attachment name, /AFRelationship, /AF and the XMP. Not a PDF/A
@@ -105,8 +102,7 @@ int main(int argc, char **argv) {
 		fx_unsupported(h, FX_WRITE, "Kura does not write CII");
 		fx::embed(h,
 			  "kura_convert level 3b with invoice_xml: full conversion of the host to PDF/A-3b, /AF "
-			  "/AFRelationship attachment and fx: XMP extension schema; read back by readInvoice; the "
-			  "factur-x.xml that the host keeps in /AF stays next to the new one (two attachments)",
+			  "/AFRelationship attachment and fx: XMP extension schema; read back by readInvoice",
 			  em, ex);
 		fx::check_pdf(h,
 			      "kura_read_invoice (checkInvoice): consistency of payload, attachment name, "

@@ -56,7 +56,8 @@ func XMLLarge(tb testing.TB) Sample {
 	return Load(tb, "XML-Rechnung", "CII", "XRECHNUNG_Elektron.cii.xml")
 } // 1.3 MB, base64 attachment
 
-// HostPDF is a plain PDF (attachments removed) used as input for embedding.
+// HostPDF is the small Factur-X PDF without its invoice (no attachment, no
+// /AF, no Factur-X XMP), a PDF/A-3 document used as input for embedding.
 func HostPDF(tb testing.TB) Sample {
 	_, f, _, _ := runtime.Caller(0)
 	p := filepath.Join(filepath.Dir(f), "..", "host.pdf")

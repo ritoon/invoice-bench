@@ -6,7 +6,7 @@
 //   PdfFileSpec::GetEmbeddedData.
 // - Embed: PdfDocument::CreateFileSpec + SetEmbeddedData, added to the
 //   PdfEmbeddedFiles tree, plus by hand /AF (where the invoice replaces the
-//   one the host may keep), /AFRelationship (by level) and a Factur-X XMP
+//   invoice file already listed), /AFRelationship (by level) and a Factur-X XMP
 //   packet replacing /Metadata; PdfMemDocument::Save (full
 //   rewrite) with NoMetadataUpdate, so that PoDoFo keeps that XMP packet and
 //   does not stamp the current time. No PDF/A conversion.
@@ -70,11 +70,13 @@ std::string embed(fx::Bytes host, fx::Bytes xml) {
 	PdfObject &fso = fs->GetObject();
 	doc.GetOrCreateNames().GetOrCreateTree<PdfEmbeddedFiles>().AddValue(PdfString(FX_ATTACHMENT), fs);
 
-	// /AF: an earlier invoice file (such as the one the host keeps from its
-	// original Factur-X) is replaced, so that the PDF has one.
+	// /AF: an invoice file already listed there is replaced, so that the PDF
+	// has one.
 	PdfDictionary &cat = doc.GetCatalog().GetDictionary();
 	PdfArray keep;
-	if (PdfArray *af = cat.FindKeyAs<PdfArray *>("AF")) {
+	PdfObject *afo = cat.FindKey("AF"); // nullptr without /AF (FindKeyAs throws)
+	if (afo && afo->IsArray()) {
+		PdfArray *af = &afo->GetArray();
 		for (unsigned i = 0; i < af->GetSize(); i++) {
 			const PdfObject *o = af->FindAt(i);
 			const PdfDictionary *od = o && o->IsDictionary() ? &o->GetDictionary() : nullptr;
@@ -120,7 +122,7 @@ int main(int argc, char **argv) {
 		fx_unsupported(h, FX_WRITE, "PDF library only");
 		fx::embed(h,
 			  "floor: CreateFileSpec + SetEmbeddedData in the PdfEmbeddedFiles tree; /AF (the "
-			  "invoice replaces the host's), /AFRelationship Alternative or Data depending on the profile and "
+			  "invoice replaces any invoice already listed), /AFRelationship Alternative or Data depending on the profile and "
 			  "Factur-X XMP written by hand (host's XMP replaced); PdfMemDocument::Save (full "
 			  "rewrite, NoMetadataUpdate), no PDF/A conversion",
 			  em, ex);
