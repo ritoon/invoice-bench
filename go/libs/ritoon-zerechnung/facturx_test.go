@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 	"github.com/ritoon/zerechnung"
 	"github.com/ritoon/zerechnung/cii"
 	"github.com/ritoon/zerechnung/invoice"
@@ -51,43 +51,43 @@ func check(p []byte) (int, error) {
 	return len(r.Errors()), nil
 }
 
-func BenchmarkExtract_Small(b *testing.B)    { common.Extract(b, common.PDFSmall(b), extract) }
-func BenchmarkExtract_Large(b *testing.B)    { common.Extract(b, common.PDFLarge(b), extract) }
-func BenchmarkExtract_Minimum(b *testing.B)  { common.Extract(b, common.PDFMinimum(b), extract) }
-func BenchmarkExtract_Extended(b *testing.B) { common.Extract(b, common.PDFExtended(b), extract) }
+func BenchmarkExtract_Small(b *testing.B)    { harness.Extract(b, harness.PDFSmall(b), extract) }
+func BenchmarkExtract_Large(b *testing.B)    { harness.Extract(b, harness.PDFLarge(b), extract) }
+func BenchmarkExtract_Minimum(b *testing.B)  { harness.Extract(b, harness.PDFMinimum(b), extract) }
+func BenchmarkExtract_Extended(b *testing.B) { harness.Extract(b, harness.PDFExtended(b), extract) }
 
-func BenchmarkParse_Small(b *testing.B) { common.Bytes(b, common.XMLSmall(b), parse) }
-func BenchmarkParse_Lines(b *testing.B) { common.Bytes(b, common.XMLLines(b), parse) }
-func BenchmarkParse_Large(b *testing.B) { common.Bytes(b, common.XMLLarge(b), parse) }
+func BenchmarkParse_Small(b *testing.B) { harness.Bytes(b, harness.XMLSmall(b), parse) }
+func BenchmarkParse_Lines(b *testing.B) { harness.Bytes(b, harness.XMLLines(b), parse) }
+func BenchmarkParse_Large(b *testing.B) { harness.Bytes(b, harness.XMLLarge(b), parse) }
 
-func BenchmarkParseValidate_Small(b *testing.B) { common.Bytes(b, common.XMLSmall(b), validateXML) }
-func BenchmarkParseValidate_Lines(b *testing.B) { common.Bytes(b, common.XMLLines(b), validateXML) }
-func BenchmarkParseValidate_Large(b *testing.B) { common.Bytes(b, common.XMLLarge(b), validateXML) }
+func BenchmarkParseValidate_Small(b *testing.B) { harness.Bytes(b, harness.XMLSmall(b), validateXML) }
+func BenchmarkParseValidate_Lines(b *testing.B) { harness.Bytes(b, harness.XMLLines(b), validateXML) }
+func BenchmarkParseValidate_Large(b *testing.B) { harness.Bytes(b, harness.XMLLarge(b), validateXML) }
 
-func BenchmarkWrite_Small(b *testing.B) { common.Write(b, common.XMLSmall(b), parse, write) }
-func BenchmarkWrite_Lines(b *testing.B) { common.Write(b, common.XMLLines(b), parse, write) }
+func BenchmarkWrite_Small(b *testing.B) { harness.Write(b, harness.XMLSmall(b), parse, write) }
+func BenchmarkWrite_Lines(b *testing.B) { harness.Write(b, harness.XMLLines(b), parse, write) }
 
 func BenchmarkEmbed_Small(b *testing.B) {
-	common.Embed(b, common.HostPDF(b), common.XMLSmall(b), embed, extract)
+	harness.Embed(b, harness.HostPDF(b), harness.XMLSmall(b), embed, extract)
 }
 
 func BenchmarkEmbedClassic_Small(b *testing.B) {
-	common.Embed(b, common.HostPDFClassic(b), common.XMLSmall(b), embed, extract)
+	harness.Embed(b, harness.HostPDFClassic(b), harness.XMLSmall(b), embed, extract)
 }
 
-func BenchmarkCheckPDF_Small(b *testing.B) { common.Bytes(b, common.PDFSmall(b), check) }
-func BenchmarkCheckPDF_Large(b *testing.B) { common.Bytes(b, common.PDFLarge(b), check) }
+func BenchmarkCheckPDF_Small(b *testing.B) { harness.Bytes(b, harness.PDFSmall(b), check) }
+func BenchmarkCheckPDF_Large(b *testing.B) { harness.Bytes(b, harness.PDFLarge(b), check) }
 
 func TestSurvey(t *testing.T) {
-	common.SurveyValidate(t, validateXML)
-	common.SurveyParse(t, parse)
-	common.SurveyExtract(t, extract)
+	harness.SurveyValidate(t, validateXML)
+	harness.SurveyParse(t, parse)
+	harness.SurveyExtract(t, extract)
 }
 
 // TestCases validates the conformance cases (../../../cases) for the
 // confidence scores: run by ./run.sh cases, which sets CASES_OUT.
 func TestCases(t *testing.T) {
-	common.Cases(t, "ritoon-zerechnung", "github.com/ritoon/zerechnung", "validate.XML with the default rule sets (schema, EN 16931, profile, BR-DE for XRechnung; CII or UBL): errors", func(x []byte) (int, []string, error) {
+	harness.Cases(t, "ritoon-zerechnung", "github.com/ritoon/zerechnung", "validate.XML with the default rule sets (schema, EN 16931, profile, BR-DE for XRechnung; CII or UBL): errors", func(x []byte) (int, []string, error) {
 		var rules []string
 		for _, f := range validate.XML(x, nil).Errors() {
 			rules = append(rules, f.Rule)

@@ -6,12 +6,12 @@ import (
 	"io"
 	"testing"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 // Floor: cost of merely tokenizing the XML with encoding/xml. Any parser built
 // on encoding/xml cannot go below this.
-func benchTokenScan(b *testing.B, s common.Sample) {
+func benchTokenScan(b *testing.B, s harness.Sample) {
 	b.SetBytes(int64(len(s.Data)))
 	b.ReportAllocs()
 	for b.Loop() {
@@ -28,13 +28,13 @@ func benchTokenScan(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkFloor_XMLRawToken_Small(b *testing.B) { benchTokenScan(b, common.XMLSmall(b)) }
-func BenchmarkFloor_XMLRawToken_Lines(b *testing.B) { benchTokenScan(b, common.XMLLines(b)) }
-func BenchmarkFloor_XMLRawToken_Large(b *testing.B) { benchTokenScan(b, common.XMLLarge(b)) }
+func BenchmarkFloor_XMLRawToken_Small(b *testing.B) { benchTokenScan(b, harness.XMLSmall(b)) }
+func BenchmarkFloor_XMLRawToken_Lines(b *testing.B) { benchTokenScan(b, harness.XMLLines(b)) }
+func BenchmarkFloor_XMLRawToken_Large(b *testing.B) { benchTokenScan(b, harness.XMLLarge(b)) }
 
 // Floor for PDF: copying the bytes once (memmove) — the absolute lower bound.
 func BenchmarkFloor_Memcpy_PDFSmall(b *testing.B) {
-	s := common.PDFSmall(b)
+	s := harness.PDFSmall(b)
 	dst := make([]byte, len(s.Data))
 	b.SetBytes(int64(len(s.Data)))
 	for b.Loop() {

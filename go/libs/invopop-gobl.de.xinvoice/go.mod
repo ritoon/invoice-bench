@@ -3,7 +3,7 @@ module github.com/ritoon/invoice-bench/go/libs/invopop-gobl.de.xinvoice
 go 1.26
 
 require (
-	github.com/ritoon/invoice-bench/go/common v0.0.0
+	github.com/ritoon/invoice-bench/go/harness v0.0.0
 	github.com/invopop/gobl.de.xinvoice v0.0.10
 )
 
@@ -36,4 +36,4 @@ require (
 	software.sslmate.com/src/go-pkcs12 v0.7.2 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness

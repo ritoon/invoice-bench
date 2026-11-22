@@ -5,13 +5,13 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 	"github.com/tahayassine/facturx-go/pkg/cii"
 	"github.com/tahayassine/facturx-go/pkg/en16931"
 )
 
 func TestDetail(t *testing.T) {
-	for _, f := range common.CIIFiles(t) {
+	for _, f := range harness.CIIFiles(t) {
 		data, _ := os.ReadFile(f)
 		inv, _ := cii.Decode(data)
 		for _, e := range en16931.Validate(inv).Errors {

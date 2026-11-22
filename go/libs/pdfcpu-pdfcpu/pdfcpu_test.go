@@ -14,7 +14,7 @@ import (
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/types"
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 func conf() *model.Configuration {
@@ -39,8 +39,8 @@ func extract(pdf []byte) ([]byte, error) {
 	return nil, io.EOF
 }
 
-func benchExtract(b *testing.B, s common.Sample) {
-	if x, err := extract(s.Data); err != nil || !common.LooksLikeCII(x) {
+func benchExtract(b *testing.B, s harness.Sample) {
+	if x, err := extract(s.Data); err != nil || !harness.LooksLikeCII(x) {
 		b.Skipf("extraction failed on %s: %v", s.Name, err)
 	}
 	b.SetBytes(int64(len(s.Data)))
@@ -52,22 +52,22 @@ func benchExtract(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkExtract_Small(b *testing.B)    { benchExtract(b, common.PDFSmall(b)) }
-func BenchmarkExtract_Large(b *testing.B)    { benchExtract(b, common.PDFLarge(b)) }
-func BenchmarkExtract_Minimum(b *testing.B)  { benchExtract(b, common.PDFMinimum(b)) }
-func BenchmarkExtract_Extended(b *testing.B) { benchExtract(b, common.PDFExtended(b)) }
+func BenchmarkExtract_Small(b *testing.B)    { benchExtract(b, harness.PDFSmall(b)) }
+func BenchmarkExtract_Large(b *testing.B)    { benchExtract(b, harness.PDFLarge(b)) }
+func BenchmarkExtract_Minimum(b *testing.B)  { benchExtract(b, harness.PDFMinimum(b)) }
+func BenchmarkExtract_Extended(b *testing.B) { benchExtract(b, harness.PDFExtended(b)) }
 
 // ---------- Host PDF used by every Embed benchmark ----------
 
 // TestMakeHost writes host.pdf: the small Factur-X PDF without its invoice, a
 // PDF/A-3 document into which every library injects one.
 func TestMakeHost(t *testing.T) {
-	s := common.PDFSmall(t)
+	s := harness.PDFSmall(t)
 	out, err := withoutInvoice(s.Data)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(common.TestData(), "host.pdf"), out, 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(harness.TestData(), "host.pdf"), out, 0o644); err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("host.pdf: %d bytes", len(out))
@@ -176,7 +176,7 @@ func containsAny(b []byte, subs []string) bool {
 // TestMakeHostClassic rewrites host.pdf with a classic xref table and no object
 // streams, to separate libraries that cannot handle xref streams.
 func TestMakeHostClassic(t *testing.T) {
-	s := common.HostPDF(t)
+	s := harness.HostPDF(t)
 	cf := conf()
 	cf.WriteObjectStream = false
 	cf.WriteXRefStream = false
@@ -188,7 +188,7 @@ func TestMakeHostClassic(t *testing.T) {
 	if err := api.WriteContext(context.Background(), ctx, &out); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(common.TestData(), "host_classic.pdf"), out.Bytes(), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(harness.TestData(), "host_classic.pdf"), out.Bytes(), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("host_classic.pdf: %d bytes", out.Len())
@@ -199,9 +199,9 @@ func TestMakeHostClassic(t *testing.T) {
 // not the host's.
 func TestHostsStrict(t *testing.T) {
 	for _, h := range []struct {
-		s          common.Sample
+		s          harness.Sample
 		xrefStream bool
-	}{{common.HostPDF(t), true}, {common.HostPDFClassic(t), false}} {
+	}{{harness.HostPDF(t), true}, {harness.HostPDFClassic(t), false}} {
 		t.Run(h.s.Name, func(t *testing.T) {
 			cf := model.NewDefaultConfiguration()
 			cf.ValidationMode = model.ValidationStrict
@@ -341,7 +341,7 @@ func embed(pdf, xml []byte) ([]byte, error) {
 }
 
 func TestEmbedRoundTrip(t *testing.T) {
-	host, x := common.HostPDF(t), common.XMLSmall(t)
+	host, x := harness.HostPDF(t), harness.XMLSmall(t)
 	out, err := embed(host.Data, x.Data)
 	if err != nil {
 		t.Fatal(err)
@@ -353,7 +353,7 @@ func TestEmbedRoundTrip(t *testing.T) {
 }
 
 func BenchmarkEmbed_Small(b *testing.B) {
-	host, x := common.HostPDF(b), common.XMLSmall(b)
+	host, x := harness.HostPDF(b), harness.XMLSmall(b)
 	b.SetBytes(int64(len(host.Data)))
 	b.ReportAllocs()
 	for b.Loop() {
@@ -363,4 +363,4 @@ func BenchmarkEmbed_Small(b *testing.B) {
 	}
 }
 
-func TestSurvey(t *testing.T) { common.SurveyExtract(t, extract) }
+func TestSurvey(t *testing.T) { harness.SurveyExtract(t, extract) }

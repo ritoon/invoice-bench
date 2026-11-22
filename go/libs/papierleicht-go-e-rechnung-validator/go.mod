@@ -3,7 +3,7 @@ module github.com/ritoon/invoice-bench/go/libs/papierleicht-go-e-rechnung-valida
 go 1.26
 
 require (
-	github.com/ritoon/invoice-bench/go/common v0.0.0
+	github.com/ritoon/invoice-bench/go/harness v0.0.0
 	github.com/papierleicht/go-e-rechnung-validator v0.1.0
 )
 
@@ -14,4 +14,4 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness

@@ -8,7 +8,7 @@ import (
 
 	"github.com/mgilbir/formalis"
 	"github.com/mgilbir/pdf0"
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 // pdf0 exposes the invoice XML only through ValidateFacturX, which also runs
@@ -53,18 +53,18 @@ func embed(p, x []byte) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
-func BenchmarkCheckPDF_Small(b *testing.B)      { common.Bytes(b, common.PDFSmall(b), check) }
-func BenchmarkCheckPDF_Large(b *testing.B)      { common.Bytes(b, common.PDFLarge(b), check) }
-func BenchmarkParseValidate_Small(b *testing.B) { common.Bytes(b, common.XMLSmall(b), validate) }
-func BenchmarkParseValidate_Lines(b *testing.B) { common.Bytes(b, common.XMLLines(b), validate) }
-func BenchmarkParseValidate_Large(b *testing.B) { common.Bytes(b, common.XMLLarge(b), validate) }
+func BenchmarkCheckPDF_Small(b *testing.B)      { harness.Bytes(b, harness.PDFSmall(b), check) }
+func BenchmarkCheckPDF_Large(b *testing.B)      { harness.Bytes(b, harness.PDFLarge(b), check) }
+func BenchmarkParseValidate_Small(b *testing.B) { harness.Bytes(b, harness.XMLSmall(b), validate) }
+func BenchmarkParseValidate_Lines(b *testing.B) { harness.Bytes(b, harness.XMLLines(b), validate) }
+func BenchmarkParseValidate_Large(b *testing.B) { harness.Bytes(b, harness.XMLLarge(b), validate) }
 func BenchmarkEmbed_Small(b *testing.B) {
-	common.Embed(b, common.HostPDF(b), common.XMLSmall(b), embed, extractViaCheck)
+	harness.Embed(b, harness.HostPDF(b), harness.XMLSmall(b), embed, extractViaCheck)
 }
 
 func TestSurvey(t *testing.T) {
-	common.SurveyValidate(t, validate)
-	common.SurveyExtract(t, extractViaCheck)
+	harness.SurveyValidate(t, validate)
+	harness.SurveyExtract(t, extractViaCheck)
 }
 
 // TestCases validates the conformance cases (../../../cases) for the
@@ -72,7 +72,7 @@ func TestSurvey(t *testing.T) {
 func TestCases(t *testing.T) {
 	// The bench validates at the Factur-X EN16931 profile; the cases, CII and
 	// UBL, EN 16931 and XRechnung, go through the library's own router.
-	common.Cases(t, "mgilbir-pdf0", "github.com/mgilbir/formalis", "formalis.Detect, then the validator it returns: fatal violations", func(x []byte) (int, []string, error) {
+	harness.Cases(t, "mgilbir-pdf0", "github.com/mgilbir/formalis", "formalis.Detect, then the validator it returns: fatal violations", func(x []byte) (int, []string, error) {
 		det, err := formalis.Detect(x)
 		if err != nil {
 			return 0, nil, err

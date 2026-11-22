@@ -10,7 +10,7 @@ import (
 
 	"github.com/gotenberg/litho/pkg/models"
 	"github.com/gotenberg/litho/pkg/pdf"
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 var ctx = context.Background()
@@ -72,14 +72,14 @@ func embed(p, x []byte) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
-func BenchmarkExtract_Small(b *testing.B)    { common.Extract(b, common.PDFSmall(b), extract) }
-func BenchmarkExtract_Large(b *testing.B)    { common.Extract(b, common.PDFLarge(b), extract) }
-func BenchmarkExtract_Minimum(b *testing.B)  { common.Extract(b, common.PDFMinimum(b), extract) }
-func BenchmarkExtract_Extended(b *testing.B) { common.Extract(b, common.PDFExtended(b), extract) }
-func BenchmarkCheckPDF_Small(b *testing.B)   { common.Bytes(b, common.PDFSmall(b), check) }
-func BenchmarkCheckPDF_Large(b *testing.B)   { common.Bytes(b, common.PDFLarge(b), check) }
+func BenchmarkExtract_Small(b *testing.B)    { harness.Extract(b, harness.PDFSmall(b), extract) }
+func BenchmarkExtract_Large(b *testing.B)    { harness.Extract(b, harness.PDFLarge(b), extract) }
+func BenchmarkExtract_Minimum(b *testing.B)  { harness.Extract(b, harness.PDFMinimum(b), extract) }
+func BenchmarkExtract_Extended(b *testing.B) { harness.Extract(b, harness.PDFExtended(b), extract) }
+func BenchmarkCheckPDF_Small(b *testing.B)   { harness.Bytes(b, harness.PDFSmall(b), check) }
+func BenchmarkCheckPDF_Large(b *testing.B)   { harness.Bytes(b, harness.PDFLarge(b), check) }
 func BenchmarkEmbed_Small(b *testing.B) {
-	common.Embed(b, common.HostPDF(b), common.XMLSmall(b), embed, extract)
+	harness.Embed(b, harness.HostPDF(b), harness.XMLSmall(b), embed, extract)
 }
 
-func TestSurvey(t *testing.T) { common.SurveyExtract(t, extract) }
+func TestSurvey(t *testing.T) { harness.SurveyExtract(t, extract) }

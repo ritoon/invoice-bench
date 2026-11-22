@@ -6,11 +6,11 @@ import (
 	"testing"
 
 	einvoice "github.com/dcnws/invoicekit.go"
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 func TestDetail(t *testing.T) {
-	for _, f := range common.CIIFiles(t) {
+	for _, f := range harness.CIIFiles(t) {
 		data, _ := os.ReadFile(f)
 		r, _ := einvoice.Validate(data, einvoice.Options{})
 		for _, x := range r.Findings {

@@ -2,7 +2,7 @@ module github.com/ritoon/invoice-bench/go/libs/pdfcpu-pdfcpu
 
 go 1.26.0
 
-require github.com/ritoon/invoice-bench/go/common v0.0.0
+require github.com/ritoon/invoice-bench/go/harness v0.0.0
 
 require (
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
@@ -16,4 +16,4 @@ require (
 	golang.org/x/text v0.43.0 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness

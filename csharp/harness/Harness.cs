@@ -1,4 +1,4 @@
-// Shared harness of the C# benchmarks, the C# mirror of go/common,
+// Shared harness of the C# benchmarks, the C# mirror of go/harness,
 // of rust/harness/src/lib.rs and of PROTOCOL.md.
 //
 // Each library project is a console program whose Main calls Harness.Run with

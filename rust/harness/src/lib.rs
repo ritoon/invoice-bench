@@ -1,5 +1,5 @@
 //! Shared harness of the Rust benchmarks, the Rust mirror of
-//! `go/common` and of `PROTOCOL.md`.
+//! `go/harness` and of `PROTOCOL.md`.
 //!
 //! Each library crate is a binary whose `main` calls [`run`] with its identity
 //! and a closure that registers the operations in the protocol's order:

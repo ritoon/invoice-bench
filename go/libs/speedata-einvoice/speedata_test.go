@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 	"github.com/speedata/einvoice"
 	pdf "github.com/speedata/pdfdisassembler"
 )
@@ -50,8 +50,8 @@ func content(f pdf.EmbeddedFile) ([]byte, error) {
 	return s.Content()
 }
 
-func benchExtract(b *testing.B, s common.Sample) {
-	if x, err := extract(s.Data); err != nil || !common.LooksLikeCII(x) {
+func benchExtract(b *testing.B, s harness.Sample) {
+	if x, err := extract(s.Data); err != nil || !harness.LooksLikeCII(x) {
 		b.Skipf("extraction failed on %s: %v", s.Name, err)
 	}
 	b.SetBytes(int64(len(s.Data)))
@@ -63,14 +63,14 @@ func benchExtract(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkExtract_Small(b *testing.B)    { benchExtract(b, common.PDFSmall(b)) }
-func BenchmarkExtract_Large(b *testing.B)    { benchExtract(b, common.PDFLarge(b)) }
-func BenchmarkExtract_Minimum(b *testing.B)  { benchExtract(b, common.PDFMinimum(b)) }
-func BenchmarkExtract_Extended(b *testing.B) { benchExtract(b, common.PDFExtended(b)) }
+func BenchmarkExtract_Small(b *testing.B)    { benchExtract(b, harness.PDFSmall(b)) }
+func BenchmarkExtract_Large(b *testing.B)    { benchExtract(b, harness.PDFLarge(b)) }
+func BenchmarkExtract_Minimum(b *testing.B)  { benchExtract(b, harness.PDFMinimum(b)) }
+func BenchmarkExtract_Extended(b *testing.B) { benchExtract(b, harness.PDFExtended(b)) }
 
 func parse(x []byte) (*einvoice.Invoice, error) { return einvoice.ParseReader(bytes.NewReader(x)) }
 
-func benchParse(b *testing.B, s common.Sample) {
+func benchParse(b *testing.B, s harness.Sample) {
 	if _, err := parse(s.Data); err != nil {
 		b.Skipf("parse failed on %s: %v", s.Name, err)
 	}
@@ -83,9 +83,9 @@ func benchParse(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkParse_Small(b *testing.B) { benchParse(b, common.XMLSmall(b)) }
-func BenchmarkParse_Lines(b *testing.B) { benchParse(b, common.XMLLines(b)) }
-func BenchmarkParse_Large(b *testing.B) { benchParse(b, common.XMLLarge(b)) }
+func BenchmarkParse_Small(b *testing.B) { benchParse(b, harness.XMLSmall(b)) }
+func BenchmarkParse_Lines(b *testing.B) { benchParse(b, harness.XMLLines(b)) }
+func BenchmarkParse_Large(b *testing.B) { benchParse(b, harness.XMLLarge(b)) }
 
 func validate(x []byte) (int, error) {
 	inv, err := parse(x)
@@ -102,7 +102,7 @@ func validate(x []byte) (int, error) {
 	return 0, nil
 }
 
-func benchValidate(b *testing.B, s common.Sample) {
+func benchValidate(b *testing.B, s harness.Sample) {
 	if _, err := validate(s.Data); err != nil {
 		b.Skipf("validate failed on %s: %v", s.Name, err)
 	}
@@ -113,11 +113,11 @@ func benchValidate(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkParseValidate_Small(b *testing.B) { benchValidate(b, common.XMLSmall(b)) }
-func BenchmarkParseValidate_Lines(b *testing.B) { benchValidate(b, common.XMLLines(b)) }
-func BenchmarkParseValidate_Large(b *testing.B) { benchValidate(b, common.XMLLarge(b)) }
+func BenchmarkParseValidate_Small(b *testing.B) { benchValidate(b, harness.XMLSmall(b)) }
+func BenchmarkParseValidate_Lines(b *testing.B) { benchValidate(b, harness.XMLLines(b)) }
+func BenchmarkParseValidate_Large(b *testing.B) { benchValidate(b, harness.XMLLarge(b)) }
 
-func benchWrite(b *testing.B, s common.Sample) {
+func benchWrite(b *testing.B, s harness.Sample) {
 	inv, err := parse(s.Data)
 	if err != nil {
 		b.Skip(err)
@@ -133,13 +133,13 @@ func benchWrite(b *testing.B, s common.Sample) {
 	}
 }
 
-func BenchmarkWrite_Small(b *testing.B) { benchWrite(b, common.XMLSmall(b)) }
-func BenchmarkWrite_Lines(b *testing.B) { benchWrite(b, common.XMLLines(b)) }
+func BenchmarkWrite_Small(b *testing.B) { benchWrite(b, harness.XMLSmall(b)) }
+func BenchmarkWrite_Lines(b *testing.B) { benchWrite(b, harness.XMLLines(b)) }
 
 // Survey: false positives on the valid official CII samples + extraction coverage.
 func TestSurvey(t *testing.T) {
 	flagged, total := 0, 0
-	for _, f := range common.CIIFiles(t) {
+	for _, f := range harness.CIIFiles(t) {
 		data, _ := os.ReadFile(f)
 		n, err := validate(data)
 		total++
@@ -150,10 +150,10 @@ func TestSurvey(t *testing.T) {
 	}
 	t.Logf("SURVEY validate: %d/%d valid samples flagged", flagged, total)
 	ok, all := 0, 0
-	for _, f := range common.PDFFiles(t) {
+	for _, f := range harness.PDFFiles(t) {
 		data, _ := os.ReadFile(f)
 		all++
-		if x, err := extract(data); err == nil && common.LooksLikeCII(x) {
+		if x, err := extract(data); err == nil && harness.LooksLikeCII(x) {
 			ok++
 		}
 	}
