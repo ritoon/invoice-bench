@@ -1,6 +1,6 @@
 # Conformance cases
 
-The benches of [`ecosystem/`](../ecosystem) and [`polyglot/`](../polyglot) measure how fast each library is and how it behaves on the official ZUGFeRD corpus, where almost every file is valid. This folder answers another question: **which rules of a country does a library actually enforce?** It holds documents whose expected verdict and expected rules are known, runs every library of the benches on them, and gives each library a **confidence score per country**, out of 100.
+The benches of the language folders ([`go/`](../go), [`typescript/`](../typescript), [`java/`](../java)…) measure how fast each library is and how it behaves on the official ZUGFeRD corpus, where almost every file is valid. This folder answers another question: **which rules of a country does a library actually enforce?** It holds documents whose expected verdict and expected rules are known, runs every library of the benches on them, and gives each library a **confidence score per country**, out of 100.
 
 The first country is Germany: the EN 16931 rules and the XRechnung 3.0.2 rules, in the CII and UBL syntaxes. The hybrid PDF formats (ZUGFeRD, Factur-X) and the other countries come later.
 
@@ -30,7 +30,7 @@ The first country is Germany: the EN 16931 rules and the XRechnung 3.0.2 rules, 
 
 ## The reference
 
-The expected verdict and the expected rules come from a **reference validator**, never from the library that produced the case. For both suites, it is the **KoSIT validator 1.6.3** with the official **XRechnung 3.0.2 configuration** of 2026-08-31 (CII D16B and UBL 2.1 schemas, CEN EN 16931 schematron 1.3.16, KoSIT XRechnung schematron 2.6.0, with the custom levels of its scenarios), the validator the German administration publishes. `confirm.sh` runs it through the Java bench (`polyglot/java`, library `kosit-validator`) and `tool confirm` records, for each document:
+The expected verdict and the expected rules come from a **reference validator**, never from the library that produced the case. For both suites, it is the **KoSIT validator 1.6.3** with the official **XRechnung 3.0.2 configuration** of 2026-08-31 (CII D16B and UBL 2.1 schemas, CEN EN 16931 schematron 1.3.16, KoSIT XRechnung schematron 2.6.0, with the custom levels of its scenarios), the validator the German administration publishes. `confirm.sh` runs it through the Java bench (`java/`, library `kosit-validator`) and `tool confirm` records, for each document:
 
 - **valid** when the reference raises no error (warnings and information do not count);
 - **invalid** with the rules it raises as errors, `XSD` when its schema rejects the document: KoSIT then does not run the schematrons;
@@ -90,8 +90,8 @@ Each harness writes one JSON line per library and per suite, to `cases_<lang>.js
 ./gen.sh                            # regenerate the mutation cases (Go; ZERECHNUNG_DIR to use a local clone)
 ./fetch.sh                          # fetch the KoSIT test suite
 ./confirm.sh                        # run the reference, record the verdicts in cases.tsv
-cd ../polyglot && ./run.sh cases    # all nine languages (or: ./run.sh cases java rust)
-cd ../ecosystem && ./run.sh cases   # the Go libraries (or: ./run.sh cases facturx kanjo)
+cd .. && ./run.sh cases             # all nine languages (or: ./run.sh cases java rust)
+cd ../go && ./run.sh cases          # the Go libraries (or: ./run.sh cases facturx kanjo)
 ```
 
 `gen.sh` and `confirm.sh` are only needed to change the cases; `cases.tsv` is versioned. The confidence tables are part of the `tables.md` written by each report tool; they need the `cases_*.jsonl` files of the same results folder.

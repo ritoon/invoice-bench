@@ -6,7 +6,7 @@
 #
 # The reference of the en16931 and xrechnung suites is the KoSIT validator
 # with the official XRechnung 3.0.2 configuration of 2026-08-31, as the Java
-# bench runs it (polyglot/java, library kosit-validator): ../polyglot/java/run.sh
+# bench runs it (java/, library kosit-validator): ../java/run.sh
 # setup must have been run.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -16,5 +16,5 @@ cd "$(dirname "$0")"
 
 out=$(mktemp -d)
 trap 'rm -rf "$out"' EXIT
-OUT=$out ../polyglot/java/run.sh cases kosit-validator
+OUT=$out ../java/run.sh cases kosit-validator
 (cd tool && go run . confirm "$out")
