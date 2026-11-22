@@ -1,0 +1,293 @@
+cii-000-valid-cius.xml	
+cii-001-valid-extension.xml	
+cii-002-valid-cvd.xml	
+cii-003-valid-direct-debit.xml	
+cii-004-br-de-30-no-creditor-identifier.xml	BR-DE-30
+cii-005-br-de-30-creditor-identifier-only.xml	BR-DE-23-b BR-DE-30 BR-DE-31
+cii-006-br-de-31-no-debited-account.xml	BR-DE-20 BR-DE-31
+cii-007-br-de-1-no-payment-means.xml	BR-DE-1
+cii-008-br-de-15-blank-buyer-reference.xml	BR-DE-15 PEPPOL-EN16931-R008
+cii-009-br-de-16-no-seller-vat-identifier.xml	BR-DE-16 PEPPOL-EN16931-R008
+cii-010-br-de-16-tax-registration-fc.xml	
+cii-011-br-de-16-tax-representative.xml	PEPPOL-EN16931-R008
+cii-012-br-de-16-lines-in-category-o.xml	PEPPOL-EN16931-R008
+cii-013-br-de-16-formatted-charge-tax.xml	PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1
+cii-014-br-de-16-compact-charge-tax.xml	BR-DE-16 PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1
+cii-015-br-de-17-type-325.xml	BR-DE-17
+cii-016-br-de-17-type-877.xml	
+cii-017-br-de-18-percentage-without-decimals.xml	BR-DE-18
+cii-018-br-de-18-lower-case.xml	BR-DE-18
+cii-019-br-de-18-no-final-line-break.xml	BR-DE-18
+cii-020-br-de-18-base-amount.xml	
+cii-021-br-de-18-two-entries.xml	
+cii-022-br-de-22-duplicate-file-name.xml	BR-DE-22
+cii-023-br-de-22-distinct-file-names.xml	
+cii-024-br-de-26-corrected-invoice-without-reference.xml	BR-DE-26
+cii-025-br-de-26-corrected-invoice-with-reference.xml	
+cii-028-br-de-2-no-seller-contact.xml	BR-DE-2
+cii-029-br-de-3-blank-seller-city.xml	BR-DE-3 PEPPOL-EN16931-R008
+cii-030-br-de-4-no-seller-post-code.xml	BR-DE-4
+cii-031-br-de-5-no-contact-point.xml	BR-DE-5
+cii-032-br-de-5-department.xml	
+cii-033-br-de-6-no-telephone.xml	BR-DE-27 BR-DE-6 PEPPOL-EN16931-R008
+cii-034-br-de-7-no-email.xml	BR-DE-28 BR-DE-7 PEPPOL-EN16931-R008
+cii-035-br-de-27-two-digits.xml	BR-DE-27
+cii-036-br-de-28-one-label.xml	BR-DE-28
+cii-037-br-de-28-two.xml	BR-DE-28
+cii-038-br-de-28-space.xml	BR-DE-28
+cii-039-br-de-28-surrounding-space.xml	
+cii-040-br-de-8-blank-buyer-city.xml	BR-DE-8 PEPPOL-EN16931-R008
+cii-041-br-de-9-no-buyer-post-code.xml	BR-DE-9
+cii-042-br-de-10-no-deliver-to-city.xml	BR-DE-10
+cii-043-br-de-11-no-deliver-to-post-code.xml	BR-DE-11
+cii-044-br-tmp-2-relative-url.xml	BR-TMP-2
+cii-045-br-tmp-2-one-character-scheme.xml	BR-TMP-2
+cii-046-br-tmp-2-urn.xml	
+cii-047-br-tmp-4-two-descriptions.xml	BR-TMP-4
+cii-048-br-tmp-5-two-attachments.xml	BR-TMP-5
+cii-049-br-tmp-7-format-610.xml	BR-TMP-7
+cii-050-br-tmp-7-iso-date.xml	BR-TMP-7
+cii-051-br-tmp-7-tax-point-date.xml	BR-TMP-7
+cii-052-br-tmp-7-qdt-datestring-is-not-checked.xml	
+cii-053-br-de-19-iban-checksum.xml	BR-DE-19
+cii-054-br-de-19-iban-with-spaces.xml	
+cii-055-br-de-19-credit-transfer-30.xml	
+cii-056-br-de-23-a-no-credit-transfer.xml	BR-DE-23-a
+cii-057-br-de-23-b-card.xml	BR-DE-23-b
+cii-058-br-de-24-a-b-card-code.xml	BR-DE-24-a BR-DE-24-b
+cii-059-br-de-24-card.xml	
+cii-060-br-de-24-a-no-card.xml	BR-DE-24-a
+cii-061-br-de-24-b-card-and-account.xml	BR-DE-24-b
+cii-062-br-de-20-iban-checksum.xml	BR-DE-20
+cii-063-br-de-25-direct-debit-code-only.xml	BR-DE-20 BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061
+cii-064-br-de-25-b-creditor-institution.xml	BR-DE-25-b
+cii-065-br-de-14-no-vat-rate.xml	BR-DE-14
+cii-066-br-de-tmp-32-no-delivery-date.xml	BR-DE-TMP-32
+cii-067-br-de-tmp-32-invoicing-period.xml	
+cii-068-br-tmp-3-different-quantities.xml	BR-TMP-3
+cii-069-br-tmp-3-different-units.xml	BR-TMP-3 PEPPOL-EN16931-R130
+cii-070-br-tmp-3-unit-on-the-net-price-only.xml	
+cii-071-br-dex-15-sub-line.xml	BR-DEX-15
+cii-072-br-dex-15-needs-the-extension.xml	
+cii-073-br-dex-04-unknown-scheme.xml	BR-DEX-04
+cii-074-br-dex-04-xr01.xml	
+cii-075-br-dex-04-empty-scheme-passes.xml	
+cii-076-br-dex-04-two-schemes.xml	BR-DEX-04
+cii-077-br-dex-04-needs-the-extension.xml	
+cii-078-br-dex-05-legal-organization.xml	BR-DEX-05
+cii-079-br-dex-05-tax-registration-is-not-checked.xml	BR-DE-16
+cii-080-br-dex-06-item-identifier.xml	BR-DEX-06
+cii-081-br-dex-07-electronic-address.xml	BR-DEX-07
+cii-082-br-dex-07-xr02.xml	
+cii-083-br-dex-08-deliver-to-location.xml	BR-DEX-08
+cii-084-br-dex-01-mime-code.xml	BR-DEX-01
+cii-085-br-dex-01-xml-attachment.xml	
+cii-086-br-dex-01-no-mime-code.xml	BR-DEX-01
+cii-087-br-de-cvd-03-no-cvd-classification.xml	BR-DE-CVD-03 BR-DE-CVD-06-b
+cii-088-br-de-cvd-06-b-two-classifications.xml	BR-DE-CVD-06-b
+cii-089-br-de-cvd-06-a-two-attributes.xml	BR-DE-CVD-06-a
+cii-090-br-tmp-cvd-01-unknown-list.xml	BR-TMP-CVD-01
+cii-091-br-tmp-cvd-01-empty-list-passes.xml	
+cii-092-br-de-cvd-04-vehicle-category.xml	BR-DE-CVD-04
+cii-093-br-de-cvd-05-attribute-value.xml	BR-DE-CVD-05
+cii-094-br-de-cvd-01-no-contract.xml	BR-DE-CVD-01
+cii-095-br-de-cvd-02-no-tender.xml	BR-DE-CVD-02
+cii-096-br-de-cvd-need-the-cvd-identifier.xml	
+cii-097-peppol-en16931-r001-no-business-process.xml	PEPPOL-EN16931-R001
+cii-098-peppol-en16931-r001-blank-business-process.xml	PEPPOL-EN16931-R008
+cii-099-peppol-en16931-r005-vat-accounting-currency-of-the-invoice.xml	PEPPOL-EN16931-R005 PEPPOL-EN16931-R054
+cii-100-peppol-en16931-r053-two-totals-in-the-invoice-currency.xml	PEPPOL-EN16931-R053
+cii-101-peppol-en16931-r054-no-total-in-the-accounting-currency.xml	PEPPOL-EN16931-R054 PEPPOL-EN16931-R055
+cii-102-peppol-en16931-r054-total-in-the-accounting-currency.xml	
+cii-103-peppol-en16931-r054-total-without-accounting-currency.xml	PEPPOL-EN16931-R054
+cii-104-peppol-en16931-r055-opposite-signs.xml	PEPPOL-EN16931-R055
+cii-105-peppol-en16931-r010-no-buyer-electronic-address.xml	PEPPOL-EN16931-R010
+cii-106-peppol-en16931-r020-no-seller-electronic-address.xml	PEPPOL-EN16931-R020
+cii-107-peppol-en16931-r041-percentage-without-base-amount.xml	PEPPOL-EN16931-R041
+cii-108-peppol-en16931-r042-base-amount-without-percentage.xml	PEPPOL-EN16931-R042
+cii-109-peppol-en16931-r041-before-r043-1.xml	PEPPOL-EN16931-R041
+cii-110-peppol-en16931-r040-amount.xml	PEPPOL-EN16931-R040
+cii-111-peppol-en16931-r040-within-the-slack.xml	
+cii-112-peppol-en16931-r040-huf-slack.xml	
+cii-113-peppol-en16931-r040-beyond-the-huf-slack.xml	PEPPOL-EN16931-R040
+cii-114-peppol-en16931-r043-1-indicator-1.xml	PEPPOL-EN16931-R043-1
+cii-115-peppol-en16931-r043-1-spaced-indicator.xml	
+cii-116-peppol-en16931-r043-1-line-allowance.xml	PEPPOL-EN16931-R043-1
+cii-117-peppol-en16931-r043-2-price-allowance.xml	PEPPOL-EN16931-R043-2 PEPPOL-EN16931-R044
+cii-118-peppol-en16931-r044-charge-on-the-price.xml	PEPPOL-EN16931-R044
+cii-119-peppol-en16931-r044-spaced-indicator.xml	PEPPOL-EN16931-R044
+cii-120-peppol-en16931-r046-net-price.xml	PEPPOL-EN16931-R046
+cii-121-peppol-en16931-r046-gross-price-minus-allowance.xml	
+cii-122-peppol-en16931-r046-no-net-price.xml	PEPPOL-EN16931-R046 PEPPOL-EN16931-R120
+cii-123-peppol-en16931-r110-line-period-starts-before.xml	PEPPOL-EN16931-R110
+cii-124-peppol-en16931-r111-line-period-ends-after.xml	PEPPOL-EN16931-R111
+cii-125-peppol-en16931-r110-needs-an-invoice-start-date.xml	
+cii-126-peppol-en16931-r120-line-net-amount.xml	PEPPOL-EN16931-R120
+cii-127-peppol-en16931-r120-within-the-slack.xml	
+cii-128-peppol-en16931-r120-line-allowance.xml	PEPPOL-EN16931-R120
+cii-129-peppol-en16931-r120-base-quantity-of-the-gross-price.xml	
+cii-130-peppol-en16931-r121-zero-base-quantity.xml	PEPPOL-EN16931-R121
+cii-131-peppol-en16931-r101-line-object.xml	PEPPOL-EN16931-R101
+cii-132-peppol-en16931-r101-type-code-130.xml	
+cii-133-peppol-en16931-r008-empty-delivery.xml	
+ubl-000-valid-cius.xml	
+ubl-001-valid-credit-note.xml	
+ubl-002-valid-extension.xml	
+ubl-003-valid-cvd.xml	
+ubl-004-valid-cvd-credit-note.xml	
+ubl-005-valid-direct-debit.xml	
+ubl-006-valid-extension-direct-debit.xml	
+ubl-007-valid-third-party-payment.xml	
+ubl-008-br-de-1-no-payment-means.xml	BR-DE-1
+ubl-009-br-de-15-blank-buyer-reference.xml	BR-DE-15 PEPPOL-EN16931-R008
+ubl-010-br-de-15-no-buyer-reference.xml	BR-DE-15
+ubl-011-br-de-16-no-seller-vat-identifier.xml	BR-DE-16
+ubl-012-br-de-16-blank-vat-identifier.xml	BR-DE-16 PEPPOL-EN16931-R008
+ubl-013-br-de-16-tax-representative.xml	
+ubl-014-br-de-16-lines-in-category-o.xml	
+ubl-015-br-de-16-document-charge-in-category-s.xml	BR-DE-16
+ubl-016-br-de-16-spaced-charge-indicator.xml	
+ubl-017-br-de-17-type-325.xml	BR-DE-17
+ubl-018-br-de-17-type-877.xml	
+ubl-019-br-de-17-credit-note-383.xml	BR-DE-17
+ubl-020-br-de-17-no-type-code.xml	BR-DE-17
+ubl-021-br-de-18-percentage-without-decimals.xml	BR-DE-18
+ubl-022-br-de-18-no-final-line-break.xml	BR-DE-18
+ubl-023-br-de-18-base-amount.xml	
+ubl-024-br-de-18-second-note-is-not-checked.xml	
+ubl-025-br-de-18-second-payment-terms.xml	BR-DE-18
+ubl-028-br-de-22-duplicate-file-name.xml	BR-DE-22
+ubl-029-br-de-22-distinct-file-names.xml	
+ubl-030-br-de-26-corrected-invoice-without-reference.xml	BR-DE-26
+ubl-031-br-de-26-corrected-invoice-with-reference.xml	
+ubl-032-br-de-30-no-creditor-identifier.xml	BR-DE-30
+ubl-033-br-de-30-creditor-identifier-of-the-payee.xml	
+ubl-034-br-de-30-scheme-sepa.xml	BR-DE-30
+ubl-035-br-de-31-no-debited-account.xml	BR-DE-20 BR-DE-31
+ubl-036-br-de-tmp-32-no-delivery-date.xml	BR-DE-TMP-32
+ubl-037-br-de-tmp-32-invoicing-period.xml	
+ubl-038-br-de-tmp-32-period-on-every-line.xml	
+ubl-039-br-de-tmp-32-period-on-one-line.xml	BR-DE-TMP-32
+ubl-040-br-tmp-2-relative-url.xml	BR-TMP-2
+ubl-041-br-tmp-2-one-character-scheme.xml	BR-TMP-2
+ubl-042-br-tmp-2-no-uri.xml	BR-TMP-2 PEPPOL-EN16931-R008
+ubl-043-br-tmp-2-urn.xml	
+ubl-044-br-tmp-6-date-and-time.xml	BR-TMP-6
+ubl-045-br-tmp-6-basic-format.xml	BR-TMP-6
+ubl-046-br-tmp-6-surrounding-spaces.xml	
+ubl-047-br-tmp-6-line-period.xml	BR-TMP-6
+ubl-048-br-tmp-6-payment-due-date.xml	BR-TMP-6
+ubl-049-br-de-2-no-seller-contact.xml	BR-DE-2
+ubl-050-br-de-3-blank-seller-city.xml	BR-DE-3 PEPPOL-EN16931-R008
+ubl-051-br-de-4-no-seller-post-code.xml	BR-DE-4
+ubl-052-br-de-5-no-contact-point.xml	BR-DE-5
+ubl-053-br-de-6-no-telephone.xml	BR-DE-27 BR-DE-6
+ubl-054-br-de-7-no-email.xml	BR-DE-28 BR-DE-7
+ubl-055-br-de-27-two-digits.xml	BR-DE-27
+ubl-056-br-de-28-one-label.xml	BR-DE-28
+ubl-057-br-de-28-surrounding-space.xml	
+ubl-058-br-de-8-blank-buyer-city.xml	BR-DE-8 PEPPOL-EN16931-R008
+ubl-059-br-de-9-no-buyer-post-code.xml	BR-DE-9
+ubl-060-br-de-10-no-deliver-to-city.xml	BR-DE-10
+ubl-061-br-de-11-no-deliver-to-post-code.xml	BR-DE-11
+ubl-062-br-de-19-iban-checksum.xml	BR-DE-19
+ubl-063-br-de-19-iban-with-spaces.xml	
+ubl-064-br-de-19-credit-transfer-30.xml	
+ubl-065-br-de-19-spaced-code.xml	BR-DE-19
+ubl-066-br-de-23-a-no-credit-transfer.xml	BR-DE-23-a
+ubl-067-br-de-23-b-card.xml	BR-DE-23-b
+ubl-068-br-de-23-b-mandate.xml	BR-DE-23-b
+ubl-069-br-de-23-b-mandate-without-creditor-identifier.xml	BR-DE-23-b BR-DE-30
+ubl-070-br-de-24-a-b-card-code.xml	BR-DE-24-a BR-DE-24-b
+ubl-071-br-de-24-card.xml	
+ubl-072-br-de-24-b-card-and-mandate.xml	BR-DE-24-b
+ubl-073-br-de-20-iban-checksum.xml	BR-DE-20
+ubl-074-br-de-25-direct-debit-code-only.xml	BR-DE-20 BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061
+ubl-075-br-de-25-b-card.xml	BR-DE-25-b
+ubl-076-br-de-14-no-vat-rate.xml	BR-DE-14
+ubl-077-br-de-14-blank-vat-rate.xml	BR-DE-14 PEPPOL-EN16931-R008
+ubl-078-br-dex-01-zip-attachment.xml	BR-DEX-01
+ubl-079-br-dex-01-xml-attachment.xml	
+ubl-080-br-dex-01-needs-the-extension.xml	
+ubl-081-br-dex-02-sub-lines.xml	
+ubl-082-br-dex-02-wrong-sum.xml	BR-DEX-02
+ubl-083-br-dex-02-nested-sub-lines.xml	BR-DEX-02
+ubl-084-br-dex-02-nested-sub-lines-sum.xml	
+ubl-085-br-dex-02-not-a-decimal.xml	BR-DEX-02
+ubl-086-br-dex-02-needs-the-extension.xml	
+ubl-087-br-dex-03-no-vat-category.xml	BR-DEX-03
+ubl-088-br-dex-03-two-vat-categories.xml	BR-DEX-03
+ubl-090-br-dex-09-wrong-amount-due.xml	BR-DEX-09
+ubl-091-br-dex-09-rounded-to-cents.xml	
+ubl-092-br-dex-09-half-rounds-up.xml	
+ubl-093-br-dex-09-paid-and-rounding-amounts.xml	
+ubl-095-br-dex-09-no-amount-due.xml	BR-DEX-09
+ubl-096-br-dex-09-needs-the-extension.xml	
+ubl-097-br-dex-04-unknown-scheme.xml	BR-DEX-04
+ubl-098-br-dex-04-xr01.xml	
+ubl-099-br-dex-04-empty-scheme-passes.xml	
+ubl-100-br-dex-04-sepa-of-the-buyer.xml	BR-DEX-04
+ubl-101-br-dex-04-sepa-of-the-payee.xml	
+ubl-102-br-dex-05-legal-registration.xml	BR-DEX-05
+ubl-103-br-dex-05-vat-identifier-is-not-checked.xml	
+ubl-104-br-dex-06-item-identifier.xml	BR-DEX-06
+ubl-105-br-dex-07-endpoint.xml	BR-DEX-07
+ubl-106-br-dex-07-xr02.xml	
+ubl-107-br-dex-08-deliver-to-location.xml	BR-DEX-08
+ubl-108-br-dex-10-blank-payment-type.xml	BR-DEX-10 PEPPOL-EN16931-R008
+ubl-109-br-dex-11-no-amount.xml	BR-DEX-09 BR-DEX-11 BR-DEX-14
+ubl-110-br-dex-12-no-description.xml	BR-DEX-12
+ubl-111-br-dex-13-three-decimals.xml	BR-DEX-13
+ubl-112-br-dex-14-other-currency.xml	BR-DEX-14
+ubl-114-br-dex-10-to-14-need-the-extension.xml	PEPPOL-EN16931-R008
+ubl-115-br-de-cvd-02-no-tender-reference.xml	BR-DE-CVD-02
+ubl-116-br-de-cvd-01-no-contract-reference.xml	BR-DE-CVD-01
+ubl-117-br-de-cvd-03-no-vehicle-line.xml	BR-DE-CVD-03
+ubl-118-br-de-cvd-06-a-no-cva.xml	BR-DE-CVD-03 BR-DE-CVD-06-a
+ubl-119-br-de-cvd-06-a-two-cva.xml	BR-DE-CVD-06-a
+ubl-120-br-de-cvd-06-b-two-classes.xml	BR-DE-CVD-06-b
+ubl-121-br-de-cvd-06-b-no-class.xml	BR-DE-CVD-03 BR-DE-CVD-06-b
+ubl-122-br-tmp-cvd-01-unknown-list.xml	BR-TMP-CVD-01
+ubl-123-br-tmp-cvd-01-no-list-passes.xml	
+ubl-124-br-de-cvd-04-category-l1.xml	BR-DE-CVD-04
+ubl-125-br-de-cvd-04-credit-note.xml	BR-DE-CVD-04
+ubl-126-br-de-cvd-05-diesel.xml	BR-DE-CVD-05
+ubl-127-br-de-cvd-need-the-cvd-identifier.xml	
+ubl-128-peppol-en16931-r043-document-allowance.xml	PEPPOL-EN16931-R043
+ubl-129-peppol-en16931-r043-spaced-indicator.xml	
+ubl-130-peppol-en16931-r043-percentage-and-base-amount.xml	PEPPOL-EN16931-R043
+ubl-131-peppol-en16931-r041-percentage-only.xml	PEPPOL-EN16931-R041
+ubl-132-peppol-en16931-r042-base-amount-only.xml	PEPPOL-EN16931-R042
+ubl-133-peppol-en16931-r043-line-allowance.xml	PEPPOL-EN16931-R043
+ubl-134-peppol-en16931-r043-credit-note-line.xml	PEPPOL-EN16931-R008 PEPPOL-EN16931-R043
+ubl-135-peppol-en16931-r001-no-business-process.xml	PEPPOL-EN16931-R001
+ubl-136-peppol-en16931-r005-vat-accounting-currency-of-the-invoice.xml	PEPPOL-EN16931-R005 PEPPOL-EN16931-R054
+ubl-137-peppol-en16931-r053-two-tax-totals-with-subtotals.xml	PEPPOL-EN16931-R053
+ubl-138-peppol-en16931-r054-no-tax-total-in-the-accounting-currency.xml	PEPPOL-EN16931-R054 PEPPOL-EN16931-R055
+ubl-139-peppol-en16931-r054-tax-total-in-the-accounting-currency.xml	
+ubl-140-peppol-en16931-r054-tax-total-without-accounting-currency.xml	PEPPOL-EN16931-R054
+ubl-141-peppol-en16931-r055-opposite-signs.xml	PEPPOL-EN16931-R055
+ubl-142-peppol-en16931-r010-no-buyer-electronic-address.xml	PEPPOL-EN16931-R010
+ubl-143-peppol-en16931-r020-no-seller-electronic-address.xml	PEPPOL-EN16931-R020
+ubl-144-peppol-en16931-r040-amount.xml	PEPPOL-EN16931-R040
+ubl-145-peppol-en16931-r040-within-the-slack.xml	
+ubl-146-peppol-en16931-r040-huf-slack.xml	
+ubl-147-peppol-en16931-r040-beyond-the-huf-slack.xml	PEPPOL-EN16931-R040
+ubl-148-peppol-en16931-r110-line-period-starts-before.xml	PEPPOL-EN16931-R110
+ubl-149-peppol-en16931-r111-line-period-ends-after.xml	PEPPOL-EN16931-R111
+ubl-150-peppol-en16931-r111-credit-note.xml	PEPPOL-EN16931-R111
+ubl-151-peppol-en16931-r110-needs-an-invoice-start-date.xml	
+ubl-152-peppol-en16931-r120-line-net-amount.xml	PEPPOL-EN16931-R120
+ubl-153-peppol-en16931-r120-credit-note.xml	PEPPOL-EN16931-R120
+ubl-154-peppol-en16931-r120-within-the-slack.xml	
+ubl-155-peppol-en16931-r120-line-allowance.xml	PEPPOL-EN16931-R120
+ubl-156-peppol-en16931-r121-zero-base-quantity.xml	PEPPOL-EN16931-R121
+ubl-157-peppol-en16931-r101-line-object.xml	PEPPOL-EN16931-R101
+ubl-158-peppol-en16931-r101-type-code-130.xml	
+ubl-159-peppol-en16931-r044-charge-on-the-price.xml	PEPPOL-EN16931-R044
+ubl-160-peppol-en16931-r044-spaced-indicator.xml	
+ubl-161-peppol-en16931-r046-net-price.xml	PEPPOL-EN16931-R046
+ubl-162-peppol-en16931-r046-base-amount-minus-allowance.xml	
+ubl-163-peppol-en16931-r130-unit-of-the-base-quantity.xml	PEPPOL-EN16931-R130
+ubl-164-peppol-en16931-r008-empty-order-reference-identifier.xml	
+ubl-165-peppol-en16931-r008-empty-order-reference.xml	PEPPOL-EN16931-R008

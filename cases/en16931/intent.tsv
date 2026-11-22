@@ -1,0 +1,182 @@
+cii-000-br-02-invoice-number.xml	BR-02
+cii-001-br-03-issue-date-format.xml	BR-03
+cii-002-br-05-currency.xml	BR-05
+cii-003-br-06-seller-name.xml	BR-06
+cii-004-br-11-buyer-country.xml	BR-11
+cii-005-br-16-no-line.xml	BR-16 BR-CO-10 BR-S-08
+cii-006-br-21-br-25-line-id-and-item-name.xml	BR-21 BR-25
+cii-007-br-23-unit-code.xml	BR-23
+cii-008-br-27-negative-net-price.xml	BR-27
+cii-009-br-17-payee-named-as-seller.xml	BR-17
+cii-010-br-29-period-order.xml	BR-29
+cii-011-br-co-19-empty-period.xml	BR-CO-19
+cii-012-br-31-br-32-br-33-allowance.xml	BR-31 BR-32 BR-33 BR-CO-11 BR-CO-21
+cii-013-br-36-charge.xml	BR-36 BR-CO-12
+cii-014-br-co-04-line-category.xml	BR-CO-04 BR-S-08
+cii-015-br-co-09-vat-prefix.xml	BR-CO-09
+cii-016-br-co-10-line-total.xml	BR-CO-10 BR-CO-13
+cii-017-br-co-11-to-br-co-13-allowance-totals.xml	BR-CO-11 BR-CO-14
+cii-018-allowance-consistent.xml	
+cii-019-br-co-16-amount-due.xml	BR-CO-16
+cii-020-br-co-17-and-br-s-09-tolerance.xml	BR-S-09
+cii-021-br-co-26-seller-identifier.xml	BR-CO-26 BR-S-02
+cii-022-br-dec-amounts.xml	BR-DEC-18
+cii-023-br-b-01-split-payment-outside-italy.xml	BR-B-01
+cii-024-br-cl-01-type-code.xml	BR-CL-01
+cii-025-br-cl-04-currency-normalized.xml	BR-CO-15
+cii-026-br-cl-04-invalid-currency.xml	BR-CL-04 BR-CO-15
+cii-027-br-cl-14-kosovo-not-in-1-3-17.xml	BR-CL-14
+cii-028-br-cl-14-invalid-country.xml	BR-CL-14
+cii-029-br-cl-23-unit.xml	BR-CL-23
+cii-030-br-cl-25-eas.xml	BR-CL-25
+cii-031-br-62-no-scheme.xml	BR-62
+cii-032-br-cl-22-vatex-case-insensitive.xml	
+cii-033-br-s-05-zero-rate.xml	BR-S-05 BR-S-08
+cii-034-br-s-10-exemption.xml	BR-S-10
+cii-035-br-z-valid.xml	
+cii-036-br-z-10-exemption.xml	BR-Z-10
+cii-037-br-e-10-no-exemption.xml	BR-E-10
+cii-038-br-e-08-taxable-amount.xml	BR-E-08
+cii-039-br-ae-02-buyer-identifier.xml	BR-AE-02
+cii-040-br-ic-11-br-ic-12-delivery.xml	BR-IC-11 BR-IC-12
+cii-041-br-g-02-seller-vat.xml	BR-CO-26 BR-G-02
+cii-042-br-o-02-br-o-05-not-subject.xml	BR-O-02 BR-O-05
+cii-043-br-o-11-other-categories.xml	BR-O-01 BR-O-11 BR-O-12
+cii-044-br-ip-05-igic-rate.xml	BR-IP-05
+cii-045-br-ig-10-ipsi-exemption.xml	BR-IG-10
+cii-046-br-s-01-missing-breakdown.xml	BR-CO-14 BR-CO-18 BR-S-01
+cii-047-cii-sr-002-test-indicator.xml	CII-SR-002
+cii-048-cii-sr-010-specification-identifier-count.xml	CII-SR-010
+cii-049-cii-dt-031-currencyid-on-amount.xml	CII-DT-031
+cii-050-cii-dt-097-date-format-102.xml	CII-DT-097
+cii-051-cii-sr-466-buyer-contact.xml	CII-SR-466
+cii-052-cii-sr-469-payment-references.xml	CII-SR-469
+cii-053-cii-sr-477-line-total-count.xml	CII-SR-477
+cii-054-cii-dt-033-unit-code-without-billed-unit.xml	BR-23 CII-DT-033
+cii-057-xrechnung-severities.xml	BR-CL-23
+cii-059-vat-category-s-with-allowance-and-charge.xml	
+cii-060-br-s-02-to-br-s-04-seller-without-vat-identifier.xml	BR-S-02 BR-S-03 BR-S-04
+cii-061-vat-category-e-with-allowance-and-charge.xml	
+cii-062-br-e-02-to-br-e-04-seller-without-vat-identifier.xml	BR-E-02 BR-E-03 BR-E-04
+cii-063-vat-category-z-with-allowance-and-charge.xml	
+cii-064-br-z-01-two-breakdowns.xml	BR-Z-01
+cii-065-br-z-02-to-br-z-04-seller-without-vat-identifier.xml	BR-Z-02 BR-Z-03 BR-Z-04
+cii-066-br-z-05-to-br-z-07-rates.xml	BR-Z-05 BR-Z-06 BR-Z-07
+cii-067-br-z-08-taxable-amount.xml	BR-Z-08
+cii-068-br-z-09-tax-amount.xml	BR-Z-09
+cii-069-vat-category-ae-with-allowance-and-charge.xml	
+cii-070-br-ae-01-two-breakdowns.xml	BR-AE-01
+cii-071-br-ae-02-to-br-ae-04-buyer-without-vat-identifier.xml	BR-AE-02 BR-AE-03 BR-AE-04
+cii-072-br-ae-05-to-br-ae-07-rates.xml	BR-AE-05 BR-AE-06 BR-AE-07
+cii-073-br-ae-08-taxable-amount.xml	BR-AE-08
+cii-074-br-ae-09-tax-amount.xml	BR-AE-09
+cii-075-br-ae-10-no-exemption-reason.xml	BR-AE-10
+cii-076-vat-category-k-with-allowance-and-charge.xml	
+cii-077-br-ic-01-two-breakdowns.xml	BR-IC-01
+cii-078-br-ic-02-to-br-ic-04-buyer-without-vat-identifier.xml	BR-IC-02 BR-IC-03 BR-IC-04
+cii-079-br-ic-05-to-br-ic-07-rates.xml	BR-IC-05 BR-IC-06 BR-IC-07
+cii-080-br-ic-09-tax-amount.xml	BR-IC-09
+cii-081-vat-category-g-with-allowance-and-charge.xml	
+cii-082-br-g-01-two-breakdowns.xml	BR-G-01
+cii-083-br-g-02-to-br-g-04-seller-without-vat-identifier.xml	BR-G-02 BR-G-03 BR-G-04
+cii-084-br-g-05-to-br-g-07-rates.xml	BR-G-05 BR-G-06 BR-G-07
+cii-085-vat-category-o-with-allowance-and-charge.xml	
+cii-086-br-o-02-to-br-o-04-seller-vat-identifier.xml	BR-O-02 BR-O-03 BR-O-04
+cii-087-br-o-05-to-br-o-07-rates.xml	BR-O-05 BR-O-06 BR-O-07
+cii-088-br-o-08-taxable-amount.xml	BR-O-08
+cii-089-br-o-09-tax-amount.xml	BR-O-09
+cii-090-br-o-10-no-exemption-reason.xml	BR-O-10
+cii-091-vat-category-l-igic-with-allowance-and-charge.xml	
+cii-092-br-ip-01-igic-without-breakdown.xml	BR-CO-14 BR-CO-18 BR-IP-01
+cii-093-br-ip-02-to-br-ip-04-igic-seller-without-vat-identifier.xml	BR-IP-02 BR-IP-03 BR-IP-04
+cii-094-br-ip-05-to-br-ip-07-igic-zero-rates.xml	BR-IP-05 BR-IP-06 BR-IP-07
+cii-095-br-ip-10-igic-exemption-reason.xml	BR-IP-10
+cii-096-vat-category-m-ipsi-with-allowance-and-charge.xml	
+cii-097-br-ig-01-ipsi-without-breakdown.xml	BR-CO-14 BR-CO-18 BR-IG-01
+cii-098-br-ig-02-to-br-ig-04-ipsi-seller-without-vat-identifier.xml	BR-IG-02 BR-IG-03 BR-IG-04
+cii-099-br-ig-05-to-br-ig-07-ipsi-negative-rates.xml	BR-IG-05 BR-IG-06 BR-IG-07
+cii-100-vat-category-b-between-italian-parties.xml	
+cii-101-br-b-02-split-payment-and-standard-rate.xml	BR-B-02
+cii-102-invoice-with-optional-elements.xml	
+cii-103-br-42-br-co-23-line-allowance-reason.xml	BR-42 BR-CO-23
+cii-104-br-44-br-co-24-line-charge-reason.xml	BR-44 BR-CO-24
+cii-105-br-dec-02-br-dec-05-br-dec-06-document-level-allowance-and-charge.xml	BR-DEC-02 BR-DEC-05 BR-DEC-06
+cii-106-br-dec-10-to-br-dec-17-document-totals.xml	BR-DEC-10 BR-DEC-11 BR-DEC-14 BR-DEC-15 BR-DEC-16 BR-DEC-17
+cii-107-br-dec-19-br-dec-20-vat-breakdown.xml	BR-DEC-19 BR-DEC-20
+cii-108-br-dec-23-to-br-dec-28-invoice-line.xml	BR-DEC-23 BR-DEC-24 BR-DEC-25 BR-DEC-27 BR-DEC-28
+cii-109-br-cl-03-br-cl-05-vat-accounting-currency.xml	BR-CL-03 BR-CL-05
+cii-110-br-cl-15-country-of-origin.xml	BR-CL-15
+cii-111-br-cl-16-payment-means.xml	BR-CL-16
+cii-112-br-cl-17-allowance-vat-category.xml	BR-CL-17 BR-S-08
+cii-113-br-cl-18-line-vat-category.xml	BR-CL-18 BR-E-01 BR-E-08
+cii-114-br-cl-19-allowance-reason-code.xml	BR-CL-19
+cii-115-br-cl-20-charge-reason-code.xml	BR-CL-20
+cii-116-br-cl-21-item-identifier-scheme.xml	BR-CL-21
+cii-117-br-cl-22-exemption-reason-code.xml	BR-CL-22
+cii-118-br-cl-26-deliver-to-location-identifier-scheme.xml	BR-CL-26
+ubl-000-valid.xml	
+ubl-001-valid-credit-note.xml	
+ubl-002-extensions.xml	UBL-CR-001
+ubl-003-ubl-2-1.xml	
+ubl-004-ubl-2-0.xml	UBL-CR-002
+ubl-005-payment-due-date-in-invoice.xml	UBL-CR-412
+ubl-006-line-uuid.xml	UBL-CR-515
+ubl-007-unit-code-list.xml	UBL-CR-663
+ubl-008-tax-scheme-company-scheme.xml	UBL-CR-652
+ubl-009-supporting-document-scheme.xml	UBL-CR-665 UBL-SR-43
+ubl-010-supporting-document-type.xml	UBL-SR-43
+ubl-011-invoiced-object.xml	
+ubl-012-invoiced-object-with-attachment.xml	UBL-CR-666 UBL-CR-673
+ubl-013-invoiced-object-scheme.xml	BR-CL-07
+ubl-014-two-invoiced-objects.xml	UBL-SR-04
+ubl-015-credit-note-preceding-invoice-scheme.xml	UBL-CR-665
+ubl-016-address-lines.xml	UBL-SR-51
+ubl-017-two-line-tax-categories.xml	UBL-SR-48
+ubl-018-payee-is-seller.xml	UBL-SR-19 UBL-SR-20 UBL-SR-21
+ubl-019-payee.xml	
+ubl-020-payment-identifiers.xml	UBL-SR-44
+ubl-021-payment-means-codes.xml	UBL-SR-47
+ubl-022-amount-decimals.xml	BR-DEC-18 UBL-DT-01
+ubl-023-binary-object.xml	UBL-DT-06 UBL-DT-07
+ubl-024-binary-object-mime.xml	BR-CL-24
+ubl-025-scheme-name.xml	UBL-DT-08
+ubl-026-name-attribute.xml	UBL-DT-18
+ubl-027-payment-means-name.xml	
+ubl-028-payment-means-names.xml	UBL-SR-46
+ubl-029-seller-identifiers-of-another-tax-scheme.xml	UBL-SR-13
+ubl-030-g-account-elements.xml	UBL-CR-411 UBL-CR-453 UBL-CR-459
+ubl-034-invoice-type-code-of-a-credit-note.xml	BR-CL-01
+ubl-035-credit-note-type-code-of-an-invoice.xml	BR-CL-01
+ubl-036-note-subject.xml	
+ubl-037-note-subject-code.xml	BR-CL-08
+ubl-038-seller-sepa-identifier.xml	
+ubl-039-buyer-sepa-identifier.xml	BR-CL-10
+ubl-040-tax-point-date-code.xml	
+ubl-041-tax-point-date-code-list.xml	BR-CL-06
+ubl-042-tax-point-date.xml	
+ubl-043-tax-point-date-and-code.xml	BR-CO-03
+ubl-044-vat-accounting-currency.xml	BR-53
+ubl-045-amount-currency.xml	BR-CL-03
+ubl-046-unit-code.xml	BR-CL-23
+ubl-047-country-code.xml	BR-CL-14
+ubl-048-seller-without-address.xml	BR-08
+ubl-049-seller-address-without-country.xml	BR-09
+ubl-050-payee-with-the-seller-trading-name.xml	BR-17
+ubl-051-payee-without-name.xml	BR-17 UBL-SR-19 UBL-SR-20 UBL-SR-21
+ubl-052-credit-transfer-without-account.xml	BR-61
+ubl-053-credit-transfer.xml	
+ubl-054-endpoint-without-scheme.xml	BR-62
+ubl-055-endpoint-with-an-empty-scheme.xml	BR-CL-25
+ubl-056-decimals-as-text.xml	BR-DEC-12 UBL-DT-01
+ubl-057-empty-supporting-document-reference.xml	BR-52
+ubl-058-empty-tender-reference.xml	
+ubl-059-credit-note-empty-project-reference.xml	BR-52
+ubl-060-preceding-invoice-without-reference.xml	BR-55 UBL-SR-07
+ubl-061-tax-representative-without-vat-identifier.xml	BR-56
+ubl-062-tax-representative-without-address.xml	BR-19
+ubl-063-item-identifier-without-scheme.xml	BR-64
+ubl-064-item-classification-without-scheme.xml	BR-65
+ubl-065-lines-not-subject-to-vat.xml	BR-O-01 BR-O-02 BR-S-01 BR-S-08
+ubl-066-second-tax-total-with-a-breakdown.xml	BR-CO-15
+ubl-067-tax-total-of-another-breakdown.xml	BR-CO-14 BR-CO-15
+ubl-068-zero-rated-breakdown-without-lines.xml	
