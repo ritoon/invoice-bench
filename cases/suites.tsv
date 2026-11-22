@@ -1,0 +1,3 @@
+suite	syntaxes	countries	title	reference	external	unchecked
+en16931	cii ubl	DE	EN 16931 core rules	java kosit-validator		BR-CO-25
+xrechnung	cii ubl	DE	XRechnung 3.0.2	java kosit-validator	external/xrechnung-testsuite/src/test/*/*/*.xml	BR-CO-25

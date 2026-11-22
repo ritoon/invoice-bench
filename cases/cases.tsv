@@ -1,0 +1,562 @@
+suite	file	syntax	sha256	verdict	rules	intent	note
+en16931	en16931/cii-000-br-02-invoice-number.xml	cii	bb950b2d14dc	invalid	BR-02	BR-02	
+en16931	en16931/cii-001-br-03-issue-date-format.xml	cii	22864ddee88c	invalid	BR-03	BR-03	
+en16931	en16931/cii-002-br-05-currency.xml	cii	4d52bf66aa95	invalid	BR-05	BR-05	
+en16931	en16931/cii-003-br-06-seller-name.xml	cii	772d7a14df41	invalid	BR-06	BR-06	
+en16931	en16931/cii-004-br-11-buyer-country.xml	cii	86431733ab45	invalid	BR-11	BR-11	
+en16931	en16931/cii-005-br-16-no-line.xml	cii	8360c6ef7b26	invalid	BR-16 BR-CO-10 BR-S-08	BR-16 BR-CO-10 BR-S-08	
+en16931	en16931/cii-006-br-21-br-25-line-id-and-item-name.xml	cii	f53ed5f32787	invalid	BR-21 BR-25	BR-21 BR-25	
+en16931	en16931/cii-007-br-23-unit-code.xml	cii	92d54ae19a9e	invalid	BR-23	BR-23	
+en16931	en16931/cii-008-br-27-negative-net-price.xml	cii	886b3518246d	invalid	BR-27	BR-27	
+en16931	en16931/cii-009-br-17-payee-named-as-seller.xml	cii	1754ecf7c2ef	invalid	BR-17	BR-17	
+en16931	en16931/cii-010-br-29-period-order.xml	cii	26e41dd55904	invalid	XSD	BR-29	
+en16931	en16931/cii-011-br-co-19-empty-period.xml	cii	255c781a54a5	invalid	XSD	BR-CO-19	
+en16931	en16931/cii-012-br-31-br-32-br-33-allowance.xml	cii	6a10d7c2d483	invalid	XSD	BR-31 BR-32 BR-33 BR-CO-11 BR-CO-21	
+en16931	en16931/cii-013-br-36-charge.xml	cii	ce3eb2e02411	invalid	XSD	BR-36 BR-CO-12	
+en16931	en16931/cii-014-br-co-04-line-category.xml	cii	ec1f051a0f4b	invalid	BR-CO-04 BR-S-08	BR-CO-04 BR-S-08	
+en16931	en16931/cii-015-br-co-09-vat-prefix.xml	cii	6260a169c640	invalid	BR-CO-09	BR-CO-09	
+en16931	en16931/cii-016-br-co-10-line-total.xml	cii	96c25a497a02	invalid	BR-CO-10 BR-CO-13	BR-CO-10 BR-CO-13	
+en16931	en16931/cii-017-br-co-11-to-br-co-13-allowance-totals.xml	cii	997603ad1f5c	invalid	XSD	BR-CO-11 BR-CO-14	
+en16931	en16931/cii-018-allowance-consistent.xml	cii	049cdd49486c	invalid	XSD		
+en16931	en16931/cii-019-br-co-16-amount-due.xml	cii	8a3fa3b17559	invalid	BR-CO-16	BR-CO-16	
+en16931	en16931/cii-020-br-co-17-and-br-s-09-tolerance.xml	cii	c185fa8927ae	invalid	BR-S-09	BR-S-09	
+en16931	en16931/cii-021-br-co-26-seller-identifier.xml	cii	382b23b5d98a	invalid	BR-CO-26 BR-S-02	BR-CO-26 BR-S-02	
+en16931	en16931/cii-022-br-dec-amounts.xml	cii	6d7e18ef87df	invalid	BR-DEC-18	BR-DEC-18	
+en16931	en16931/cii-023-br-b-01-split-payment-outside-italy.xml	cii	6c12bd42cb14	invalid	BR-B-01	BR-B-01	
+en16931	en16931/cii-024-br-cl-01-type-code.xml	cii	0f88815a95a2	invalid	BR-CL-01	BR-CL-01	
+en16931	en16931/cii-025-br-cl-04-currency-normalized.xml	cii	e5c597fea7a1	invalid	BR-CO-15	BR-CO-15	
+en16931	en16931/cii-026-br-cl-04-invalid-currency.xml	cii	66972120257d	invalid	BR-CL-04 BR-CO-15	BR-CL-04 BR-CO-15	
+en16931	en16931/cii-027-br-cl-14-kosovo-not-in-1-3-17.xml	cii	ec5d0b1c6ab9	invalid	BR-CL-14	BR-CL-14	
+en16931	en16931/cii-028-br-cl-14-invalid-country.xml	cii	1a8084cd5338	invalid	BR-CL-14	BR-CL-14	
+en16931	en16931/cii-029-br-cl-23-unit.xml	cii	43cdc3fbc772	invalid	BR-CL-23	BR-CL-23	
+en16931	en16931/cii-030-br-cl-25-eas.xml	cii	70d14cba7368	invalid	XSD	BR-CL-25	
+en16931	en16931/cii-031-br-62-no-scheme.xml	cii	1d8da39a011e	invalid	XSD	BR-62	
+en16931	en16931/cii-032-br-cl-22-vatex-case-insensitive.xml	cii	0ba4649bedc0	valid			
+en16931	en16931/cii-033-br-s-05-zero-rate.xml	cii	5bcd822b9021	invalid	BR-S-05 BR-S-08	BR-S-05 BR-S-08	
+en16931	en16931/cii-034-br-s-10-exemption.xml	cii	c86c2245bdd5	invalid	XSD	BR-S-10	
+en16931	en16931/cii-035-br-z-valid.xml	cii	81653d78cb5c	valid			
+en16931	en16931/cii-036-br-z-10-exemption.xml	cii	01d38e1e46f8	invalid	XSD	BR-Z-10	
+en16931	en16931/cii-037-br-e-10-no-exemption.xml	cii	3e11dcf2d598	invalid	BR-E-10	BR-E-10	
+en16931	en16931/cii-038-br-e-08-taxable-amount.xml	cii	ae903759b8b2	invalid	BR-E-08	BR-E-08	
+en16931	en16931/cii-039-br-ae-02-buyer-identifier.xml	cii	d2920a4d6704	invalid	XSD	BR-AE-02	
+en16931	en16931/cii-040-br-ic-11-br-ic-12-delivery.xml	cii	dbe05b3bf8d0	invalid	XSD	BR-IC-11 BR-IC-12	
+en16931	en16931/cii-041-br-g-02-seller-vat.xml	cii	bee241ad7d93	invalid	XSD	BR-CO-26 BR-G-02	
+en16931	en16931/cii-042-br-o-02-br-o-05-not-subject.xml	cii	534181e85f5e	invalid	XSD	BR-O-02 BR-O-05	
+en16931	en16931/cii-043-br-o-11-other-categories.xml	cii	ad3d1e927dab	invalid	XSD	BR-O-01 BR-O-11 BR-O-12	
+en16931	en16931/cii-044-br-ip-05-igic-rate.xml	cii	932559a6dd31	invalid	BR-AF-05	BR-IP-05	
+en16931	en16931/cii-045-br-ig-10-ipsi-exemption.xml	cii	67770143c547	invalid	XSD	BR-IG-10	
+en16931	en16931/cii-046-br-s-01-missing-breakdown.xml	cii	c4a1b9f3baf4	invalid	BR-CO-14 BR-CO-18 BR-S-01	BR-CO-14 BR-CO-18 BR-S-01	
+en16931	en16931/cii-047-cii-sr-002-test-indicator.xml	cii	8734d201b6fc	valid		CII-SR-002	
+en16931	en16931/cii-048-cii-sr-010-specification-identifier-count.xml	cii	d34b8832f60a	invalid	XSD	CII-SR-010	
+en16931	en16931/cii-049-cii-dt-031-currencyid-on-amount.xml	cii	7feb39cf6525	invalid	CII-DT-031	CII-DT-031	
+en16931	en16931/cii-050-cii-dt-097-date-format-102.xml	cii	4857e8765ef8	invalid	CII-DT-097	CII-DT-097	
+en16931	en16931/cii-051-cii-sr-466-buyer-contact.xml	cii	f103eb7a68e3	invalid	XSD	CII-SR-466	
+en16931	en16931/cii-052-cii-sr-469-payment-references.xml	cii	f55127b9f5dc	invalid	XSD	CII-SR-469	
+en16931	en16931/cii-053-cii-sr-477-line-total-count.xml	cii	1bdeeffd50e2	excluded		CII-SR-477	reference: PROCESSING: Error processing schematron validation Schematron rules for EN16931 (CII). Error is A sequence of more than one item is not allowed as the value in 'cast as' expression (<ram:LineTotalAmount>, <ram:LineTotalAmount>)
+en16931	en16931/cii-054-cii-dt-033-unit-code-without-billed-unit.xml	cii	38e34317ba2b	invalid	BR-23 CII-DT-033	BR-23 CII-DT-033	
+en16931	en16931/cii-057-xrechnung-severities.xml	cii	adfa2e17e0d8	invalid	BR-DE-1 BR-DE-15 BR-DE-2 BR-DE-3 BR-DE-4 BR-DE-8 BR-DE-9 PEPPOL-EN16931-R001 PEPPOL-EN16931-R010 PEPPOL-EN16931-R020	BR-CL-23	
+en16931	en16931/cii-059-vat-category-s-with-allowance-and-charge.xml	cii	4d5885c27a49	valid			
+en16931	en16931/cii-060-br-s-02-to-br-s-04-seller-without-vat-identifier.xml	cii	8c2ac4e0d098	invalid	BR-S-02 BR-S-03 BR-S-04	BR-S-02 BR-S-03 BR-S-04	
+en16931	en16931/cii-061-vat-category-e-with-allowance-and-charge.xml	cii	53345ff90b10	valid			
+en16931	en16931/cii-062-br-e-02-to-br-e-04-seller-without-vat-identifier.xml	cii	f402720628b8	invalid	BR-E-02 BR-E-03 BR-E-04	BR-E-02 BR-E-03 BR-E-04	
+en16931	en16931/cii-063-vat-category-z-with-allowance-and-charge.xml	cii	adfb402c4490	valid			
+en16931	en16931/cii-064-br-z-01-two-breakdowns.xml	cii	d86cfda4c50b	invalid	BR-Z-01	BR-Z-01	
+en16931	en16931/cii-065-br-z-02-to-br-z-04-seller-without-vat-identifier.xml	cii	e27dfca92918	invalid	BR-Z-02 BR-Z-03 BR-Z-04	BR-Z-02 BR-Z-03 BR-Z-04	
+en16931	en16931/cii-066-br-z-05-to-br-z-07-rates.xml	cii	533168997323	invalid	BR-Z-05 BR-Z-06 BR-Z-07	BR-Z-05 BR-Z-06 BR-Z-07	
+en16931	en16931/cii-067-br-z-08-taxable-amount.xml	cii	1099e3e268cf	invalid	BR-Z-08	BR-Z-08	
+en16931	en16931/cii-068-br-z-09-tax-amount.xml	cii	bb981b1f3e2c	invalid	BR-Z-09	BR-Z-09	
+en16931	en16931/cii-069-vat-category-ae-with-allowance-and-charge.xml	cii	4f130b0ae4fa	valid			
+en16931	en16931/cii-070-br-ae-01-two-breakdowns.xml	cii	79ecbdeb7f17	invalid	BR-AE-01	BR-AE-01	
+en16931	en16931/cii-071-br-ae-02-to-br-ae-04-buyer-without-vat-identifier.xml	cii	30bfef7a98c6	invalid	BR-AE-02 BR-AE-03 BR-AE-04	BR-AE-02 BR-AE-03 BR-AE-04	
+en16931	en16931/cii-072-br-ae-05-to-br-ae-07-rates.xml	cii	d44ee3ff0964	invalid	BR-AE-05 BR-AE-06 BR-AE-07	BR-AE-05 BR-AE-06 BR-AE-07	
+en16931	en16931/cii-073-br-ae-08-taxable-amount.xml	cii	a7a80f83cc09	invalid	BR-AE-08	BR-AE-08	
+en16931	en16931/cii-074-br-ae-09-tax-amount.xml	cii	5d2fe9019f79	invalid	BR-AE-09	BR-AE-09	
+en16931	en16931/cii-075-br-ae-10-no-exemption-reason.xml	cii	f52a94418ad8	invalid	BR-AE-10	BR-AE-10	
+en16931	en16931/cii-076-vat-category-k-with-allowance-and-charge.xml	cii	c98cd2c98c90	valid			
+en16931	en16931/cii-077-br-ic-01-two-breakdowns.xml	cii	9aeb846dce62	invalid	BR-IC-01	BR-IC-01	
+en16931	en16931/cii-078-br-ic-02-to-br-ic-04-buyer-without-vat-identifier.xml	cii	55faffc5b613	invalid	BR-IC-02 BR-IC-03 BR-IC-04	BR-IC-02 BR-IC-03 BR-IC-04	
+en16931	en16931/cii-079-br-ic-05-to-br-ic-07-rates.xml	cii	015c2e874252	invalid	BR-IC-05 BR-IC-06 BR-IC-07	BR-IC-05 BR-IC-06 BR-IC-07	
+en16931	en16931/cii-080-br-ic-09-tax-amount.xml	cii	32b890a82158	invalid	BR-IC-09	BR-IC-09	
+en16931	en16931/cii-081-vat-category-g-with-allowance-and-charge.xml	cii	cfad2d40290a	valid			
+en16931	en16931/cii-082-br-g-01-two-breakdowns.xml	cii	664c4fb69847	invalid	BR-G-01	BR-G-01	
+en16931	en16931/cii-083-br-g-02-to-br-g-04-seller-without-vat-identifier.xml	cii	5d4c3e1491a7	invalid	BR-G-02 BR-G-03 BR-G-04	BR-G-02 BR-G-03 BR-G-04	
+en16931	en16931/cii-084-br-g-05-to-br-g-07-rates.xml	cii	c3bc23b94e24	invalid	BR-G-05 BR-G-06 BR-G-07	BR-G-05 BR-G-06 BR-G-07	
+en16931	en16931/cii-085-vat-category-o-with-allowance-and-charge.xml	cii	958f3e5b4215	valid			
+en16931	en16931/cii-086-br-o-02-to-br-o-04-seller-vat-identifier.xml	cii	ef37a3259f9a	invalid	BR-O-02 BR-O-03 BR-O-04	BR-O-02 BR-O-03 BR-O-04	
+en16931	en16931/cii-087-br-o-05-to-br-o-07-rates.xml	cii	7df5c0fc3b00	invalid	BR-O-05 BR-O-06 BR-O-07	BR-O-05 BR-O-06 BR-O-07	
+en16931	en16931/cii-088-br-o-08-taxable-amount.xml	cii	1ee0a262d957	invalid	BR-O-08	BR-O-08	
+en16931	en16931/cii-089-br-o-09-tax-amount.xml	cii	73c62e80f056	invalid	BR-O-09	BR-O-09	
+en16931	en16931/cii-090-br-o-10-no-exemption-reason.xml	cii	8d1227fa7bdf	invalid	BR-O-10	BR-O-10	
+en16931	en16931/cii-091-vat-category-l-igic-with-allowance-and-charge.xml	cii	dd5124593a4c	valid			
+en16931	en16931/cii-092-br-ip-01-igic-without-breakdown.xml	cii	9fa6d1e4dbbc	invalid	BR-AF-01 BR-CO-14 BR-CO-18	BR-CO-14 BR-CO-18 BR-IP-01	
+en16931	en16931/cii-093-br-ip-02-to-br-ip-04-igic-seller-without-vat-identifier.xml	cii	35a21b2e837b	invalid	BR-AF-02 BR-AF-03 BR-AF-04	BR-IP-02 BR-IP-03 BR-IP-04	
+en16931	en16931/cii-094-br-ip-05-to-br-ip-07-igic-zero-rates.xml	cii	27b6182eb3fd	invalid	BR-AF-05 BR-AF-06 BR-AF-07	BR-IP-05 BR-IP-06 BR-IP-07	
+en16931	en16931/cii-095-br-ip-10-igic-exemption-reason.xml	cii	0c30e2082af0	invalid	BR-AF-10	BR-IP-10	
+en16931	en16931/cii-096-vat-category-m-ipsi-with-allowance-and-charge.xml	cii	97748501a26b	valid			
+en16931	en16931/cii-097-br-ig-01-ipsi-without-breakdown.xml	cii	9097757122dc	invalid	BR-AG-01 BR-CO-14 BR-CO-18	BR-CO-14 BR-CO-18 BR-IG-01	
+en16931	en16931/cii-098-br-ig-02-to-br-ig-04-ipsi-seller-without-vat-identifier.xml	cii	6b3d32c61197	invalid	BR-AG-02 BR-AG-03 BR-AG-04	BR-IG-02 BR-IG-03 BR-IG-04	
+en16931	en16931/cii-099-br-ig-05-to-br-ig-07-ipsi-negative-rates.xml	cii	0d8636ac5db9	invalid	BR-AG-05 BR-AG-06 BR-AG-07	BR-IG-05 BR-IG-06 BR-IG-07	
+en16931	en16931/cii-100-vat-category-b-between-italian-parties.xml	cii	1c1aabbdddc0	valid			
+en16931	en16931/cii-101-br-b-02-split-payment-and-standard-rate.xml	cii	fe2b635b0fb4	invalid	BR-B-02	BR-B-02	
+en16931	en16931/cii-102-invoice-with-optional-elements.xml	cii	f27646c5c4e2	valid			
+en16931	en16931/cii-103-br-42-br-co-23-line-allowance-reason.xml	cii	6565864cae97	invalid	BR-42 BR-CO-23	BR-42 BR-CO-23	
+en16931	en16931/cii-104-br-44-br-co-24-line-charge-reason.xml	cii	e4c39d307b37	invalid	BR-44 BR-CO-24	BR-44 BR-CO-24	
+en16931	en16931/cii-105-br-dec-02-br-dec-05-br-dec-06-document-level-allowance-and-charge.xml	cii	e43c7e381d6c	invalid	BR-DEC-02 BR-DEC-05 BR-DEC-06	BR-DEC-02 BR-DEC-05 BR-DEC-06	
+en16931	en16931/cii-106-br-dec-10-to-br-dec-17-document-totals.xml	cii	ae35fa5bda8d	invalid	BR-DEC-10 BR-DEC-11 BR-DEC-14 BR-DEC-15 BR-DEC-16 BR-DEC-17	BR-DEC-10 BR-DEC-11 BR-DEC-14 BR-DEC-15 BR-DEC-16 BR-DEC-17	
+en16931	en16931/cii-107-br-dec-19-br-dec-20-vat-breakdown.xml	cii	b30b371dfbf6	invalid	BR-DEC-19 BR-DEC-20	BR-DEC-19 BR-DEC-20	
+en16931	en16931/cii-108-br-dec-23-to-br-dec-28-invoice-line.xml	cii	9a509de8b257	invalid	BR-DEC-23 BR-DEC-24 BR-DEC-25 BR-DEC-27 BR-DEC-28	BR-DEC-23 BR-DEC-24 BR-DEC-25 BR-DEC-27 BR-DEC-28	
+en16931	en16931/cii-109-br-cl-03-br-cl-05-vat-accounting-currency.xml	cii	c523ffabc325	invalid	BR-CL-03 BR-CL-05	BR-CL-03 BR-CL-05	
+en16931	en16931/cii-110-br-cl-15-country-of-origin.xml	cii	f0205924e91b	invalid	BR-CL-15	BR-CL-15	
+en16931	en16931/cii-111-br-cl-16-payment-means.xml	cii	bd81c38f7990	invalid	BR-CL-16	BR-CL-16	
+en16931	en16931/cii-112-br-cl-17-allowance-vat-category.xml	cii	35835686894e	invalid	BR-CL-17 BR-S-08	BR-CL-17 BR-S-08	
+en16931	en16931/cii-113-br-cl-18-line-vat-category.xml	cii	eb574baa038a	invalid	BR-CL-18 BR-E-01 BR-E-08	BR-CL-18 BR-E-01 BR-E-08	
+en16931	en16931/cii-114-br-cl-19-allowance-reason-code.xml	cii	9f420a676a8a	invalid	BR-CL-19	BR-CL-19	
+en16931	en16931/cii-115-br-cl-20-charge-reason-code.xml	cii	1d34f7f89f34	invalid	BR-CL-20	BR-CL-20	
+en16931	en16931/cii-116-br-cl-21-item-identifier-scheme.xml	cii	3362352e0d99	invalid	BR-CL-21	BR-CL-21	
+en16931	en16931/cii-117-br-cl-22-exemption-reason-code.xml	cii	48c5c920f0af	invalid	BR-CL-22	BR-CL-22	
+en16931	en16931/cii-118-br-cl-26-deliver-to-location-identifier-scheme.xml	cii	211f15746293	invalid	BR-CL-26	BR-CL-26	
+en16931	en16931/ubl-000-valid.xml	ubl	64849b41b0ba	valid			
+en16931	en16931/ubl-001-valid-credit-note.xml	ubl	39303ac4e3c8	valid			
+en16931	en16931/ubl-002-extensions.xml	ubl	4506a3a16e93	invalid	XSD	UBL-CR-001	
+en16931	en16931/ubl-003-ubl-2-1.xml	ubl	2755fc535f4d	valid			
+en16931	en16931/ubl-004-ubl-2-0.xml	ubl	e281ededdc4d	valid		UBL-CR-002	
+en16931	en16931/ubl-005-payment-due-date-in-invoice.xml	ubl	a1ece97f993b	valid		UBL-CR-412	
+en16931	en16931/ubl-006-line-uuid.xml	ubl	0cea8609daeb	valid		UBL-CR-515	
+en16931	en16931/ubl-007-unit-code-list.xml	ubl	5929d9de93ea	valid		UBL-CR-663	
+en16931	en16931/ubl-008-tax-scheme-company-scheme.xml	ubl	a4f9fbcecaa0	valid		UBL-CR-652	
+en16931	en16931/ubl-009-supporting-document-scheme.xml	ubl	816c3433ad6c	invalid	UBL-SR-43	UBL-CR-665 UBL-SR-43	
+en16931	en16931/ubl-010-supporting-document-type.xml	ubl	5c5c3912ee05	invalid	UBL-SR-43	UBL-SR-43	
+en16931	en16931/ubl-011-invoiced-object.xml	ubl	0b71208fc8e9	valid			
+en16931	en16931/ubl-012-invoiced-object-with-attachment.xml	ubl	10c59edcdd93	invalid	UBL-CR-666 UBL-CR-673	UBL-CR-666 UBL-CR-673	
+en16931	en16931/ubl-013-invoiced-object-scheme.xml	ubl	1f8e3850156b	invalid	BR-CL-07	BR-CL-07	
+en16931	en16931/ubl-014-two-invoiced-objects.xml	ubl	b6e3fe879bb2	invalid	UBL-SR-04	UBL-SR-04	
+en16931	en16931/ubl-015-credit-note-preceding-invoice-scheme.xml	ubl	4fdb438c2ffd	valid		UBL-CR-665	
+en16931	en16931/ubl-016-address-lines.xml	ubl	0f4cb53e2cf9	invalid	UBL-SR-51	UBL-SR-51	
+en16931	en16931/ubl-017-two-line-tax-categories.xml	ubl	7892112d0ad7	invalid	UBL-SR-48	UBL-SR-48	
+en16931	en16931/ubl-018-payee-is-seller.xml	ubl	06975a1d6982	invalid	UBL-SR-19 UBL-SR-20 UBL-SR-21	UBL-SR-19 UBL-SR-20 UBL-SR-21	
+en16931	en16931/ubl-019-payee.xml	ubl	f67c8b79e040	valid			
+en16931	en16931/ubl-020-payment-identifiers.xml	ubl	5925b82878cf	invalid	UBL-SR-44	UBL-SR-44	
+en16931	en16931/ubl-021-payment-means-codes.xml	ubl	c682d44b8012	invalid	UBL-SR-47	UBL-SR-47	
+en16931	en16931/ubl-022-amount-decimals.xml	ubl	bcfe7d8d6c18	invalid	BR-DEC-18 UBL-DT-01	BR-DEC-18 UBL-DT-01	
+en16931	en16931/ubl-023-binary-object.xml	ubl	b31634a41c46	invalid	XSD	UBL-DT-06 UBL-DT-07	
+en16931	en16931/ubl-024-binary-object-mime.xml	ubl	adeeca1010ba	invalid	BR-CL-24	BR-CL-24	
+en16931	en16931/ubl-025-scheme-name.xml	ubl	88359b65801b	valid		UBL-DT-08	
+en16931	en16931/ubl-026-name-attribute.xml	ubl	50633ca61425	valid		UBL-DT-18	
+en16931	en16931/ubl-027-payment-means-name.xml	ubl	202adee978ef	valid			
+en16931	en16931/ubl-028-payment-means-names.xml	ubl	68fd29e3c0d5	invalid	UBL-SR-46	UBL-SR-46	
+en16931	en16931/ubl-029-seller-identifiers-of-another-tax-scheme.xml	ubl	316f273548e4	invalid	XSD	UBL-SR-13	
+en16931	en16931/ubl-030-g-account-elements.xml	ubl	3b3b17645924	valid		UBL-CR-411 UBL-CR-453 UBL-CR-459	
+en16931	en16931/ubl-034-invoice-type-code-of-a-credit-note.xml	ubl	066df1fa5289	invalid	BR-CL-01	BR-CL-01	
+en16931	en16931/ubl-035-credit-note-type-code-of-an-invoice.xml	ubl	08d7132537eb	invalid	BR-CL-01	BR-CL-01	
+en16931	en16931/ubl-036-note-subject.xml	ubl	9428e92e1f0b	valid			
+en16931	en16931/ubl-037-note-subject-code.xml	ubl	2aa4dde2e1ea	invalid	BR-CL-08	BR-CL-08	
+en16931	en16931/ubl-038-seller-sepa-identifier.xml	ubl	c8c54c339eb1	valid			
+en16931	en16931/ubl-039-buyer-sepa-identifier.xml	ubl	1b2bd5c5ad95	invalid	BR-CL-10	BR-CL-10	
+en16931	en16931/ubl-040-tax-point-date-code.xml	ubl	91723e3bfb6a	valid			
+en16931	en16931/ubl-041-tax-point-date-code-list.xml	ubl	6a5cf6e1b66e	invalid	BR-CL-06	BR-CL-06	
+en16931	en16931/ubl-042-tax-point-date.xml	ubl	36f6b727093c	valid			
+en16931	en16931/ubl-043-tax-point-date-and-code.xml	ubl	a8462f1652f6	invalid	BR-CO-03	BR-CO-03	
+en16931	en16931/ubl-044-vat-accounting-currency.xml	ubl	93e78330e969	invalid	BR-53	BR-53	
+en16931	en16931/ubl-045-amount-currency.xml	ubl	d3b3159cd104	invalid	XSD	BR-CL-03	
+en16931	en16931/ubl-046-unit-code.xml	ubl	0e7119911634	invalid	BR-CL-23	BR-CL-23	
+en16931	en16931/ubl-047-country-code.xml	ubl	cf14c9821246	invalid	BR-CL-14	BR-CL-14	
+en16931	en16931/ubl-048-seller-without-address.xml	ubl	e8d8322e585b	invalid	BR-08	BR-08	
+en16931	en16931/ubl-049-seller-address-without-country.xml	ubl	dfc9f7414a71	invalid	BR-09	BR-09	
+en16931	en16931/ubl-050-payee-with-the-seller-trading-name.xml	ubl	886da4989f44	invalid	BR-17	BR-17	
+en16931	en16931/ubl-051-payee-without-name.xml	ubl	8053cfd9cf43	invalid	BR-17 UBL-SR-19 UBL-SR-20 UBL-SR-21	BR-17 UBL-SR-19 UBL-SR-20 UBL-SR-21	
+en16931	en16931/ubl-052-credit-transfer-without-account.xml	ubl	02fa51b61c28	invalid	BR-61	BR-61	
+en16931	en16931/ubl-053-credit-transfer.xml	ubl	7dfd1e0fa928	valid			
+en16931	en16931/ubl-054-endpoint-without-scheme.xml	ubl	3f1ccf9b1414	invalid	BR-62	BR-62	
+en16931	en16931/ubl-055-endpoint-with-an-empty-scheme.xml	ubl	3cf45275ebcb	invalid	BR-CL-25	BR-CL-25	
+en16931	en16931/ubl-056-decimals-as-text.xml	ubl	e2562339299a	invalid	BR-DEC-12 UBL-DT-01	BR-DEC-12 UBL-DT-01	
+en16931	en16931/ubl-057-empty-supporting-document-reference.xml	ubl	c1d158e96257	invalid	BR-52	BR-52	
+en16931	en16931/ubl-058-empty-tender-reference.xml	ubl	0404d220a174	valid			
+en16931	en16931/ubl-059-credit-note-empty-project-reference.xml	ubl	4ac2bfd639e1	invalid	BR-52	BR-52	
+en16931	en16931/ubl-060-preceding-invoice-without-reference.xml	ubl	2c91f17faa55	invalid	XSD	BR-55 UBL-SR-07	
+en16931	en16931/ubl-061-tax-representative-without-vat-identifier.xml	ubl	f5a54a771861	invalid	BR-56	BR-56	
+en16931	en16931/ubl-062-tax-representative-without-address.xml	ubl	7916350bd084	invalid	BR-19	BR-19	
+en16931	en16931/ubl-063-item-identifier-without-scheme.xml	ubl	1b6b2eb3a7ee	invalid	XSD	BR-64	
+en16931	en16931/ubl-064-item-classification-without-scheme.xml	ubl	3e3e09925517	invalid	XSD	BR-65	
+en16931	en16931/ubl-065-lines-not-subject-to-vat.xml	ubl	f0e0c8c46e85	invalid	BR-O-01 BR-O-02 BR-S-01 BR-S-08	BR-O-01 BR-O-02 BR-S-01 BR-S-08	
+en16931	en16931/ubl-066-second-tax-total-with-a-breakdown.xml	ubl	73ca99d2e719	invalid	BR-CO-15	BR-CO-15	
+en16931	en16931/ubl-067-tax-total-of-another-breakdown.xml	ubl	3b3c61e81a21	invalid	BR-CO-14 BR-CO-15	BR-CO-14 BR-CO-15	
+en16931	en16931/ubl-068-zero-rated-breakdown-without-lines.xml	ubl	a4334929196b	valid			
+xrechnung	xrechnung/cii-000-valid-cius.xml	cii	5a88aa5377f8	valid			
+xrechnung	xrechnung/cii-001-valid-extension.xml	cii	a13bcb1603b1	valid			
+xrechnung	xrechnung/cii-002-valid-cvd.xml	cii	28fad343aa54	valid			
+xrechnung	xrechnung/cii-003-valid-direct-debit.xml	cii	0930573b5a30	invalid	XSD		
+xrechnung	xrechnung/cii-004-br-de-30-no-creditor-identifier.xml	cii	23dbb14e88ea	invalid	XSD	BR-DE-30	
+xrechnung	xrechnung/cii-005-br-de-30-creditor-identifier-only.xml	cii	408e283827c3	invalid	BR-DE-23-b BR-DE-30 BR-DE-31	BR-DE-23-b BR-DE-30 BR-DE-31	
+xrechnung	xrechnung/cii-006-br-de-31-no-debited-account.xml	cii	d928e76a9194	invalid	XSD	BR-DE-20 BR-DE-31	
+xrechnung	xrechnung/cii-007-br-de-1-no-payment-means.xml	cii	e5f98d85148f	invalid	XSD	BR-DE-1	
+xrechnung	xrechnung/cii-008-br-de-15-blank-buyer-reference.xml	cii	753da6b173f6	invalid	BR-DE-15 PEPPOL-EN16931-R008	BR-DE-15 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-009-br-de-16-no-seller-vat-identifier.xml	cii	d03a5823d4d9	invalid	BR-DE-16 BR-S-02 PEPPOL-EN16931-R008	BR-DE-16 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-010-br-de-16-tax-registration-fc.xml	cii	6fef8f05db6b	invalid	BR-S-02		
+xrechnung	xrechnung/cii-011-br-de-16-tax-representative.xml	cii	95f45ccbd7a4	invalid	BR-19 BR-20 BR-56 BR-S-02 PEPPOL-EN16931-R008	PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-012-br-de-16-lines-in-category-o.xml	cii	5340e38376a3	invalid	BR-O-01 BR-O-05 BR-O-08 BR-O-09 BR-O-10 PEPPOL-EN16931-R008	PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-013-br-de-16-formatted-charge-tax.xml	cii	5e515513958d	invalid	BR-O-01 BR-O-05 BR-O-08 BR-O-09 BR-O-10 BR-O-13 BR-O-14 BR-S-01 CII-SR-463 PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1	PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1	
+xrechnung	xrechnung/cii-014-br-de-16-compact-charge-tax.xml	cii	ab8b722b1191	invalid	BR-DE-16 BR-O-01 BR-O-05 BR-O-08 BR-O-09 BR-O-10 BR-O-13 BR-O-14 BR-S-01 CII-SR-463 PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1	BR-DE-16 PEPPOL-EN16931-R008 PEPPOL-EN16931-R043-1	
+xrechnung	xrechnung/cii-015-br-de-17-type-325.xml	cii	50df4357dd5e	valid		BR-DE-17	
+xrechnung	xrechnung/cii-016-br-de-17-type-877.xml	cii	62b273d2aeca	valid			
+xrechnung	xrechnung/cii-017-br-de-18-percentage-without-decimals.xml	cii	287a5f2d3e41	invalid	BR-DE-18	BR-DE-18	
+xrechnung	xrechnung/cii-018-br-de-18-lower-case.xml	cii	91062eec7e6e	invalid	BR-DE-18	BR-DE-18	
+xrechnung	xrechnung/cii-019-br-de-18-no-final-line-break.xml	cii	a4a37af8ab58	invalid	BR-DE-18	BR-DE-18	
+xrechnung	xrechnung/cii-020-br-de-18-base-amount.xml	cii	fda9fcb550eb	valid			
+xrechnung	xrechnung/cii-021-br-de-18-two-entries.xml	cii	c385ce28e262	valid			
+xrechnung	xrechnung/cii-022-br-de-22-duplicate-file-name.xml	cii	32327ad97255	invalid	BR-DE-22	BR-DE-22	
+xrechnung	xrechnung/cii-023-br-de-22-distinct-file-names.xml	cii	570beabfc263	valid			
+xrechnung	xrechnung/cii-024-br-de-26-corrected-invoice-without-reference.xml	cii	eb756bd98907	valid		BR-DE-26	
+xrechnung	xrechnung/cii-025-br-de-26-corrected-invoice-with-reference.xml	cii	d087299384fa	valid			
+xrechnung	xrechnung/cii-028-br-de-2-no-seller-contact.xml	cii	83185900ad0d	invalid	XSD	BR-DE-2	
+xrechnung	xrechnung/cii-029-br-de-3-blank-seller-city.xml	cii	822413f4842a	invalid	BR-DE-3 PEPPOL-EN16931-R008	BR-DE-3 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-030-br-de-4-no-seller-post-code.xml	cii	5ac890cb7ffb	invalid	BR-DE-4	BR-DE-4	
+xrechnung	xrechnung/cii-031-br-de-5-no-contact-point.xml	cii	4a108920ef83	invalid	BR-DE-5	BR-DE-5	
+xrechnung	xrechnung/cii-032-br-de-5-department.xml	cii	f57ed54bdda0	valid			
+xrechnung	xrechnung/cii-033-br-de-6-no-telephone.xml	cii	4ec4e1a8b7d9	invalid	BR-DE-6 PEPPOL-EN16931-R008	BR-DE-27 BR-DE-6 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-034-br-de-7-no-email.xml	cii	13e40aa45e87	invalid	BR-DE-7 PEPPOL-EN16931-R008	BR-DE-28 BR-DE-7 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-035-br-de-27-two-digits.xml	cii	6d94c1478406	valid		BR-DE-27	
+xrechnung	xrechnung/cii-036-br-de-28-one-label.xml	cii	9562eecef950	valid		BR-DE-28	
+xrechnung	xrechnung/cii-037-br-de-28-two.xml	cii	c879adfc25bb	valid		BR-DE-28	
+xrechnung	xrechnung/cii-038-br-de-28-space.xml	cii	92df866c8ab2	valid		BR-DE-28	
+xrechnung	xrechnung/cii-039-br-de-28-surrounding-space.xml	cii	5d8ab3140f98	valid			
+xrechnung	xrechnung/cii-040-br-de-8-blank-buyer-city.xml	cii	03909aa1e37a	invalid	BR-DE-8 PEPPOL-EN16931-R008	BR-DE-8 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-041-br-de-9-no-buyer-post-code.xml	cii	5ee1515faaab	invalid	BR-DE-9	BR-DE-9	
+xrechnung	xrechnung/cii-042-br-de-10-no-deliver-to-city.xml	cii	eb562dfb35e3	invalid	BR-DE-10	BR-DE-10	
+xrechnung	xrechnung/cii-043-br-de-11-no-deliver-to-post-code.xml	cii	bba359b75bac	invalid	BR-DE-11	BR-DE-11	
+xrechnung	xrechnung/cii-044-br-tmp-2-relative-url.xml	cii	828378d20ec2	invalid	BR-TMP-2	BR-TMP-2	
+xrechnung	xrechnung/cii-045-br-tmp-2-one-character-scheme.xml	cii	73d39c5cf803	invalid	BR-TMP-2	BR-TMP-2	
+xrechnung	xrechnung/cii-046-br-tmp-2-urn.xml	cii	e88850ba088a	valid			
+xrechnung	xrechnung/cii-047-br-tmp-4-two-descriptions.xml	cii	f9059027b343	valid		BR-TMP-4	
+xrechnung	xrechnung/cii-048-br-tmp-5-two-attachments.xml	cii	64694c3bda9f	valid		BR-TMP-5	
+xrechnung	xrechnung/cii-049-br-tmp-7-format-610.xml	cii	8df6fd25b469	invalid	BR-03	BR-TMP-7	
+xrechnung	xrechnung/cii-050-br-tmp-7-iso-date.xml	cii	86084cee2772	invalid	CII-DT-097	BR-TMP-7	
+xrechnung	xrechnung/cii-051-br-tmp-7-tax-point-date.xml	cii	cdf152813445	invalid	XSD	BR-TMP-7	
+xrechnung	xrechnung/cii-052-br-tmp-7-qdt-datestring-is-not-checked.xml	cii	ff68d273abb7	invalid	XSD		
+xrechnung	xrechnung/cii-053-br-de-19-iban-checksum.xml	cii	df3a99abf1a3	valid		BR-DE-19	
+xrechnung	xrechnung/cii-054-br-de-19-iban-with-spaces.xml	cii	aca30bfc2cb8	valid			
+xrechnung	xrechnung/cii-055-br-de-19-credit-transfer-30.xml	cii	e32683087e78	valid			
+xrechnung	xrechnung/cii-056-br-de-23-a-no-credit-transfer.xml	cii	30990ba3795c	invalid	XSD	BR-DE-23-a	
+xrechnung	xrechnung/cii-057-br-de-23-b-card.xml	cii	05bc93827e83	invalid	XSD	BR-DE-23-b	
+xrechnung	xrechnung/cii-058-br-de-24-a-b-card-code.xml	cii	8f26c4342c8b	invalid	BR-DE-24-a BR-DE-24-b	BR-DE-24-a BR-DE-24-b	
+xrechnung	xrechnung/cii-059-br-de-24-card.xml	cii	9a48bf4f4ff7	invalid	XSD		
+xrechnung	xrechnung/cii-060-br-de-24-a-no-card.xml	cii	911ab436f9d7	invalid	XSD	BR-DE-24-a	
+xrechnung	xrechnung/cii-061-br-de-24-b-card-and-account.xml	cii	ccb59399287a	invalid	XSD	BR-DE-24-b	
+xrechnung	xrechnung/cii-062-br-de-20-iban-checksum.xml	cii	9b0a918f29ca	invalid	XSD	BR-DE-20	
+xrechnung	xrechnung/cii-063-br-de-25-direct-debit-code-only.xml	cii	98208fe41531	invalid	BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061	BR-DE-20 BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061	
+xrechnung	xrechnung/cii-064-br-de-25-b-creditor-institution.xml	cii	3fee5a75deb6	invalid	XSD	BR-DE-25-b	
+xrechnung	xrechnung/cii-065-br-de-14-no-vat-rate.xml	cii	1341931c15a1	invalid	BR-48 BR-CO-17 BR-DE-14 BR-S-09	BR-DE-14	
+xrechnung	xrechnung/cii-066-br-de-tmp-32-no-delivery-date.xml	cii	857949089f3b	invalid	XSD	BR-DE-TMP-32	
+xrechnung	xrechnung/cii-067-br-de-tmp-32-invoicing-period.xml	cii	3aa75c454d49	invalid	XSD		
+xrechnung	xrechnung/cii-068-br-tmp-3-different-quantities.xml	cii	8a940f14c935	invalid	BR-TMP-3	BR-TMP-3	
+xrechnung	xrechnung/cii-069-br-tmp-3-different-units.xml	cii	b1b86596e44c	invalid	BR-TMP-3 PEPPOL-EN16931-R130	BR-TMP-3 PEPPOL-EN16931-R130	
+xrechnung	xrechnung/cii-070-br-tmp-3-unit-on-the-net-price-only.xml	cii	cb87ecabf64f	valid			
+xrechnung	xrechnung/cii-071-br-dex-15-sub-line.xml	cii	01a3fe5cabf6	valid		BR-DEX-15	
+xrechnung	xrechnung/cii-072-br-dex-15-needs-the-extension.xml	cii	096ec71fa3ba	valid			
+xrechnung	xrechnung/cii-073-br-dex-04-unknown-scheme.xml	cii	39632e3010f5	invalid	BR-DEX-04	BR-DEX-04	
+xrechnung	xrechnung/cii-074-br-dex-04-xr01.xml	cii	228a2213dba3	valid			
+xrechnung	xrechnung/cii-075-br-dex-04-empty-scheme-passes.xml	cii	58d64c55edae	valid			
+xrechnung	xrechnung/cii-076-br-dex-04-two-schemes.xml	cii	f2e4c7985cf9	invalid	BR-DEX-04	BR-DEX-04	
+xrechnung	xrechnung/cii-077-br-dex-04-needs-the-extension.xml	cii	e2199c13198d	invalid	BR-CL-10		
+xrechnung	xrechnung/cii-078-br-dex-05-legal-organization.xml	cii	f7e583d22bb1	invalid	XSD	BR-DEX-05	
+xrechnung	xrechnung/cii-079-br-dex-05-tax-registration-is-not-checked.xml	cii	68a6ffe95e7c	invalid	BR-DE-16 BR-S-02	BR-DE-16	
+xrechnung	xrechnung/cii-080-br-dex-06-item-identifier.xml	cii	97c966aa402b	invalid	BR-DEX-06	BR-DEX-06	
+xrechnung	xrechnung/cii-081-br-dex-07-electronic-address.xml	cii	c507be20ceea	invalid	BR-DEX-07	BR-DEX-07	
+xrechnung	xrechnung/cii-082-br-dex-07-xr02.xml	cii	77d4d55448f0	valid			
+xrechnung	xrechnung/cii-083-br-dex-08-deliver-to-location.xml	cii	8502506a8df5	invalid	BR-DEX-08	BR-DEX-08	
+xrechnung	xrechnung/cii-084-br-dex-01-mime-code.xml	cii	4b8ed498934f	invalid	BR-DEX-01	BR-DEX-01	
+xrechnung	xrechnung/cii-085-br-dex-01-xml-attachment.xml	cii	5d942d8926d1	valid			
+xrechnung	xrechnung/cii-086-br-dex-01-no-mime-code.xml	cii	156ed22b2630	invalid	BR-DEX-01	BR-DEX-01	
+xrechnung	xrechnung/cii-087-br-de-cvd-03-no-cvd-classification.xml	cii	73e4ac1b7174	invalid	BR-DE-CVD-03 BR-DE-CVD-06-b	BR-DE-CVD-03 BR-DE-CVD-06-b	
+xrechnung	xrechnung/cii-088-br-de-cvd-06-b-two-classifications.xml	cii	bff15a03d0de	invalid	XSD	BR-DE-CVD-06-b	
+xrechnung	xrechnung/cii-089-br-de-cvd-06-a-two-attributes.xml	cii	b08063a35b17	invalid	BR-DE-CVD-06-a	BR-DE-CVD-06-a	
+xrechnung	xrechnung/cii-090-br-tmp-cvd-01-unknown-list.xml	cii	8c480bdc3edf	invalid	XSD	BR-TMP-CVD-01	
+xrechnung	xrechnung/cii-091-br-tmp-cvd-01-empty-list-passes.xml	cii	8b3c89da7081	invalid	XSD		
+xrechnung	xrechnung/cii-092-br-de-cvd-04-vehicle-category.xml	cii	1405ec741c38	invalid	BR-DE-CVD-04	BR-DE-CVD-04	
+xrechnung	xrechnung/cii-093-br-de-cvd-05-attribute-value.xml	cii	67d7dbf8f090	invalid	BR-DE-CVD-05	BR-DE-CVD-05	
+xrechnung	xrechnung/cii-094-br-de-cvd-01-no-contract.xml	cii	a38ccee0e622	invalid	BR-DE-CVD-01	BR-DE-CVD-01	
+xrechnung	xrechnung/cii-095-br-de-cvd-02-no-tender.xml	cii	1cb40ce3b4e1	invalid	BR-DE-CVD-02	BR-DE-CVD-02	
+xrechnung	xrechnung/cii-096-br-de-cvd-need-the-cvd-identifier.xml	cii	d64c797ceadf	invalid	BR-CL-13		
+xrechnung	xrechnung/cii-097-peppol-en16931-r001-no-business-process.xml	cii	6792f5ca761c	invalid	PEPPOL-EN16931-R001	PEPPOL-EN16931-R001	
+xrechnung	xrechnung/cii-098-peppol-en16931-r001-blank-business-process.xml	cii	d8b2132f2aff	invalid	PEPPOL-EN16931-R008	PEPPOL-EN16931-R008	
+xrechnung	xrechnung/cii-099-peppol-en16931-r005-vat-accounting-currency-of-the-invoice.xml	cii	2ecf65bb42a9	invalid	BR-53 PEPPOL-EN16931-R005 PEPPOL-EN16931-R054	PEPPOL-EN16931-R005 PEPPOL-EN16931-R054	
+xrechnung	xrechnung/cii-100-peppol-en16931-r053-two-totals-in-the-invoice-currency.xml	cii	3edd463e1924	invalid	BR-CO-15 PEPPOL-EN16931-R053	PEPPOL-EN16931-R053	
+xrechnung	xrechnung/cii-101-peppol-en16931-r054-no-total-in-the-accounting-currency.xml	cii	fe0128697bc5	invalid	BR-53 BR-DEC-15 PEPPOL-EN16931-R054 PEPPOL-EN16931-R055	PEPPOL-EN16931-R054 PEPPOL-EN16931-R055	
+xrechnung	xrechnung/cii-102-peppol-en16931-r054-total-in-the-accounting-currency.xml	cii	0d581667194c	valid			
+xrechnung	xrechnung/cii-103-peppol-en16931-r054-total-without-accounting-currency.xml	cii	7a20e719dee7	invalid	PEPPOL-EN16931-R054	PEPPOL-EN16931-R054	
+xrechnung	xrechnung/cii-104-peppol-en16931-r055-opposite-signs.xml	cii	de19db3c21d2	invalid	PEPPOL-EN16931-R055	PEPPOL-EN16931-R055	
+xrechnung	xrechnung/cii-105-peppol-en16931-r010-no-buyer-electronic-address.xml	cii	ea484d756ff8	invalid	PEPPOL-EN16931-R010	PEPPOL-EN16931-R010	
+xrechnung	xrechnung/cii-106-peppol-en16931-r020-no-seller-electronic-address.xml	cii	d05f144675ef	invalid	PEPPOL-EN16931-R020	PEPPOL-EN16931-R020	
+xrechnung	xrechnung/cii-107-peppol-en16931-r041-percentage-without-base-amount.xml	cii	14ec5c564363	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R041	PEPPOL-EN16931-R041	
+xrechnung	xrechnung/cii-108-peppol-en16931-r042-base-amount-without-percentage.xml	cii	c441edf6ec50	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R042	PEPPOL-EN16931-R042	
+xrechnung	xrechnung/cii-109-peppol-en16931-r041-before-r043-1.xml	cii	9e3927de61ff	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R041	PEPPOL-EN16931-R041	
+xrechnung	xrechnung/cii-110-peppol-en16931-r040-amount.xml	cii	b027b06b429d	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R040	PEPPOL-EN16931-R040	
+xrechnung	xrechnung/cii-111-peppol-en16931-r040-within-the-slack.xml	cii	1f01b4acb3ec	invalid	BR-CO-11 BR-S-08		
+xrechnung	xrechnung/cii-112-peppol-en16931-r040-huf-slack.xml	cii	f0aa40ea24c8	invalid	BR-CO-11 BR-S-08		
+xrechnung	xrechnung/cii-113-peppol-en16931-r040-beyond-the-huf-slack.xml	cii	9997547b3d60	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R040	PEPPOL-EN16931-R040	
+xrechnung	xrechnung/cii-114-peppol-en16931-r043-1-indicator-1.xml	cii	962fbba223f6	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R043-1	PEPPOL-EN16931-R043-1	
+xrechnung	xrechnung/cii-115-peppol-en16931-r043-1-spaced-indicator.xml	cii	4f8572cbccf7	invalid	BR-CO-12 BR-S-08		
+xrechnung	xrechnung/cii-116-peppol-en16931-r043-1-line-allowance.xml	cii	47a5abab29aa	invalid	PEPPOL-EN16931-R043-1	PEPPOL-EN16931-R043-1	
+xrechnung	xrechnung/cii-117-peppol-en16931-r043-2-price-allowance.xml	cii	3c1e30105349	invalid	PEPPOL-EN16931-R043-2 PEPPOL-EN16931-R044	PEPPOL-EN16931-R043-2 PEPPOL-EN16931-R044	
+xrechnung	xrechnung/cii-118-peppol-en16931-r044-charge-on-the-price.xml	cii	7835314647d1	invalid	PEPPOL-EN16931-R044	PEPPOL-EN16931-R044	
+xrechnung	xrechnung/cii-119-peppol-en16931-r044-spaced-indicator.xml	cii	0fee84c4c48e	invalid	PEPPOL-EN16931-R044	PEPPOL-EN16931-R044	
+xrechnung	xrechnung/cii-120-peppol-en16931-r046-net-price.xml	cii	cae7f9f93414	invalid	PEPPOL-EN16931-R046	PEPPOL-EN16931-R046	
+xrechnung	xrechnung/cii-121-peppol-en16931-r046-gross-price-minus-allowance.xml	cii	235139201460	valid			
+xrechnung	xrechnung/cii-122-peppol-en16931-r046-no-net-price.xml	cii	152e9a3745f4	invalid	BR-26 BR-27 CII-SR-439 PEPPOL-EN16931-R046	PEPPOL-EN16931-R046 PEPPOL-EN16931-R120	
+xrechnung	xrechnung/cii-123-peppol-en16931-r110-line-period-starts-before.xml	cii	fd507e9f9e99	invalid	PEPPOL-EN16931-R110	PEPPOL-EN16931-R110	
+xrechnung	xrechnung/cii-124-peppol-en16931-r111-line-period-ends-after.xml	cii	b59646b291d9	invalid	PEPPOL-EN16931-R111	PEPPOL-EN16931-R111	
+xrechnung	xrechnung/cii-125-peppol-en16931-r110-needs-an-invoice-start-date.xml	cii	5b21f730bbcf	valid			
+xrechnung	xrechnung/cii-126-peppol-en16931-r120-line-net-amount.xml	cii	26872fa36daf	valid		PEPPOL-EN16931-R120	
+xrechnung	xrechnung/cii-127-peppol-en16931-r120-within-the-slack.xml	cii	4eaa72da1944	valid			
+xrechnung	xrechnung/cii-128-peppol-en16931-r120-line-allowance.xml	cii	c5d3fd997946	valid		PEPPOL-EN16931-R120	
+xrechnung	xrechnung/cii-129-peppol-en16931-r120-base-quantity-of-the-gross-price.xml	cii	1a30c7a487a4	valid			
+xrechnung	xrechnung/cii-130-peppol-en16931-r121-zero-base-quantity.xml	cii	5c8c44786c46	invalid	PEPPOL-EN16931-R121	PEPPOL-EN16931-R121	
+xrechnung	xrechnung/cii-131-peppol-en16931-r101-line-object.xml	cii	84aebee5b377	invalid	PEPPOL-EN16931-R101	PEPPOL-EN16931-R101	
+xrechnung	xrechnung/cii-132-peppol-en16931-r101-type-code-130.xml	cii	8f2168b006c2	valid			
+xrechnung	xrechnung/cii-133-peppol-en16931-r008-empty-delivery.xml	cii	90737ed569dc	valid			
+xrechnung	xrechnung/ubl-000-valid-cius.xml	ubl	c0dcb8592376	valid			
+xrechnung	xrechnung/ubl-001-valid-credit-note.xml	ubl	cc7b08c5cad8	invalid	XSD		
+xrechnung	xrechnung/ubl-002-valid-extension.xml	ubl	96e6efb14d47	valid			
+xrechnung	xrechnung/ubl-003-valid-cvd.xml	ubl	60a6f19baffe	valid			
+xrechnung	xrechnung/ubl-004-valid-cvd-credit-note.xml	ubl	9c872a9f2b32	invalid	XSD		
+xrechnung	xrechnung/ubl-005-valid-direct-debit.xml	ubl	be771ddf9030	valid			
+xrechnung	xrechnung/ubl-006-valid-extension-direct-debit.xml	ubl	f26de116acff	valid			
+xrechnung	xrechnung/ubl-007-valid-third-party-payment.xml	ubl	6065561bfbf6	valid			
+xrechnung	xrechnung/ubl-008-br-de-1-no-payment-means.xml	ubl	8ee6ecb3c149	invalid	XSD	BR-DE-1	
+xrechnung	xrechnung/ubl-009-br-de-15-blank-buyer-reference.xml	ubl	9fd5fc24183d	invalid	BR-DE-15 PEPPOL-EN16931-R008	BR-DE-15 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-010-br-de-15-no-buyer-reference.xml	ubl	a4897e34abcc	invalid	BR-DE-15	BR-DE-15	
+xrechnung	xrechnung/ubl-011-br-de-16-no-seller-vat-identifier.xml	ubl	db71351cd2a5	invalid	BR-DE-16 BR-S-02	BR-DE-16	
+xrechnung	xrechnung/ubl-012-br-de-16-blank-vat-identifier.xml	ubl	a52dd282c50c	invalid	BR-DE-16 PEPPOL-EN16931-R008	BR-DE-16 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-013-br-de-16-tax-representative.xml	ubl	fdd39239b9ae	invalid	BR-19 BR-56 BR-S-02		
+xrechnung	xrechnung/ubl-014-br-de-16-lines-in-category-o.xml	ubl	b1f73dc170cd	invalid	BR-O-01 BR-O-05 BR-S-01 BR-S-08		
+xrechnung	xrechnung/ubl-015-br-de-16-document-charge-in-category-s.xml	ubl	d7a2715399f6	invalid	BR-CO-12 BR-DE-16 BR-O-01 BR-O-05 BR-S-04 BR-S-08	BR-DE-16	
+xrechnung	xrechnung/ubl-016-br-de-16-spaced-charge-indicator.xml	ubl	21407b32df57	invalid	BR-CO-11 BR-O-01 BR-O-05 BR-S-03 BR-S-08		
+xrechnung	xrechnung/ubl-017-br-de-17-type-325.xml	ubl	d5bc51d5b503	valid		BR-DE-17	
+xrechnung	xrechnung/ubl-018-br-de-17-type-877.xml	ubl	cfb9df84ecfd	valid			
+xrechnung	xrechnung/ubl-019-br-de-17-credit-note-383.xml	ubl	b3fdf7bfc4c2	invalid	XSD	BR-DE-17	
+xrechnung	xrechnung/ubl-020-br-de-17-no-type-code.xml	ubl	96b63c5cd41a	invalid	BR-04	BR-DE-17	
+xrechnung	xrechnung/ubl-021-br-de-18-percentage-without-decimals.xml	ubl	9b95122cd37e	invalid	BR-DE-18	BR-DE-18	
+xrechnung	xrechnung/ubl-022-br-de-18-no-final-line-break.xml	ubl	eb0aa90364b6	invalid	BR-DE-18	BR-DE-18	
+xrechnung	xrechnung/ubl-023-br-de-18-base-amount.xml	ubl	1abd5d6f77ba	valid			
+xrechnung	xrechnung/ubl-024-br-de-18-second-note-is-not-checked.xml	ubl	605bf3eec463	invalid	UBL-SR-05		
+xrechnung	xrechnung/ubl-025-br-de-18-second-payment-terms.xml	ubl	c479d65295b3	excluded		BR-DE-18	reference: PROCESSING: Error processing schematron validation Schematron rules for Invoice - CIUS XRechnung (UBL). Error is A sequence of more than one item { (" ", " ") } is not allowed as the first argument of fn:matches()
+xrechnung	xrechnung/ubl-028-br-de-22-duplicate-file-name.xml	ubl	a7604e394ee0	invalid	BR-DE-22	BR-DE-22	
+xrechnung	xrechnung/ubl-029-br-de-22-distinct-file-names.xml	ubl	da492796f3b0	valid			
+xrechnung	xrechnung/ubl-030-br-de-26-corrected-invoice-without-reference.xml	ubl	716683e93b35	valid		BR-DE-26	
+xrechnung	xrechnung/ubl-031-br-de-26-corrected-invoice-with-reference.xml	ubl	566736bbf526	valid			
+xrechnung	xrechnung/ubl-032-br-de-30-no-creditor-identifier.xml	ubl	092a56419307	invalid	BR-DE-30	BR-DE-30	
+xrechnung	xrechnung/ubl-033-br-de-30-creditor-identifier-of-the-payee.xml	ubl	680891543204	valid			
+xrechnung	xrechnung/ubl-034-br-de-30-scheme-sepa.xml	ubl	621de1d1db90	invalid	BR-CL-10 BR-DE-30	BR-DE-30	
+xrechnung	xrechnung/ubl-035-br-de-31-no-debited-account.xml	ubl	78e82289aeb0	invalid	BR-DE-31	BR-DE-20 BR-DE-31	
+xrechnung	xrechnung/ubl-036-br-de-tmp-32-no-delivery-date.xml	ubl	33bf253d0c36	valid		BR-DE-TMP-32	
+xrechnung	xrechnung/ubl-037-br-de-tmp-32-invoicing-period.xml	ubl	dafadebc979a	valid			
+xrechnung	xrechnung/ubl-038-br-de-tmp-32-period-on-every-line.xml	ubl	06795e194532	valid			
+xrechnung	xrechnung/ubl-039-br-de-tmp-32-period-on-one-line.xml	ubl	7b316884361f	valid		BR-DE-TMP-32	
+xrechnung	xrechnung/ubl-040-br-tmp-2-relative-url.xml	ubl	6c4492584402	invalid	BR-TMP-2	BR-TMP-2	
+xrechnung	xrechnung/ubl-041-br-tmp-2-one-character-scheme.xml	ubl	d72a25d0302f	invalid	BR-TMP-2	BR-TMP-2	
+xrechnung	xrechnung/ubl-042-br-tmp-2-no-uri.xml	ubl	e79d29c301dc	invalid	BR-TMP-2 PEPPOL-EN16931-R008	BR-TMP-2 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-043-br-tmp-2-urn.xml	ubl	6eed2f24cdef	valid			
+xrechnung	xrechnung/ubl-044-br-tmp-6-date-and-time.xml	ubl	e41768a996c5	invalid	XSD	BR-TMP-6	
+xrechnung	xrechnung/ubl-045-br-tmp-6-basic-format.xml	ubl	604c4e22fbbd	invalid	XSD	BR-TMP-6	
+xrechnung	xrechnung/ubl-046-br-tmp-6-surrounding-spaces.xml	ubl	29f3cf1c7a3a	valid			
+xrechnung	xrechnung/ubl-047-br-tmp-6-line-period.xml	ubl	9d49c1d79640	invalid	XSD	BR-TMP-6	
+xrechnung	xrechnung/ubl-048-br-tmp-6-payment-due-date.xml	ubl	dd76132d8646	invalid	XSD	BR-TMP-6	
+xrechnung	xrechnung/ubl-049-br-de-2-no-seller-contact.xml	ubl	7cd4f12d9735	invalid	XSD	BR-DE-2	
+xrechnung	xrechnung/ubl-050-br-de-3-blank-seller-city.xml	ubl	6882f28006bc	invalid	BR-DE-3 PEPPOL-EN16931-R008	BR-DE-3 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-051-br-de-4-no-seller-post-code.xml	ubl	dfec9e55ba79	invalid	BR-DE-4	BR-DE-4	
+xrechnung	xrechnung/ubl-052-br-de-5-no-contact-point.xml	ubl	edd07e8d8e6d	invalid	BR-DE-5	BR-DE-5	
+xrechnung	xrechnung/ubl-053-br-de-6-no-telephone.xml	ubl	f9c6f66d9d74	invalid	BR-DE-6	BR-DE-27 BR-DE-6	
+xrechnung	xrechnung/ubl-054-br-de-7-no-email.xml	ubl	71481e6fa1d0	invalid	BR-DE-7	BR-DE-28 BR-DE-7	
+xrechnung	xrechnung/ubl-055-br-de-27-two-digits.xml	ubl	0ae6710f092a	valid		BR-DE-27	
+xrechnung	xrechnung/ubl-056-br-de-28-one-label.xml	ubl	e481ee0fde74	valid		BR-DE-28	
+xrechnung	xrechnung/ubl-057-br-de-28-surrounding-space.xml	ubl	b5168a27175e	valid			
+xrechnung	xrechnung/ubl-058-br-de-8-blank-buyer-city.xml	ubl	cc4b789b9ddf	invalid	BR-DE-8 PEPPOL-EN16931-R008	BR-DE-8 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-059-br-de-9-no-buyer-post-code.xml	ubl	74aa8da45786	invalid	BR-DE-9	BR-DE-9	
+xrechnung	xrechnung/ubl-060-br-de-10-no-deliver-to-city.xml	ubl	2a700d2b1e32	invalid	BR-DE-10	BR-DE-10	
+xrechnung	xrechnung/ubl-061-br-de-11-no-deliver-to-post-code.xml	ubl	daf2205858c2	invalid	BR-DE-11	BR-DE-11	
+xrechnung	xrechnung/ubl-062-br-de-19-iban-checksum.xml	ubl	b606b80c3636	valid		BR-DE-19	
+xrechnung	xrechnung/ubl-063-br-de-19-iban-with-spaces.xml	ubl	3ac4d3606df1	valid			
+xrechnung	xrechnung/ubl-064-br-de-19-credit-transfer-30.xml	ubl	c3e80ba2aa5c	valid			
+xrechnung	xrechnung/ubl-065-br-de-19-spaced-code.xml	ubl	ecc298cd25f3	valid		BR-DE-19	
+xrechnung	xrechnung/ubl-066-br-de-23-a-no-credit-transfer.xml	ubl	da70e92805fc	invalid	BR-61 BR-DE-23-a	BR-DE-23-a	
+xrechnung	xrechnung/ubl-067-br-de-23-b-card.xml	ubl	9a3fff0d4d5e	invalid	BR-DE-23-b	BR-DE-23-b	
+xrechnung	xrechnung/ubl-068-br-de-23-b-mandate.xml	ubl	18f1f9ff157f	invalid	BR-DE-23-b	BR-DE-23-b	
+xrechnung	xrechnung/ubl-069-br-de-23-b-mandate-without-creditor-identifier.xml	ubl	759fdc0c7578	invalid	BR-DE-23-b BR-DE-30	BR-DE-23-b BR-DE-30	
+xrechnung	xrechnung/ubl-070-br-de-24-a-b-card-code.xml	ubl	29301ce50fce	invalid	BR-DE-24-a BR-DE-24-b	BR-DE-24-a BR-DE-24-b	
+xrechnung	xrechnung/ubl-071-br-de-24-card.xml	ubl	54737bdd7c50	valid			
+xrechnung	xrechnung/ubl-072-br-de-24-b-card-and-mandate.xml	ubl	2cef5f97a8c9	invalid	BR-DE-24-b	BR-DE-24-b	
+xrechnung	xrechnung/ubl-073-br-de-20-iban-checksum.xml	ubl	789496451a37	valid		BR-DE-20	
+xrechnung	xrechnung/ubl-074-br-de-25-direct-debit-code-only.xml	ubl	ed611ee3094b	invalid	BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061	BR-DE-20 BR-DE-25-a BR-DE-25-b PEPPOL-EN16931-R061	
+xrechnung	xrechnung/ubl-075-br-de-25-b-card.xml	ubl	ebb19c1eafcf	invalid	BR-DE-25-b	BR-DE-25-b	
+xrechnung	xrechnung/ubl-076-br-de-14-no-vat-rate.xml	ubl	357c661b1c65	invalid	BR-48 BR-CO-17 BR-DE-14 BR-S-09	BR-DE-14	
+xrechnung	xrechnung/ubl-077-br-de-14-blank-vat-rate.xml	ubl	febdca2d819c	invalid	XSD	BR-DE-14 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-078-br-dex-01-zip-attachment.xml	ubl	df954a08c5e6	invalid	BR-DEX-01	BR-DEX-01	
+xrechnung	xrechnung/ubl-079-br-dex-01-xml-attachment.xml	ubl	6173a26bb61c	valid			
+xrechnung	xrechnung/ubl-080-br-dex-01-needs-the-extension.xml	ubl	33c191b20cb6	invalid	BR-CL-24		
+xrechnung	xrechnung/ubl-081-br-dex-02-sub-lines.xml	ubl	37a3258dbec9	valid			
+xrechnung	xrechnung/ubl-082-br-dex-02-wrong-sum.xml	ubl	0c64f40ff198	valid		BR-DEX-02	
+xrechnung	xrechnung/ubl-083-br-dex-02-nested-sub-lines.xml	ubl	5bbca3bd2190	valid		BR-DEX-02	
+xrechnung	xrechnung/ubl-084-br-dex-02-nested-sub-lines-sum.xml	ubl	07ef7274f1a5	valid			
+xrechnung	xrechnung/ubl-085-br-dex-02-not-a-decimal.xml	ubl	aa70c179ffd0	invalid	XSD	BR-DEX-02	
+xrechnung	xrechnung/ubl-086-br-dex-02-needs-the-extension.xml	ubl	9334b53346d6	invalid	UBL-CR-646		
+xrechnung	xrechnung/ubl-087-br-dex-03-no-vat-category.xml	ubl	123f8d2c3803	invalid	BR-DEX-03	BR-DEX-03	
+xrechnung	xrechnung/ubl-088-br-dex-03-two-vat-categories.xml	ubl	fb39bc457595	invalid	BR-DEX-03	BR-DEX-03	
+xrechnung	xrechnung/ubl-090-br-dex-09-wrong-amount-due.xml	ubl	c5c25293deda	invalid	BR-DEX-09	BR-DEX-09	
+xrechnung	xrechnung/ubl-091-br-dex-09-rounded-to-cents.xml	ubl	3809cee5d037	invalid	BR-DEC-18 UBL-DT-01		
+xrechnung	xrechnung/ubl-092-br-dex-09-half-rounds-up.xml	ubl	2bdef96d04d4	invalid	BR-DEC-18 UBL-DT-01		
+xrechnung	xrechnung/ubl-093-br-dex-09-paid-and-rounding-amounts.xml	ubl	c592d4f6998f	valid			
+xrechnung	xrechnung/ubl-095-br-dex-09-no-amount-due.xml	ubl	4d8cf372e469	invalid	XSD	BR-DEX-09	
+xrechnung	xrechnung/ubl-096-br-dex-09-needs-the-extension.xml	ubl	3b7cbe95d0a8	invalid	BR-CO-16		
+xrechnung	xrechnung/ubl-097-br-dex-04-unknown-scheme.xml	ubl	2a63c4d46ca6	invalid	BR-DEX-04	BR-DEX-04	
+xrechnung	xrechnung/ubl-098-br-dex-04-xr01.xml	ubl	f66fd92cd915	valid			
+xrechnung	xrechnung/ubl-099-br-dex-04-empty-scheme-passes.xml	ubl	098e8af6f893	valid			
+xrechnung	xrechnung/ubl-100-br-dex-04-sepa-of-the-buyer.xml	ubl	d6d98340b71f	invalid	BR-DEX-04	BR-DEX-04	
+xrechnung	xrechnung/ubl-101-br-dex-04-sepa-of-the-payee.xml	ubl	c2c715beb84c	valid			
+xrechnung	xrechnung/ubl-102-br-dex-05-legal-registration.xml	ubl	a57c5ca07415	invalid	BR-DEX-05	BR-DEX-05	
+xrechnung	xrechnung/ubl-103-br-dex-05-vat-identifier-is-not-checked.xml	ubl	8296fabd0108	valid			
+xrechnung	xrechnung/ubl-104-br-dex-06-item-identifier.xml	ubl	0365d8fb281d	invalid	BR-DEX-06	BR-DEX-06	
+xrechnung	xrechnung/ubl-105-br-dex-07-endpoint.xml	ubl	afc6b7a1ee04	invalid	BR-DEX-07	BR-DEX-07	
+xrechnung	xrechnung/ubl-106-br-dex-07-xr02.xml	ubl	7f94ae3faf7a	valid			
+xrechnung	xrechnung/ubl-107-br-dex-08-deliver-to-location.xml	ubl	b87e55b1d6c2	invalid	BR-DEX-08	BR-DEX-08	
+xrechnung	xrechnung/ubl-108-br-dex-10-blank-payment-type.xml	ubl	eb54237e7f72	invalid	BR-DEX-10 PEPPOL-EN16931-R008	BR-DEX-10 PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-109-br-dex-11-no-amount.xml	ubl	0fa2de6ae9de	invalid	BR-DEX-09 BR-DEX-11 BR-DEX-14	BR-DEX-09 BR-DEX-11 BR-DEX-14	
+xrechnung	xrechnung/ubl-110-br-dex-12-no-description.xml	ubl	0b75f465704b	invalid	BR-DEX-12	BR-DEX-12	
+xrechnung	xrechnung/ubl-111-br-dex-13-three-decimals.xml	ubl	449846695f84	invalid	BR-DEX-13 UBL-DT-01	BR-DEX-13	
+xrechnung	xrechnung/ubl-112-br-dex-14-other-currency.xml	ubl	167e3c20ffe8	invalid	BR-DEX-14	BR-DEX-14	
+xrechnung	xrechnung/ubl-114-br-dex-10-to-14-need-the-extension.xml	ubl	603c88eb2fb4	invalid	PEPPOL-EN16931-R008	PEPPOL-EN16931-R008	
+xrechnung	xrechnung/ubl-115-br-de-cvd-02-no-tender-reference.xml	ubl	4d3e7a342c1d	invalid	BR-DE-CVD-02	BR-DE-CVD-02	
+xrechnung	xrechnung/ubl-116-br-de-cvd-01-no-contract-reference.xml	ubl	402d00756ff1	invalid	BR-DE-CVD-01	BR-DE-CVD-01	
+xrechnung	xrechnung/ubl-117-br-de-cvd-03-no-vehicle-line.xml	ubl	a8bf7cf4a952	invalid	BR-DE-CVD-03	BR-DE-CVD-03	
+xrechnung	xrechnung/ubl-118-br-de-cvd-06-a-no-cva.xml	ubl	f614d2707068	invalid	BR-DE-CVD-03 BR-DE-CVD-06-a	BR-DE-CVD-03 BR-DE-CVD-06-a	
+xrechnung	xrechnung/ubl-119-br-de-cvd-06-a-two-cva.xml	ubl	050044d8bd77	invalid	BR-DE-CVD-06-a	BR-DE-CVD-06-a	
+xrechnung	xrechnung/ubl-120-br-de-cvd-06-b-two-classes.xml	ubl	dacf5d536a4e	invalid	BR-DE-CVD-06-b	BR-DE-CVD-06-b	
+xrechnung	xrechnung/ubl-121-br-de-cvd-06-b-no-class.xml	ubl	0aee2e3b9e5c	invalid	BR-DE-CVD-03 BR-DE-CVD-06-b	BR-DE-CVD-03 BR-DE-CVD-06-b	
+xrechnung	xrechnung/ubl-122-br-tmp-cvd-01-unknown-list.xml	ubl	f45fc974c7ce	invalid	BR-TMP-CVD-01	BR-TMP-CVD-01	
+xrechnung	xrechnung/ubl-123-br-tmp-cvd-01-no-list-passes.xml	ubl	887931f32fe5	invalid	BR-65		
+xrechnung	xrechnung/ubl-124-br-de-cvd-04-category-l1.xml	ubl	f186c3b55227	invalid	BR-DE-CVD-04	BR-DE-CVD-04	
+xrechnung	xrechnung/ubl-125-br-de-cvd-04-credit-note.xml	ubl	84726985dc23	invalid	XSD	BR-DE-CVD-04	
+xrechnung	xrechnung/ubl-126-br-de-cvd-05-diesel.xml	ubl	dd83745628b7	invalid	BR-DE-CVD-05	BR-DE-CVD-05	
+xrechnung	xrechnung/ubl-127-br-de-cvd-need-the-cvd-identifier.xml	ubl	6562901f22c1	invalid	BR-CL-13		
+xrechnung	xrechnung/ubl-128-peppol-en16931-r043-document-allowance.xml	ubl	144f36954cf7	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R043	PEPPOL-EN16931-R043	
+xrechnung	xrechnung/ubl-129-peppol-en16931-r043-spaced-indicator.xml	ubl	a5a6ec72d74b	invalid	BR-CO-12 BR-S-08		
+xrechnung	xrechnung/ubl-130-peppol-en16931-r043-percentage-and-base-amount.xml	ubl	f047e68e0ccf	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R043	PEPPOL-EN16931-R043	
+xrechnung	xrechnung/ubl-131-peppol-en16931-r041-percentage-only.xml	ubl	ec681c4dc76d	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R041	PEPPOL-EN16931-R041	
+xrechnung	xrechnung/ubl-132-peppol-en16931-r042-base-amount-only.xml	ubl	da6ec440e9d8	invalid	BR-CO-12 BR-S-08 PEPPOL-EN16931-R042	PEPPOL-EN16931-R042	
+xrechnung	xrechnung/ubl-133-peppol-en16931-r043-line-allowance.xml	ubl	3d089ce41b13	invalid	XSD	PEPPOL-EN16931-R043	
+xrechnung	xrechnung/ubl-134-peppol-en16931-r043-credit-note-line.xml	ubl	25487f44f110	invalid	XSD	PEPPOL-EN16931-R008 PEPPOL-EN16931-R043	
+xrechnung	xrechnung/ubl-135-peppol-en16931-r001-no-business-process.xml	ubl	f7af276fbf01	invalid	PEPPOL-EN16931-R001	PEPPOL-EN16931-R001	
+xrechnung	xrechnung/ubl-136-peppol-en16931-r005-vat-accounting-currency-of-the-invoice.xml	ubl	2ac111257747	invalid	PEPPOL-EN16931-R005 PEPPOL-EN16931-R054	PEPPOL-EN16931-R005 PEPPOL-EN16931-R054	
+xrechnung	xrechnung/ubl-137-peppol-en16931-r053-two-tax-totals-with-subtotals.xml	ubl	0e38bbe2e12b	invalid	BR-CO-15 BR-S-08 PEPPOL-EN16931-R053	PEPPOL-EN16931-R053	
+xrechnung	xrechnung/ubl-138-peppol-en16931-r054-no-tax-total-in-the-accounting-currency.xml	ubl	69e1b9927f3e	invalid	BR-53 PEPPOL-EN16931-R054 PEPPOL-EN16931-R055	PEPPOL-EN16931-R054 PEPPOL-EN16931-R055	
+xrechnung	xrechnung/ubl-139-peppol-en16931-r054-tax-total-in-the-accounting-currency.xml	ubl	29a889405fc9	valid			
+xrechnung	xrechnung/ubl-140-peppol-en16931-r054-tax-total-without-accounting-currency.xml	ubl	f0172694e634	invalid	PEPPOL-EN16931-R054	PEPPOL-EN16931-R054	
+xrechnung	xrechnung/ubl-141-peppol-en16931-r055-opposite-signs.xml	ubl	5424316df3e9	invalid	PEPPOL-EN16931-R055	PEPPOL-EN16931-R055	
+xrechnung	xrechnung/ubl-142-peppol-en16931-r010-no-buyer-electronic-address.xml	ubl	78068b8d9fd9	invalid	PEPPOL-EN16931-R010	PEPPOL-EN16931-R010	
+xrechnung	xrechnung/ubl-143-peppol-en16931-r020-no-seller-electronic-address.xml	ubl	85b331711d75	invalid	PEPPOL-EN16931-R020	PEPPOL-EN16931-R020	
+xrechnung	xrechnung/ubl-144-peppol-en16931-r040-amount.xml	ubl	5f99ccfbc23c	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R040	PEPPOL-EN16931-R040	
+xrechnung	xrechnung/ubl-145-peppol-en16931-r040-within-the-slack.xml	ubl	71c375218cb3	invalid	BR-CO-11 BR-S-08		
+xrechnung	xrechnung/ubl-146-peppol-en16931-r040-huf-slack.xml	ubl	270955db0468	invalid	BR-CO-11 BR-S-08		
+xrechnung	xrechnung/ubl-147-peppol-en16931-r040-beyond-the-huf-slack.xml	ubl	d9789d8929e9	invalid	BR-CO-11 BR-S-08 PEPPOL-EN16931-R040	PEPPOL-EN16931-R040	
+xrechnung	xrechnung/ubl-148-peppol-en16931-r110-line-period-starts-before.xml	ubl	92e37ddcabf8	invalid	PEPPOL-EN16931-R110	PEPPOL-EN16931-R110	
+xrechnung	xrechnung/ubl-149-peppol-en16931-r111-line-period-ends-after.xml	ubl	26d0afc83c6c	invalid	PEPPOL-EN16931-R111	PEPPOL-EN16931-R111	
+xrechnung	xrechnung/ubl-150-peppol-en16931-r111-credit-note.xml	ubl	afa8025c854b	invalid	XSD	PEPPOL-EN16931-R111	
+xrechnung	xrechnung/ubl-151-peppol-en16931-r110-needs-an-invoice-start-date.xml	ubl	59b3c5e4502e	valid			
+xrechnung	xrechnung/ubl-152-peppol-en16931-r120-line-net-amount.xml	ubl	11bde6cd3e82	valid		PEPPOL-EN16931-R120	
+xrechnung	xrechnung/ubl-153-peppol-en16931-r120-credit-note.xml	ubl	db746b614d7b	invalid	XSD	PEPPOL-EN16931-R120	
+xrechnung	xrechnung/ubl-154-peppol-en16931-r120-within-the-slack.xml	ubl	7b557bfb2ccb	valid			
+xrechnung	xrechnung/ubl-155-peppol-en16931-r120-line-allowance.xml	ubl	8e6bc6af6b8d	valid		PEPPOL-EN16931-R120	
+xrechnung	xrechnung/ubl-156-peppol-en16931-r121-zero-base-quantity.xml	ubl	1548931af5ab	invalid	PEPPOL-EN16931-R121	PEPPOL-EN16931-R121	
+xrechnung	xrechnung/ubl-157-peppol-en16931-r101-line-object.xml	ubl	aafb8e7a7474	invalid	PEPPOL-EN16931-R101	PEPPOL-EN16931-R101	
+xrechnung	xrechnung/ubl-158-peppol-en16931-r101-type-code-130.xml	ubl	c13cdc3dea18	valid			
+xrechnung	xrechnung/ubl-159-peppol-en16931-r044-charge-on-the-price.xml	ubl	9d387946045c	invalid	PEPPOL-EN16931-R044	PEPPOL-EN16931-R044	
+xrechnung	xrechnung/ubl-160-peppol-en16931-r044-spaced-indicator.xml	ubl	fc89b508734d	valid			
+xrechnung	xrechnung/ubl-161-peppol-en16931-r046-net-price.xml	ubl	b24418dd9b2f	invalid	PEPPOL-EN16931-R046	PEPPOL-EN16931-R046	
+xrechnung	xrechnung/ubl-162-peppol-en16931-r046-base-amount-minus-allowance.xml	ubl	a3fdb1d64d1f	valid			
+xrechnung	xrechnung/ubl-163-peppol-en16931-r130-unit-of-the-base-quantity.xml	ubl	4780e6641763	invalid	PEPPOL-EN16931-R130	PEPPOL-EN16931-R130	
+xrechnung	xrechnung/ubl-164-peppol-en16931-r008-empty-order-reference-identifier.xml	ubl	2d49eec0cb4e	valid			
+xrechnung	xrechnung/ubl-165-peppol-en16931-r008-empty-order-reference.xml	ubl	7e156c9e82ae	invalid	PEPPOL-EN16931-R008	PEPPOL-EN16931-R008	
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/04.01a-INVOICE_ubl.xml	ubl	bd93caab863a	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/04.02a-INVOICE_ubl.xml	ubl	46d993acf7d6	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/04.03a-INVOICE_ubl.xml	ubl	f50a6ed345e3	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/04.04a-INVOICE_ubl.xml	ubl	275929283c92	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/04.05a-INVOICE_uncefact.xml	cii	5ab587a3c10b	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/extension/05.01a-INVOICE_ubl.xml	ubl	ba11d1f57e88	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.01a-INVOICE_ubl.xml	ubl	74fb09c609d5	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.01a-INVOICE_uncefact.xml	cii	727b51982a84	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.02a-INVOICE_ubl.xml	ubl	0250e3d8d45b	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.02a-INVOICE_uncefact.xml	cii	4d04b67a753b	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.03a-INVOICE_ubl.xml	ubl	281ed60e09df	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.03a-INVOICE_uncefact.xml	cii	4926207a2693	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.04a-INVOICE_ubl.xml	ubl	91208ec877fa	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.04a-INVOICE_uncefact.xml	cii	42ac152e4804	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.05a-INVOICE_ubl.xml	ubl	09cff10c3ad2	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.05a-INVOICE_uncefact.xml	cii	8f95097b5231	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.06a-INVOICE_ubl.xml	ubl	71d357d848e6	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.06a-INVOICE_uncefact.xml	cii	2f073590a863	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.07a-INVOICE_ubl.xml	ubl	dfc84cc824a9	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.07a-INVOICE_uncefact.xml	cii	6c8ece702656	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.08a-INVOICE_ubl.xml	ubl	b38c9d2666dd	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.08a-INVOICE_uncefact.xml	cii	96db4c3c6e5c	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.09a-INVOICE_ubl.xml	ubl	93aa62fbf2fe	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.09a-INVOICE_uncefact.xml	cii	36aa85ae8a80	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.10a-INVOICE_ubl.xml	ubl	a0a788d308ee	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.10a-INVOICE_uncefact.xml	cii	3755ea7764f6	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.11a-INVOICE_ubl.xml	ubl	3f413a4f33c3	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.11a-INVOICE_uncefact.xml	cii	0cbcf2d8e4a2	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.12a-INVOICE_ubl.xml	ubl	cc281f765dd4	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.12a-INVOICE_uncefact.xml	cii	b6b3186df8ad	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.13a-INVOICE_ubl.xml	ubl	03558b27fea3	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.13a-INVOICE_uncefact.xml	cii	bf3a7deaeb49	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.14a-INVOICE_ubl.xml	ubl	44699c5b9089	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.14a-INVOICE_uncefact.xml	cii	8c6b4a9e40f1	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.15a-INVOICE_ubl.xml	ubl	0bc82a93113d	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.15a-INVOICE_uncefact.xml	cii	b89c8593f45f	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.17a-INVOICE_ubl.xml	ubl	54f477a8ddc0	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.17a-INVOICE_uncefact.xml	cii	99832b7873fc	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.18a-INVOICE_ubl.xml	ubl	55f90ad3793e	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.18a-INVOICE_uncefact.xml	cii	6be54635ad7a	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.19a-INVOICE_ubl.xml	ubl	c3d3744cf48e	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.19a-INVOICE_uncefact.xml	cii	c1f62d00d1d0	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.20a-INVOICE_ubl.xml	ubl	51fe9b285d86	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.20a-INVOICE_uncefact.xml	cii	b86fb34c45e0	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.21a-INVOICE_ubl.xml	ubl	8ed131cc276b	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/01.21a-INVOICE_uncefact.xml	cii	e88c6b6498bf	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.01a-INVOICE_ubl.xml	ubl	942f3ac502fd	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.01a-INVOICE_uncefact.xml	cii	b0bc3f139d52	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.02a-INVOICE_ubl.xml	ubl	e92aae369f69	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.02a-INVOICE_uncefact.xml	cii	551e9667b1c5	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.03a-INVOICE_ubl.xml	ubl	b5e4654362ad	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.03a-INVOICE_uncefact.xml	cii	0c1d5983bd99	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.04a-INVOICE_ubl.xml	ubl	1dae874fdafb	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.04a-INVOICE_uncefact.xml	cii	451f14f8b458	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.05a-INVOICE_ubl.xml	ubl	89124d6a1d66	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.05a-INVOICE_uncefact.xml	cii	abdb5ddd5b0c	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.06a-INVOICE_ubl.xml	ubl	7906603158c9	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/02.06a-INVOICE_uncefact.xml	cii	17a539fe569a	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.01a-INVOICE_ubl.xml	ubl	f8a2b313d823	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.01a-INVOICE_uncefact.xml	cii	f42a6b02d0ac	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.02a-INVOICE_ubl.xml	ubl	065145e6a627	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.02a-INVOICE_uncefact.xml	cii	c19244a66439	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.03a-INVOICE_ubl.xml	ubl	68110106c5f6	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.03a-INVOICE_uncefact.xml	cii	6d61b2ebce34	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.04a-INVOICE_ubl.xml	ubl	b12d17301f84	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.04a-INVOICE_uncefact.xml	cii	49701b86b040	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.05a-INVOICE_ubl.xml	ubl	0bd9e9cb2a38	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.05a-INVOICE_uncefact.xml	cii	86fa1ea53fdb	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.06a-INVOICE_ubl.xml	ubl	e6a5cd7fce70	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.06a-INVOICE_uncefact.xml	cii	7401cbb320bd	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.07a-INVOICE_ubl.xml	ubl	8156b20b1e66	valid			
+xrechnung	external/xrechnung-testsuite/src/test/business-cases/standard/03.07a-INVOICE_uncefact.xml	cii	0240935e5416	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.01_comprehensive_test_ubl.xml	ubl	13104371d844	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.01_comprehensive_test_uncefact.xml	cii	655f3d18f71f	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.02_comprehensive_test_ubl.xml	ubl	9b17fabf9cf5	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.02_comprehensive_test_uncefact.xml	cii	f010dd7b0eab	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.03_comprehensive_test_ubl.xml	ubl	2bb362a4160a	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.03_comprehensive_test_uncefact.xml	cii	c6e56f680e76	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.04_comprehensive_test_ubl.xml	ubl	d964a03caeab	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.04_comprehensive_test_uncefact.xml	cii	078fb1aa9351	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.05_minimal_test_ubl.xml	ubl	db30815f3d29	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.05_minimal_test_uncefact.xml	cii	f8f7035ca6ec	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.06_minimal_test_ubl.xml	ubl	9132e4eeff1c	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cius/01.06_minimal_test_uncefact.xml	cii	d5a0245bf6c8	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cvd/02.01a-cvd_INVOICE_ubl.xml	ubl	6e426f202946	valid			
+xrechnung	external/xrechnung-testsuite/src/test/technical-cases/cvd/02.01a-cvd_INVOICE_uncefact.xml	cii	3deab5eea780	valid			
