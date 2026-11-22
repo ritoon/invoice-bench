@@ -17,7 +17,7 @@ jobs:
     # Each library is a separate module whose dependencies come from
     # ./run.sh setup; only the modules that build without it are compiled
     # here: the one that measures ZeRechnung and the two report tools.
-    name: Modules Go et scripts
+    name: Go modules and scripts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

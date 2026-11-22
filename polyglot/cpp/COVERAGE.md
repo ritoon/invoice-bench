@@ -1,253 +1,253 @@
-# Couverture : écosystème C++
+# Coverage: C++ ecosystem
 
-Banc C++ du protocole commun (`../PROTOCOL.md`). Un exécutable par librairie
-(`build/bench-<lib>`, source `libs/<lib>/main.cpp`), le harnais du banc C
-(`../c/harness/harness.c`, compilé en C) vu par sa façade C++
-(`harness/harness.hpp`), construction CMake en `Release` (drapeaux par défaut
-de CMake : `-O3 -DNDEBUG`, aucune option propre au processeur), C++20.
-Compilateur : Apple clang 21.0.0, CMake 4.5.1, Ninja. Les librairies viennent
-de Homebrew (macOS arm64), sauf Kura (source épinglée) et SaxonC-HE (binaire
-officiel épinglé).
+C++ bench for the common protocol (`../PROTOCOL.md`). One executable per
+library (`build/bench-<lib>`, source `libs/<lib>/main.cpp`), the C bench's
+harness (`../c/harness/harness.c`, compiled as C) seen through its C++ facade
+(`harness/harness.hpp`), CMake build in `Release` (CMake's default flags:
+`-O3 -DNDEBUG`, no CPU-specific option), C++20.
+Compiler: Apple clang 21.0.0, CMake 4.5.1, Ninja. The libraries come from
+Homebrew (macOS arm64), except Kura (pinned source) and SaxonC-HE (pinned
+official binary).
 
-**L'écosystème C++ n'a pas de librairie dédiée qui lise, valide ou écrive le
-CII.** Une seule librairie maintenue connaît Factur-X : **Kura**
-(bentopdf-kura, AGPL-3.0, ★25, version 1.4.1 du 2026-11-08), un moteur PDF/A
-qui lit, attache et contrôle la facture **au niveau du conteneur PDF**, sans
-jamais analyser le XML. La validation EN 16931 n'existe en C++ que par
-**SaxonC-HE**, le processeur XSLT 3.0 de Saxonica compilé en librairie native,
-qui exécute les XSLT officiels du CEN et de la KoSIT : c'est le validateur de
-référence du banc, pas une librairie de facture. Tout le reste est un
-**plancher** : qpdf, PoDoFo et poppler-cpp pour le PDF, Xerces-C (avec le XSD
-CII) et pugixml pour le XML, avec quelques dizaines de lignes écrites dans
-l'adaptateur.
+**The C++ ecosystem has no dedicated library that parses, validates or writes
+CII.** Only one maintained library knows Factur-X: **Kura**
+(bentopdf-kura, AGPL-3.0, ★25, version 1.4.1 released 2026-11-08), a PDF/A
+engine that reads, attaches and checks the invoice **at the PDF container
+level**, without ever parsing the XML. EN 16931 validation exists in C++ only
+through **SaxonC-HE**, Saxonica's XSLT 3.0 processor compiled as a native
+library, which runs the official CEN and KoSIT XSLTs: it is the bench's
+reference validator, not an invoice library. Everything else is a
+**floor**: qpdf, PoDoFo and poppler-cpp for PDF, Xerces-C (with the CII
+XSD) and pugixml for XML, with a few dozen lines written in the
+adapter.
 
-Les preuves citées sont des chemins dans les sources des librairies, au tag de
-la version construite (dépôt GitHub, archive épinglée dans `.artefacts/`, ou
-en-têtes installés par Homebrew dans `/opt/homebrew/opt/<formule>/include`),
-et dans les adaptateurs de ce banc. Popularité relevée le 2026-11-22 : étoiles
-GitHub, date de la version mesurée (tag), installations Homebrew sur 365 jours
-(`formulae.brew.sh`, surtout comme dépendance d'autres formules). Il n'y a
-pas de registre de téléchargements pour le C++.
+The evidence cited is paths in the libraries' sources, at the tag of the
+built version (GitHub repository, archive pinned in `.artefacts/`, or headers
+installed by Homebrew in `/opt/homebrew/opt/<formula>/include`), and in this
+bench's adapters. Popularity as of 2026-11-22: GitHub stars, date of the
+measured version (tag), Homebrew installs over 365 days
+(`formulae.brew.sh`, mostly as a dependency of other formulae). There is no
+download registry for C++.
 
-## Recensement
+## Candidate search
 
-- GitHub, recherche de dépôts en C++ : `zugferd`, `factur-x`, `facturx`,
+- GitHub, search for C++ repositories: `zugferd`, `factur-x`, `facturx`,
   `xrechnung`, `en16931`, `e-rechnung`, `CrossIndustryInvoice`, `einvoice`,
-  `e-invoice`. Recherche de code en C++ : `"urn:cen.eu:en16931:2017"`,
-  `rsm:CrossIndustryInvoice`, `"factur-x.xml"`, `ZUGFeRD`. Résultats : Kura,
-  les projets de la table des écartées, des applications (KDE Kraft,
-  YACAppServer, UltraCanvas, Duncans-Suite, PDFE) et des exemples de SDK
-  commerciaux (Datalogics, PDF-XChange).
-- vcpkg (2 917 ports) et Conan Center (1 982 recettes) : aucun port de
-  facture électronique ; seulement `qpdf`, `podofo`, `poppler`, `xerces-c`,
-  `pugixml`, `libxslt` (et `libmupdf` dans vcpkg).
-- Homebrew : aucune formule `zugferd`, `factur`, `xrechnung` ou `einvoice`.
-  La formule `saxon` est Saxon-HE pour Java, pas SaxonC. Debian : aucun
-  paquet source de ces noms.
+  `e-invoice`. Code search in C++: `"urn:cen.eu:en16931:2017"`,
+  `rsm:CrossIndustryInvoice`, `"factur-x.xml"`, `ZUGFeRD`. Results: Kura,
+  the projects in the excluded table, applications (KDE Kraft,
+  YACAppServer, UltraCanvas, Duncans-Suite, PDFE) and commercial SDK samples
+  (Datalogics, PDF-XChange).
+- vcpkg (2,917 ports) and Conan Center (1,982 recipes): no e-invoicing
+  port; only `qpdf`, `podofo`, `poppler`, `xerces-c`, `pugixml`, `libxslt`
+  (and `libmupdf` in vcpkg).
+- Homebrew: no `zugferd`, `factur`, `xrechnung` or `einvoice` formula.
+  The `saxon` formula is Saxon-HE for Java, not SaxonC. Debian: no source
+  package with these names.
 
-## Librairies mesurées
+## Measured libraries
 
-### Kura 1.4.1 (bentopdf-kura) : dédiée, au niveau du conteneur PDF
+### Kura 1.4.1 (bentopdf-kura): dedicated, at the PDF container level
 
-Moteur C++ de conversion et de contrôle PDF/A, PDF/X et facture électronique,
-bâti sur qpdf. Source épinglée : archive du tag `v1.4.1`
-(SHA-256 `18353ceb…43fb8` dans `run.sh`), dont seul `pdfa-engine/` est
-décompressé ; construit par `add_subdirectory` avec la CLI, PDFium, zxing-cpp,
-QuickJS, les fuzzers et le test du SDK désactivés (`CMakeLists.txt`), lié à
-la qpdf de Homebrew. Il connaît Factur-X, ZUGFeRD, XRechnung et Order-X au
-niveau du PDF ; il ne lit pas le CII (profil détecté par motifs de texte,
+C++ engine for PDF/A, PDF/X and e-invoice conversion and checking, built on
+qpdf. Pinned source: archive of the `v1.4.1` tag
+(SHA-256 `18353ceb…43fb8` in `run.sh`), of which only `pdfa-engine/` is
+unpacked; built with `add_subdirectory`, with the CLI, PDFium, zxing-cpp,
+QuickJS, the fuzzers and the SDK test disabled (`CMakeLists.txt`), linked
+against Homebrew's qpdf. It knows Factur-X, ZUGFeRD, XRechnung and Order-X at
+the PDF level; it does not parse the CII (profile detected by text patterns,
 `core/src/einvoice.cpp:92` `detectInvoice`).
 
-- Extraction : `pdfa::readInvoice` (`core/src/einvoice_read.cpp:56`), premier
-  fichier de `/Names/EmbeddedFiles` sous un des noms `factur-x.xml`,
+- Extraction: `pdfa::readInvoice` (`core/src/einvoice_read.cpp:56`), first
+  file in `/Names/EmbeddedFiles` under one of the names `factur-x.xml`,
   `zugferd-invoice.xml`, `ZUGFeRD-invoice.xml`, `xrechnung.xml`,
-  `order-x.xml` (`:72-73`). Le XMP n'est pas consulté. 104 PDF sur 104.
-- Injection : `kura_convert(host, "3b", &options)` avec `invoice_xml`
-  (`core/include/kura/kura.h:114`, `capi/kura_c.cpp:203`), le point d'entrée
-  du SDK. Il convertit tout l'hôte en PDF/A-3b (polices, espaces de couleur,
-  métadonnées) et attache la facture (`attachInvoiceXml`,
-  `core/src/sanitize.cpp:990`, appelé à `:1347`) avec `/AF`,
-  `/AFRelationship` et le schéma d'extension XMP `fx:` ; le profil et le nom
-  du fichier viennent de `detectInvoice`. Toute la conversion PDF/A est dans
-  la mesure (environ 12,6 ms contre 0,1 à 0,5 ms pour les planchers, qui ne
-  convertissent rien).
-- Particularité relevée : les hôtes du protocole gardent dans `/AF` le
-  `factur-x.xml` du PDF intarsys dont ils viennent. Kura réinscrit ce fichier
-  orphelin dans `/Names/EmbeddedFiles` (`sanitize.cpp:825-870`), puis
-  `attachAssociatedFile` (`:934`) ajoute la nouvelle facture sans remplacer
-  l'ancienne : le PDF produit contient deux `factur-x.xml`, et
-  `readInvoice` relit le premier, l'ancien (la même facture en CRLF, 13 396
-  octets contre 13 153). `zerechnung validate` signale une seule erreur sur ce
-  PDF (PDF-28, deux pièces jointes de facture), aucun avertissement. Le banc
-  l'accepte, car la relecture trouve un CII, comme le harnais Rust ; la note
-  de la ligne JSONL le dit.
-- CheckPDF : `kura_read_invoice` (`kura.h:123`, `kura_c.cpp:268`), qui appelle
-  `pdfa::checkInvoice` (`core/src/einvoice_check.cpp:8-95`) : URN de la
-  spécification, présence de l'identifiant, du code de type et de la date,
-  plus d'un XML attaché, avertissement MINIMUM / BASIC WL, nom de la pièce
-  jointe, `/AFRelationship`, présence dans `/AF`, et dans le XMP
-  `DocumentFileName`, `ConformanceLevel`, `DocumentType`. Ces contrôles
-  s'appuient sur `std::regex` (`einvoice_check.cpp:31`), d'où environ 1,4 ms
-  par appel. Pas une validation PDF/A : une incohérence trouvée fait partie
-  du rapport, pas d'un échec.
-- Pas de lecture, d'écriture ni de validation du XML.
-- Réseau : aucun.
+  `order-x.xml` (`:72-73`). The XMP is not consulted. 104 PDFs out of 104.
+- Embedding: `kura_convert(host, "3b", &options)` with `invoice_xml`
+  (`core/include/kura/kura.h:114`, `capi/kura_c.cpp:203`), the SDK entry
+  point. It converts the whole host to PDF/A-3b (fonts, color spaces,
+  metadata) and attaches the invoice (`attachInvoiceXml`,
+  `core/src/sanitize.cpp:990`, called at `:1347`) with `/AF`,
+  `/AFRelationship` and the `fx:` XMP extension schema; the profile and the
+  file name come from `detectInvoice`. The whole PDF/A conversion is inside
+  the measurement (about 12.6 ms versus 0.1 to 0.5 ms for the floors, which
+  convert nothing).
+- Quirk observed: the protocol hosts keep in `/AF` the `factur-x.xml` of the
+  intarsys PDF they were derived from. Kura re-registers this orphaned file
+  in `/Names/EmbeddedFiles` (`sanitize.cpp:825-870`), then
+  `attachAssociatedFile` (`:934`) adds the new invoice without replacing
+  the old one: the output PDF contains two `factur-x.xml` files, and
+  `readInvoice` reads back the first one, the old one (the same invoice with
+  CRLF, 13,396 bytes versus 13,153). `zerechnung validate` reports a single
+  error on this PDF (PDF-28, two invoice attachments) and no warning. The
+  bench accepts it, because the read-back finds a CII, as in the Rust
+  harness; the note in the JSONL line says so.
+- CheckPDF: `kura_read_invoice` (`kura.h:123`, `kura_c.cpp:268`), which calls
+  `pdfa::checkInvoice` (`core/src/einvoice_check.cpp:8-95`): specification
+  URN, presence of the identifier, type code and date, more than one
+  attached XML, MINIMUM / BASIC WL warning, attachment name,
+  `/AFRelationship`, presence in `/AF`, and in the XMP `DocumentFileName`,
+  `ConformanceLevel`, `DocumentType`. These checks rely on `std::regex`
+  (`einvoice_check.cpp:31`), hence about 1.4 ms per call. Not a PDF/A
+  validation: an inconsistency it finds goes into the report, not into a
+  failure.
+- No XML parsing, writing or validation.
+- Network: none.
 
-### SaxonC-HE 13.1.1 (Saxonica) : validateur de référence
+### SaxonC-HE 13.1.1 (Saxonica): reference validator
 
-Saxon-HE compilé en librairie native par GraalVM `native-image` (pas de JVM),
-avec une API C++ (`saxonc/SaxonProcessor.h`, `Xslt30Processor.h`). Binaire
-officiel pour macOS arm64 (`SaxonCHE-macos-arm64-13-1-1.zip`, fichiers datés
-du 2026-10-26). Saxonica ne publie pas de somme de contrôle : celle de
-`run.sh` (`8f164115…8630281`) a été relevée au premier téléchargement. C'est
-la même librairie que `saxonche`, la liaison Python utilisée par
-`../python/adapters/saxonche_schematron.py`, avec les mêmes artefacts et le
-même décompte.
+Saxon-HE compiled as a native library by GraalVM `native-image` (no JVM),
+with a C++ API (`saxonc/SaxonProcessor.h`, `Xslt30Processor.h`). Official
+binary for macOS arm64 (`SaxonCHE-macos-arm64-13-1-1.zip`, files dated
+2026-10-26). Saxonica does not publish a checksum: the one in `run.sh`
+(`8f164115…8630281`) was recorded at the first download. It is the same
+library as `saxonche`, the Python binding used by
+`../python/adapters/saxonche_schematron.py`, with the same artifacts and the
+same counting.
 
-- ParseValidate (`libs/saxonc-he/main.cpp:155-187`) : feuilles compilées une
-  fois au premier appel (`compile`, `:59-87`, coût dans `first_call_ns` de
-  `ParseValidate_Small`, environ 140 ms), puis à chaque appel
-  `parseXmlFromString` et `transformToString` :
-  - XSLT officiel CEN `EN16931-CII-validation.xslt` de `validation-1.3.17`
-    (ConnectingEurope/eInvoicing-EN16931, XSLT 2.0, 810 règles : CII-SR 484,
-    CII-DT 103, BR 58, BR-CL 23, BR-CO 23, BR-DEC 21, BR-IC 12, BR-O 14,
-    BR-S, BR-Z, BR-E, BR-AE, BR-IG, BR-IP, BR-G 10 chacune, BR-B 2 ; 339
-    marquées `fatal`, 471 `warning`) pour chaque facture ;
-  - en plus, quand BT-24 contient `xrechnung` (`is_xrechnung`, `:90-110`,
-    même test que l'adaptateur Python), la feuille KoSIT
-    `XRechnung-CII-validation.xsl` de `xrechnung-schematron` 2.6.0
-    (XRechnung 3.0.2, 74 règles : 31 BR-DE, 7 BR-DEX, 7 BR-DE-CVD, 22
-    PEPPOL-EN16931-R, 7 transitoires), comme le scénario CII de la
-    configuration KoSIT.
-- Décompte (`errors`, `:119-149`) : chaque `failed-assert` ou
-  `successful-report` du SVRL marqué `fatal` ou `error`, après les niveaux
-  propres à la configuration KoSIT du 2026-08-31 dans le scénario XRechnung
-  (CII-SR-465 et CII-SR-466 relevées en `error`, CII-SR-475 et CII-SR-476
-  abaissées en `information`), appliqués aux deux rapports comme le fait
-  l'adaptateur Python. Le SVRL est lu avec pugixml dans l'appel mesuré.
-- Résultat : 6 factures signalées sur 26 (BR-CL-25 ×2, CII-SR-465 ×4), la
-  référence du protocole. Sur un fichier corrompu à la main (montant total
-  faux), BR-CO-15 et BR-CO-16 sont bien signalées.
-- Pas de XSD (absent des artefacts CII du CEN) ; aucune règle française ;
-  pas d'UBL ni de Peppol BIS mesurés (les XSLT UBL du CEN ne sont pas chargés).
-- Réseau : aucun (feuilles locales ; `setcwd` vers `.artefacts`).
+- ParseValidate (`libs/saxonc-he/main.cpp:155-187`): stylesheets compiled
+  once on the first call (`compile`, `:59-87`, cost included in the
+  `first_call_ns` of `ParseValidate_Small`, about 140 ms), then on each call
+  `parseXmlFromString` and `transformToString`:
+  - the official CEN XSLT `EN16931-CII-validation.xslt` from
+    `validation-1.3.17` (ConnectingEurope/eInvoicing-EN16931, XSLT 2.0, 810
+    rules: CII-SR 484, CII-DT 103, BR 58, BR-CL 23, BR-CO 23, BR-DEC 21,
+    BR-IC 12, BR-O 14, BR-S, BR-Z, BR-E, BR-AE, BR-IG, BR-IP, BR-G 10 each,
+    BR-B 2; 339 flagged `fatal`, 471 `warning`) for every invoice;
+  - in addition, when BT-24 contains `xrechnung` (`is_xrechnung`, `:90-110`,
+    same test as the Python adapter), the KoSIT stylesheet
+    `XRechnung-CII-validation.xsl` from `xrechnung-schematron` 2.6.0
+    (XRechnung 3.0.2, 74 rules: 31 BR-DE, 7 BR-DEX, 7 BR-DE-CVD, 22
+    PEPPOL-EN16931-R, 7 transitional), as in the CII scenario of the
+    KoSIT configuration.
+- Counting (`errors`, `:119-149`): every `failed-assert` or
+  `successful-report` in the SVRL flagged `fatal` or `error`, after the levels
+  specific to the KoSIT configuration of 2026-08-31 in the XRechnung scenario
+  (CII-SR-465 and CII-SR-466 raised to `error`, CII-SR-475 and CII-SR-476
+  lowered to `information`), applied to both reports as the Python adapter
+  does. The SVRL is read with pugixml inside the measured call.
+- Result: 6 invoices flagged out of 26 (BR-CL-25 ×2, CII-SR-465 ×4), the
+  protocol reference. On a file corrupted by hand (wrong total amount),
+  BR-CO-15 and BR-CO-16 are flagged as expected.
+- No XSD (absent from the CEN CII artifacts); no French rules; no UBL or
+  Peppol BIS measured (the CEN UBL XSLTs are not loaded).
+- Network: none (local stylesheets; `setcwd` to `.artefacts`).
 
-### qpdf 12.4.2 (plancher PDF)
+### qpdf 12.4.2 (PDF floor)
 
-La librairie PDF « qui préserve le contenu » du monde C++, sans connaissance
-de Factur-X.
+The "content-preserving" PDF library of the C++ world, with no knowledge
+of Factur-X.
 
-- Extraction (`libs/qpdf/main.cpp:37-53`) : `processMemoryFile`,
-  `QPDFEmbeddedFileDocumentHelper::getEmbeddedFiles()` (tout l'arbre
-  `/Names/EmbeddedFiles`), premier fichier sous un nom de facture standard,
-  flux décodé par `getStreamData(qpdf_dl_generalized)`. 104 PDF sur 104.
-- Injection (`:55-100`) : `QPDFEFStreamObjectHelper::createEFStream`,
-  `QPDFFileSpecObjectHelper::createFileSpec`, `replaceEmbeddedFile` ; à la
-  main `/AFRelationship` (`Alternative`, ou `Data` en MINIMUM et BASIC WL,
-  `:69`), `/AF` reconstruit sans le fichier de facture laissé par l'hôte
-  (`:75-86`), nouveau `/Metadata` avec le XMP Factur-X du harnais (`:91-93`) ;
-  écriture complète par `QPDFWriter` en mémoire avec
-  `setNewlineBeforeEndstream(true)` (`:97`, exigé par PDF/A). Pas de
-  conversion PDF/A.
-- Contrôle du PDF produit (hors banc, `FX_DUMP_EMBED`) : `zerechnung
-  validate` sans erreur (avertissements : pas d'output intent PDF/A, `/Info`
-  sans équivalent XMP), `checkInvoice` de Kura le juge cohérent,
-  `qpdf --check` sans erreur.
+- Extraction (`libs/qpdf/main.cpp:37-53`): `processMemoryFile`,
+  `QPDFEmbeddedFileDocumentHelper::getEmbeddedFiles()` (the whole
+  `/Names/EmbeddedFiles` tree), first file under a standard invoice name,
+  stream decoded by `getStreamData(qpdf_dl_generalized)`. 104 PDFs out of 104.
+- Embedding (`:55-100`): `QPDFEFStreamObjectHelper::createEFStream`,
+  `QPDFFileSpecObjectHelper::createFileSpec`, `replaceEmbeddedFile`; by
+  hand: `/AFRelationship` (`Alternative`, or `Data` in MINIMUM and BASIC WL,
+  `:69`), `/AF` rebuilt without the invoice file left by the host
+  (`:75-86`), new `/Metadata` with the harness's Factur-X XMP (`:91-93`);
+  full write by `QPDFWriter` in memory with
+  `setNewlineBeforeEndstream(true)` (`:97`, required by PDF/A). No PDF/A
+  conversion.
+- Check of the output PDF (outside the bench, `FX_DUMP_EMBED`): `zerechnung
+  validate` reports no error (warnings: no PDF/A output intent, `/Info`
+  without an XMP equivalent), Kura's `checkInvoice` finds it consistent,
+  `qpdf --check` reports no error.
 
-### PoDoFo 1.1.3 (plancher PDF)
+### PoDoFo 1.1.3 (PDF floor)
 
-Librairie PDF généraliste en C++17, sans connaissance de Factur-X.
+General-purpose C++17 PDF library, with no knowledge of Factur-X.
 
-- Extraction (`libs/podofo/main.cpp:24-45`) :
-  `PdfMemDocument::LoadFromBuffer`, arbre `PdfEmbeddedFiles` parcouru par
-  `ToDictionary` (avec les `/Kids`), premier fichier sous un nom de facture
-  standard, `PdfFileSpec::GetEmbeddedData`. 104 PDF sur 104.
-- Injection (`:47-104`) : `CreateFileSpec` et `SetEmbeddedData`, ajout dans
-  l'arbre `PdfEmbeddedFiles` (`:71`) ; à la main `/AFRelationship` par profil
-  (`:56`), `/AF` reconstruit sans le fichier de facture de l'hôte
-  (`:77-90`), nouveau `/Metadata` XMP Factur-X (`:94-97`) ;
-  `PdfMemDocument::Save` avec `NoMetadataUpdate` (`:102`), pour que PoDoFo
-  garde ce XMP et n'y écrive pas l'heure courante. Pas de conversion PDF/A.
-  Mêmes contrôles hors banc que qpdf, mêmes résultats.
+- Extraction (`libs/podofo/main.cpp:24-45`):
+  `PdfMemDocument::LoadFromBuffer`, `PdfEmbeddedFiles` tree walked with
+  `ToDictionary` (including `/Kids`), first file under a standard invoice
+  name, `PdfFileSpec::GetEmbeddedData`. 104 PDFs out of 104.
+- Embedding (`:47-104`): `CreateFileSpec` and `SetEmbeddedData`, added to
+  the `PdfEmbeddedFiles` tree (`:71`); by hand: `/AFRelationship` per profile
+  (`:56`), `/AF` rebuilt without the host's invoice file
+  (`:77-90`), new Factur-X XMP `/Metadata` (`:94-97`);
+  `PdfMemDocument::Save` with `NoMetadataUpdate` (`:102`), so that PoDoFo
+  keeps this XMP and does not write the current time into it. No PDF/A
+  conversion. Same checks outside the bench as for qpdf, same results.
 
-### poppler-cpp 26.11.0 (plancher d'extraction)
+### poppler-cpp 26.11.0 (extraction floor)
 
-Façade C++ de la librairie de rendu Poppler. Extraction seulement
-(`libs/poppler-cpp/main.cpp:22-38`) : `document::load_from_raw_data`,
-`embedded_files()`, premier fichier sous un nom de facture standard,
-`embedded_file::data()`. 104 PDF sur 104. poppler-cpp n'a pas d'API
-d'écriture : Embed est `unsupported`. C'est le plus lent des extracteurs
-(0,4 à 0,7 ms contre 15 à 45 µs) : l'ouverture d'un document Poppler prépare
-le rendu.
+C++ facade of the Poppler rendering library. Extraction only
+(`libs/poppler-cpp/main.cpp:22-38`): `document::load_from_raw_data`,
+`embedded_files()`, first file under a standard invoice name,
+`embedded_file::data()`. 104 PDFs out of 104. poppler-cpp has no writing
+API: Embed is `unsupported`. It is the slowest of the extractors
+(0.4 to 0.7 ms versus 15 to 45 µs): opening a Poppler document prepares
+rendering.
 
-### Xerces-C++ 3.3.0 (plancher XML validant)
+### Xerces-C++ 3.3.0 (validating XML floor)
 
-L'analyseur XML validant d'Apache, sans connaissance de Factur-X. Les deux
-analyseurs vivent tout le processus et sont réutilisés, comme dans un service
-de longue durée.
+Apache's validating XML parser, with no knowledge of Factur-X. Both
+parsers live for the whole process and are reused, as in a long-running
+service.
 
-- Parse (`libs/xerces-c/main.cpp:90-110`) : `XercesDOMParser` avec espaces de
-  noms, sans validation (`Val_Never`), sur un `MemBufInputSource` ; le DOM est
-  adopté puis libéré à chaque appel.
-- ParseValidate (`:112-136` et `:164-175`) : second analyseur avec validation XML Schema
-  (`setDoSchema`, `Val_Always`) contre le XSD UN/CEFACT CII D16B
-  (`CrossIndustryInvoice_100pD16B.xsd` et ses 3 schémas importés) de la
-  configuration KoSIT XRechnung 3.0.2 du 2026-08-31, chargé une fois par
-  `loadGrammar` et mis en cache (`useCachedGrammarInParse`, `:133`) ; erreurs
-  comptées par un `ErrorHandler`. Le schéma seulement : aucune règle métier.
-  Les 26 exemples valides passent ; un élément inconnu (`ram:Bogus`) ajouté
-  à la main donne 2 erreurs de schéma.
-- Write (`:138-162`) : `DOMLSSerializer` du DOM vers un
-  `MemBufFormatTarget` en UTF-8.
-- Réseau : aucun (`setLoadExternalDTD(false)`, schémas locaux).
+- Parse (`libs/xerces-c/main.cpp:90-110`): `XercesDOMParser` with
+  namespaces, without validation (`Val_Never`), on a `MemBufInputSource`; the
+  DOM is adopted and then released on each call.
+- ParseValidate (`:112-136` and `:164-175`): a second parser with XML Schema validation
+  (`setDoSchema`, `Val_Always`) against the UN/CEFACT CII D16B XSD
+  (`CrossIndustryInvoice_100pD16B.xsd` and its 3 imported schemas) from the
+  KoSIT XRechnung 3.0.2 configuration of 2026-08-31, loaded once by
+  `loadGrammar` and cached (`useCachedGrammarInParse`, `:133`); errors
+  counted by an `ErrorHandler`. Schema only: no business rules.
+  The 26 valid examples pass; an unknown element (`ram:Bogus`) added by
+  hand gives 2 schema errors.
+- Write (`:138-162`): `DOMLSSerializer` from the DOM to a
+  `MemBufFormatTarget` in UTF-8.
+- Network: none (`setLoadExternalDTD(false)`, local schemas).
 
-### pugixml 1.16 (plancher XML)
+### pugixml 1.16 (XML floor)
 
-Le DOM en mémoire le plus rapide du monde C++, sans validation ni
-connaissance de Factur-X. Parse : `xml_document::load_buffer` avec
-`parse_default` (`libs/pugixml/main.cpp:18`). Write : `xml_document::save`
-avec `format_default` dans une chaîne (`:33`). ParseValidate est
+The fastest in-memory DOM in the C++ world, with no validation and no
+knowledge of Factur-X. Parse: `xml_document::load_buffer` with
+`parse_default` (`libs/pugixml/main.cpp:18`). Write: `xml_document::save`
+with `format_default` into a string (`:33`). ParseValidate is
 `unsupported`.
 
-## Librairies écartées
+## Excluded libraries
 
-| Projet | Étoiles, activité, licence | Raison |
+| Project | Stars, activity, license | Reason |
 |---|---|---|
-| LASTRADA-Software/XRechnung | ★3, dernier commit 2024-10-16, MIT | Modèle XRechnung en C++20 qui n'écrit que de l'UBL (`XRechnungSerializer.cpp:2101`, `ubl:Invoice` ; aucun élément `ram:`) ; pas de lecture ; `XRechnungValidator.hpp` n'est qu'une interface abstraite. Sans activité depuis deux ans, aucune opération CII du protocole |
-| dragotin/kraft (KDE Kraft) | ★80, v2.1.0 du 2026-10-22, GPL-2.0 | Application de devis et factures (Qt, KDE) : `src/exportxrechnung.cpp` remplit un gabarit UBL XRechnung (`reports/xrechnung.xrtmpl`). Pas une librairie, pas de CII |
-| classix/zugferd-cpp | ★0, 2025-01-31, pas de licence | Projet de formation (IHK) : outil en ligne de commande qui affiche le XML embarqué avec une copie de PoDoFo dans le dépôt. Pas de licence, pas une librairie ; l'opération est mesurée avec PoDoFo |
-| miyako/4d-plugin-factur-x, -PoDoFo, -QPDF | ★2, ★0, ★0, 2026-11-10, MIT | Plugins pour la base 4D (`4DPluginAPI`, `C_BLOB`), qui assemblent un Factur-X avec PoDoFo ou qpdf. Pas utilisables hors de 4D ; les opérations PDF sont mesurées directement avec PoDoFo et qpdf |
-| Neox365/Duncans-Suite (`docs/FacturX.h`) | ★2, 2026-11-21, pas de licence | Module d'une application Win32 qui écrit un CII EN 16931 depuis sa propre structure de facture et l'insère dans le PDF qu'elle génère ; son en-tête précise qu'il n'est pas validé par le validateur KoSIT. Pas de licence, pas une librairie |
-| jw23578/YACAppServer (`xrechnunggenerator.cpp`) | ★0, 2025-11-19, pas de licence | Générateur XRechnung CII (pugixml) interne à un serveur d'applications. Pas de licence, pas une librairie |
-| ULTRA-OS-Project/UltraCanvas (UltraFIBU) | ★4, 2026-11-22, MIT | Rapport PDF de facture d'une application de démonstration ; son en-tête dit explicitement ne pas faire de ZUGFeRD |
-| ipswitch8/PDFE-public | ★0, 2026-11-20, AGPL-3.0 | Éditeur PDF pour Windows (Qt6) ; ZUGFeRD n'apparaît que dans ses tests de fonctionnalités PDF 2.0. Application, pas une librairie |
-| aspose-pdf-foss/Aspose.PDF-FOSS-for-Cpp | ★2, 2026-10-22, MIT | Librairie PDF généraliste récente (C++20) ; `ZUGFeRD` n'est qu'une valeur de l'énumération `PdfFormat` (`include/aspose/pdf/pdf_format.hpp:33`) reprise d'Aspose.PDF, sans code Factur-X dans le dépôt. Ni formule Homebrew ni port : un plancher de plus |
-| ksef_fa3 | ★0, 2026-04-08 | Facture électronique polonaise KSeF FA(3), pas EN 16931 |
-| FriNagy/flex2pdf | ★0, 2026-02-26, pas de licence | Outil Windows en ligne de commande au-dessus du SDK commercial VPE |
-| PDFium | Google, BSD-3-Clause | API de pièces jointes (`FPDFDoc_GetAttachment`, `FPDFDoc_AddAttachment`), mais ni formule Homebrew ni version stable empaquetée (l'option PDFium de Kura est aussi désactivée ici). Les planchers PDF sont couverts par qpdf, PoDoFo et poppler-cpp |
-| MuPDF | ★3 066, AGPL-3.0 | API C : mesurée dans le banc C (`../c/COVERAGE.md`) |
-| SDK commerciaux (Datalogics APDFL, PDFlib, Apryse, PDF-XChange, VPE) | propriétaires | Exemples ZUGFeRD et Factur-X publiés par les éditeurs (`ConvertToZUGFeRD.cpp`, `ConvertToFactur-X.cpp` chez Datalogics), non vérifiés ; licences payantes, hors protocole |
+| LASTRADA-Software/XRechnung | ★3, last commit 2024-10-16, MIT | XRechnung model in C++20 that only writes UBL (`XRechnungSerializer.cpp:2101`, `ubl:Invoice`; no `ram:` element); no parsing; `XRechnungValidator.hpp` is only an abstract interface. No activity for two years, none of the protocol's CII operations |
+| dragotin/kraft (KDE Kraft) | ★80, v2.1.0 released 2026-10-22, GPL-2.0 | Quotes and invoicing application (Qt, KDE): `src/exportxrechnung.cpp` fills a UBL XRechnung template (`reports/xrechnung.xrtmpl`). Not a library, no CII |
+| classix/zugferd-cpp | ★0, 2025-01-31, no license | Training project (IHK): a command-line tool that prints the embedded XML, with a copy of PoDoFo in the repository. No license, not a library; the operation is measured with PoDoFo |
+| miyako/4d-plugin-factur-x, -PoDoFo, -QPDF | ★2, ★0, ★0, 2026-11-10, MIT | Plugins for the 4D database (`4DPluginAPI`, `C_BLOB`) that assemble a Factur-X with PoDoFo or qpdf. Not usable outside 4D; the PDF operations are measured directly with PoDoFo and qpdf |
+| Neox365/Duncans-Suite (`docs/FacturX.h`) | ★2, 2026-11-21, no license | Module of a Win32 application that writes an EN 16931 CII from its own invoice structure and inserts it into the PDF it generates; its header states that it has not been validated with the KoSIT validator. No license, not a library |
+| jw23578/YACAppServer (`xrechnunggenerator.cpp`) | ★0, 2025-11-19, no license | XRechnung CII generator (pugixml) internal to an application server. No license, not a library |
+| ULTRA-OS-Project/UltraCanvas (UltraFIBU) | ★4, 2026-11-22, MIT | Invoice PDF report from a demo application; its header explicitly says it does not do ZUGFeRD |
+| ipswitch8/PDFE-public | ★0, 2026-11-20, AGPL-3.0 | PDF editor for Windows (Qt6); ZUGFeRD only appears in its PDF 2.0 feature tests. An application, not a library |
+| aspose-pdf-foss/Aspose.PDF-FOSS-for-Cpp | ★2, 2026-10-22, MIT | Recent general-purpose PDF library (C++20); `ZUGFeRD` is only a value of the `PdfFormat` enumeration (`include/aspose/pdf/pdf_format.hpp:33`) carried over from Aspose.PDF, with no Factur-X code in the repository. Neither a Homebrew formula nor a port: just another floor |
+| ksef_fa3 | ★0, 2026-04-08 | Polish KSeF FA(3) e-invoice, not EN 16931 |
+| FriNagy/flex2pdf | ★0, 2026-02-26, no license | Windows command-line tool on top of the commercial VPE SDK |
+| PDFium | Google, BSD-3-Clause | Attachment API (`FPDFDoc_GetAttachment`, `FPDFDoc_AddAttachment`), but neither a Homebrew formula nor a packaged stable release (Kura's PDFium option is also disabled here). The PDF floors are covered by qpdf, PoDoFo and poppler-cpp |
+| MuPDF | ★3,066, AGPL-3.0 | C API: measured in the C bench (`../c/COVERAGE.md`) |
+| Commercial SDKs (Datalogics APDFL, PDFlib, Apryse, PDF-XChange, VPE) | proprietary | ZUGFeRD and Factur-X samples published by the vendors (`ConvertToZUGFeRD.cpp`, `ConvertToFactur-X.cpp` from Datalogics), not verified; paid licenses, outside the protocol |
 
-## Relevés d'exactitude (`./run.sh survey`, essai du 2026-11-22)
+## Accuracy surveys (`./run.sh survey`, trial run on 2026-11-22)
 
-| Librairie | validate (signalés / 26) | parse (/ 26) | extract (/ 104) |
+| Library | validate (flagged / 26) | parse (/ 26) | extract (/ 104) |
 |---|---|---|---|
 | kura | — | — | 104 |
 | qpdf | — | — | 104 |
 | podofo | — | — | 104 |
 | poppler-cpp | — | — | 104 |
-| xerces-c | 0 (XSD seulement) | 26 | — |
+| xerces-c | 0 (XSD only) | 26 | — |
 | pugixml | — | 26 | — |
-| saxonc-he | 6 : BR-CL-25 ×2, CII-SR-465 ×4 | — | — |
+| saxonc-he | 6: BR-CL-25 ×2, CII-SR-465 ×4 | — | — |
 
-Référence (PROTOCOL) : 6 sur 26. SaxonC-HE la retrouve exactement, avec les
-mêmes règles que le banc Python. Le XSD seul ne voit aucune des six : ce
-sont des règles Schematron.
+Reference (PROTOCOL): 6 out of 26. SaxonC-HE matches it exactly, with the
+same rules as the Python bench. The XSD alone catches none of the six: they
+are Schematron rules.
 
-## Statut des benchmarks (essai `COUNT=1 BENCHTIME=0.05`)
+## Benchmark status (trial run `COUNT=1 BENCHTIME=0.05`)
 
-`o` ok, `F` fail (message dans la ligne JSONL), `-` unsupported. Colonnes dans
-l'ordre :
+`o` ok, `F` fail (message in the JSONL line), `-` unsupported. Columns in
+order:
 
 1. Extract S/L/Min/Ext
 2. Parse S/Li/La
@@ -256,76 +256,77 @@ l'ordre :
 5. Embed, EmbedClassic
 6. CheckPDF S/L
 
-| Librairie | Extract | Parse | ParseValidate | Write | Embed | CheckPDF |
+| Library | Extract | Parse | ParseValidate | Write | Embed | CheckPDF |
 |---|---|---|---|---|---|---|
-| kura | o o o o | - - - | - - - | - - | o o (conversion PDF/A-3b) | o o |
-| qpdf | o o o o | - - - | - - - | - - | o o (plancher) | - - |
-| podofo | o o o o | - - - | - - - | - - | o o (plancher) | - - |
+| kura | o o o o | - - - | - - - | - - | o o (PDF/A-3b conversion) | o o |
+| qpdf | o o o o | - - - | - - - | - - | o o (floor) | - - |
+| podofo | o o o o | - - - | - - - | - - | o o (floor) | - - |
 | poppler-cpp | o o o o | - - - | - - - | - - | - - | - - |
 | xerces-c | - - - - | o o o | o o o (XSD) | o o | - - | - - |
 | pugixml | - - - - | o o o | - - - | o o | - - | - - |
 | saxonc-he | - - - - | - - - | o o o | - - | - - | - - |
 
-## Tableau de couverture
+## Coverage table
 
-| Librairie | Version | Licence | Dernière version | Téléchargements | Lecture CII | Écriture CII | UBL | Extraction PDF | Injection PDF | XSD | EN 16931 (CII) | Profils Factur-X (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | Contrôle du conteneur PDF/A-3 | Dépendances externes |
+| Library | Version | License | Latest version | Downloads | CII parsing | CII writing | UBL | PDF extraction | PDF embedding | XSD | EN 16931 (CII) | Factur-X profiles (MINIMUM, BASIC WL, EXTENDED) | BR-FR | BR-DE (XRechnung) | Peppol BIS 3 | PDF/A-3 container check | External dependencies |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Kura (bentopdf-kura) | 1.4.1 | AGPL-3.0 ou commerciale | 1.4.1 (2026-11-08) | ★25 ; pas de paquet | non (profil détecté par motifs) | non | non | oui : `readInvoice`, 104/104 | oui : `kura_convert` niveau 3b, conversion complète en PDF/A-3b (garde le `factur-x.xml` laissé par l'hôte dans `/AF`) | non | non | profil déduit de l'URN pour le XMP ; avertissement MINIMUM / BASIC WL | non | non | non | partiel : cohérence charge utile, nom, `/AFRelationship`, `/AF`, XMP (`checkInvoice`) ; pas une validation PDF/A | qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib |
-| SaxonC-HE (référence) | 13.1.1 | MPL-2.0 (artefacts CEN : EUPL-1.2 ; KoSIT : Apache-2.0) | 13.1.1 (2026-10-26) | binaire Saxonica, pas de paquet | non | non | non (XSLT UBL non chargés) | non | non | non | oui : XSLT officiels CEN 1.3.17, 810 règles | non | non | oui : schematron KoSIT 2.6.0 (XRechnung 3.0.2) si BT-24 XRechnung | non (règles PEPPOL-EN16931-R de la feuille KoSIT seulement) | non | aucune (GraalVM natif embarqué) ; macOS arm64 épinglé |
-| qpdf (plancher) | 12.4.2 | Apache-2.0 | 12.4.2 (2026-09-26) | ★5 606 ; Homebrew 85 709 / an | non | non | non | plancher, 104/104 | plancher écrit à la main | non | non | non | non | non | non | non | jpeg-turbo, openssl |
-| PoDoFo (plancher) | 1.1.3 | LGPL-2.0-or-later ou MPL-2.0 | 1.1.3 (2026-11-16) | ★616 ; Homebrew 918 / an | non | non | non | plancher, 104/104 | plancher écrit à la main | non | non | non | non | non | non | non | freetype, fontconfig, jpeg-turbo, libpng, libtiff, openssl |
-| poppler-cpp (plancher) | 26.11.0 | GPL-2.0-only ou GPL-3.0-only | 26.11.0 (novembre 2026) | dépôt freedesktop.org (pas sur GitHub) ; Homebrew 800 191 / an | non | non | non | plancher, 104/104 | non (pas d'API d'écriture) | non | non | non | non | non | non | non | cairo, glib, freetype, fontconfig, nss, gpgme… |
-| Xerces-C++ (plancher) | 3.3.0 | Apache-2.0 | 3.3.0 (2024-10-14) | ★161 ; Homebrew 40 081 / an | DOM seulement | sérialisation du DOM | non | non | non | oui : CII D16B (configuration KoSIT 2026-08-31) | non | non | non | non | non | non | aucune |
-| pugixml (plancher) | 1.16 | MIT | 1.16 (2026-06-15) | ★4 674 ; Homebrew 34 961 / an | DOM seulement | sérialisation du DOM | non | non | non | non | non | non | non | non | non | non | aucune |
+| Kura (bentopdf-kura) | 1.4.1 | AGPL-3.0 or commercial | 1.4.1 (2026-11-08) | ★25; no package | no (profile detected by patterns) | no | no | yes: `readInvoice`, 104/104 | yes: `kura_convert` level 3b, full conversion to PDF/A-3b (keeps the `factur-x.xml` left by the host in `/AF`) | no | no | profile inferred from the URN for the XMP; MINIMUM / BASIC WL warning | no | no | no | partial: consistency of payload, name, `/AFRelationship`, `/AF`, XMP (`checkInvoice`); not a PDF/A validation | qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib |
+| SaxonC-HE (reference) | 13.1.1 | MPL-2.0 (CEN artifacts: EUPL-1.2; KoSIT: Apache-2.0) | 13.1.1 (2026-10-26) | Saxonica binary, no package | no | no | no (UBL XSLTs not loaded) | no | no | no | yes: official CEN 1.3.17 XSLTs, 810 rules | no | no | yes: KoSIT schematron 2.6.0 (XRechnung 3.0.2) if BT-24 is XRechnung | no (only the PEPPOL-EN16931-R rules of the KoSIT stylesheet) | no | none (embedded native GraalVM); macOS arm64 pinned |
+| qpdf (floor) | 12.4.2 | Apache-2.0 | 12.4.2 (2026-09-26) | ★5,606; Homebrew 85,709 / year | no | no | no | floor, 104/104 | hand-written floor | no | no | no | no | no | no | no | jpeg-turbo, openssl |
+| PoDoFo (floor) | 1.1.3 | LGPL-2.0-or-later or MPL-2.0 | 1.1.3 (2026-11-16) | ★616; Homebrew 918 / year | no | no | no | floor, 104/104 | hand-written floor | no | no | no | no | no | no | no | freetype, fontconfig, jpeg-turbo, libpng, libtiff, openssl |
+| poppler-cpp (floor) | 26.11.0 | GPL-2.0-only or GPL-3.0-only | 26.11.0 (November 2026) | freedesktop.org repository (not on GitHub); Homebrew 800,191 / year | no | no | no | floor, 104/104 | no (no writing API) | no | no | no | no | no | no | no | cairo, glib, freetype, fontconfig, nss, gpgme… |
+| Xerces-C++ (floor) | 3.3.0 | Apache-2.0 | 3.3.0 (2024-10-14) | ★161; Homebrew 40,081 / year | DOM only | DOM serialization | no | no | no | yes: CII D16B (KoSIT configuration 2026-08-31) | no | no | no | no | no | no | none |
+| pugixml (floor) | 1.16 | MIT | 1.16 (2026-06-15) | ★4,674; Homebrew 34,961 / year | DOM only | DOM serialization | no | no | no | no | no | no | no | no | no | no | none |
 
-## Notes de construction et de mesure
+## Build and measurement notes
 
-- `./run.sh setup` télécharge les mêmes trois archives officielles que le banc
-  C, vérifiées par SHA-256 (configuration KoSIT XRechnung 3.0.2 du
+- `./run.sh setup` downloads the same three official archives as the C
+  bench, verified by SHA-256 (KoSIT XRechnung 3.0.2 configuration of
   2026-08-31, CEN `validation-1.3.17` CII, KoSIT `xrechnung-schematron`
-  2.6.0), plus SaxonC-HE 13.1.1 pour macOS arm64 (ailleurs, `saxonc-he` est
-  sauté) et l'archive du tag Kura `v1.4.1`, dont seul `pdfa-engine/` est
-  extrait. Puis il construit chaque cible à part ; une librairie absente est
-  sautée à la configuration.
-- SaxonC-HE est importé à la main dans `CMakeLists.txt` (bibliothèques et
-  en-têtes de l'archive), sans les fichiers de paquet CMake qu'elle contient :
-  la configuration n'exécute aucun de ses scripts.
-- Kura est construit par `add_subdirectory` de sa source épinglée : la
-  configuration CMake exécute donc son `CMakeLists.txt`. Les dépendances
-  (qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib) sont vérifiées
-  avant, car le `CMakeLists.txt` de Kura arrête toute la configuration s'il en
-  manque une ; ses parties optionnelles (CLI, PDFium, zxing-cpp, QuickJS,
-  fuzzers, test du SDK) sont désactivées.
-- Le harnais est celui du banc C (`../c/harness/harness.c`), avec le même
-  protocole : appel de contrôle hors mesure, N par paliers 1, 2, 5, 10…,
-  `COUNT` séries, un seul fil (pile de 512 Mio), libération dans la boucle
-  mesurée, puits `volatile`. Horloge `CLOCK_UPTIME_RAW` sur macOS (celle de
-  `Instant` en Rust ; `CLOCK_MONOTONIC` n'y avance que par microsecondes).
-  Une exception C++ devient un `fail` avec son message ; un signal fatal
-  (SIGSEGV, SIGABRT…) écrit la ligne `fail` préparée avant l'appel.
-- Temps CPU et pic mémoire, par le même harnais : `getrusage(RUSAGE_SELF)`,
-  temps utilisateur + système de tous les fils, lu avant et après chaque
-  série (`cpu_ns_per_op`) ; `ru_maxrss` (octets sur macOS) lu à la fin de la
-  série dans la passe `resources`, où `run.sh` lance directement
-  `build/bench-<lib> resources <Bench>`, un processus par benchmark. Aucune
-  librairie ne lance de processus enfant. SaxonC-HE garde son isolat GraalVM
-  dans le processus, avec ses propres fils (cinq fils au total pendant la
-  validation) : leur travail et le tas GraalVM sont comptés ; le temps CPU
-  reste à environ 100 % du temps réel. Kura ne lance des fils que pour
-  convertir les couleurs d'images d'au moins 2 Mpx (`colorx.cpp`,
-  `colorconv.cpp`), ce que les PDF hôtes ne demandent pas.
-- Le contrôle de l'injection relit le PDF produit avec l'extraction de la
-  même librairie et exige un XML CII, comme le harnais Rust. Avec
-  `FX_DUMP_EMBED=<dossier>`, le PDF de l'appel de contrôle est conservé ; c'est
-  ainsi que les PDF de qpdf, PoDoFo et Kura ont été passés à `zerechnung
-  validate`, à `checkInvoice` de Kura et à `qpdf --check`.
-- Les planchers d'injection (qpdf, PoDoFo, et MuPDF dans le banc C) écrivent
-  `/AFRelationship /Alternative`, ou `/Data` pour MINIMUM et BASIC WL
-  (Factur-X 1.0.07, § 6.2.2), retirent de `/AF` tout fichier de facture
-  laissé par l'hôte et remplacent son XMP par un paquet Factur-X écrit par le
-  harnais. Aucun ne convertit en PDF/A (pas d'output intent) ; Kura est le
-  seul à le faire, d'où l'écart d'un facteur 25 à 100 sur Embed.
-- SaxonC-HE démarre un isolat GraalVM : le premier appel (environ 140 ms)
-  comprend ce démarrage et la compilation des deux feuilles. PoDoFo a montré
-  une fois un premier appel de 141 ms (initialisation unique), non reproduit
-  ensuite.
+  2.6.0), plus SaxonC-HE 13.1.1 for macOS arm64 (elsewhere, `saxonc-he` is
+  skipped) and the archive of the Kura tag `v1.4.1`, of which only
+  `pdfa-engine/` is extracted. It then builds each target separately; a
+  missing library is skipped at configure time.
+- SaxonC-HE is imported by hand in `CMakeLists.txt` (libraries and headers
+  from the archive), without the CMake package files it contains: the
+  configuration runs none of its scripts.
+- Kura is built with `add_subdirectory` from its pinned source: the CMake
+  configuration therefore runs its `CMakeLists.txt`. The dependencies
+  (qpdf, freetype, jpeg-turbo, openjpeg, little-cms2, zlib) are checked
+  beforehand, because Kura's `CMakeLists.txt` stops the whole configuration if
+  one is missing; its optional parts (CLI, PDFium, zxing-cpp, QuickJS,
+  fuzzers, SDK test) are disabled.
+- The harness is the C bench's (`../c/harness/harness.c`), with the same
+  protocol: an unmeasured check call, N in steps of 1, 2, 5, 10…,
+  `COUNT` series, a single thread (512 MiB stack), freeing inside the
+  measured loop, a `volatile` sink. `CLOCK_UPTIME_RAW` clock on macOS (the
+  one behind `Instant` in Rust; `CLOCK_MONOTONIC` only advances in
+  microseconds there). A C++ exception becomes a `fail` with its message; a
+  fatal signal (SIGSEGV, SIGABRT…) writes the `fail` line prepared before the
+  call.
+- CPU time and peak memory, through the same harness: `getrusage(RUSAGE_SELF)`,
+  user + system time of all threads, read before and after each
+  series (`cpu_ns_per_op`); `ru_maxrss` (bytes on macOS) read at the end of
+  the series in the `resources` pass, where `run.sh` runs
+  `build/bench-<lib> resources <Bench>` directly, one process per benchmark.
+  No library starts a child process. SaxonC-HE keeps its GraalVM isolate
+  in the process, with its own threads (five threads in total during
+  validation): their work and the GraalVM heap are counted; CPU time
+  stays at about 100% of wall-clock time. Kura only starts threads to
+  convert the colors of images of at least 2 Mpx (`colorx.cpp`,
+  `colorconv.cpp`), which the host PDFs do not require.
+- The embedding check reads the output PDF back with the same library's
+  extraction and requires a CII XML, as in the Rust harness. With
+  `FX_DUMP_EMBED=<dir>`, the PDF from the check call is kept; this is
+  how the qpdf, PoDoFo and Kura PDFs were run through `zerechnung
+  validate`, Kura's `checkInvoice` and `qpdf --check`.
+- The embedding floors (qpdf, PoDoFo, and MuPDF in the C bench) write
+  `/AFRelationship /Alternative`, or `/Data` for MINIMUM and BASIC WL
+  (Factur-X 1.0.07, § 6.2.2), remove from `/AF` any invoice file left by the
+  host and replace its XMP with a Factur-X packet written by the
+  harness. None of them converts to PDF/A (no output intent); Kura is the
+  only one that does, hence the gap of a factor of 25 to 100 on Embed.
+- SaxonC-HE starts a GraalVM isolate: the first call (about 140 ms)
+  includes this startup and the compilation of both stylesheets. PoDoFo
+  once showed a first call of 141 ms (one-time initialization), not
+  reproduced afterwards.

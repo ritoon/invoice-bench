@@ -1,68 +1,68 @@
-# Benchmarks de l'écosystème Go Factur-X
+# Go Factur-X ecosystem benchmarks
 
-Ce dossier mesure les librairies Go existantes sur le corpus officiel ZUGFeRD : temps de réponse, mémoire, et exactitude (extraction, parsing, validation, injection). Les résultats et leur analyse sont publiés sur le wiki :
+This folder measures the existing Go libraries on the official ZUGFeRD corpus: response time, memory, and accuracy (extraction, parsing, validation, embedding). The results and their analysis are published on the ZeRechnung wiki, in French:
 
 - [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks)
-- [Grille de la norme](https://github.com/ritoon/zerechnung/wiki/Grille-de-la-norme)
+- [Grille de la norme](https://github.com/ritoon/zerechnung/wiki/Grille-de-la-norme) (coverage of the standard)
 
-Chaque sous-dossier est un module Go indépendant. Le module `facturx` mesure [ZeRechnung](https://github.com/ritoon/zerechnung) à la version que requiert son `go.mod`, ou un clone local (voir `ZERECHNUNG_DIR` plus bas).
+Each subfolder is an independent Go module. The `facturx` module measures [ZeRechnung](https://github.com/ritoon/zerechnung) at the version its `go.mod` requires, or a local clone (see `ZERECHNUNG_DIR` below).
 
-## Prérequis
+## Requirements
 
-- Go 1.26 ou plus récent. Avec `GOTOOLCHAIN=auto` (positionné par le script), Go télécharge 1.27.0 pour DCNWS et pdf0, et 1.27.3 pour litho.
-- git et un accès réseau, pour récupérer le corpus, les dépendances et le clone de solarpush/fX.
+- Go 1.26 or newer. With `GOTOOLCHAIN=auto` (set by the script), Go downloads 1.27.0 for DCNWS and pdf0, and 1.27.3 for litho.
+- git and network access, to fetch the corpus, the dependencies and the clone of solarpush/fX.
 
-## Utilisation
+## Usage
 
 ```bash
-./run.sh setup     # corpus ZUGFeRD (sparse), clone de solarpush/fX, PDF hôtes
-./run.sh survey    # exactitude sur tout le corpus
-./run.sh bench     # benchmarks (COUNT=3, BENCHTIME=1s par défaut)
-./run.sh report    # tableaux Markdown dans results/<date>/tables.md
-./run.sh all       # les quatre à la suite
+./run.sh setup     # ZUGFeRD corpus (sparse), clone of solarpush/fX, host PDFs
+./run.sh survey    # accuracy on the whole corpus
+./run.sh bench     # benchmarks (COUNT=3, BENCHTIME=1s by default)
+./run.sh report    # Markdown tables in results/<date>/tables.md
+./run.sh all       # all four in a row
 ```
 
-Chaque commande accepte une liste de modules (`./run.sh bench pdf0 litho`). Les variables `OUT`, `COUNT` et `BENCHTIME` changent le dossier de sortie, le nombre d'exécutions et la durée de chaque benchmark.
+Each command accepts a list of modules (`./run.sh bench pdf0 litho`). The `OUT`, `COUNT` and `BENCHTIME` variables change the output folder, the number of runs and the duration of each benchmark.
 
-`ZERECHNUNG_DIR` mesure un clone local de ZeRechnung au lieu de la version que requiert `facturx/go.mod`, par exemple une branche avant sa fusion : `ZERECHNUNG_DIR=~/src/zerechnung ./run.sh bench facturx`. [`zerechnung.sh`](zerechnung.sh) écrit alors `facturx/local.mod`, une copie de `facturx/go.mod` avec une directive `replace` vers ce clone, et la passe au go command par `-modfile`. `bench_facturx.txt` commence par la version mesurée, telle que l'affiche `go list -m`. Pour mesurer une nouvelle version publiée : `cd facturx && go get github.com/ritoon/zerechnung@<version>`. Une campagne complète prend une dizaine de minutes sur un Apple M4 Pro.
+`ZERECHNUNG_DIR` measures a local clone of ZeRechnung instead of the version `facturx/go.mod` requires, for example a branch before it is merged: `ZERECHNUNG_DIR=~/src/zerechnung ./run.sh bench facturx`. [`zerechnung.sh`](zerechnung.sh) then writes `facturx/local.mod`, a copy of `facturx/go.mod` with a `replace` directive pointing to that clone, and passes it to the go command with `-modfile`. `bench_facturx.txt` starts with the measured version, as `go list -m` prints it. To measure a newly released version: `cd facturx && go get github.com/ritoon/zerechnung@<version>`. A full run takes about ten minutes on an Apple M4 Pro.
 
-## Organisation
+## Layout
 
-| Dossier | Contenu |
+| Folder | Contents |
 |---|---|
-| `common/` | Fichiers d'entrée partagés et fonctions de mesure (`Extract`, `Bytes`, `Write`, `Embed`, `Survey*`) |
-| `floor/` | Planchers : découpage en jetons par `encoding/xml`, copie mémoire |
-| `<librairie>/` | Un module par librairie : benchmarks, `TestSurvey`, parfois `TestDetail` |
-| `report/` | Outil qui produit les tableaux du wiki à partir des sorties brutes |
-| `zerechnung.sh` | Choix de la version de ZeRechnung mesurée (`ZERECHNUNG_DIR`), partagé avec `../polyglot/run.sh` |
-| `results/<date>/` | Sorties brutes (`bench_*.txt`, `survey_*.txt`) et tableaux (`tables.md`) |
-| `corpus/`, `.deps/`, `host*.pdf` | Récupérés ou générés par `./run.sh setup`, non versionnés |
+| `common/` | Shared input files and measurement functions (`Extract`, `Bytes`, `Write`, `Embed`, `Survey*`) |
+| `floor/` | Floors: tokenization with `encoding/xml`, memory copy |
+| `<library>/` | One module per library: benchmarks, `TestSurvey`, sometimes `TestDetail` |
+| `report/` | Tool that builds the wiki tables from the raw outputs |
+| `zerechnung.sh` | Choice of the measured ZeRechnung version (`ZERECHNUNG_DIR`), shared with `../polyglot/run.sh` |
+| `results/<date>/` | Raw outputs (`bench_*.txt`, `survey_*.txt`) and tables (`tables.md`) |
+| `corpus/`, `.deps/`, `host*.pdf` | Fetched or generated by `./run.sh setup`, not versioned |
 
-Un seul module pour toutes les librairies est impossible : pdfcpu a cassé son API entre les versions 0.11 et 0.16, et ces librairies en utilisent des versions différentes.
+A single module for all the libraries is impossible: pdfcpu broke its API between versions 0.11 and 0.16, and these libraries use different versions of it.
 
-## Opérations mesurées
+## Measured operations
 
-| Benchmark | Mesure |
+| Benchmark | Measures |
 |---|---|
-| `Extract_*` | PDF → XML de la facture |
-| `Parse_*` | XML → modèle Go |
-| `ParseValidate_*` | XML → parsing et validation complète |
-| `Write_*` | modèle Go → XML CII (parsing fait une fois, hors mesure) |
-| `Embed_Small` | PDF hôte à flux xref + XML → PDF Factur-X, puis relecture du résultat |
-| `EmbedClassic_Small` | idem avec l'hôte à table xref classique |
-| `CheckPDF_*` | contrôle complet d'un PDF Factur-X |
+| `Extract_*` | PDF → invoice XML |
+| `Parse_*` | XML → Go model |
+| `ParseValidate_*` | XML → parsing and full validation |
+| `Write_*` | Go model → CII XML (parsing done once, outside the measurement) |
+| `Embed_Small` | host PDF with xref stream + XML → Factur-X PDF, then the result is read back |
+| `EmbedClassic_Small` | same with the host with a classic xref table |
+| `CheckPDF_*` | full check of a Factur-X PDF |
 
-Chaque mesure vérifie d'abord le résultat (le XML extrait est bien un CII, le PDF produit se relit). Si la librairie ne sait pas faire l'opération, le benchmark est ignoré ; si elle renvoie un résultat faux, il échoue.
+Each measurement first checks the result (the extracted XML is indeed a CII, the produced PDF can be read back). If the library cannot do the operation, the benchmark is skipped; if it returns a wrong result, the benchmark fails.
 
-Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Rechnung/CII`) et 104 PDF hybrides valides (`ZUGFeRDv2/correct` et `XML-Rechnung/FX`).
+The accuracy surveys (`TestSurvey`) cover 26 valid CII XML files (`XML-Rechnung/CII`) and 104 valid hybrid PDFs (`ZUGFeRDv2/correct` and `XML-Rechnung/FX`).
 
-## Appel de chaque librairie
+## How each library is called
 
-| Module | Librairie | Appels |
+| Module | Library | Calls |
 |---|---|---|
-| `speedata` | speedata/einvoice v0.0.23 + pdfdisassembler v0.0.9 | `einvoice.ParseReader`, `inv.Validate`, `inv.Write` ; extraction via `pdf.Open` → `EmbeddedFiles` |
+| `speedata` | speedata/einvoice v0.0.23 + pdfdisassembler v0.0.9 | `einvoice.ParseReader`, `inv.Validate`, `inv.Write`; extraction through `pdf.Open` → `EmbeddedFiles` |
 | `andee` | andeedotnet/go-xinvoice + go-xinvoice-pdf v0.1.4 | `xinvoicepdf.ExtractXML`, `xinvoice.ParseXML`, `xinvoice.Validate`, `inv.ToXML`, `xinvoicepdf.Embed` |
-| `dotwave` | dotwavehq/go-einvoice v0.7.1 | `zugferd.ExtractXML`, `einvoice.Parse`, `cii.NewSerializer().Serialize`, `zugferd.EmbedXML` (via fichiers temporaires) |
+| `dotwave` | dotwavehq/go-einvoice v0.7.1 | `zugferd.ExtractXML`, `einvoice.Parse`, `cii.NewSerializer().Serialize`, `zugferd.EmbedXML` (through temporary files) |
 | `goblde` | invopop/gobl.de.xinvoice v0.0.10 | `xinvoice.Parse`, `Envelope.Validate`, `xinvoice.Convert` |
 | `angelo` | angelodlfrtr/go-invoice-generator v0.8.0 | `facturx.Extract`, `facturx.Parse`, `Parsed.Verify` |
 | `papierleicht` | papierleicht/go-e-rechnung-validator v0.1.0 | `validator.ExtractXML`, `Validator.Validate`, `Validator.ValidatePDF` |
@@ -73,38 +73,38 @@ Les relevés d'exactitude (`TestSurvey`) portent sur 26 XML CII valides (`XML-Re
 | `taha` | tahayassine/facturx-go v0.1.0 | `facturx.ExtractXML`, `cii.Decode`, `en16931.Validate`, `cii.Encode` |
 | `fx` | solarpush/fX v1.4.0 + 6 commits (`1314f3d`) | `pdf.ExtractXML`, `cii.Parse`, `invoice.ValidateReport`, `cii.Generate` |
 | `gopdfattach` | MarlinKuhn/gopdfattach v0.0.3 | `gopdfattach.Extract`, `gopdfattach.AttachFacturX` |
-| `pdfcpu` | pdfcpu v0.16.4 | `api.ExtractAttachmentsRaw` ; injection par une recette bas niveau écrite pour ce banc (FileSpec, `/AF`, XMP) |
-| `facturx` | ZeRechnung, à la version de `facturx/go.mod` ou depuis `ZERECHNUNG_DIR` | `facturx.Extract`, `cii.Parse`, `validate.XML`, `cii.Marshal`, `facturx.Embed`, `facturx.Check` |
+| `pdfcpu` | pdfcpu v0.16.4 | `api.ExtractAttachmentsRaw`; embedding through a low-level recipe written for this bench (FileSpec, `/AF`, XMP) |
+| `facturx` | ZeRechnung, at the version in `facturx/go.mod` or from `ZERECHNUNG_DIR` | `facturx.Extract`, `cii.Parse`, `validate.XML`, `cii.Marshal`, `facturx.Embed`, `facturx.Check` |
 
-## Particularités connues
+## Known specifics
 
-- **`Embed_Small` échoue pour andee et kanjo, et c'est voulu.** Sur l'hôte à flux d'objets, ces librairies renvoient un PDF de 25 Ko qui ne se relit pas (l'hôte en fait 144). `TestEmbedOutputSize` affiche les tailles d'entrée et de sortie. Le script continue et enregistre le reste des mesures.
-- **fX se compile depuis un clone local.** L'archive de module de solarpush/fX est refusée par `go get` (un nom de fichier contient un retour chariot) ; `run.sh setup` clone le dépôt dans `.deps/` et `fx/go.mod` le référence par `replace`.
-- **pdf0 n'expose pas d'extraction seule.** Le XML n'est accessible que par `ValidateFacturX`, qui contrôle tout le PDF : pdf0 apparaît donc dans `CheckPDF`, pas dans `Extract`.
-- **kanjo est restreint au jeu de règles `en16931`.** Le jeu par défaut inclut les règles françaises et rejette les 26 exemples allemands.
-- **pdfcpu écrit un `config.yml`** et des certificats dans le répertoire de configuration de l'utilisateur (`~/Library/Application Support/pdfcpu` sur macOS), sauf si `model.ConfigPath = "disable"`. Chaque module qui dépend de pdfcpu le positionne dans un `init()` (`noconfig_test.go`). gopdfattach tente de le faire lui-même, mais avec la valeur `"disabled"`, que pdfcpu ne reconnaît pas.
-- **papierleicht compile ses règles au premier appel** (environ une seconde) dans un dossier de cache temporaire ; le benchmark crée le validateur une seule fois.
-- `TestDetail` (dans plusieurs modules) liste les règles qui rejettent des XML valides.
+- **`Embed_Small` fails for andee and kanjo, on purpose.** On the host with object streams, these libraries return a 25 KB PDF that cannot be read back (the host is 144 KB). `TestEmbedOutputSize` prints the input and output sizes. The script carries on and records the rest of the measurements.
+- **fX is built from a local clone.** `go get` rejects the module archive of solarpush/fX (a file name contains a carriage return); `run.sh setup` clones the repository into `.deps/` and `fx/go.mod` references it with `replace`.
+- **pdf0 does not expose extraction on its own.** The XML is only reachable through `ValidateFacturX`, which checks the whole PDF: pdf0 therefore appears in `CheckPDF`, not in `Extract`.
+- **kanjo is restricted to the `en16931` rule set.** The default set includes the French rules and rejects the 26 German examples.
+- **pdfcpu writes a `config.yml`** and certificates into the user's configuration directory (`~/Library/Application Support/pdfcpu` on macOS), unless `model.ConfigPath = "disable"`. Each module that depends on pdfcpu sets it in an `init()` (`noconfig_test.go`). gopdfattach tries to do it itself, but with the value `"disabled"`, which pdfcpu does not recognize.
+- **papierleicht compiles its rules on the first call** (about one second) into a temporary cache folder; the benchmark creates the validator only once.
+- `TestDetail` (in several modules) lists the rules that reject valid XML files.
 
-## Résultats du 22/11/2026
+## Results of 2026-11-22
 
-Apple M4 Pro sur batterie, mode hautes performances (`powermode 2`), Go 1.27.4 pour tous les modules. ZeRechnung est mesuré au commit [`3a3b11a`](https://github.com/ritoon/zerechnung/commit/3a3b11a), en 6 exécutions ; les autres librairies en 3. litho passe de v0.0.13 à v0.0.18. Les tableaux sont dans [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md), avec, pour chaque opération, les octets et le nombre d'allocations d'un appel (`go test -benchmem`) ; l'analyse est sur la page [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) du wiki.
+Apple M4 Pro on battery, high performance mode (`powermode 2`), Go 1.27.4 for every module. ZeRechnung is measured at commit [`3a3b11a`](https://github.com/ritoon/zerechnung/commit/3a3b11a), over 6 runs; the other libraries over 3. litho moves from v0.0.13 to v0.0.18. The tables are in [`results/2026-11-22/tables.md`](results/2026-11-22/tables.md), with, for each operation, the bytes and the number of allocations of one call (`go test -benchmem`); the analysis is on the [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) wiki page.
 
-- Le package est le plus rapide sur chaque opération, et c'est lui qui alloue le moins sur chacune : 28 Ko en 104 allocations pour lire une facture de 13 Ko, quand le seul découpage en jetons d'`encoding/xml` en demande 31 Ko et 711 ; une seule allocation de 8 Ko pour l'écrire ; 245 Ko pour l'injecter dans un PDF, contre 1,3 Mo pour pdf0.
-- Le contrôle complet d'un PDF prend 832 µs, contre 54,8 µs le 16/11 : depuis la PR ritoon/zerechnung#73, il vérifie les exigences PDF/A sur tout le fichier (chaque objet, contenu des pages, polices, images JPEG 2000). DCNWS, le suivant, met 1,11 ms.
+- The package is the fastest on every operation, and it allocates the least on each one: 28 KB in 104 allocations to parse a 13 KB invoice, when tokenization alone with `encoding/xml` takes 31 KB and 711; a single 8 KB allocation to write it; 245 KB to embed it into a PDF, against 1.3 MB for pdf0.
+- The full check of a PDF takes 832 µs, against 54.8 µs on 2026-11-16: since PR ritoon/zerechnung#73, it checks the PDF/A requirements across the whole file (every object, page content, fonts, JPEG 2000 images). DCNWS, the next one, takes 1.11 ms.
 
-## Résultats du 16/11/2026
+## Results of 2026-11-16
 
-Les fichiers `bench_*.txt` de `results/2026-11-16/` ont été produits avant le déplacement du harnais dans le dépôt de ZeRechnung : le chemin de module qu'ils affichent est `example.local/fxbench/…`, le code mesuré est le même. Les fichiers `survey_*.txt` ont été régénérés depuis ce dossier et donnent les mêmes chiffres. Pour angelo, kanjo, fX et gopdfattach, les mesures datent d'avant la désactivation du `config.yml` de pdfcpu ; une nouvelle mesure de `Extract_Small` après correction diffère de moins de 7 %, sans changer le classement.
+The `bench_*.txt` files in `results/2026-11-16/` were produced before the harness moved into the ZeRechnung repository: the module path they print is `example.local/fxbench/…`, the measured code is the same. The `survey_*.txt` files were regenerated from this folder and give the same figures. For angelo, kanjo, fX and gopdfattach, the measurements predate turning off pdfcpu's `config.yml`; a new measurement of `Extract_Small` after the fix differs by less than 7%, without changing the ranking.
 
-Les fichiers `bench_facturx.txt` et `survey_facturx.txt` mesurent la première version de ZeRechnung, sur la même machine (Apple M4 Pro) et le même jour. Son validateur applique par défaut le schéma, les règles EN 16931 et les règles de profil Factur-X, sans les règles françaises ; les 6 XML qu'il rejette sont ceux que rejette aussi papierleicht, qui exécute les schematrons officiels (CEN et KoSIT) : BR-CL-25 deux fois, CII-SR-465 quatre fois (sur les exemples XRECHNUNG).
+The `bench_facturx.txt` and `survey_facturx.txt` files measure the first version of ZeRechnung, on the same machine (Apple M4 Pro) and the same day. Its validator applies by default the schema, the EN 16931 rules and the Factur-X profile rules, without the French rules; the 6 XML files it rejects are the ones papierleicht also rejects, which runs the official schematrons (CEN and KoSIT): BR-CL-25 twice, CII-SR-465 four times (on the XRECHNUNG examples).
 
-## Ajouter une librairie
+## Adding a library
 
-1. Créer un dossier avec un `go.mod` qui dépend de `github.com/ritoon/invoice-bench/ecosystem/common` par `replace … => ../common`.
-2. Écrire des fonctions `extract`, `parse`, `validate`, `write` ou `embed` selon ce que la librairie sait faire, et les passer aux fonctions de `common`.
-3. Ajouter un `TestSurvey`, puis le nom du dossier dans `MODULES` de `run.sh`.
+1. Create a folder with a `go.mod` that depends on `github.com/ritoon/invoice-bench/ecosystem/common` through `replace … => ../common`.
+2. Write `extract`, `parse`, `validate`, `write` or `embed` functions according to what the library can do, and pass them to the functions of `common`.
+3. Add a `TestSurvey`, then the folder name to `MODULES` in `run.sh`.
 
-## Licences
+## Licenses
 
-Le code de ce dossier est sous licence MIT, comme le dépôt. Les modules téléchargent des librairies tierces sous leur propre licence, dont AGPL-3.0 (dotwave, litho, fX), BSL 1.1 (kanjo) et MPL-2.0 (papierleicht) ; elles ne sont utilisées que par ces benchmarks et ne sont pas importées par le package `zerechnung`. Le corpus ZUGFeRD (Apache-2.0) est téléchargé, pas versionné ici.
+The code in this folder is under the MIT license, like the repository. The modules download third-party libraries under their own licenses, including AGPL-3.0 (dotwave, litho, fX), BSL 1.1 (kanjo) and MPL-2.0 (papierleicht); they are only used by these benchmarks and are not imported by the `zerechnung` package. The ZUGFeRD corpus (Apache-2.0) is downloaded, not versioned here.

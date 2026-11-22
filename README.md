@@ -1,37 +1,37 @@
 # invoice-bench
 
-Bancs de mesure et comparatif de conformité des librairies de facture électronique Factur-X / ZUGFeRD / EN 16931, dans neuf langages. Ils mesurent [ZeRechnung](https://github.com/ritoon/zerechnung), un package Go, face aux autres librairies, sur les mêmes fichiers du corpus officiel ZUGFeRD et avec le même protocole.
+Benchmarks and a conformance comparison of Factur-X / ZUGFeRD / EN 16931 e-invoicing libraries, in nine languages. They measure [ZeRechnung](https://github.com/ritoon/zerechnung), a Go package, against the other libraries, on the same files from the official ZUGFeRD corpus and with the same protocol.
 
-| Dossier | Contenu |
+| Folder | Contents |
 |---|---|
-| [`ecosystem/`](ecosystem) | ZeRechnung et 14 autres librairies Go : temps de réponse, mémoire et exactitude pour l'extraction, la lecture, la validation, l'écriture, l'injection dans un PDF et le contrôle d'un PDF hybride |
-| [`polyglot/`](polyglot) | Les librairies TypeScript, Python, Rust, Java, C#, C, C++ et PHP, avec le même protocole ([`PROTOCOL.md`](polyglot/PROTOCOL.md)) : temps, temps CPU, mémoire, allocations, exactitude, et normes que chaque librairie applique réellement (fiches `COVERAGE.md` de chaque langage) |
+| [`ecosystem/`](ecosystem) | ZeRechnung and 14 other Go libraries: response time, memory and accuracy for extraction, parsing, validation, writing, embedding into a PDF and checking a hybrid PDF |
+| [`polyglot/`](polyglot) | The TypeScript, Python, Rust, Java, C#, C, C++ and PHP libraries, with the same protocol ([`PROTOCOL.md`](polyglot/PROTOCOL.md)): time, CPU time, memory, allocations, accuracy, and the standards each library actually enforces (one `COVERAGE.md` file per language) |
 
-## Utilisation
+## Usage
 
 ```bash
-cd ecosystem && ./run.sh all        # banc Go : corpus, relevés, mesures, tableaux
-cd polyglot && ./run.sh all         # les autres langages (prérequis dans polyglot/README.md)
+cd ecosystem && ./run.sh all        # Go bench: corpus, surveys, measurements, tables
+cd polyglot && ./run.sh all         # the other languages (requirements in polyglot/README.md)
 ```
 
-Le banc Go demande Go 1.26 ou plus récent, git et un accès réseau ; une campagne complète prend une dizaine de minutes sur un Apple M4 Pro. Le banc multi-langages demande les chaînes d'outils de chaque langage et prend plusieurs heures. Le détail est dans le README de chaque dossier.
+The Go bench needs Go 1.26 or newer, git and network access; a full run takes about ten minutes on an Apple M4 Pro. The multi-language bench needs each language's toolchain and takes several hours. The details are in each folder's README.
 
-## Version de ZeRechnung mesurée
+## Measured ZeRechnung version
 
-[`ecosystem/facturx/go.mod`](ecosystem/facturx/go.mod) fixe la version de ZeRechnung que mesurent les deux bancs. La variable `ZERECHNUNG_DIR` mesure un clone local à la place, par exemple une branche avant sa fusion :
+[`ecosystem/facturx/go.mod`](ecosystem/facturx/go.mod) pins the ZeRechnung version that both benches measure. The `ZERECHNUNG_DIR` variable measures a local clone instead, for example a branch before it is merged:
 
 ```bash
 ZERECHNUNG_DIR=~/src/zerechnung ./ecosystem/run.sh bench facturx
 ```
 
-## Résultats
+## Results
 
-Chaque README donne les résultats de sa dernière campagne, et `results/<date>/` les sorties brutes et les tableaux complets. L'analyse est publiée sur le wiki de ZeRechnung, en français : [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) pour les librairies Go, [Benchmarks autres langages](https://github.com/ritoon/zerechnung/wiki/Benchmarks-autres-langages) pour les autres.
+Each README gives the results of its latest run, and `results/<date>/` holds the raw outputs and the full tables. The analysis is published on the ZeRechnung wiki, in French: [Benchmarks](https://github.com/ritoon/zerechnung/wiki/Benchmarks) for the Go libraries, [Benchmarks autres langages](https://github.com/ritoon/zerechnung/wiki/Benchmarks-autres-langages) for the others.
 
-## Historique
+## History
 
-Ces bancs ont vécu dans le dépôt de ZeRechnung, sous `bench/`, jusqu'au 22 novembre 2026 (ritoon/zerechnung#114). Leur historique git a été gardé, et les numéros de pull request des anciens messages de commit renvoient à ritoon/zerechnung. Les sorties brutes produites avant le déplacement affichent les chemins de modules `github.com/ritoon/zerechnung/bench/…`, et leurs tableaux le libellé « ZeRechnung (ce dépôt) » ; les outils de rapport lisent encore ces sorties.
+These benches lived in the ZeRechnung repository, under `bench/`, until 2026-11-22 (ritoon/zerechnung#114). Their git history was kept, and the pull request numbers in the old commit messages refer to ritoon/zerechnung. The raw outputs produced before the move show the module paths `github.com/ritoon/zerechnung/bench/…` and, for the multi-language bench, the library name "ZeRechnung (ce dépôt)"; the report tools still read these outputs. The tables were regenerated in English from the same raw outputs.
 
-## Licence
+## License
 
-Le code de ce dépôt est sous licence MIT ([LICENSE](LICENSE)). Les bancs téléchargent des librairies tierces sous leur propre licence, dont certaines sont restrictives (AGPL-3.0, GPL, BSL 1.1, licence commerciale d'évaluation) : la liste est dans la section Licences de [`ecosystem/README.md`](ecosystem/README.md#licences) et de [`polyglot/README.md`](polyglot/README.md#licences). Le corpus ZUGFeRD (Apache-2.0) et les artefacts officiels sont téléchargés et vérifiés, pas versionnés.
+The code in this repository is under the MIT license ([LICENSE](LICENSE)). The benches download third-party libraries under their own licenses, some of them restrictive (AGPL-3.0, GPL, BSL 1.1, commercial evaluation license): the list is in the Licenses section of [`ecosystem/README.md`](ecosystem/README.md#licenses) and of [`polyglot/README.md`](polyglot/README.md#licenses). The ZUGFeRD corpus (Apache-2.0) and the official artifacts are downloaded and verified, not versioned.
