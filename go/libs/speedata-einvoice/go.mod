@@ -3,7 +3,7 @@ module github.com/ritoon/invoice-bench/go/libs/speedata-einvoice
 go 1.26.0
 
 require (
-	github.com/ritoon/invoice-bench/go/common v0.0.0
+	github.com/ritoon/invoice-bench/go/harness v0.0.0
 	github.com/speedata/einvoice v0.0.23
 	github.com/speedata/pdfdisassembler v0.0.9
 )
@@ -19,4 +19,4 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness

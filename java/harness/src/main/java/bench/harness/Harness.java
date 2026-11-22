@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 /**
  * Shared harness of the Java benchmarks, the Java mirror of
- * {@code rust/harness/src/lib.rs}, {@code go/common} and
+ * {@code rust/harness/src/lib.rs}, {@code go/harness} and
  * {@code PROTOCOL.md}.
  *
  * <p>Each library module has a {@code bench.Main} whose {@code main} calls

@@ -1,6 +1,7 @@
-// Package common holds the shared corpus used by every library benchmark, so
-// that all libraries are measured on exactly the same bytes.
-package common
+// Package harness holds the inputs and the measurement functions shared by
+// every library benchmark, so that all libraries are measured on exactly the
+// same bytes and with the same rules.
+package harness
 
 import (
 	"bytes"

@@ -2,9 +2,9 @@ module github.com/ritoon/invoice-bench/go/libs/solarpush-fx
 
 go 1.26
 
-require github.com/ritoon/invoice-bench/go/common v0.0.0
+require github.com/ritoon/invoice-bench/go/harness v0.0.0
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness
 
 require (
 	github.com/pdfcpu/pdfcpu v0.13.0

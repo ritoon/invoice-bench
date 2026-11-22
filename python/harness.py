@@ -1,6 +1,6 @@
 """Python harness of the multi-language bench (see ../PROTOCOL.md).
 
-Modeled on go/common/{common,harness}.go: same input files,
+Modeled on go/harness/{corpus,harness}.go: same input files,
 check of the result before the measurement, "unsupported" if the
 library cannot do the operation, "fail" if it returns a wrong result
 or raises an exception.

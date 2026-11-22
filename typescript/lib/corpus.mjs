@@ -1,4 +1,4 @@
-// Shared inputs, identical to go/common/common.go: same files,
+// Shared inputs, identical to go/harness/corpus.go: same files,
 // same lists, same sanity check.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';

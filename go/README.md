@@ -31,7 +31,7 @@ Each command accepts a list of modules, the folder names of `libs/` (`./run.sh b
 
 | Folder | Contents |
 |---|---|
-| `common/` | Shared input files and measurement functions (`Extract`, `Bytes`, `Write`, `Embed`, `Survey*`, `Cases`) |
+| `harness/` | Shared input files and measurement functions (`Extract`, `Bytes`, `Write`, `Embed`, `Survey*`, `Cases`) |
 | `libs/<module>/` | One module per library: benchmarks, `TestSurvey`, `TestCases` for the libraries that validate, sometimes `TestDetail` |
 | `libs/stdlib/` | The floor, with the standard library only: tokenization with `encoding/xml`, memory copy |
 | `report/` | Tool that builds the wiki tables from the raw outputs |
@@ -135,8 +135,8 @@ The `bench_ritoon-zerechnung.txt` and `survey_ritoon-zerechnung.txt` files measu
 
 ## Adding a library
 
-1. Create `libs/<module>/`, named after the module the library publishes (github.com/owner/repo → `owner-repo`, lowercased), with a `go.mod` whose module path is `github.com/ritoon/invoice-bench/go/libs/<module>` and that depends on `github.com/ritoon/invoice-bench/go/common` through `replace … => ../../common`.
-2. Write `extract`, `parse`, `validate`, `write` or `embed` functions according to what the library can do, and pass them to the functions of `common`.
+1. Create `libs/<module>/`, named after the module the library publishes (github.com/owner/repo → `owner-repo`, lowercased), with a `go.mod` whose module path is `github.com/ritoon/invoice-bench/go/libs/<module>` and that depends on `github.com/ritoon/invoice-bench/go/harness` through `replace … => ../../harness`.
+2. Write `extract`, `parse`, `validate`, `write` or `embed` functions according to what the library can do, and pass them to the functions of `harness`.
 3. Add a `TestSurvey`, then the folder name to `MODULES` in `run.sh`, and a display name to `names` in `report/main.go`.
 
 ## Licenses

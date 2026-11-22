@@ -2,7 +2,7 @@ module github.com/ritoon/invoice-bench/go/libs/angelodlfrtr-go-invoice-generator
 
 go 1.26.2
 
-require github.com/ritoon/invoice-bench/go/common v0.0.0
+require github.com/ritoon/invoice-bench/go/harness v0.0.0
 
 require (
 	github.com/angelodlfrtr/go-invoice-generator v0.8.0
@@ -26,4 +26,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness

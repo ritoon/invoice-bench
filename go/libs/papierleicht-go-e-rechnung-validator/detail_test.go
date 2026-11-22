@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 func TestDetail(t *testing.T) {
 	vv := val(t)
-	for _, f := range common.CIIFiles(t) {
+	for _, f := range harness.CIIFiles(t) {
 		data, _ := os.ReadFile(f)
 		r := vv.Validate(data)
 		for _, e := range r.Errors() {

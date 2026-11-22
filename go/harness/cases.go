@@ -1,4 +1,4 @@
-package common
+package harness
 
 import (
 	"encoding/json"

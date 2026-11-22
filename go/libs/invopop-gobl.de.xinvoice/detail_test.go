@@ -5,11 +5,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 func TestDetail(t *testing.T) {
-	for _, f := range common.CIIFiles(t)[:4] {
+	for _, f := range harness.CIIFiles(t)[:4] {
 		data, _ := os.ReadFile(f)
 		p, _ := parse(data)
 		t.Logf("%s: %.300v", filepath.Base(f), p.Envelope.Validate())

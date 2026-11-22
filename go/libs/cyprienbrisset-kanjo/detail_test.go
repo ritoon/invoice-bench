@@ -6,11 +6,11 @@ import (
 	"testing"
 
 	"github.com/cyprienbrisset/kanjo/pkg/rules"
-	"github.com/ritoon/invoice-bench/go/common"
+	"github.com/ritoon/invoice-bench/go/harness"
 )
 
 func TestDetail(t *testing.T) {
-	for _, f := range common.CIIFiles(t)[:3] {
+	for _, f := range harness.CIIFiles(t)[:3] {
 		data, _ := os.ReadFile(f)
 		r, _ := parse(data)
 		rep := rules.Validate(r.Doc)

@@ -6,7 +6,7 @@ require (
 	github.com/andeedotnet/go-xinvoice v0.1.4
 	github.com/andeedotnet/go-xinvoice-pdf v0.1.4
 	github.com/pdfcpu/pdfcpu v0.13.0
-	github.com/ritoon/invoice-bench/go/common v0.0.0
+	github.com/ritoon/invoice-bench/go/harness v0.0.0
 )
 
 require (
@@ -22,4 +22,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/ritoon/invoice-bench/go/common => ../../common
+replace github.com/ritoon/invoice-bench/go/harness => ../../harness
