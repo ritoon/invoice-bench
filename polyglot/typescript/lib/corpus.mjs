@@ -71,3 +71,14 @@ export function readSample(path) {
 	const bytes = readFileSync(path);
 	return { name: basename(path), path, bytes, text: bytes.toString('utf8') };
 }
+
+// Root element of an invoice document, searched in its first 64 KiB (the
+// licence comments of the KoSIT test suite push it past 5 KB).
+const ROOT = /<(?:[\w.-]+:)?(CrossIndustryInvoice|Invoice|CreditNote)[\s>/]/;
+
+// isUbl reports whether a document is a UBL Invoice or CreditNote, so that an
+// adapter routes it to the library's UBL rules when the library has them.
+export function isUbl(text) {
+	const m = ROOT.exec(text.slice(0, 65536));
+	return m !== null && m[1] !== 'CrossIndustryInvoice';
+}

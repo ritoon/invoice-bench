@@ -50,3 +50,21 @@ func TestSurvey(t *testing.T) {
 	common.SurveyParse(t, parse)
 	common.SurveyExtract(t, extract)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "andee", "github.com/andeedotnet/go-xinvoice", "xinvoice.ParseXML + xinvoice.Validate: findings of severity error", func(x []byte) (int, []string, error) {
+		inv, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		var rules []string
+		for _, f := range xinvoice.Validate(inv).Findings {
+			if f.Severity == xinvoice.SeverityError {
+				rules = append(rules, f.Rule)
+			}
+		}
+		return len(rules), rules, nil
+	})
+}

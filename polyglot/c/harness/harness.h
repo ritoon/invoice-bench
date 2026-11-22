@@ -9,13 +9,15 @@
  *
  * `bench-<lib> bench` measures the operations and writes one JSON line per
  * benchmark to $OUT/<lang>-parts/bench_<lib>.jsonl; `bench-<lib> survey` runs
- * the correctness surveys and writes $OUT/<lang>-parts/survey_<lib>.jsonl.
+ * the correctness surveys and writes $OUT/<lang>-parts/survey_<lib>.jsonl;
+ * `bench-<lib> cases` validates the conformance cases of ../../cases
+ * (CASES_DIR) and writes $OUT/<lang>-parts/cases_<lib>.jsonl.
  * `bench-<lib> resources <Bench>` runs that one benchmark as bench does and
  * appends its line, with the peak RSS of the process (`max_rss_bytes`, from
  * getrusage at the end of the series), to
  * $OUT/<lang>-res-parts/resources_<lib>.jsonl; run.sh starts one such process
  * per benchmark. run.sh merges the parts into bench_<lang>.jsonl,
- * survey_<lang>.jsonl and resources_<lang>.jsonl.
+ * survey_<lang>.jsonl, cases_<lang>.jsonl and resources_<lang>.jsonl.
  *
  * Rules, as in the Go and Rust harnesses: a first call outside the
  * measurement checks the result ("fail" with the message when it is wrong or
@@ -104,7 +106,7 @@ typedef void (*fx_free_fn)(void *ctx, void *p);
 
 typedef struct fx_harness fx_harness;
 
-/* Entry point of every library executable: `bench-<lib> bench|survey [Bench...]`
+/* Entry point of every library executable: `bench-<lib> bench|survey|cases [Bench...]`
  * or `bench-<lib> resources Bench`.
  * `lang` is "c" or "cpp". The body runs on a thread with a large stack. */
 int fx_run(const char *lang, fx_lib lib, int argc, char **argv, void (*body)(fx_harness *h, void *ctx), void *ctx);
@@ -132,7 +134,7 @@ void fx_embed(fx_harness *h, const char *note, fx_embed_fn f, void *ctx, fx_extr
 /* Native complete check of a hybrid PDF (container + XML). */
 void fx_check_pdf(fx_harness *h, const char *note, fx_check_fn f, fx_free_fn free_report, void *ctx);
 
-/* Whether this run is the survey. */
+/* Whether this run is the survey or the cases (no benchmark). */
 int fx_is_survey(const fx_harness *h);
 
 /* ecosystem, where the corpus and the host PDFs live (FX_ECOSYSTEM). */

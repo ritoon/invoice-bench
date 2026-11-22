@@ -38,3 +38,19 @@ func TestSurvey(t *testing.T) {
 	common.SurveyParse(t, parse)
 	common.SurveyExtract(t, extract)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "taha", "github.com/tahayassine/facturx-go", "cii.Decode + en16931.Validate: errors", func(x []byte) (int, []string, error) {
+		inv, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		var rules []string
+		for _, e := range en16931.Validate(inv).Errors {
+			rules = append(rules, e.Rule)
+		}
+		return len(rules), rules, nil
+	})
+}

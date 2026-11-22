@@ -14,14 +14,21 @@ fn extract(p: &[u8]) -> Result<Vec<u8>, String> {
 }
 
 /// Built once per process, on the first call (schemas loaded, stylesheet
-/// prepared): that cost is in `first_call_ns` of ParseValidate_Small.
-fn validator() -> Result<&'static Validator, String> {
-    static V: OnceLock<Result<Validator, String>> = OnceLock::new();
-    V.get_or_init(|| Validator::cen_cii().map_err(|e| e.to_string())).as_ref().map_err(Clone::clone)
+/// prepared): that cost is in `first_call_ns` of ParseValidate_Small. A UBL
+/// document (conformance cases) goes to the library's UBL rule set.
+fn validator(ubl: bool) -> Result<&'static Validator, String> {
+    static CII: OnceLock<Result<Validator, String>> = OnceLock::new();
+    static UBL: OnceLock<Result<Validator, String>> = OnceLock::new();
+    let v = if ubl {
+        UBL.get_or_init(|| Validator::cen_ubl().map_err(|e| e.to_string()))
+    } else {
+        CII.get_or_init(|| Validator::cen_cii().map_err(|e| e.to_string()))
+    };
+    v.as_ref().map_err(Clone::clone)
 }
 
 fn validate(x: &[u8]) -> Result<Report, String> {
-    validator()?.validate(x).map_err(|e| e.to_string())
+    validator(harness::is_ubl(x))?.validate(x).map_err(|e| e.to_string())
 }
 
 /// Errors: schema errors, fatal findings, and a missing scenario.
@@ -43,7 +50,7 @@ fn main() {
         h.extract("pdf::extract (einvoice-pdf, default Limits)", extract);
         h.unsupported(Op::Parse, "no invoice model: the library validates the XML without reading it into a model");
         h.validate(
-            "Validator::cen_cii(): UN/CEFACT CII D16B XSD + official CEN EN 16931 CII 1.3.17 XSLT executed in Rust; the only rule set bundled offline (XRechnung, Factur-X and Peppol need the `fetch` feature and a download)",
+            "Validator::cen_cii(): UN/CEFACT CII D16B XSD + official CEN EN 16931 CII 1.3.17 XSLT executed in Rust, Validator::cen_ubl() (UBL 2.1 XSD + CEN UBL 1.3.17 XSLT) for a UBL document; the only rule sets bundled offline (XRechnung, Factur-X and Peppol need the `fetch` feature and a download)",
             validate,
             summarize,
         );

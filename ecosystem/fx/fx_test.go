@@ -39,3 +39,19 @@ func TestSurvey(t *testing.T) {
 }
 
 func BenchmarkParseValidate_Large(b *testing.B) { common.Bytes(b, common.XMLLarge(b), validate) }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "fx", "github.com/solarpush/fx", "cii.Parse + invoice.ValidateReport: errors", func(x []byte) (int, []string, error) {
+		inv, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		var rules []string
+		for _, e := range invoice.ValidateReport(inv).Errors() {
+			rules = append(rules, e.Code)
+		}
+		return len(rules), rules, nil
+	})
+}

@@ -4,6 +4,7 @@
 #
 #   ./run.sh setup               frozen dependencies (npm ci --ignore-scripts)
 #   ./run.sh survey    [lib…]    correctness surveys   -> $OUT/survey_typescript.jsonl
+#   ./run.sh cases     [lib…]    conformance cases (../../cases) -> $OUT/cases_typescript.jsonl
 #   ./run.sh bench     [lib…]    benchmarks            -> $OUT/bench_typescript.jsonl
 #   ./run.sh resources [lib…]    CPU and peak memory   -> $OUT/resources_typescript.jsonl
 #   ./run.sh alloc     [lib…]    bytes allocated per call -> $OUT/alloc_typescript.jsonl
@@ -63,6 +64,16 @@ survey() {
 		mv "$PARTS/survey_$id.jsonl.tmp" "$PARTS/survey_$id.jsonl"
 	done
 	merge survey
+}
+
+cases() {
+	mkdir -p "$PARTS"
+	for id in $(libs "$@"); do
+		echo "== cases $id"
+		node cases.mjs "$id" >"$PARTS/cases_$id.jsonl.tmp"
+		mv "$PARTS/cases_$id.jsonl.tmp" "$PARTS/cases_$id.jsonl"
+	done
+	merge cases
 }
 
 bench() {
@@ -139,6 +150,10 @@ survey)
 	need
 	survey "$@"
 	;;
+cases)
+	need
+	cases "$@"
+	;;
 bench)
 	need
 	bench "$@"
@@ -152,7 +167,7 @@ alloc)
 	alloc "$@"
 	;;
 *)
-	sed -n '2,12p' "$0"
+	sed -n '2,13p' "$0"
 	exit 2
 	;;
 esac

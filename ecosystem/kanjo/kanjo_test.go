@@ -60,3 +60,21 @@ func TestSurvey(t *testing.T) {
 	common.SurveyParse(t, parse)
 	common.SurveyExtract(t, extract)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "kanjo", "github.com/cyprienbrisset/kanjo", "read + rules.Validate(doc, en16931): findings of severity error or more", func(x []byte) (int, []string, error) {
+		r, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		var ids []string
+		for _, f := range rules.Validate(r.Doc, "en16931").Findings {
+			if f.Severity >= rules.SeverityError {
+				ids = append(ids, f.RuleID)
+			}
+		}
+		return len(ids), ids, nil
+	})
+}

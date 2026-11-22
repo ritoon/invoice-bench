@@ -39,3 +39,18 @@ func TestSurvey(t *testing.T) {
 	common.SurveyValidate(t, validate)
 	common.SurveyParse(t, parse)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "goblde", "github.com/invopop/gobl.de.xinvoice", "xinvoice.Parse + GOBL Envelope.Validate: one error, its message", func(x []byte) (int, []string, error) {
+		p, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		if err := p.Envelope.Validate(); err != nil {
+			return 1, []string{err.Error()}, nil
+		}
+		return 0, nil, nil
+	})
+}

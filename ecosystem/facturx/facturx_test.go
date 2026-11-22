@@ -83,3 +83,15 @@ func TestSurvey(t *testing.T) {
 	common.SurveyParse(t, parse)
 	common.SurveyExtract(t, extract)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "facturx", "github.com/ritoon/zerechnung", "validate.XML with the default rule sets (schema, EN 16931, profile, BR-DE for XRechnung; CII or UBL): errors", func(x []byte) (int, []string, error) {
+		var rules []string
+		for _, f := range validate.XML(x, nil).Errors() {
+			rules = append(rules, f.Rule)
+		}
+		return len(rules), rules, nil
+	})
+}

@@ -6,6 +6,7 @@ library cannot do the operation, "fail" if it returns a wrong result
 or raises an exception.
 
     python harness.py survey    [lib…]   accuracy surveys      -> $OUT/survey_python.jsonl
+    python harness.py cases     [lib…]   conformance cases     -> $OUT/cases_python.jsonl
     python harness.py bench     [lib…]   benchmarks            -> $OUT/bench_python.jsonl
     python harness.py resources [lib…]   CPU and peak memory   -> $OUT/resources_python.jsonl
     python harness.py alloc     [lib…]   allocations per call  -> $OUT/alloc_python.jsonl
@@ -15,7 +16,8 @@ call), each survey in one process per library. Each measured series
 also reads the CPU time of the process (cpu_ns_per_op); "resources" reruns
 the same processes and adds their peak resident memory (max_rss_bytes),
 read by the child process itself at the end. Variables: OUT, COUNT (3),
-BENCHTIME (1, in seconds), FX_CORPUS (root of the corpus).
+BENCHTIME (1, in seconds), FX_CORPUS (root of the corpus), CASES_DIR (the
+conformance cases, ../../cases).
 
 "alloc" counts the allocations of one call: the measuring process runs
 with PYTHONMALLOC=malloc and the alloccount library (alloccount.c,
@@ -122,6 +124,22 @@ def looks_like_cii(b) -> bool:
 def cii_files() -> list[str]:
     m = sorted(glob.glob(str(corpus_root() / "XML-Rechnung" / "CII" / "*.cii.xml")))
     return [f for f in m if os.path.basename(f) != "not_validating_full_invoice_based_onTest_EeISI_300_CENfullmodel.cii.xml"]
+
+
+def cases_root() -> Path:
+    v = os.environ.get("CASES_DIR")
+    return Path(v) if v else HERE.parent.parent / "cases"
+
+
+def case_suites() -> dict[str, list[str]]:
+    """The documents of cases.tsv by suite, in its order (columns suite and file)."""
+    out: dict[str, list[str]] = {}
+    lines = (cases_root() / "cases.tsv").read_text(encoding="utf-8").splitlines()
+    for line in lines[1:]:
+        f = line.split("\t")
+        if len(f) >= 2 and f[0].strip():
+            out.setdefault(f[0], []).append(f[1])
+    return out
 
 
 def pdf_files() -> list[str]:
@@ -463,6 +481,28 @@ def survey_lib(lib: str) -> list[dict]:
     return lines
 
 
+def cases_lib(lib: str) -> list[dict]:
+    """Validation of every conformance case, one line per suite (no line
+    without a validate operation)."""
+    ad = adapter(lib)
+    if getattr(ad, "validate", None) is None:
+        return []
+    base = {"lang": "python", "lib": lib, "pkg": ad.PKG, "version": lib_version(ad)}
+    note = getattr(ad, "SURVEY_NOTES", {}).get("validate", "")
+    lines = []
+    for suite, files in case_suites().items():
+        results = []
+        for f in files:
+            data = (cases_root() / f).read_bytes()
+            try:
+                n, rules = guarded(ad.validate, data, str(cases_root() / f), timeout=SURVEY_TIMEOUT)
+                results.append({"case": f, "errors": n, "rules": sorted(set(rules))})
+            except BaseException as e:  # noqa: BLE001
+                results.append({"case": f, "errors": 0, "rules": [], "error": err_text(e)})
+        lines.append({**base, "suite": suite, "results": results, "note": note})
+    return lines
+
+
 # ---------------------------------------------------------------- orchestration
 
 def child(argv: list[str]) -> None:
@@ -481,6 +521,9 @@ def child(argv: list[str]) -> None:
         print(RESULT_MARK + json.dumps(out, ensure_ascii=False), flush=True)
     elif kind == "survey":
         for line in survey_lib(argv[1]):
+            print(RESULT_MARK + json.dumps(line, ensure_ascii=False), flush=True)
+    elif kind == "cases":
+        for line in cases_lib(argv[1]):
             print(RESULT_MARK + json.dumps(line, ensure_ascii=False), flush=True)
 
 
@@ -530,7 +573,7 @@ def main(argv: list[str]) -> int:
     if argv and argv[0] == "_child":
         child(argv[1:])
         return 0
-    if not argv or argv[0] not in ("survey", "bench", "resources", "alloc"):
+    if not argv or argv[0] not in ("survey", "cases", "bench", "resources", "alloc"):
         print(__doc__)
         return 2
     cmd, libs = argv[0], argv[1:] or LIBS
@@ -549,6 +592,20 @@ def main(argv: list[str]) -> int:
                 print(f"   (no result: {diag})")
             for r in res:
                 print(f"   {r['op']}: {r['ok']}/{r['total']}" + (f"  ({r['note']})" if r.get("note") else ""))
+            merge_jsonl(path, [lib], res)
+        print(f"== {path}")
+    elif cmd == "cases":
+        path = out / "cases_python.jsonl"
+        for lib in libs:
+            print(f"== cases {lib}", flush=True)
+            res, diag = spawn(["cases", lib])
+            if not res and not diag.startswith("no operation"):
+                print(f"   (no result: {diag})")
+            elif not res:
+                print("   no validation")
+            for r in res:
+                rejected = sum(1 for x in r["results"] if x["errors"] > 0 or x.get("error"))
+                print(f"   {r['suite']}: {rejected}/{len(r['results'])} rejected")
             merge_jsonl(path, [lib], res)
         print(f"== {path}")
     elif cmd == "alloc":

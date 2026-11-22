@@ -9,7 +9,9 @@
 // `bench-<lib> bench` measures the operations and writes one JSON line per
 // benchmark to $OUT/csharp-parts/bench_<lib>.jsonl; `bench-<lib> survey` runs
 // the correctness surveys and writes $OUT/csharp-parts/survey_<lib>.jsonl.
-// run.sh merges the parts into bench_csharp.jsonl and survey_csharp.jsonl.
+// `bench-<lib> cases` validates the conformance cases of ../../cases
+// (cases.tsv) and writes $OUT/csharp-parts/cases_<lib>.jsonl. run.sh merges
+// the parts into bench_csharp.jsonl, survey_csharp.jsonl and cases_csharp.jsonl.
 // `bench-<lib> resources <Bench>` measures like bench, silently, and writes the
 // record to $OUT/csharp-res-parts/run_<lib>.jsonl (truncated): `run.sh
 // resources` starts one process per benchmark under /usr/bin/time -l and adds
@@ -138,6 +140,29 @@ public static class Corpus
         _ => throw new ArgumentException(bench),
     };
 
+    /// <summary>The conformance cases directory: CASES_DIR, or ../../cases from the working directory.</summary>
+    public static string CasesDir => Path.GetFullPath(Environment.GetEnvironmentVariable("CASES_DIR") is { Length: > 0 } d ? d : "../../cases");
+
+    /// <summary>The documents of cases.tsv by suite, in its order: columns suite and file (relative to CasesDir).</summary>
+    public static List<(string Suite, List<string> Files)> CaseSuites()
+    {
+        var output = new List<(string, List<string>)>();
+        foreach (var line in File.ReadLines(Path.Combine(CasesDir, "cases.tsv")).Skip(1))
+        {
+            var f = line.Split('\t');
+            if (f.Length < 2 || f[0].Trim().Length == 0)
+            {
+                continue;
+            }
+            if (output.Count == 0 || output[^1].Item1 != f[0])
+            {
+                output.Add((f[0], []));
+            }
+            output[^1].Item2.Add(f[1]);
+        }
+        return output;
+    }
+
     /// <summary>The 26 valid CII samples of the surveys.</summary>
     public static List<string> CiiFiles()
     {
@@ -238,7 +263,7 @@ public static class Sink
 /// <summary>Registers the operations of one library and writes their results.</summary>
 public sealed class Harness
 {
-    private enum Mode { Bench, Survey }
+    private enum Mode { Bench, Survey, Cases }
 
     private static readonly JsonWriterOptions JsonOptions = new()
     {
@@ -267,8 +292,8 @@ public sealed class Harness
         _quiet = quiet;
     }
 
-    /// <summary>Whether this run is the survey (to skip expensive setup in bench-only paths).</summary>
-    public bool IsSurvey => _mode == Mode.Survey;
+    /// <summary>Whether this run is the survey or the cases (to skip expensive setup in bench-only paths).</summary>
+    public bool IsSurvey => _mode != Mode.Bench;
 
     private static string[] Benches(Op op) => op switch
     {
@@ -374,6 +399,24 @@ public sealed class Harness
             {
                 w.WriteStartObject();
                 f(w);
+                w.WriteEndObject();
+            }
+            w.WriteEndArray();
+            w.WriteString("note", note);
+        });
+    }
+
+    private void CasesLine(string suite, int flagged, List<Action<Utf8JsonWriter>> results, string note)
+    {
+        Console.Error.WriteLine($"   CASES {suite}: {flagged}/{results.Count} rejected");
+        Line(w =>
+        {
+            w.WriteString("suite", suite);
+            w.WriteStartArray("results");
+            foreach (var r in results)
+            {
+                w.WriteStartObject();
+                r(w);
                 w.WriteEndObject();
             }
             w.WriteEndArray();
@@ -543,6 +586,10 @@ public sealed class Harness
             }
             return;
         }
+        if (_mode == Mode.Cases)
+        {
+            return;
+        }
         var files = Corpus.PdfFiles();
         var (ok, failures) = (0, new List<Action<Utf8JsonWriter>>());
         foreach (var p in files)
@@ -591,6 +638,10 @@ public sealed class Harness
             }
             return;
         }
+        if (_mode == Mode.Cases)
+        {
+            return;
+        }
         var files = Corpus.CiiFiles();
         var (ok, failures) = (0, new List<Action<Utf8JsonWriter>>());
         foreach (var p in files)
@@ -630,6 +681,49 @@ public sealed class Harness
                 }
                 var data = Corpus.Sample(Corpus.InputOf(b));
                 BenchOne(b, note, r => summarize(r), () => f(data));
+            }
+            return;
+        }
+        if (_mode == Mode.Cases)
+        {
+            foreach (var (suite, cases) in Corpus.CaseSuites())
+            {
+                var (rejected, results) = (0, new List<Action<Utf8JsonWriter>>());
+                foreach (var file in cases)
+                {
+                    var data = Corpus.Load(Path.Combine(Corpus.CasesDir, file));
+                    try
+                    {
+                        var fd = summarize(f(data));
+                        rejected += fd.Errors > 0 ? 1 : 0;
+                        var rules = fd.Rules.Distinct().Order(StringComparer.Ordinal).ToList();
+                        results.Add(w =>
+                        {
+                            w.WriteString("case", file);
+                            w.WriteNumber("errors", fd.Errors);
+                            w.WriteStartArray("rules");
+                            foreach (var r in rules)
+                            {
+                                w.WriteStringValue(r);
+                            }
+                            w.WriteEndArray();
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        rejected++;
+                        var err = Shorten(Describe(e));
+                        results.Add(w =>
+                        {
+                            w.WriteString("case", file);
+                            w.WriteNumber("errors", 0);
+                            w.WriteStartArray("rules");
+                            w.WriteEndArray();
+                            w.WriteString("error", err);
+                        });
+                    }
+                }
+                CasesLine(suite, rejected, results, note);
             }
             return;
         }
@@ -764,7 +858,7 @@ public sealed class Harness
     /// <summary>Stack of the worker thread every operation runs on: XSLT engines recurse deeply.</summary>
     private const int StackBytes = 256 * 1024 * 1024;
 
-    /// <summary>Entry point of every library program: bench-&lt;lib&gt; bench|survey|resources [Bench…].</summary>
+    /// <summary>Entry point of every library program: bench-&lt;lib&gt; bench|survey|cases|resources [Bench…].</summary>
     public static int Run(Lib lib, string[] args, Action<Harness> body)
     {
         Mode mode;
@@ -773,8 +867,9 @@ public sealed class Harness
         {
             case "bench" or "resources": mode = Mode.Bench; break;
             case "survey": mode = Mode.Survey; break;
+            case "cases": mode = Mode.Cases; break;
             default:
-                Console.Error.WriteLine($"usage: bench-{lib.Name} bench|survey|resources [BenchName…]");
+                Console.Error.WriteLine($"usage: bench-{lib.Name} bench|survey|cases|resources [BenchName…]");
                 return 2;
         }
         var resources = kind == "resources";

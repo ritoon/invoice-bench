@@ -32,7 +32,10 @@ use IntrAgile\EInvoicing\Validation\XRechnung\XRechnungValidator;
 $validators = [];
 $pick = static function (string $xml) use (&$validators): XRechnungValidator|FacturXValidator {
     $id = preg_match('~GuidelineSpecifiedDocumentContextParameter>\s*<(?:\w+:)?ID>([^<]+)<~', $xml, $m) ? trim($m[1]) : '';
-    $kosit = $id === 'urn:cen.eu:en16931:2017' || str_contains($id, 'xrechnung');
+    // A UBL document (conformance cases) goes to the KoSIT scenarios, which
+    // cover UBL Invoice and CreditNote; FacturXValidator reads CII only.
+    $kosit = $id === 'urn:cen.eu:en16931:2017' || str_contains($id, 'xrechnung')
+        || \in_array(\Bench\invoice_root($xml), ['Invoice', 'CreditNote'], true);
 
     return $kosit
         ? ($validators['kosit'] ??= XRechnungValidator::create())
@@ -44,7 +47,7 @@ return [
     'notes' => [
         'extract' => 'FacturXPdfReader::read()->xml (PDF reader written in the library)',
         'parse' => 'CiiReader::read()->invoice (EN 16931 model)',
-        'validate' => 'XRechnungValidator (KoSIT scenarios: CII D16B XSD + CEN 1.3.16 schematron precompiled to PHP, + XRechnung 2.6.0 and KoSIT levels if BT-24 is XRechnung); FacturXValidator for the other Factur-X profiles; errors = fatal + XSD + dynamic errors',
+        'validate' => 'XRechnungValidator (KoSIT scenarios: CII D16B XSD + CEN 1.3.16 schematron precompiled to PHP, + XRechnung 2.6.0 and KoSIT levels if BT-24 is XRechnung; the UBL scenarios for a UBL document); FacturXValidator for the other Factur-X profiles; errors = fatal + XSD + dynamic errors',
         'write' => 'CiiWriter::write of the model read by CiiReader',
         'embed' => 'FacturXPdfWriter::embed (incremental update, without FPDI; does not convert to PDF/A)',
     ],

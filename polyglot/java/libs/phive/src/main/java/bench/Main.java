@@ -4,8 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import bench.harness.Harness;
 import bench.harness.Harness.Findings;
@@ -46,21 +44,28 @@ public final class Main {
         return reg;
     });
 
-    static final Pattern BT24 =
-            Pattern.compile("GuidelineSpecifiedDocumentContextParameter>\\s*<(?:\\w+:)?ID>([^<]+)<");
-
     /**
-     * The validation executor set (VES) for the specification identifier
-     * (BT-24): XRechnung 3.0.2 for XRechnung, the ZUGFeRD 2.5.2 / Factur-X
-     * 1.09.2 set of the profile for the Factur-X profiles, the CEN EN 16931
-     * CII 1.3.17 set otherwise.
+     * The validation executor set (VES) for the syntax and the specification
+     * identifier (BT-24): XRechnung 3.0.2 for XRechnung (its extension set
+     * for the XRechnung extension), the ZUGFeRD 2.5.2 / Factur-X 1.09.2 set
+     * of the profile for the Factur-X profiles, the CEN EN 16931 1.3.17 set
+     * otherwise; in CII, or in UBL for a UBL invoice or credit note (the
+     * conformance cases).
      */
     static DVRCoordinate vesFor(byte[] xml) {
-        String head = new String(xml, 0, Math.min(xml.length, 8192), StandardCharsets.UTF_8);
-        Matcher m = BT24.matcher(head);
-        String id = m.find() ? m.group(1).trim() : "";
+        String id = Harness.specId(xml);
+        boolean ext = id.contains("kosit:extension:xrechnung");
+        if (Harness.isUbl(xml)) {
+            boolean credit = Harness.rootName(xml).equals("CreditNote");
+            if (id.contains("xrechnung")) {
+                return ext && !credit ? XRechnungValidation.VID_XRECHNUNG_EXTENSION_UBL_INVOICE_302
+                        : credit ? XRechnungValidation.VID_XRECHNUNG_UBL_CREDITNOTE_302
+                        : XRechnungValidation.VID_XRECHNUNG_UBL_INVOICE_302;
+            }
+            return credit ? EN16931Validation.VID_UBL_CREDIT_NOTE_1317 : EN16931Validation.VID_UBL_INVOICE_1317;
+        }
         if (id.contains("xrechnung")) {
-            return XRechnungValidation.VID_XRECHNUNG_CII_302;
+            return ext ? XRechnungValidation.VID_XRECHNUNG_EXTENSION_CII_302 : XRechnungValidation.VID_XRECHNUNG_CII_302;
         }
         if (id.contains("factur-x.eu:1p0:minimum")) {
             return ZugferdValidation.VID_ZUGFERD_2_5_2_MINIMUM;
@@ -115,9 +120,10 @@ public final class Main {
             h.unsupported(Op.EXTRACT, "validator only");
             h.unsupported(Op.PARSE, "validator only (the JAXB model is ph-cii's, measured separately)");
             h.validate("ValidationExecutionManager.executeValidation, set chosen by BT-24: XRechnung CII 3.0.2 "
-                    + "(D16B XSD + CEN CII 1.3.16 + KoSIT XRechnung 2.6.0, phive's own levels) for XRechnung, "
+                    + "(D16B XSD + CEN CII 1.3.16 + KoSIT XRechnung 2.6.0, phive's own levels) for XRechnung "
+                    + "(the extension set for the XRechnung extension; the UBL sets for a UBL case), "
                     + "the profile's ZUGFeRD 2.5.2 (XSD + Factur-X 1.09.2 schematron) for MINIMUM/BASIC WL/BASIC/EXTENDED, "
-                    + "EN 16931 CII 1.3.17 (D16B XSD + CEN schematron) otherwise; DOM parsing included; "
+                    + "EN 16931 CII 1.3.17 (D16B XSD + CEN schematron) otherwise, UBL 1.3.17 for a UBL case; DOM parsing included; "
                     + "errors = level ERROR and above; registry initialized and XSLT loaded on the first call",
                     Main::validate, Main::summarize);
             h.unsupported(Op.WRITE, "validator only");

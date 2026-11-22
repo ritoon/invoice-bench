@@ -9,12 +9,14 @@
  * result or throws.
  *
  *     php harness.php survey    [lib…]   correctness surveys    -> $OUT/survey_php.jsonl
+ *     php harness.php cases     [lib…]   conformance cases      -> $OUT/cases_php.jsonl
  *     php harness.php bench     [lib…]   benchmarks             -> $OUT/bench_php.jsonl
  *     php harness.php resources [lib…]   CPU time and peak RSS  -> $OUT/resources_php.jsonl
  *
  * Every benchmark runs in a fresh child process (first_call_ns is a true first
  * call: classes are autoloaded and the library's caches are cold), every survey
- * in one child per library and operation; a child that dies (fatal error,
+ * in one child per library and operation (the cases, the documents of
+ * ../../cases/cases.tsv or CASES_DIR, as one more operation); a child that dies (fatal error,
  * memory exhaustion) is restarted after the file it died on. Each timed series
  * also reads the CPU time of the process (cpu_ns_per_op); "resources" runs the
  * same children and adds their peak resident memory (max_rss_bytes), read by
@@ -23,7 +25,7 @@
  * (corpus root), FX_TMP (scratch dir of the path-based APIs, default
  * <system temp>/fx-bench-php), PHP_OPTS (the -d flags given to every child,
  * set by run.sh), CHECK_TIMEOUT (30 s, the check call of a benchmark),
- * SURVEY_TIMEOUT (10 s, one survey file), CHILD_TIMEOUT (1800 s, one child).
+ * SURVEY_TIMEOUT (10 s, one survey file or case), CHILD_TIMEOUT (1800 s, one child).
  */
 
 declare(strict_types=1);
@@ -216,6 +218,17 @@ function looks_like_cii(mixed $b): bool
 }
 
 /** The 26 valid CII samples of the surveys. @return list<string> */
+/**
+ * Root element of an invoice document (CrossIndustryInvoice, Invoice or
+ * CreditNote), searched in its first 64 KiB (the licence comments of the KoSIT
+ * test suite push it past 5 KB); '' when none. An adapter routes a UBL
+ * document of the conformance cases to the library's UBL rules with it.
+ */
+function invoice_root(string $xml): string
+{
+    return preg_match('~<(?:[\w.-]+:)?(CrossIndustryInvoice|Invoice|CreditNote)[\s>/]~', substr($xml, 0, 65536), $m) === 1 ? $m[1] : '';
+}
+
 function cii_files(): array
 {
     $m = glob(corpus_root() . '/XML-Rechnung/CII/*.cii.xml') ?: [];
@@ -247,10 +260,41 @@ function pdf_files(): array
     return [...$out, ...$fx];
 }
 
+function cases_root(): string
+{
+    $v = getenv('CASES_DIR');
+
+    return ($v !== false && $v !== '') ? rtrim($v, '/') : \dirname(HERE, 2) . '/cases';
+}
+
+/**
+ * The documents of cases.tsv in its order, after the header line: suite and
+ * file (relative to cases_root()).
+ *
+ * @return list<array{0: string, 1: string}>
+ */
+function case_list(): array
+{
+    $out = [];
+    $lines = file(cases_root() . '/cases.tsv', \FILE_IGNORE_NEW_LINES) ?: [];
+    foreach (\array_slice($lines, 1) as $line) {
+        $f = explode("\t", $line);
+        if (\count($f) >= 2 && trim($f[0]) !== '') {
+            $out[] = [$f[0], $f[1]];
+        }
+    }
+
+    return $out;
+}
+
 /** @return list<string> */
 function files_for(string $op): array
 {
-    return $op === 'extract' ? pdf_files() : cii_files();
+    return match ($op) {
+        'extract' => pdf_files(),
+        'cases' => array_map(static fn (array $c): string => cases_root() . '/' . $c[1], case_list()),
+        default => cii_files(),
+    };
 }
 
 function rel_path(string $f): string
@@ -584,6 +628,18 @@ function run_one(string $lib, string $bench, float $benchtime, int $count): arra
 function survey_file(array $ad, string $op, string $f): array
 {
     $data = file_get_contents($f);
+    if ($op === 'cases') {
+        $name = substr($f, \strlen(cases_root()) + 1);
+        try {
+            [$n, $rules] = guarded(static fn () => ($ad['validate'])($data, $f), survey_timeout());
+            $rules = array_values(array_unique(array_map('strval', $rules)));
+            sort($rules, \SORT_STRING);
+
+            return ['case' => $name, 'errors' => (int) $n, 'rules' => $rules];
+        } catch (\Throwable $e) {
+            return ['case' => $name, 'errors' => 0, 'rules' => [], 'error' => err_text($e)];
+        }
+    }
     $name = $op === 'extract' ? rel_path($f) : basename($f);
     try {
         if ($op === 'validate') {
@@ -884,6 +940,68 @@ function survey_lib(string $lib): array
     return $lines;
 }
 
+/**
+ * Validation of every conformance case, one line per suite (none for a
+ * library without validate), in children as the surveys.
+ *
+ * @return list<array<string, mixed>>
+ */
+function cases_lib(string $lib): array
+{
+    $info = spawn(['info', $lib]);
+    $meta = marked($info['lines'], RESULT_MARK)[0] ?? null;
+    if ($meta === null) {
+        echo '   (no result: ' . diag($info) . ")\n";
+
+        return [];
+    }
+    if (!\in_array('validate', $meta['ops'], true)) {
+        echo "   (no validate operation)\n";
+
+        return [];
+    }
+    $cases = case_list();
+    $files = files_for('cases');
+    $per = [];
+    $start = 0;
+    $crashes = 0;
+    while ($start < \count($files)) {
+        $r = spawn(['survey', $lib, 'cases', (string) $start]);
+        $got = marked($r['lines'], FILE_MARK);
+        foreach ($got as $g) {
+            $per[$g['idx']] = $g;
+        }
+        $next = $got === [] ? $start : max(array_column($got, 'idx')) + 1;
+        if ($next >= \count($files)) {
+            break;
+        }
+        // the child died on case $next: record it and go on after it
+        $per[$next] = ['case' => $cases[$next][1], 'errors' => 0, 'rules' => [],
+            'error' => 'the process died on this case: ' . diag($r)];
+        $crashes++;
+        $start = $next + 1;
+    }
+    $note = (string) ($meta['survey_notes']['validate'] ?? '');
+    if ($crashes > 0) {
+        $note = ($note !== '' ? "$note; " : '') . "$crashes processes died (fatal error), restarted at the next case";
+    }
+    $base = ['lang' => 'php', 'lib' => $lib, 'pkg' => $meta['pkg'], 'version' => $meta['version']];
+    $bySuite = [];
+    foreach ($cases as $i => [$suite, $file]) {
+        $x = $per[$i] ?? ['case' => $file, 'errors' => 0, 'rules' => [], 'error' => 'no result'];
+        unset($x['idx']);
+        $bySuite[$suite][] = $x;
+    }
+    $lines = [];
+    foreach ($bySuite as $suite => $results) {
+        $rejected = \count(array_filter($results, static fn (array $x): bool => $x['errors'] > 0 || isset($x['error'])));
+        echo "   CASES $suite: $rejected/" . \count($results) . " rejected\n";
+        $lines[] = $base + ['suite' => $suite, 'results' => $results, 'note' => $note];
+    }
+
+    return $lines;
+}
+
 /** @param list<string> $argv */
 function main(array $argv): int
 {
@@ -891,8 +1009,8 @@ function main(array $argv): int
         return child(\array_slice($argv, 1));
     }
     $cmd = $argv[0] ?? '';
-    if ($cmd !== 'survey' && $cmd !== 'bench' && $cmd !== 'resources') {
-        fwrite(\STDERR, "usage: php harness.php survey|bench|resources [lib…]\n");
+    if ($cmd !== 'survey' && $cmd !== 'cases' && $cmd !== 'bench' && $cmd !== 'resources') {
+        fwrite(\STDERR, "usage: php harness.php survey|cases|bench|resources [lib…]\n");
 
         return 2;
     }
@@ -915,6 +1033,16 @@ function main(array $argv): int
                 echo "   {$r['op']}: {$r['ok']}/{$r['total']}" . ($r['note'] !== '' ? "  ({$r['note']})" : '') . "\n";
             }
             merge_jsonl($path, [$lib], $res);
+        }
+        echo "== $path\n";
+
+        return 0;
+    }
+    if ($cmd === 'cases') {
+        $path = "$out/cases_php.jsonl";
+        foreach ($libs as $lib) {
+            echo "== cases $lib\n";
+            merge_jsonl($path, [$lib], cases_lib($lib));
         }
         echo "== $path\n";
 

@@ -3,6 +3,7 @@
 #
 #   ./run.sh setup            official artefacts (SHA-256 checked), CMake Release build
 #   ./run.sh survey [lib…]    correctness surveys  -> $OUT/survey_c.jsonl
+#   ./run.sh cases  [lib…]    conformance cases (../../cases) -> $OUT/cases_c.jsonl
 #   ./run.sh bench  [lib…]    benchmarks           -> $OUT/bench_c.jsonl
 #   ./run.sh resources [lib…] CPU time and peak RSS, one process per benchmark
 #                                                  -> $OUT/resources_c.jsonl
@@ -27,6 +28,7 @@ BUILD=build
 ART=.artefacts
 export FX_ARTEFACTS=$PWD/$ART
 export FX_ECOSYSTEM=$(cd ../../ecosystem && pwd)
+export CASES_DIR=${CASES_DIR:-$(cd ../../cases && pwd)}
 
 # Official artefacts (GitHub releases), checked by SHA-256. The CEN and KoSIT
 # archives are the ones of the Python bench (same URLs, same sums).
@@ -146,10 +148,11 @@ shift || true
 case "$cmd" in
 setup) setup "$@" ;;
 survey) each survey "$@" ;;
+cases) each cases "$@" ;;
 bench) each bench "$@" ;;
 resources) resources "$@" ;;
 *)
-	sed -n '2,15p' "$0"
+	sed -n '2,16p' "$0"
 	exit 2
 	;;
 esac

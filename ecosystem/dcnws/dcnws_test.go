@@ -55,3 +55,21 @@ func TestSurvey(t *testing.T) {
 }
 
 func BenchmarkCheckPDF_Large(b *testing.B) { common.Bytes(b, common.PDFLarge(b), check) }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "dcnws", "github.com/dcnws/invoicekit.go", "einvoice.Validate (CEN 1.3.17 schematron interpreted in Go): fatal findings", func(x []byte) (int, []string, error) {
+		r, err := einvoice.Validate(x, einvoice.Options{})
+		if err != nil {
+			return 0, nil, err
+		}
+		var rules []string
+		for _, f := range r.Findings {
+			if f.Flag == "fatal" {
+				rules = append(rules, f.ID)
+			}
+		}
+		return r.Fatal, rules, nil
+	})
+}

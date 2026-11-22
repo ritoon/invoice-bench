@@ -60,3 +60,17 @@ func BenchmarkCheckPDF_Large(b *testing.B) {
 	vv := val(b)
 	common.Bytes(b, common.PDFLarge(b), func(p []byte) (int, error) { return len(vv.ValidatePDF(p).Errors()), nil })
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	vv := val(t)
+	common.Cases(t, "papierleicht", "github.com/papierleicht/go-e-rechnung-validator", "validator.Validate (format detected by the library): errors", func(x []byte) (int, []string, error) {
+		r := vv.Validate(x)
+		var rules []string
+		for _, e := range r.Errors() {
+			rules = append(rules, e.RuleID)
+		}
+		return len(rules), rules, nil
+	})
+}
