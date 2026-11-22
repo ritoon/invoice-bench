@@ -3,9 +3,10 @@
 #
 #   ./run.sh setup              fetch the corpus and dependencies, build the host PDFs
 #   ./run.sh survey [module…]   correctness surveys on the whole corpus
+#   ./run.sh cases  [module…]   conformance cases of ../cases (validating modules)
 #   ./run.sh bench  [module…]   benchmarks (COUNT and BENCHTIME can be overridden)
 #   ./run.sh report             tables in results/<date>/tables.md
-#   ./run.sh all    [module…]   setup + survey + bench + report
+#   ./run.sh all    [module…]   setup + survey + cases + bench + report
 #
 # Results go to results/<date>/ (OUT can be overridden). ZERECHNUNG_DIR
 # measures a local clone of ZeRechnung instead of the version that
@@ -63,6 +64,21 @@ survey() {
 	done
 }
 
+# cases: the modules with a validation run TestCases, which writes
+# $OUT/cases_<module>.jsonl (see ../cases/README.md).
+cases() {
+	mkdir -p "$OUT"
+	local abs
+	abs=$(cd "$OUT" && pwd)
+	for m in $(modules "$@"); do
+		grep -qs '^func TestCases' "$m"/*_test.go || continue
+		echo "== cases $m"
+		(export GOFLAGS=$(goflags "$m") CASES_OUT="$abs/cases_$m.jsonl" && cd "$m" &&
+			go test -count 1 -run '^TestCases$' -timeout 2h -v . 2>&1 || true) |
+			grep -E 'CASES|FAIL|panic:' | sed -E 's/^ +[a-z_]+\.go:[0-9]+: //' || true
+	done
+}
+
 bench() {
 	mkdir -p "$OUT"
 	for m in $(modules "$@"); do
@@ -89,11 +105,12 @@ shift || true
 case "$cmd" in
 setup) setup ;;
 survey) survey "$@" ;;
+cases) cases "$@" ;;
 bench) bench "$@" ;;
 report) report ;;
-all) setup && survey "$@" && bench "$@" && report ;;
+all) setup && survey "$@" && cases "$@" && bench "$@" && report ;;
 *)
-	sed -n '2,10p' "$0"
+	sed -n '2,11p' "$0"
 	exit 2
 	;;
 esac

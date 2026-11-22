@@ -37,3 +37,18 @@ func TestSurvey(t *testing.T) {
 }
 
 func BenchmarkParseValidate_Large(b *testing.B) { common.Bytes(b, common.XMLLarge(b), validate) }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	common.Cases(t, "angelo", "github.com/angelodlfrtr/go-invoice-generator", "facturx.Parse + Parsed.Verify (arithmetic checks): one error, its message", func(x []byte) (int, []string, error) {
+		p, err := parse(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		if err := p.Verify(); err != nil {
+			return 1, []string{err.Error()}, nil
+		}
+		return 0, nil, nil
+	})
+}

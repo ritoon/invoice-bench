@@ -4,6 +4,7 @@
 #
 #   ./run.sh setup              corpus (via ../ecosystem), then each language's dependencies
 #   ./run.sh survey    [lang…]  correctness surveys
+#   ./run.sh cases     [lang…]  conformance cases of ../cases (confidence by country)
 #   ./run.sh bench     [lang…]  benchmarks, one language after the other
 #   ./run.sh alloc     [lang…]  allocations of one call of each operation (go, typescript, python, rust)
 #   ./run.sh resources [lang…]  CPU time and peak memory, one process per benchmark
@@ -144,13 +145,13 @@ cmd=${1:-}
 shift || true
 case "$cmd" in
 setup) setup ;;
-survey | bench) each "$cmd" "$@" ;;
+survey | cases | bench) each "$cmd" "$@" ;;
 alloc) each alloc "$@" ;;
 resources) resources "$@" ;;
 report) report ;;
-all) setup && each survey "$@" && each bench "$@" && each alloc "$@" && resources "$@" && report ;;
+all) setup && each survey "$@" && each cases "$@" && each bench "$@" && each alloc "$@" && resources "$@" && report ;;
 *)
-	sed -n '2,15p' "$0"
+	sed -n '2,16p' "$0"
 	exit 2
 	;;
 esac

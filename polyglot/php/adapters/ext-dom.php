@@ -5,17 +5,21 @@
  * written here. Schema: the official Factur-X 1.09.2 XSD of the profile named
  * by BT-24 (EN16931 for XRechnung and plain EN 16931), the files shipped in
  * vendor/atgp/factur-x/xsd (the PHP code of that package is not called).
+ * A UBL document (conformance cases) is validated against the UBL 2.1
+ * Invoice or CreditNote schema, the official copy shipped in
+ * vendor/intragile/einvoicing-rules-xrechnung (Apache-2.0).
  */
 
 declare(strict_types=1);
 
 const EXTDOM_XSD_DIR = __DIR__ . '/../vendor/atgp/factur-x/xsd/factur-x';
+const EXTDOM_UBL_DIR = __DIR__ . '/../vendor/intragile/einvoicing-rules-xrechnung/schemas/ubl/2.1/xsd/maindoc';
 
 return [
     'pkg' => 'ext-dom',
     'version' => static fn (): string => \PHP_VERSION . ' (libxml ' . \LIBXML_DOTTED_VERSION . ')',
     'notes' => [
-        'validate' => 'floor written by hand: DOMDocument::loadXML + schemaValidate, Factur-X 1.09.2 XSD of the profile (EN16931 for XRechnung), libxml2 ' . \LIBXML_DOTTED_VERSION,
+        'validate' => 'floor written by hand: DOMDocument::loadXML + schemaValidate, Factur-X 1.09.2 XSD of the profile (EN16931 for XRechnung; UBL 2.1 for a UBL document), libxml2 ' . \LIBXML_DOTTED_VERSION,
     ],
     'unsupported' => [
         'extract' => 'XML extension only',
@@ -37,6 +41,11 @@ return [
             str_contains($id, 'minimum') => 'minimum/Factur-X_1.09.2_MINIMUM.xsd',
             default => 'en16931/Factur-X_1.09.2_EN16931.xsd',
         };
+        $xsd = match (\Bench\invoice_root($xml)) {
+            'Invoice' => EXTDOM_UBL_DIR . '/UBL-Invoice-2.1.xsd',
+            'CreditNote' => EXTDOM_UBL_DIR . '/UBL-CreditNote-2.1.xsd',
+            default => EXTDOM_XSD_DIR . '/' . $profile,
+        };
         $prev = libxml_use_internal_errors(true);
         libxml_clear_errors();
         try {
@@ -44,7 +53,7 @@ return [
             if (!$doc->loadXML($xml, \LIBXML_NONET)) {
                 return [1, ['XML: not well-formed']];
             }
-            if ($doc->schemaValidate(EXTDOM_XSD_DIR . '/' . $profile)) {
+            if ($doc->schemaValidate($xsd)) {
                 return [0, []];
             }
             $errors = libxml_get_errors();

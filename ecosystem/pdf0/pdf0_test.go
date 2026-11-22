@@ -66,3 +66,29 @@ func TestSurvey(t *testing.T) {
 	common.SurveyValidate(t, validate)
 	common.SurveyExtract(t, extractViaCheck)
 }
+
+// TestCases validates the conformance cases (../../cases) for the
+// confidence scores: run by ./run.sh cases, which sets CASES_OUT.
+func TestCases(t *testing.T) {
+	// The bench validates at the Factur-X EN16931 profile; the cases, CII and
+	// UBL, EN 16931 and XRechnung, go through the library's own router.
+	common.Cases(t, "pdf0", "github.com/mgilbir/formalis", "formalis.Detect, then the validator it returns: fatal violations", func(x []byte) (int, []string, error) {
+		det, err := formalis.Detect(x)
+		if err != nil {
+			return 0, nil, err
+		}
+		v := det.Validator()
+		if v == nil {
+			return 0, nil, errors.New("formalis.Detect: format not recognised")
+		}
+		r, err := v(context.Background(), x)
+		if err != nil {
+			return 0, nil, err
+		}
+		var rules []string
+		for _, v := range r.Fatal() {
+			rules = append(rules, v.Rule)
+		}
+		return len(rules), rules, nil
+	})
+}

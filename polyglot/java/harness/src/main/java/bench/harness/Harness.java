@@ -36,6 +36,9 @@ import java.util.stream.Stream;
  * survey} runs the correctness surveys and writes
  * {@code $OUT/java-parts/survey_<lib>.jsonl}. {@code run.sh} merges the parts
  * into {@code bench_java.jsonl} and {@code survey_java.jsonl}. {@code bench.Main
+ * cases} runs the validation on the conformance cases of {@code ../../cases}
+ * ({@code CASES_DIR}) and writes {@code $OUT/java-parts/cases_<lib>.jsonl},
+ * merged into {@code cases_java.jsonl}. {@code bench.Main
  * resources <Bench>} measures like {@code bench}, silently, and writes the
  * record to {@code $OUT/java-res-parts/run_<lib>.jsonl} (truncated): {@code
  * run.sh resources} starts one JVM per benchmark under {@code /usr/bin/time -l}
@@ -262,9 +265,67 @@ public final class Harness {
         }
     }
 
+    /** Root of the conformance cases ({@code CASES_DIR}, default
+     *  {@code ../../cases} from java/). */
+    public static Path casesDir() {
+        String v = System.getenv("CASES_DIR");
+        return Path.of(v != null && !v.isEmpty() ? v : "../../cases").toAbsolutePath().normalize();
+    }
+
+    /** The documents of {@code cases.tsv} by suite, in its order: the first
+     *  two columns, suite and file (relative to {@link #casesDir}). */
+    public static Map<String, List<String>> caseSuites() {
+        Map<String, List<String>> out = new LinkedHashMap<>();
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(casesDir().resolve("cases.tsv"), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException("read cases.tsv", e);
+        }
+        for (String line : lines.subList(Math.min(1, lines.size()), lines.size())) {
+            String[] f = line.split("\t", -1);
+            if (f.length >= 2 && !f[0].isBlank()) {
+                out.computeIfAbsent(f[0], k -> new ArrayList<>()).add(f[1]);
+            }
+        }
+        return out;
+    }
+
     private static String rel(Path p) {
         Path c = corpus();
         return p.startsWith(c) ? c.relativize(p).toString() : p.toString();
+    }
+
+    private static final java.util.regex.Pattern ROOT =
+            java.util.regex.Pattern.compile("<(?![?!])(?:[\\w.-]+:)?([\\w.-]+)");
+    private static final java.util.regex.Pattern SPEC_ID = java.util.regex.Pattern.compile(
+            "GuidelineSpecifiedDocumentContextParameter>\\s*<(?:\\w+:)?ID>([^<]+)<|<(?:\\w+:)?CustomizationID>([^<]+)<");
+
+    /** Bytes read to find the root element and BT-24: the official samples open with long licence comments. */
+    private static final int HEAD = 65536;
+
+    /** Local name of the root element of an XML document ("" if none):
+     *  {@code CrossIndustryInvoice}, {@code Invoice}, {@code CreditNote}…
+     *  Lets an adapter send a UBL case of the conformance suites to the UBL
+     *  rules of its library. */
+    public static String rootName(byte[] xml) {
+        java.util.regex.Matcher m = ROOT.matcher(new String(xml, 0, Math.min(xml.length, HEAD), StandardCharsets.UTF_8));
+        return m.find() ? m.group(1) : "";
+    }
+
+    /** Whether the document is a UBL invoice or credit note. */
+    public static boolean isUbl(byte[] xml) {
+        String r = rootName(xml);
+        return r.equals("Invoice") || r.equals("CreditNote");
+    }
+
+    /** The specification identifier (BT-24) of a CII or UBL invoice, "" if none. */
+    public static String specId(byte[] xml) {
+        java.util.regex.Matcher m = SPEC_ID.matcher(new String(xml, 0, Math.min(xml.length, HEAD), StandardCharsets.UTF_8));
+        if (!m.find()) {
+            return "";
+        }
+        return (m.group(1) != null ? m.group(1) : m.group(2)).trim();
     }
 
     /** The sanity check applied to every extracted or embedded XML. */
@@ -354,7 +415,7 @@ public final class Harness {
 
     private static final double[] NONE = new double[0];
 
-    private enum Mode { BENCH, SURVEY }
+    private enum Mode { BENCH, SURVEY, CASES }
 
     private final Lib lib;
     private final Mode mode;
@@ -460,9 +521,9 @@ public final class Harness {
         }
     }
 
-    /** Whether this run is the survey (to skip expensive setup in bench-only paths). */
+    /** Whether this run is the survey or the cases (to skip expensive setup in bench-only paths). */
     public boolean isSurvey() {
-        return mode == Mode.SURVEY;
+        return mode != Mode.BENCH;
     }
 
     private static long step(int step) {
@@ -531,6 +592,19 @@ public final class Harness {
         }
     }
 
+    private void casesLine(String suite, int flagged, List<Object> results, String note) {
+        LOG.printf("   CASES %s: %d/%d rejected%n", suite, flagged, results.size());
+        Map<String, Object> v = new LinkedHashMap<>();
+        v.put("lang", "java");
+        v.put("lib", lib.lib());
+        v.put("pkg", lib.pkg());
+        v.put("version", lib.version());
+        v.put("suite", suite);
+        v.put("results", results);
+        v.put("note", note);
+        line(v);
+    }
+
     private void surveyLine(String op, int ok, int total, List<Object> failures, String note) {
         LOG.printf("   SURVEY %s: %d/%d%n", op, ok, total);
         Map<String, Object> v = new LinkedHashMap<>();
@@ -569,7 +643,7 @@ public final class Harness {
                 };
                 benchOne(b, note, check, () -> f.apply(data));
             }
-        } else {
+        } else if (mode == Mode.SURVEY) {
             List<Path> files = pdfFiles();
             int ok = 0;
             List<Object> failures = new ArrayList<>();
@@ -602,7 +676,7 @@ public final class Harness {
                     }
                 }, () -> f.apply(data));
             }
-        } else {
+        } else if (mode == Mode.SURVEY) {
             List<Path> files = ciiFiles();
             int ok = 0;
             List<Object> failures = new ArrayList<>();
@@ -629,6 +703,24 @@ public final class Harness {
                 }
                 byte[] data = sample(inputOf(b));
                 benchOne(b, note, r -> summarize.apply(r), () -> f.apply(data));
+            }
+        } else if (mode == Mode.CASES) {
+            Path root = casesDir();
+            for (Map.Entry<String, List<String>> suite : caseSuites().entrySet()) {
+                int flagged = 0;
+                List<Object> results = new ArrayList<>();
+                for (String file : suite.getValue()) {
+                    byte[] data = load(root.resolve(file));
+                    Outcome<Findings> r = guarded(() -> summarize.apply(f.apply(data)));
+                    if (r.ok()) {
+                        results.add(obj("case", file, "errors", r.value().errors(), "rules", r.value().rules()));
+                        flagged += r.value().errors() > 0 ? 1 : 0;
+                    } else {
+                        results.add(obj("case", file, "errors", 0, "rules", List.of(), "error", shorten(r.error())));
+                        flagged++;
+                    }
+                }
+                casesLine(suite.getKey(), flagged, results, note);
             }
         } else {
             List<Path> files = ciiFiles();
@@ -720,16 +812,17 @@ public final class Harness {
 
     // ------------------------------------------------------------ entry point
 
-    /** Entry point of every library module: {@code bench.Main bench|survey|resources [Bench…]}. */
+    /** Entry point of every library module: {@code bench.Main bench|survey|cases|resources [Bench…]}. */
     public static void run(Lib lib, String[] args, Consumer<Harness> body) {
         String kind = args.length > 0 ? args[0] : "";
         Mode mode = switch (kind) {
             case "bench", "resources" -> Mode.BENCH;
             case "survey" -> Mode.SURVEY;
+            case "cases" -> Mode.CASES;
             default -> null;
         };
         if (mode == null) {
-            LOG.println("usage: bench.Main bench|survey|resources [BenchName…]");
+            LOG.println("usage: bench.Main bench|survey|cases|resources [BenchName…]");
             System.exit(2);
             return;
         }

@@ -545,7 +545,8 @@ typedef struct {
 struct fx_harness {
 	const char *lang;
 	fx_lib lib;
-	int survey;
+	int survey; /* survey or cases: no benchmark */
+	int cases;  /* conformance cases of ../../cases */
 	int resources; /* one benchmark in this process, record with max_rss_bytes */
 	int count;
 	double benchtime;
@@ -562,9 +563,19 @@ struct fx_harness {
  * benchmark or a survey runs (prepared before each call). */
 static char crash_line[8192];
 static int crash_fd = -1;
+/* cases: the line so far (the results before the case that runs) and what
+ * follows the signal number, built before each case. */
+static char *crash_dyn, *crash_dyn_tail;
 
 static void on_crash(int sig) {
-	if (crash_fd >= 0 && crash_line[0]) {
+	if (crash_fd >= 0 && crash_dyn) {
+		char num[16];
+		int n = snprintf(num, sizeof num, "%d", sig);
+		ssize_t w = write(crash_fd, crash_dyn, strlen(crash_dyn));
+		w = write(crash_fd, num, (size_t)n);
+		w = write(crash_fd, crash_dyn_tail, strlen(crash_dyn_tail));
+		(void)w;
+	} else if (crash_fd >= 0 && crash_line[0]) {
 		char tail[64];
 		int n = snprintf(tail, sizeof tail, "%d\"}\n", sig);
 		ssize_t w = write(crash_fd, crash_line, strlen(crash_line));
@@ -617,7 +628,12 @@ static void arm_crash_survey(fx_harness *h, const char *op, size_t ok, size_t to
 	free(b.s);
 }
 
-static void disarm(void) { crash_line[0] = 0; }
+static void disarm(void) {
+	crash_line[0] = 0;
+	char *d = crash_dyn;
+	crash_dyn = NULL;
+	free(d);
+}
 
 static void put_line(fx_harness *h, sbuf *b) {
 	sb_puts(b, "\n");
@@ -915,6 +931,8 @@ void fx_extract(fx_harness *h, const char *note, fx_extract_fn f, void *ctx) {
 		}
 		return;
 	}
+	if (h->cases)
+		return;
 	strlist files = pdf_files();
 	size_t ok = 0;
 	sbuf failures = {0};
@@ -988,6 +1006,8 @@ void fx_parse(fx_harness *h, const char *note, fx_parse_fn f, fx_free_fn free_mo
 		}
 		return;
 	}
+	if (h->cases)
+		return;
 	strlist files = cii_files();
 	size_t ok = 0;
 	sbuf failures = {0};
@@ -1033,6 +1053,148 @@ static int validate_once(void *self) {
 	return r;
 }
 
+/* The conformance cases directory: CASES_DIR, or ../../cases. */
+static const char *cases_dir(void) {
+	const char *v = getenv("CASES_DIR");
+	return v && *v ? v : "../../cases";
+}
+
+typedef struct {
+	char *suite;
+	strlist files;
+} case_suite;
+
+/* The documents of cases.tsv by suite, in its order: columns suite and file
+ * (relative to cases_dir()), after the header line. */
+static size_t case_suites(case_suite **out) {
+	char *p = join(cases_dir(), "cases.tsv");
+	size_t len;
+	unsigned char *data = load(p, &len);
+	free(p);
+	char *text = malloc(len + 1);
+	memcpy(text, data, len);
+	text[len] = 0;
+	free(data);
+	case_suite *v = NULL;
+	size_t n = 0;
+	char *line = strchr(text, '\n'); /* skip the header */
+	while (line && *++line) {
+		char *end = strchr(line, '\n');
+		if (end)
+			*end = 0;
+		char *tab = strchr(line, '\t');
+		if (tab && tab > line) {
+			*tab = 0;
+			char *file = tab + 1, *tab2 = strchr(file, '\t');
+			if (tab2)
+				*tab2 = 0;
+			if (n == 0 || strcmp(v[n - 1].suite, line) != 0) {
+				v = realloc(v, (n + 1) * sizeof *v);
+				v[n].suite = strdup(line);
+				memset(&v[n].files, 0, sizeof v[n].files);
+				n++;
+			}
+			sl_push(&v[n - 1].files, strdup(file));
+		}
+		line = end;
+	}
+	free(text);
+	*out = v;
+	return n;
+}
+
+/* Validation of every conformance case, one line per suite:
+ * {"suite","results":[{"case","errors","rules"[,"error"]}],"note"}. A crash
+ * writes the line with the results so far and the case that crashed. */
+static void validate_cases(fx_harness *h, const char *note, fx_validate_fn f, fx_summarize_fn summarize,
+			   fx_free_fn free_report, void *ctx) {
+	case_suite *suites;
+	size_t ns = case_suites(&suites);
+	for (size_t si = 0; si < ns; si++) {
+		case_suite *cs = &suites[si];
+		size_t rejected = 0;
+		sbuf results = {0}, tail = {0};
+		sb_puts(&tail, "\"}],\"note\":");
+		sb_json(&tail, note);
+		sb_puts(&tail, "}\n");
+		for (size_t i = 0; i < cs->files.n; i++) {
+			const char *file = cs->files.v[i];
+			char *path = join(cases_dir(), file);
+			size_t len;
+			unsigned char *data = load(path, &len);
+			free(path);
+			sbuf c = {0};
+			common_head(h, &c);
+			sb_puts(&c, ",\"suite\":");
+			sb_json(&c, cs->suite);
+			sb_puts(&c, ",\"results\":[");
+			if (results.len) {
+				sb_put(&c, results.s, results.len);
+				sb_puts(&c, ",");
+			}
+			sb_puts(&c, "{\"case\":");
+			sb_json(&c, file);
+			sb_puts(&c, ",\"errors\":0,\"rules\":[],\"error\":\"crash: signal ");
+			crash_dyn_tail = tail.s;
+			crash_dyn = c.s;
+
+			if (results.len)
+				sb_puts(&results, ",");
+			sb_puts(&results, "{\"case\":");
+			sb_json(&results, file);
+			void *rep = NULL;
+			fx_err e = {{0}};
+			if (f(ctx, data, len, &rep, &e) != 0) {
+				rejected++;
+				char *msg = shorten(e.msg);
+				sb_puts(&results, ",\"errors\":0,\"rules\":[],\"error\":");
+				sb_json(&results, msg);
+				sb_puts(&results, "}");
+				free(msg);
+			} else {
+				fx_findings fd = {0};
+				summarize(ctx, rep, &fd);
+				if (free_report)
+					free_report(ctx, rep);
+				if (fd.errors > 0)
+					rejected++;
+				if (fd.nrules)
+					qsort(fd.rules, fd.nrules, sizeof *fd.rules, cmp_str);
+				sb_printf(&results, ",\"errors\":%zu,\"rules\":[", fd.errors);
+				for (size_t k = 0, w = 0; k < fd.nrules; k++) {
+					if (k && strcmp(fd.rules[k], fd.rules[k - 1]) == 0)
+						continue;
+					if (w++)
+						sb_puts(&results, ",");
+					sb_json(&results, fd.rules[k]);
+				}
+				sb_puts(&results, "]}");
+				findings_free(&fd);
+			}
+			disarm();
+			free(data);
+		}
+		fprintf(stderr, "   CASES %s: %zu/%zu rejected\n", cs->suite, rejected, cs->files.n);
+		sbuf b = {0};
+		common_head(h, &b);
+		sb_puts(&b, ",\"suite\":");
+		sb_json(&b, cs->suite);
+		sb_puts(&b, ",\"results\":[");
+		if (results.len)
+			sb_put(&b, results.s, results.len);
+		sb_puts(&b, "],\"note\":");
+		sb_json(&b, note);
+		sb_puts(&b, "}");
+		put_line(h, &b);
+		crash_dyn_tail = NULL;
+		free(results.s);
+		free(tail.s);
+		free(cs->suite);
+		sl_free(&cs->files);
+	}
+	free(suites);
+}
+
 void fx_validate(fx_harness *h, const char *note, fx_validate_fn f, fx_summarize_fn summarize,
 		 fx_free_fn free_report, void *ctx) {
 	if (!h->survey) {
@@ -1058,6 +1220,10 @@ void fx_validate(fx_harness *h, const char *note, fx_validate_fn f, fx_summarize
 			disarm();
 			free(data);
 		}
+		return;
+	}
+	if (h->cases) {
+		validate_cases(h, note, f, summarize, free_report, ctx);
 		return;
 	}
 	strlist files = cii_files();
@@ -1323,23 +1489,26 @@ static int mkdir_p(const char *path) {
 }
 
 int fx_run(const char *lang, fx_lib lib, int argc, char **argv, void (*body)(fx_harness *h, void *ctx), void *ctx) {
-	int survey = 0, resources = 0;
+	int survey = 0, cases = 0, resources = 0;
 	if (argc > 1 && strcmp(argv[1], "bench") == 0) {
 		survey = 0;
 	} else if (argc > 1 && strcmp(argv[1], "survey") == 0) {
 		survey = 1;
+	} else if (argc > 1 && strcmp(argv[1], "cases") == 0) {
+		survey = cases = 1;
 	} else if (argc == 3 && strcmp(argv[1], "resources") == 0) {
 		/* The resources pass: this process runs one benchmark exactly as
 		 * bench does, and its record adds the peak RSS of the process. */
 		resources = 1;
 	} else {
-		fprintf(stderr, "usage: %s bench|survey [BenchName...] | resources BenchName\n", argv[0]);
+		fprintf(stderr, "usage: %s bench|survey|cases [BenchName...] | resources BenchName\n", argv[0]);
 		return 2;
 	}
 	static fx_harness h;
 	h.lang = lang;
 	h.lib = lib;
 	h.survey = survey;
+	h.cases = cases;
 	h.resources = resources;
 	if (argc > 2) {
 		h.only = argv + 2;
@@ -1358,7 +1527,7 @@ int fx_run(const char *lang, fx_lib lib, int argc, char **argv, void (*body)(fx_
 		return 1;
 	}
 	char path[4300];
-	const char *kind = survey ? "survey" : resources ? "resources" : "bench";
+	const char *kind = cases ? "cases" : survey ? "survey" : resources ? "resources" : "bench";
 	snprintf(path, sizeof path, "%s/%s_%s.jsonl", dir, kind, lib.lib);
 	/* A run limited to some benchmarks (always the case for resources)
 	 * appends to the part file. */

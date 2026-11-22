@@ -3,6 +3,7 @@
 #
 #   ./run.sh setup            artefacts and sources (SHA-256 checked), CMake Release build
 #   ./run.sh survey [lib…]    correctness surveys  -> $OUT/survey_cpp.jsonl
+#   ./run.sh cases  [lib…]    conformance cases (../../cases) -> $OUT/cases_cpp.jsonl
 #   ./run.sh bench  [lib…]    benchmarks           -> $OUT/bench_cpp.jsonl
 #   ./run.sh resources [lib…] CPU time and peak RSS, one process per benchmark
 #                                                  -> $OUT/resources_cpp.jsonl
@@ -27,6 +28,7 @@ BUILD=build
 ART=.artefacts
 export FX_ARTEFACTS=$PWD/$ART
 export FX_ECOSYSTEM=$(cd ../../ecosystem && pwd)
+export CASES_DIR=${CASES_DIR:-$(cd ../../cases && pwd)}
 
 # Official artefacts (GitHub releases), checked by SHA-256: the same archives
 # as the C and Python benches.
@@ -35,6 +37,8 @@ KOSIT_CFG_SHA256=2530cd107c414511c5d0462ec10f886910395abfca820db82e83d70bf01221a
 CEN_VERSION=1.3.17
 CEN_URL=https://github.com/ConnectingEurope/eInvoicing-EN16931/releases/download/validation-$CEN_VERSION/en16931-cii-$CEN_VERSION.zip
 CEN_SHA256=e5f3235824b6b38454b1d54cf3f14e01efb5b33971fbefc4e64997d0ef619e89
+CEN_UBL_URL=https://github.com/ConnectingEurope/eInvoicing-EN16931/releases/download/validation-$CEN_VERSION/en16931-ubl-$CEN_VERSION.zip
+CEN_UBL_SHA256=bf02a0e3f6cbe692a4a28e70be7bdcaded5612b4169b543e13d6cb4f33c29e92
 XR_VERSION=2.6.0
 XR_URL=https://github.com/itplr-kosit/xrechnung-schematron/releases/download/v$XR_VERSION/xrechnung-3.0.2-schematron-$XR_VERSION.zip
 XR_SHA256=ca5e07afd04e72cd283d581590ffff3a15f4aac9d2f40c993345d78e67ea22b4
@@ -82,6 +86,7 @@ prefixes() {
 setup() {
 	fetch "$KOSIT_CFG_URL" "$KOSIT_CFG_SHA256" "xrechnung-3.0.2-validator-configuration-2026-08-31.zip" kosit-config
 	fetch "$CEN_URL" "$CEN_SHA256" "en16931-cii-$CEN_VERSION.zip" "cen-$CEN_VERSION"
+	fetch "$CEN_UBL_URL" "$CEN_UBL_SHA256" "en16931-ubl-$CEN_VERSION.zip" "cen-ubl-$CEN_VERSION"
 	fetch "$XR_URL" "$XR_SHA256" "xrechnung-3.0.2-schematron-$XR_VERSION.zip" "xrechnung-$XR_VERSION"
 	if [ "$(uname -s)/$(uname -m)" = Darwin/arm64 ]; then
 		fetch "$SAXONC_URL" "$SAXONC_SHA256" SaxonCHE-macos-arm64-13-1-1.zip saxonc
@@ -167,10 +172,11 @@ shift || true
 case "$cmd" in
 setup) setup "$@" ;;
 survey) each survey "$@" ;;
+cases) each cases "$@" ;;
 bench) each bench "$@" ;;
 resources) resources "$@" ;;
 *)
-	sed -n '2,15p' "$0"
+	sed -n '2,16p' "$0"
 	exit 2
 	;;
 esac

@@ -3,7 +3,9 @@
  * knowledge of Factur-X. Parse = DOM (xmlCtxtReadMemory), Write = DOM
  * serialization (xmlDocDumpMemory), ParseValidate = DOM + XML Schema
  * validation against the UN/CEFACT CII D16B schema (xmlSchemaValidateDoc).
- * The schema only: no EN 16931 business rule.
+ * The schema only: no EN 16931 business rule. A UBL invoice or credit note
+ * (the conformance cases, ../../cases) is validated against the UBL 2.1
+ * schema of the same configuration instead, chosen by the root element.
  */
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -18,9 +20,13 @@
 
 static const fx_lib LIB = {"libxml2", "libxml2", LIBXML_DOTTED_VERSION};
 
-/* The CII D16B schema of the KoSIT XRechnung 3.0.2 configuration
- * (2026-08-31), fetched by run.sh setup. */
-#define XSD_REL "kosit-config/resources/cii/16b/xsd/CrossIndustryInvoice_100pD16B.xsd"
+/* The CII D16B and UBL 2.1 schemas of the KoSIT XRechnung 3.0.2
+ * configuration (2026-08-31), fetched by run.sh setup. */
+static const char *const XSD_REL[3] = {
+	"kosit-config/resources/cii/16b/xsd/CrossIndustryInvoice_100pD16B.xsd",
+	"kosit-config/resources/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd",
+	"kosit-config/resources/ubl/2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd",
+};
 #define MAX_MESSAGES 20
 
 typedef struct {
@@ -99,12 +105,14 @@ static int write_doc(void *ctx, void *model, fx_bytes *out, fx_err *err) {
 	return 0;
 }
 
-/* The compiled schema, built on the first validation (its cost is in
- * first_call_ns of ParseValidate_Small), then reused. */
-static xmlSchemaPtr schema;
-static char schema_error[1024];
+/* The compiled schemas, each built on its first validation (the CII one's
+ * cost is in first_call_ns of ParseValidate_Small), then reused. */
+static xmlSchemaPtr schemas[3];
+static char schema_errors[3][1024];
 
-static xmlSchemaPtr compiled(fx_err *err) {
+static xmlSchemaPtr compiled(int which, fx_err *err) {
+	xmlSchemaPtr schema = schemas[which];
+	char *schema_error = schema_errors[which];
 	if (schema)
 		return schema;
 	if (schema_error[0]) {
@@ -112,7 +120,7 @@ static xmlSchemaPtr compiled(fx_err *err) {
 		return NULL;
 	}
 	char path[4096];
-	snprintf(path, sizeof path, "%s/%s", fx_artefacts(), XSD_REL);
+	snprintf(path, sizeof path, "%s/%s", fx_artefacts(), XSD_REL[which]);
 	xmlSchemaParserCtxtPtr pc = xmlSchemaNewParserCtxt(path);
 	errlist l = {0};
 	if (pc) {
@@ -120,8 +128,9 @@ static xmlSchemaPtr compiled(fx_err *err) {
 		schema = xmlSchemaParse(pc);
 		xmlSchemaFreeParserCtxt(pc);
 	}
+	schemas[which] = schema;
 	if (!schema)
-		snprintf(schema_error, sizeof schema_error, "cannot compile %s (run ./run.sh setup): %s", path,
+		snprintf(schema_error, sizeof schema_errors[which], "cannot compile %s (run ./run.sh setup): %s", path,
 			 l.n ? l.msgs[0] : "missing file");
 	for (size_t i = 0; i < l.n; i++)
 		free(l.msgs[i]);
@@ -132,12 +141,17 @@ static xmlSchemaPtr compiled(fx_err *err) {
 
 static int validate(void *ctx, const unsigned char *xml, size_t len, void **report, fx_err *err) {
 	(void)ctx;
-	xmlSchemaPtr s = compiled(err);
-	if (!s)
-		return -1;
 	errlist *l = calloc(1, sizeof *l);
 	xmlDocPtr doc = read_doc(xml, len, l, err);
 	if (!doc) {
+		errlist_free(l);
+		return -1;
+	}
+	xmlNodePtr root = xmlDocGetRootElement(doc);
+	const char *name = root ? (const char *)root->name : "";
+	xmlSchemaPtr s = compiled(strcmp(name, "Invoice") == 0 ? 1 : strcmp(name, "CreditNote") == 0 ? 2 : 0, err);
+	if (!s) {
+		xmlFreeDoc(doc);
 		errlist_free(l);
 		return -1;
 	}
@@ -175,8 +189,9 @@ static void body(fx_harness *h, void *ctx) {
 	fx_parse(h, "floor: libxml2 DOM (xmlCtxtReadMemory, XML_PARSE_NONET), not an invoice model", parse,
 		 free_doc, NULL);
 	fx_validate(h,
-		    "floor: DOM + xmlSchemaValidateDoc, UN/CEFACT CII D16B XSD (KoSIT XRechnung 3.0.2 configuration "
-		    "of 2026-08-31), schema compiled on the first call; schema only, no EN 16931 business rules",
+		    "floor: DOM + xmlSchemaValidateDoc, UN/CEFACT CII D16B XSD (UBL 2.1 for a UBL document; KoSIT "
+		    "XRechnung 3.0.2 configuration of 2026-08-31), schema compiled on the first call; schema only, no "
+		    "EN 16931 business rules",
 		    validate, summarize, free_report, NULL);
 	fx_write(h, "floor: serialization of the libxml2 DOM (xmlDocDumpMemory), not an invoice model", parse,
 		 free_doc, write_doc, NULL);
@@ -187,7 +202,8 @@ static void body(fx_harness *h, void *ctx) {
 int main(int argc, char **argv) {
 	xmlInitParser();
 	int r = fx_run("c", LIB, argc, argv, body, NULL);
-	if (schema)
-		xmlSchemaFree(schema);
+	for (int i = 0; i < 3; i++)
+		if (schemas[i])
+			xmlSchemaFree(schemas[i]);
 	return r;
 }

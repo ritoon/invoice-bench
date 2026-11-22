@@ -10,13 +10,16 @@
 //! benchmark to `$OUT/rust-parts/bench_<lib>.jsonl`; `bench-<lib> alloc`
 //! counts the allocations of one call of each operation and writes
 //! `$OUT/rust-parts/alloc_<lib>.jsonl`; `bench-<lib> survey` runs the
-//! correctness surveys and writes `$OUT/rust-parts/survey_<lib>.jsonl`.
+//! correctness surveys and writes `$OUT/rust-parts/survey_<lib>.jsonl`;
+//! `bench-<lib> cases` validates the conformance cases of `../../cases`
+//! (`CASES_DIR`) and writes `$OUT/rust-parts/cases_<lib>.jsonl`.
 //! `bench-<lib> resources <Bench>` runs that one benchmark as `bench` does and
 //! appends its line, with the peak RSS of the process (`max_rss_bytes`, from
 //! `getrusage` at the end of the series), to
 //! `$OUT/rust-res-parts/resources_<lib>.jsonl`; `run.sh` starts one such
 //! process per benchmark. `run.sh` merges the parts into `bench_rust.jsonl`,
-//! `alloc_rust.jsonl`, `survey_rust.jsonl` and `resources_rust.jsonl`.
+//! `alloc_rust.jsonl`, `survey_rust.jsonl`, `cases_rust.jsonl` and
+//! `resources_rust.jsonl`.
 //!
 //! Rules, as in the Go harness: a first call outside the measurement checks the
 //! result (`fail` with the message when it is wrong or an error, `unsupported`
@@ -107,6 +110,7 @@ enum Mode {
     Bench,
     Alloc,
     Survey,
+    Cases,
 }
 
 // ---------------------------------------------------------------- allocations
@@ -178,6 +182,33 @@ pub fn corpus() -> PathBuf {
         return PathBuf::from(v);
     }
     ecosystem().join("corpus")
+}
+
+/// The conformance cases directory: `CASES_DIR`, or `../../cases`.
+pub fn cases_dir() -> PathBuf {
+    if let Ok(v) = std::env::var("CASES_DIR") {
+        return PathBuf::from(v);
+    }
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../cases")
+}
+
+/// The documents of `cases.tsv` by suite, in its order: columns suite and
+/// file (relative to [`cases_dir`]), after the header line.
+pub fn case_suites() -> Vec<(String, Vec<String>)> {
+    let text = fs::read_to_string(cases_dir().join("cases.tsv")).unwrap_or_else(|e| panic!("read cases.tsv: {e}"));
+    let mut out: Vec<(String, Vec<String>)> = Vec::new();
+    for line in text.lines().skip(1) {
+        let mut f = line.split('\t');
+        let (Some(suite), Some(file)) = (f.next(), f.next()) else { continue };
+        if suite.trim().is_empty() {
+            continue;
+        }
+        if out.last().map(|(s, _)| s.as_str()) != Some(suite) {
+            out.push((suite.to_owned(), Vec::new()));
+        }
+        out.last_mut().unwrap().1.push(file.to_owned());
+    }
+    out
 }
 
 fn load(p: PathBuf) -> Vec<u8> {
@@ -265,6 +296,33 @@ fn rel(p: &Path) -> String {
 pub fn looks_like_cii(b: &[u8]) -> bool {
     let has = |n: &[u8]| b.windows(n.len()).any(|w| w == n);
     has(b"CrossIndustryInvoice") || has(b"CrossIndustryDocument")
+}
+
+/// Whether a document is a UBL Invoice or CreditNote, from its root element
+/// read in the first 64 KiB (the licence comments of the KoSIT test suite push
+/// it past 5 KB), so that an adapter routes it to the library's UBL rules.
+pub fn is_ubl(b: &[u8]) -> bool {
+    let head = &b[..b.len().min(65536)];
+    let name_char = |c: u8| c.is_ascii_alphanumeric() || matches!(c, b'_' | b'-' | b'.' | b':');
+    let mut i = 0;
+    while let Some(p) = head[i..].iter().position(|&c| c == b'<') {
+        let s = i + p + 1;
+        let mut j = s;
+        while j < head.len() && name_char(head[j]) {
+            j += 1;
+        }
+        let name = &head[s..j];
+        let local = name.iter().rposition(|&c| c == b':').map_or(name, |k| &name[k + 1..]);
+        if j < head.len() && matches!(head[j], b' ' | b'\t' | b'\r' | b'\n' | b'>' | b'/') {
+            match local {
+                b"CrossIndustryInvoice" => return false,
+                b"Invoice" | b"CreditNote" => return true,
+                _ => {}
+            }
+        }
+        i = s;
+    }
+    false
 }
 
 // ---------------------------------------------------------------- resources
@@ -415,7 +473,7 @@ impl Harness {
 
     /// Marks an operation the library cannot perform.
     pub fn unsupported(&mut self, op: Op, note: &str) {
-        if self.mode != Mode::Survey {
+        if !self.is_survey() {
             for b in op.benches() {
                 if self.wanted(b) {
                     self.bench_line(b, "unsupported", &[], &[], 0, 0, note);
@@ -556,6 +614,7 @@ impl Harness {
                 }
                 self.survey_line("extract", ok, files.len(), failures, note);
             }
+            Mode::Cases => {}
         }
     }
 
@@ -583,6 +642,7 @@ impl Harness {
                 }
                 self.survey_line("parse", ok, files.len(), failures, note);
             }
+            Mode::Cases => {}
         }
     }
 
@@ -623,6 +683,39 @@ impl Harness {
                 }
                 self.survey_line("validate", flagged, files.len(), failures, note);
             }
+            Mode::Cases => {
+                let root = cases_dir();
+                for (suite, files) in case_suites() {
+                    let (mut rejected, mut results) = (0, Vec::new());
+                    for file in &files {
+                        let data = load(root.join(file));
+                        match guarded(|| f(&data).map(|r| summarize(&r))) {
+                            Ok(fd) => {
+                                rejected += usize::from(fd.errors > 0);
+                                let mut rules = fd.rules.clone();
+                                rules.sort();
+                                rules.dedup();
+                                results.push(json!({"case": file, "errors": fd.errors, "rules": rules}));
+                            }
+                            Err(e) => {
+                                rejected += 1;
+                                results.push(json!({"case": file, "errors": 0, "rules": [], "error": shorten(&e)}));
+                            }
+                        }
+                    }
+                    eprintln!("   CASES {suite}: {rejected}/{} rejected", files.len());
+                    let v = json!({
+                        "lang": "rust",
+                        "lib": self.lib.lib,
+                        "pkg": self.lib.pkg,
+                        "version": self.lib.version,
+                        "suite": suite,
+                        "results": results,
+                        "note": note,
+                    });
+                    self.line(v);
+                }
+            }
         }
     }
 
@@ -633,7 +726,7 @@ impl Harness {
         parse: impl Fn(&[u8]) -> Result<M, String>,
         write: impl Fn(&M) -> Result<O, String>,
     ) {
-        if self.mode == Mode::Survey {
+        if self.is_survey() {
             return;
         }
         for b in Op::Write.benches() {
@@ -663,7 +756,7 @@ impl Harness {
         f: impl Fn(&[u8], &[u8]) -> Result<Vec<u8>, String>,
         extract: impl Fn(&[u8]) -> Result<Vec<u8>, String>,
     ) {
-        if self.mode == Mode::Survey {
+        if self.is_survey() {
             return;
         }
         let xml = sample("XMLSmall");
@@ -683,7 +776,7 @@ impl Harness {
 
     /// Native complete check of a hybrid PDF (container + XML).
     pub fn check_pdf<R>(&mut self, note: &str, f: impl Fn(&[u8]) -> Result<R, String>) {
-        if self.mode == Mode::Survey {
+        if self.is_survey() {
             return;
         }
         for b in Op::CheckPdf.benches() {
@@ -695,9 +788,10 @@ impl Harness {
         }
     }
 
-    /// Whether this run is the survey (to skip expensive setup in bench-only paths).
+    /// Whether this run is the survey or the cases (to skip expensive setup in
+    /// bench-only paths).
     pub fn is_survey(&self) -> bool {
-        self.mode == Mode::Survey
+        matches!(self.mode, Mode::Survey | Mode::Cases)
     }
 
     #[doc(hidden)]
@@ -706,7 +800,7 @@ impl Harness {
     }
 }
 
-/// Entry point of every library binary: `bench-<lib> bench|alloc|survey [Bench…]`
+/// Entry point of every library binary: `bench-<lib> bench|alloc|survey|cases [Bench…]`
 /// or `bench-<lib> resources Bench`.
 pub fn run(lib: Lib, body: impl FnOnce(&mut Harness) + Send + 'static) {
     let args: Vec<String> = std::env::args().collect();
@@ -714,11 +808,12 @@ pub fn run(lib: Lib, body: impl FnOnce(&mut Harness) + Send + 'static) {
         Some("bench") => (Mode::Bench, false),
         Some("alloc") => (Mode::Alloc, false),
         Some("survey") => (Mode::Survey, false),
+        Some("cases") => (Mode::Cases, false),
         // The resources pass: this process runs one benchmark exactly as
         // bench does, and its record adds the peak RSS of the process.
         Some("resources") if args.len() == 3 => (Mode::Bench, true),
         _ => {
-            eprintln!("usage: {} bench|alloc|survey [BenchName…] | resources BenchName", args[0]);
+            eprintln!("usage: {} bench|alloc|survey|cases [BenchName…] | resources BenchName", args[0]);
             std::process::exit(2);
         }
     };
@@ -731,6 +826,7 @@ pub fn run(lib: Lib, body: impl FnOnce(&mut Harness) + Send + 'static) {
         (Mode::Bench, _) => "bench",
         (Mode::Alloc, _) => "alloc",
         (Mode::Survey, _) => "survey",
+        (Mode::Cases, _) => "cases",
     };
     let path = out_dir.join(format!("{kind}_{}.jsonl", lib.lib));
     // A run limited to some benchmarks (always the case for resources)

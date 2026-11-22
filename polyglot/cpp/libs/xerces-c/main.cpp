@@ -6,7 +6,11 @@
 // - ParseValidate: a second parser with W3C XML Schema validation against
 //   the UN/CEFACT CII D16B schema, loaded once with loadGrammar and cached
 //   (its cost is in first_call_ns of ParseValidate_Small); errors counted by
-//   an ErrorHandler. The schema only: no EN 16931 business rule.
+//   an ErrorHandler. The schema only: no EN 16931 business rule. A UBL
+//   invoice or credit note (the conformance cases, ../../cases) is validated
+//   against the UBL 2.1 schema of the same configuration, added to the
+//   grammar cache on the first UBL document (the cached grammar is chosen by
+//   the namespace of the root element).
 // - Write: DOMLSSerializer of the parsed DOM to a UTF-8 MemBufFormatTarget.
 //
 // Both parsers live for the whole process and are reused, as a long-lived
@@ -34,6 +38,12 @@ using namespace xercesc;
 namespace {
 
 const char *XSD_REL = "kosit-config/resources/cii/16b/xsd/CrossIndustryInvoice_100pD16B.xsd";
+// UBL 2.1 schemas and the namespace of their root element.
+const char *const UBL_XSD_REL[2][2] = {
+	{"kosit-config/resources/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd", "ubl:schema:xsd:Invoice-2"},
+	{"kosit-config/resources/ubl/2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd", "ubl:schema:xsd:CreditNote-2"},
+};
+bool ubl_loaded[2];
 
 std::string transcode(const XMLCh *s) {
 	if (!s)
@@ -161,8 +171,27 @@ std::string write(const Doc &doc) {
 	return s;
 }
 
+void load_grammar(XercesDOMParser &p, const char *rel) {
+	std::string path = fx::artefact(rel);
+	validating_errors.resetErrors();
+	Grammar *g = nullptr;
+	try {
+		g = p.loadGrammar(path.c_str(), Grammar::SchemaGrammarType, true);
+	} catch (const XMLException &e) {
+		throw std::runtime_error("loadGrammar " + path + ": " + what(e));
+	}
+	if (!g || validating_errors.errors)
+		throw std::runtime_error("cannot load " + path + " (run ./run.sh setup)" +
+					 (validating_errors.messages.empty() ? "" : ": " + validating_errors.messages[0]));
+}
+
 Report validate(fx::Bytes xml) {
 	XercesDOMParser &p = validator();
+	for (int i = 0; i < 2; i++)
+		if (!ubl_loaded[i] && xml.substr(0, 65536).find(UBL_XSD_REL[i][1]) != fx::Bytes::npos) {
+			load_grammar(p, UBL_XSD_REL[i][0]);
+			ubl_loaded[i] = true;
+		}
 	validating_errors.resetErrors();
 	MemBufInputSource src(reinterpret_cast<const XMLByte *>(xml.data()), xml.size(), "invoice.xml", false);
 	try {
@@ -192,9 +221,9 @@ int main(int argc, char **argv) {
 		fx::parse(h, "floor: Xerces DOM (XercesDOMParser reused, no validation), not an invoice model",
 			  pa);
 		fx::validate(h,
-			     "floor: XercesDOMParser with XML Schema validation, UN/CEFACT CII D16B XSD (KoSIT "
-			     "XRechnung 3.0.2 configuration of 2026-08-31) loaded once (loadGrammar, cached); schema "
-			     "only, no EN 16931 business rules",
+			     "floor: XercesDOMParser with XML Schema validation, UN/CEFACT CII D16B XSD (UBL 2.1 for a "
+			     "UBL document; KoSIT XRechnung 3.0.2 configuration of 2026-08-31) loaded once (loadGrammar, "
+			     "cached); schema only, no EN 16931 business rules",
 			     va, su);
 		auto wr = [](const Doc &d) { return write(d); };
 		fx::write(h, "floor: serialization of the Xerces DOM (DOMLSSerializer, UTF-8), not an invoice model", pa,

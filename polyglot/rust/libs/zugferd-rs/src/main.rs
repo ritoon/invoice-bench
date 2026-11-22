@@ -24,11 +24,28 @@ fn parse(x: &[u8]) -> Result<Invoice, String> {
     zugferd::parse_cii_xml(text(x)?, None).map_err(|e| e.to_string())
 }
 
-fn validate(x: &[u8]) -> Result<ValidationResult, String> {
-    zugferd::validate_xml(x, ValidateXmlOptions::default()).map_err(|e| e.to_string())
+/// The CII report, or the findings of the UBL schema check (a UBL document
+/// of the conformance cases goes to validate_ubl_xml, the library's only UBL
+/// validation).
+enum Checked {
+    Cii(ValidationResult),
+    Ubl(Findings),
 }
 
-fn summarize(r: &ValidationResult) -> Findings {
+fn validate(x: &[u8]) -> Result<Checked, String> {
+    if harness::is_ubl(x) {
+        let r = zugferd::validate_ubl_xml(x).map_err(|e| e.to_string())?;
+        let rules: Vec<String> = r.errors.iter().map(|e| format!("XSD: {}", e.message)).collect();
+        return Ok(Checked::Ubl(Findings { errors: rules.len(), rules }));
+    }
+    zugferd::validate_xml(x, ValidateXmlOptions::default()).map(Checked::Cii).map_err(|e| e.to_string())
+}
+
+fn summarize(c: &Checked) -> Findings {
+    let r = match c {
+        Checked::Cii(r) => r,
+        Checked::Ubl(f) => return f.clone(),
+    };
     let rules: Vec<String> = r
         .issues
         .iter()
@@ -55,7 +72,7 @@ fn main() {
         h.extract("extract_xml (lopdf)", extract);
         h.parse("parse_cii_xml → Invoice", parse);
         h.validate(
-            "validate_xml (defaults): Factur-X 1.09.2 XSD of the declared profile + CEN EN 16931 Schematron evaluated by libxml2 (XPath 1.0 only: the XPath 2.0 rules are skipped, result declared incomplete); no BR-DE",
+            "validate_xml (defaults): Factur-X 1.09.2 XSD of the declared profile + CEN EN 16931 Schematron evaluated by libxml2 (XPath 1.0 only: the XPath 2.0 rules are skipped, result declared incomplete); no BR-DE; for a UBL document, validate_ubl_xml (UBL 2.1 XSD only)",
             validate,
             summarize,
         );
