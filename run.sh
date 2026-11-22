@@ -45,7 +45,7 @@ each() {
 			echo "   no allocation counter in the $l harness"
 		elif [ "$l" = go ]; then
 			# The Go harness takes BENCHTIME as a duration.
-			(cd go && BENCHTIME="${BENCHTIME}s" ${awake[@]+"${awake[@]}"} ./run.sh "$cmd" facturx)
+			(cd go && BENCHTIME="${BENCHTIME}s" ${awake[@]+"${awake[@]}"} ./run.sh "$cmd" ritoon-zerechnung)
 		else
 			(cd "$l" && ${awake[@]+"${awake[@]}"} ./run.sh "$cmd")
 		fi
@@ -70,23 +70,23 @@ resources() {
 	done
 }
 
-# go_resources runs each benchmark of go/facturx in its own test
-# binary process, under /usr/bin/time -l for the peak RSS; FX_CPU makes the
-# shared helpers report the CPU time per operation ("cpu-ns/op"). A second
+# go_resources runs each benchmark of go/libs/ritoon-zerechnung in its own
+# test binary process, under /usr/bin/time -l for the peak RSS; FX_CPU makes
+# the shared helpers report the CPU time per operation ("cpu-ns/op"). A second
 # round with GOMAXPROCS=1 shows the package confined to one core (the GC then
 # shares the measured thread's core).
 go_resources() {
-	local dir=go/facturx tmp out="$OUT/resources_go.jsonl" ver b rss procs lib
+	local dir=go/libs/ritoon-zerechnung tmp out="$OUT/resources_go.jsonl" ver b rss procs lib
 	tmp=$(mktemp -d)
 	zerechnung_version "$dir"
-	(export GOFLAGS=$(facturx_goflags "$dir") && cd "$dir" && go test -c -o "$tmp/facturx.test" .)
+	(export GOFLAGS=$(zerechnung_goflags "$dir") && cd "$dir" && go test -c -o "$tmp/zerechnung.test" .)
 	ver=$(go version | awk '{print $3}')
 	: >"$out"
 	for procs in "" 1; do
 		lib="ZeRechnung"
 		[ -n "$procs" ] && lib="ZeRechnung, GOMAXPROCS=1"
-		for b in $(cd "$dir" && "$tmp/facturx.test" -test.list '^Benchmark' | sed 's/^Benchmark//'); do
-			(cd "$dir" && env FX_CPU=1 ${procs:+GOMAXPROCS=$procs} /usr/bin/time -l -o "$tmp/time" "$tmp/facturx.test" -test.run '^$' \
+		for b in $(cd "$dir" && "$tmp/zerechnung.test" -test.list '^Benchmark' | sed 's/^Benchmark//'); do
+			(cd "$dir" && env FX_CPU=1 ${procs:+GOMAXPROCS=$procs} /usr/bin/time -l -o "$tmp/time" "$tmp/zerechnung.test" -test.run '^$' \
 				-test.bench "^Benchmark$b\$" -test.benchmem -test.count "$COUNT" -test.benchtime "${BENCHTIME}s") >"$tmp/out" 2>&1 || true
 			rss=$(awk '/maximum resident set size/ {print $1}' "$tmp/time")
 			awk -v b="$b" -v ver="$ver" -v rss="${rss:-0}" -v lib="$lib" '

@@ -71,7 +71,7 @@ func HostPDF(tb testing.TB) Sample {
 	p := filepath.Join(TestData(), "host.pdf")
 	b, err := os.ReadFile(p)
 	if err != nil {
-		tb.Fatalf("host.pdf missing (run the pdfcpu module TestMakeHost first): %v", err)
+		tb.Fatalf("host.pdf missing (run go/run.sh setup first): %v", err)
 	}
 	return Sample{Name: "host.pdf", Path: p, Data: b}
 }

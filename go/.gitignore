@@ -1,5 +1,5 @@
-# Fetched by ./run.sh setup, and the copies of facturx/go.mod that
-# ZERECHNUNG_DIR makes (zerechnung.sh)
+# Fetched by ./run.sh setup, and the copies of libs/ritoon-zerechnung/go.mod
+# that ZERECHNUNG_DIR makes (zerechnung.sh)
 /.deps/
-/facturx/local.mod
-/facturx/local.sum
+/libs/ritoon-zerechnung/local.mod
+/libs/ritoon-zerechnung/local.sum

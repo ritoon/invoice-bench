@@ -34,7 +34,7 @@ jobs:
           fi
       - name: go vet
         run: |
-          for d in cases go/facturx go/report report; do
+          for d in cases go/libs/ritoon-zerechnung go/report report; do
             (cd "$d" && go vet ./...)
           done
       - name: go test (scoring of the conformance cases)

@@ -10,9 +10,12 @@
 #   ./run.sh report             tables in results/<date>/tables.md
 #   ./run.sh all    [module…]   setup + survey + cases + bench + report
 #
-# Results go to results/<date>/ (OUT can be overridden). ZERECHNUNG_DIR
-# measures a local clone of ZeRechnung instead of the version that
-# facturx/go.mod requires (see zerechnung.sh).
+# A module is a folder of libs/, named after the Go module it measures
+# (ritoon-zerechnung, pdfcpu-pdfcpu…). Results go to results/<date>/ (OUT can
+# be overridden): bench_<module>.txt, survey_<module>.txt and
+# cases_<module>.jsonl.
+# ZERECHNUNG_DIR measures a local clone of ZeRechnung instead of the version
+# that libs/ritoon-zerechnung/go.mod requires (see zerechnung.sh).
 set -euo pipefail
 cd "$(dirname "$0")"
 . ./zerechnung.sh
@@ -23,7 +26,24 @@ FX_URL=https://github.com/solarpush/fX.git
 FX_COMMIT=1314f3d94a8092ab94a2db8909f07f00e0eab875
 TESTDATA=../testdata
 
-MODULES=(floor facturx pdfcpu speedata andee dotwave goblde angelo papierleicht kanjo dcnws pdf0 litho taha fx gopdfattach)
+MODULES=(
+	stdlib
+	ritoon-zerechnung
+	pdfcpu-pdfcpu
+	speedata-einvoice
+	andeedotnet-go-xinvoice
+	dotwavehq-go-einvoice
+	invopop-gobl.de.xinvoice
+	angelodlfrtr-go-invoice-generator
+	papierleicht-go-e-rechnung-validator
+	cyprienbrisset-kanjo
+	dcnws-invoicekit.go
+	mgilbir-pdf0
+	gotenberg-litho
+	tahayassine-facturx-go
+	solarpush-fx
+	marlinkuhn-gopdfattach
+)
 OUT=${OUT:-results/$(date +%F)}
 COUNT=${COUNT:-3}
 BENCHTIME=${BENCHTIME:-1s}
@@ -47,21 +67,30 @@ setup() {
 		git -C .deps/solarpush-fx checkout --quiet "$FX_COMMIT"
 	fi
 	echo "== host PDFs ($TESTDATA/host.pdf, $TESTDATA/host_classic.pdf)"
-	(cd pdfcpu && go test -count 1 -run '^(TestMakeHost|TestMakeHostClassic|TestHostsStrict)$' . >/dev/null)
+	(cd libs/pdfcpu-pdfcpu && go test -count 1 -run '^(TestMakeHost|TestMakeHostClassic|TestHostsStrict)$' . >/dev/null)
 }
 
 modules() { if [ $# -gt 0 ]; then echo "$@"; else echo "${MODULES[@]}"; fi; }
 
-# goflags prints the GOFLAGS of module $1: those of facturx_goflags for
-# facturx, the exported ones for the others.
-goflags() { if [ "$1" = facturx ]; then facturx_goflags facturx; else echo "$GOFLAGS"; fi; }
+# check_modules stops on a name that is not a folder of libs/.
+check_modules() {
+	local m
+	for m in "$@"; do
+		[ -f "libs/$m/go.mod" ] || { echo "unknown module: $m (the folders of libs/)" >&2; exit 2; }
+	done
+}
+
+# goflags prints the GOFLAGS of module $1: those of zerechnung_goflags for
+# ZeRechnung, the exported ones for the others.
+goflags() { if [ "$1" = ritoon-zerechnung ]; then zerechnung_goflags libs/ritoon-zerechnung; else echo "$GOFLAGS"; fi; }
 
 survey() {
+	check_modules "$@"
 	mkdir -p "$OUT"
 	for m in $(modules "$@"); do
-		[ "$m" = floor ] && continue
+		[ "$m" = stdlib ] && continue
 		echo "== survey $m"
-		(export GOFLAGS=$(goflags "$m") && cd "$m" && go test -count 1 -run '^TestSurvey$' -v . 2>&1 || true) |
+		(export GOFLAGS=$(goflags "$m") && cd "libs/$m" && go test -count 1 -run '^TestSurvey$' -v . 2>&1 || true) |
 			grep -E 'SURVEY|FLAG|MISS|PARSEFAIL' | sed -E 's/^ +[a-z_]+\.go:[0-9]+: //' >"$OUT/survey_$m.txt" || true
 		grep SURVEY "$OUT/survey_$m.txt" || echo "   (no result)"
 	done
@@ -70,28 +99,30 @@ survey() {
 # cases: the modules with a validation run TestCases, which writes
 # $OUT/cases_<module>.jsonl (see ../cases/README.md).
 cases() {
+	check_modules "$@"
 	mkdir -p "$OUT"
 	local abs
 	abs=$(cd "$OUT" && pwd)
 	for m in $(modules "$@"); do
-		grep -qs '^func TestCases' "$m"/*_test.go || continue
+		grep -qs '^func TestCases' "libs/$m"/*_test.go || continue
 		echo "== cases $m"
-		(export GOFLAGS=$(goflags "$m") CASES_OUT="$abs/cases_$m.jsonl" && cd "$m" &&
+		(export GOFLAGS=$(goflags "$m") CASES_OUT="$abs/cases_$m.jsonl" && cd "libs/$m" &&
 			go test -count 1 -run '^TestCases$' -timeout 2h -v . 2>&1 || true) |
 			grep -E 'CASES|FAIL|panic:' | sed -E 's/^ +[a-z_]+\.go:[0-9]+: //' || true
 	done
 }
 
 bench() {
+	check_modules "$@"
 	mkdir -p "$OUT"
 	for m in $(modules "$@"); do
 		echo "== bench $m"
 		# Some benchmarks fail on purpose (a library returns a PDF that does not
 		# read back): keep going and record what was measured. The output of
-		# facturx starts with the version of ZeRechnung it measures.
+		# ritoon-zerechnung starts with the version of ZeRechnung it measures.
 		{
-			[ "$m" = facturx ] && zerechnung_version facturx
-			(export GOFLAGS=$(goflags "$m") && cd "$m" && go version && go test -run '^$' -bench . -benchmem -count "$COUNT" -benchtime "$BENCHTIME" . 2>&1) || true
+			[ "$m" = ritoon-zerechnung ] && zerechnung_version libs/ritoon-zerechnung
+			(export GOFLAGS=$(goflags "$m") && cd "libs/$m" && go version && go test -run '^$' -bench . -benchmem -count "$COUNT" -benchtime "$BENCHTIME" . 2>&1) || true
 		} >"$OUT/bench_$m.txt"
 		grep -E -- '--- FAIL|^FAIL' "$OUT/bench_$m.txt" || true
 	done
@@ -113,7 +144,7 @@ bench) bench "$@" ;;
 report) report ;;
 all) setup && survey "$@" && cases "$@" && bench "$@" && report ;;
 *)
-	sed -n '2,11p' "$0"
+	sed -n '2,17p' "$0"
 	exit 2
 	;;
 esac
